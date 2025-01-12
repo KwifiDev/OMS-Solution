@@ -1,4 +1,4 @@
-﻿using OMS.BL.Models.Views;
+﻿using OMS.BL.Dtos.Views;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,13 +11,13 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all branch operational metric records asynchronously.
         /// </summary>
         /// <returns>A collection of branch operational metric models.</returns>
-        Task<IEnumerable<BranchOperationalMetricModel>> GetAllBranchesOperationalMetricAsync();
+        Task<IEnumerable<BranchOperationalMetricDto>> GetAllBranchesOperationalMetricAsync();
 
         /// <summary>
         /// Retrieves a branch operational metric record by its ID asynchronously.
         /// </summary>
         /// <param name="branchId">The ID of the branch.</param>
         /// <returns>The branch operational metric model, or null if not found.</returns>
-        Task<BranchOperationalMetricModel?> GetBranchOperationalMetricByIdAsync(int branchId);
+        Task<BranchOperationalMetricDto?> GetBranchOperationalMetricByIdAsync(int branchId);
     }
 }

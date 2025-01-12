@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Views;
-using OMS.BL.Models.Views;
+using OMS.BL.Dtos.Views;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Views
             _repository = repository;
         }
 
-        public async Task<IEnumerable<UserDetailModel>> GetAllUsersDetailAsync()
+        public async Task<IEnumerable<UserDetailDto>> GetAllUsersDetailAsync()
         {
             IEnumerable<UserDetail> userDetail = await _repository.GetAllAsync();
 
-            return userDetail?.Select(u => new UserDetailModel
+            return userDetail?.Select(u => new UserDetailDto
             {
                 UserId = u.UserId,
                 EmployeeName = u.EmployeeName,
@@ -26,14 +26,14 @@ namespace OMS.BL.Services.Views
                 IsActive = u.IsActive,
                 WorkingBranch = u.WorkingBranch
 
-            }) ?? Enumerable.Empty<UserDetailModel>();
+            }) ?? Enumerable.Empty<UserDetailDto>();
         }
 
-        public async Task<UserDetailModel?> GetUserDetailByIdAsync(int userId)
+        public async Task<UserDetailDto?> GetUserDetailByIdAsync(int userId)
         {
             UserDetail? user = await _repository.GetUserDetailByIdAsync(userId);
 
-            return user == null ? null : new UserDetailModel
+            return user == null ? null : new UserDetailDto
             {
                 UserId = user.UserId,
                 EmployeeName = user.EmployeeName,

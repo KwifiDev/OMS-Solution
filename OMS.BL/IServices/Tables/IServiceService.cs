@@ -1,4 +1,4 @@
-﻿using OMS.BL.Models.Tables;
+﻿using OMS.BL.Dtos.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -11,28 +11,28 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all services asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of service models.</returns>
-        Task<IEnumerable<ServiceModel>> GetAllServicesAsync();
+        Task<IEnumerable<ServiceDto>> GetAllServicesAsync();
 
         /// <summary>
         /// Retrieves a service by its ID asynchronously.
         /// </summary>
         /// <param name="serviceId">The ID of the service to retrieve.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the service model, or null if not found.</returns>
-        Task<ServiceModel?> GetServiceByIdAsync(int serviceId);
+        /// <returns>A task that represents the asynchronous operation. The task result contains the service dto, or null if not found.</returns>
+        Task<ServiceDto?> GetServiceByIdAsync(int serviceId);
 
         /// <summary>
         /// Adds a new service asynchronously.
         /// </summary>
-        /// <param name="model">The service model to add.</param>
+        /// <param name="dto">The service dto to add.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the service was added successfully.</returns>
-        Task<bool> AddServiceAsync(ServiceModel model);
+        Task<bool> AddServiceAsync(ServiceDto dto);
 
         /// <summary>
         /// Updates an existing service asynchronously.
         /// </summary>
-        /// <param name="model">The service model to update.</param>
+        /// <param name="dto">The service dto to update.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the service was updated successfully.</returns>
-        Task<bool> UpdateServiceAsync(ServiceModel model);
+        Task<bool> UpdateServiceAsync(ServiceDto dto);
 
         /// <summary>
         /// Deletes a service by its ID asynchronously.

@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<TransactionModel>> GetAllTransactionsAsync()
+        public async Task<IEnumerable<TransactionDto>> GetAllTransactionsAsync()
         {
             IEnumerable<Transaction> transactions = await _repository.GetAllAsync();
 
-            return transactions?.Select(t => new TransactionModel
+            return transactions?.Select(t => new TransactionDto
             {
                 TransactionId = t.TransactionId,
                 AccountId = t.AccountId,
@@ -28,14 +28,14 @@ namespace OMS.BL.Services.Tables
                 CreatedAt = t.CreatedAt,
                 CreatedByUserId = t.CreatedByUserId
 
-            }) ?? Enumerable.Empty<TransactionModel>();
+            }) ?? Enumerable.Empty<TransactionDto>();
         }
 
-        public async Task<TransactionModel?> GetTransactionByIdAsync(int transactionId)
+        public async Task<TransactionDto?> GetTransactionByIdAsync(int transactionId)
         {
             Transaction? transaction = await _repository.GetByIdAsync(transactionId);
 
-            return transaction == null ? null : new TransactionModel
+            return transaction == null ? null : new TransactionDto
             {
                 TransactionId = transaction.TransactionId,
                 AccountId = transaction.AccountId,

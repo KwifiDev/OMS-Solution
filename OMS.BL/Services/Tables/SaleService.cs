@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<SaleModel>> GetAllSalesAsync()
+        public async Task<IEnumerable<SaleDto>> GetAllSalesAsync()
         {
             IEnumerable<Sale> sales = await _repository.GetAllAsync();
 
-            return sales?.Select(s => new SaleModel
+            return sales?.Select(s => new SaleDto
             {
                 SaleId = s.SaleId,
                 ClientId = s.ClientId,
@@ -34,14 +34,14 @@ namespace OMS.BL.Services.Tables
                 Status = s.Status,
                 CreatedByUserId = s.CreatedByUserId
 
-            }) ?? Enumerable.Empty<SaleModel>();
+            }) ?? Enumerable.Empty<SaleDto>();
         }
 
-        public async Task<SaleModel?> GetSaleByIdAsync(int saleId)
+        public async Task<SaleDto?> GetSaleByIdAsync(int saleId)
         {
             Sale? sale = await _repository.GetByIdAsync(saleId);
 
-            return sale == null ? null : new SaleModel
+            return sale == null ? null : new SaleDto
             {
                 SaleId = sale.SaleId,
                 ClientId = sale.ClientId,
@@ -59,39 +59,39 @@ namespace OMS.BL.Services.Tables
             };
         }
 
-        public async Task<bool> AddSaleAsync(SaleModel model)
+        public async Task<bool> AddSaleAsync(SaleDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
             Sale sale = new Sale
             {
-                ClientId = model.ClientId,
-                ServiceId = model.ServiceId,
-                Quantity = model.Quantity,
-                Description = model.Description,
-                Notes = model.Notes,
-                Status = model.Status,
-                CreatedByUserId = model.CreatedByUserId
+                ClientId = dto.ClientId,
+                ServiceId = dto.ServiceId,
+                Quantity = dto.Quantity,
+                Description = dto.Description,
+                Notes = dto.Notes,
+                Status = dto.Status,
+                CreatedByUserId = dto.CreatedByUserId
             };
 
             bool success = await _repository.AddAsync(sale);
 
-            if (success) model.SaleId = sale.SaleId;
+            if (success) dto.SaleId = sale.SaleId;
 
             return success;
         }
 
-        public async Task<bool> UpdateSaleAsync(SaleModel model)
+        public async Task<bool> UpdateSaleAsync(SaleDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
-            Sale? sale = await _repository.GetByIdAsync(model.SaleId);
+            Sale? sale = await _repository.GetByIdAsync(dto.SaleId);
 
             if (sale == null) return false;
 
-            sale.Description = model.Description;
-            sale.Notes = model.Notes;
-            sale.Status = model.Status;
+            sale.Description = dto.Description;
+            sale.Notes = dto.Notes;
+            sale.Status = dto.Status;
 
             return await _repository.UpdateAsync(sale);
         }

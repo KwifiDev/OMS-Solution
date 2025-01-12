@@ -1,4 +1,4 @@
-﻿using OMS.BL.Models.Tables;
+﻿using OMS.BL.Dtos.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -11,28 +11,28 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all discounts asynchronously.
         /// </summary>
         /// <returns>A collection of discount models.</returns>
-        Task<IEnumerable<DiscountModel>> GetAllDiscountsAsync();
+        Task<IEnumerable<DiscountDto>> GetAllDiscountsAsync();
 
         /// <summary>
         /// Retrieves a discount by its ID asynchronously.
         /// </summary>
         /// <param name="discountId">The ID of the discount.</param>
-        /// <returns>The discount model if found, otherwise null.</returns>
-        Task<DiscountModel?> GetDiscountByIdAsync(int discountId);
+        /// <returns>The discount dto if found, otherwise null.</returns>
+        Task<DiscountDto?> GetDiscountByIdAsync(int discountId);
 
         /// <summary>
         /// Adds a new discount asynchronously.
         /// </summary>
-        /// <param name="model">The discount model to add.</param>
+        /// <param name="dto">The discount dto to add.</param>
         /// <returns>True if the discount was added successfully, otherwise false.</returns>
-        Task<bool> AddDiscountAsync(DiscountModel model);
+        Task<bool> AddDiscountAsync(DiscountDto dto);
 
         /// <summary>
         /// Updates an existing discount asynchronously.
         /// </summary>
-        /// <param name="model">The discount model to update.</param>
+        /// <param name="dto">The discount dto to update.</param>
         /// <returns>True if the discount was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateDiscountAsync(DiscountModel model);
+        Task<bool> UpdateDiscountAsync(DiscountDto dto);
 
         /// <summary>
         /// Deletes a discount by its ID asynchronously.

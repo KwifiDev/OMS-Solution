@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -14,24 +14,24 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<PermissionsConfigModel>> GetAllPermissionsConfigsAsync()
+        public async Task<IEnumerable<PermissionsConfigDto>> GetAllPermissionsConfigsAsync()
         {
             IEnumerable<PermissionsConfig> permissions = await _repository.GetAllAsync();
 
-            return permissions?.Select(p => new PermissionsConfigModel
+            return permissions?.Select(p => new PermissionsConfigDto
             {
                 PermissionConfigId = p.PermissionConfigId,
                 PermissionName = p.PermissionName,
                 PermissionNo = p.PermissionNo
 
-            }) ?? Enumerable.Empty<PermissionsConfigModel>();
+            }) ?? Enumerable.Empty<PermissionsConfigDto>();
         }
 
-        public async Task<PermissionsConfigModel?> GetPermissionsConfigByIdAsync(int permissionsConfigId)
+        public async Task<PermissionsConfigDto?> GetPermissionsConfigByIdAsync(int permissionsConfigId)
         {
             PermissionsConfig? permission = await _repository.GetByIdAsync(permissionsConfigId);
 
-            return permission == null ? null : new PermissionsConfigModel
+            return permission == null ? null : new PermissionsConfigDto
             {
                 PermissionConfigId = permission.PermissionConfigId,
                 PermissionName = permission.PermissionName,

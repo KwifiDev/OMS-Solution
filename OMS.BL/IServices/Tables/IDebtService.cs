@@ -1,5 +1,5 @@
-﻿using OMS.BL.Models.DTOs_StoredProcedures;
-using OMS.BL.Models.Tables;
+﻿using OMS.BL.Dtos.StoredProcedureParams;
+using OMS.BL.Dtos.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,28 +12,28 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all debts asynchronously.
         /// </summary>
         /// <returns>A collection of DebtModel objects.</returns>
-        Task<IEnumerable<DebtModel>> GetAllDebtsAsync();
+        Task<IEnumerable<DebtDto>> GetAllDebtsAsync();
 
         /// <summary>
         /// Retrieves a debt by its ID asynchronously.
         /// </summary>
         /// <param name="debtId">The ID of the debt.</param>
         /// <returns>The DebtModel object if found, otherwise null.</returns>
-        Task<DebtModel?> GetDebtByIdAsync(int debtId);
+        Task<DebtDto?> GetDebtByIdAsync(int debtId);
 
         /// <summary>
         /// Adds a new debt asynchronously.
         /// </summary>
-        /// <param name="model">The DebtModel object representing the new debt.</param>
+        /// <param name="dto">The DebtModel object representing the new debt.</param>
         /// <returns>True if the debt was added successfully, otherwise false.</returns>
-        Task<bool> AddDebtAsync(DebtModel model);
+        Task<bool> AddDebtAsync(DebtDto dto);
 
         /// <summary>
         /// Updates an existing debt asynchronously.
         /// </summary>
-        /// <param name="model">The DebtModel object representing the updated debt.</param>
+        /// <param name="dto">The DebtModel object representing the updated debt.</param>
         /// <returns>True if the debt was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateDebtAsync(DebtModel model);
+        Task<bool> UpdateDebtAsync(DebtDto dto);
 
         /// <summary>
         /// Deletes a debt by its ID asynchronously.
@@ -45,8 +45,8 @@ namespace OMS.BL.IServices.Tables
         /// <summary>
         /// Pays a debt by its ID asynchronously.
         /// </summary>
-        /// <param name="model">The PayDebtModel object representing the payment details.</param>
+        /// <param name="dto">The PayDebtModel object representing the payment details.</param>
         /// <returns>True if the debt was paid successfully, otherwise false.</returns>
-        Task<bool> PayDebtByIdAsync(PayDebtModel model);
+        Task<bool> PayDebtByIdAsync(PayDebtDto dto);
     }
 }

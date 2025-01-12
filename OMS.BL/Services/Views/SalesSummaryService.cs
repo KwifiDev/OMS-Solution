@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Views;
-using OMS.BL.Models.Views;
+using OMS.BL.Dtos.Views;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Views
             _repository = repository;
         }
 
-        public async Task<IEnumerable<SalesSummaryModel>> GetAllSalesSummaryAsync()
+        public async Task<IEnumerable<SalesSummaryDto>> GetAllSalesSummaryAsync()
         {
             IEnumerable<SalesSummary> SalesSummaries = await _repository.GetAllAsync();
 
-            return SalesSummaries?.Select(s => new SalesSummaryModel
+            return SalesSummaries?.Select(s => new SalesSummaryDto
             {
                 SaleId = s.SaleId,
                 ClientName = s.ClientName,
@@ -27,14 +27,14 @@ namespace OMS.BL.Services.Views
                 TotalSales = s.TotalSales,
                 Status = s.Status
 
-            }) ?? Enumerable.Empty<SalesSummaryModel>();
+            }) ?? Enumerable.Empty<SalesSummaryDto>();
         }
 
-        public async Task<SalesSummaryModel?> GetSaleSummaryByIdAsync(int saleId)
+        public async Task<SalesSummaryDto?> GetSaleSummaryByIdAsync(int saleId)
         {
             SalesSummary? sale = await _repository.GetSaleSummaryByIdAsync(saleId);
 
-            return sale == null ? null : new SalesSummaryModel
+            return sale == null ? null : new SalesSummaryDto
             {
                 SaleId = sale.SaleId,
                 ClientName = sale.ClientName,

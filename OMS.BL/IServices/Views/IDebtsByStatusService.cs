@@ -1,4 +1,4 @@
-﻿using OMS.BL.Models.Views;
+﻿using OMS.BL.Dtos.Views;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,6 +11,6 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all debts by status asynchronously.
         /// </summary>
         /// <returns>A collection of debts by status.</returns>
-        Task<IEnumerable<DebtsByStatusModel>> GetAllDebtsByStatusAsync();
+        Task<IEnumerable<DebtsByStatusDto>> GetAllDebtsByStatusAsync();
     }
 }

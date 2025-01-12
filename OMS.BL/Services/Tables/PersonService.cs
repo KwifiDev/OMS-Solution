@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<PersonModel>> GetAllPeopleAsync()
+        public async Task<IEnumerable<PersonDto>> GetAllPeopleAsync()
         {
             IEnumerable<Person> people = await _repository.GetAllAsync();
 
-            return people?.Select(p => new PersonModel
+            return people?.Select(p => new PersonDto
             {
                 PersonId = p.PersonId,
                 FirstName = p.FirstName,
@@ -26,14 +26,14 @@ namespace OMS.BL.Services.Tables
                 Gender = p.Gender,
                 Phone = p.Phone
 
-            }) ?? Enumerable.Empty<PersonModel>();
+            }) ?? Enumerable.Empty<PersonDto>();
         }
 
-        public async Task<PersonModel?> GetPersonByIdAsync(int personId)
+        public async Task<PersonDto?> GetPersonByIdAsync(int personId)
         {
             Person? person = await _repository.GetByIdAsync(personId);
 
-            return person == null ? null : new PersonModel
+            return person == null ? null : new PersonDto
             {
                 PersonId = person.PersonId,
                 FirstName = person.FirstName,
@@ -43,37 +43,37 @@ namespace OMS.BL.Services.Tables
             };
         }
 
-        public async Task<bool> AddPersonAsync(PersonModel model)
+        public async Task<bool> AddPersonAsync(PersonDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
             Person person = new Person
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Gender = model.Gender,
-                Phone = model.Phone,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Gender = dto.Gender,
+                Phone = dto.Phone,
             };
 
             bool success = await _repository.AddAsync(person);
 
-            if (success) model.PersonId = person.PersonId;
+            if (success) dto.PersonId = person.PersonId;
 
             return success;
         }
 
-        public async Task<bool> UpdatePersonAsync(PersonModel model)
+        public async Task<bool> UpdatePersonAsync(PersonDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
-            Person? person = await _repository.GetByIdAsync(model.PersonId);
+            Person? person = await _repository.GetByIdAsync(dto.PersonId);
 
             if (person == null) return false;
 
-            person.FirstName = model.FirstName;
-            person.LastName = model.LastName;
-            person.Gender = model.Gender;
-            person.Phone = model.Phone;
+            person.FirstName = dto.FirstName;
+            person.LastName = dto.LastName;
+            person.Gender = dto.Gender;
+            person.Phone = dto.Phone;
 
             return await _repository.UpdateAsync(person);
         }

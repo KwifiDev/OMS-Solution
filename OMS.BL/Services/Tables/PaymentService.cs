@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<PaymentModel>> GetAllPaymentsAsync()
+        public async Task<IEnumerable<PaymentDto>> GetAllPaymentsAsync()
         {
             IEnumerable<Payment> payments = await _repository.GetAllAsync();
 
-            return payments?.Select(p => new PaymentModel
+            return payments?.Select(p => new PaymentDto
             {
                 PaymentId = p.PaymentId,
                 AccountId = p.AccountId,
@@ -27,14 +27,14 @@ namespace OMS.BL.Services.Tables
                 CreatedAt = p.CreatedAt,
                 CreatedByUserId = p.CreatedByUserId
 
-            }) ?? Enumerable.Empty<PaymentModel>();
+            }) ?? Enumerable.Empty<PaymentDto>();
         }
 
-        public async Task<PaymentModel?> GetPaymentByIdAsync(int paymentId)
+        public async Task<PaymentDto?> GetPaymentByIdAsync(int paymentId)
         {
             Payment? payment = await _repository.GetByIdAsync(paymentId);
 
-            return payment == null ? null : new PaymentModel
+            return payment == null ? null : new PaymentDto
             {
                 PaymentId = payment.PaymentId,
                 AccountId = payment.AccountId,

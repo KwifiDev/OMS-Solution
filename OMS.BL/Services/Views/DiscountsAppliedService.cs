@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Views;
-using OMS.BL.Models.Views;
+using OMS.BL.Dtos.Views;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Views
             _repository = repository;
         }
 
-        public async Task<IEnumerable<DiscountsAppliedModel>> GetAllDiscountsAppliedAsync()
+        public async Task<IEnumerable<DiscountsAppliedDto>> GetAllDiscountsAppliedAsync()
         {
             IEnumerable<DiscountsApplied> discountsApplied = await _repository.GetAllAsync();
 
-            return discountsApplied?.Select(d => new DiscountsAppliedModel
+            return discountsApplied?.Select(d => new DiscountsAppliedDto
             {
                 DiscountId = d.DiscountId,
                 ServiceName = d.ServiceName,
@@ -26,14 +26,14 @@ namespace OMS.BL.Services.Views
                 ClientType = d.ClientType,
                 Discount = d.Discount
 
-            }) ?? Enumerable.Empty<DiscountsAppliedModel>();
+            }) ?? Enumerable.Empty<DiscountsAppliedDto>();
         }
 
-        public async Task<DiscountsAppliedModel?> GetDiscountAppliedByIdAsync(int discountId)
+        public async Task<DiscountsAppliedDto?> GetDiscountAppliedByIdAsync(int discountId)
         {
             DiscountsApplied? discount = await _repository.GetDiscountAppliedByIdAsync(discountId);
 
-            return discount == null ? null : new DiscountsAppliedModel
+            return discount == null ? null : new DiscountsAppliedDto
             {
                 DiscountId = discount.DiscountId,
                 ServiceName = discount.ServiceName,

@@ -1,5 +1,5 @@
-﻿using OMS.BL.Models.DTOs_StoredProcedures;
-using OMS.BL.Models.Tables;
+﻿using OMS.BL.Dtos.StoredProcedureParams;
+using OMS.BL.Dtos.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,28 +12,28 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all accounts asynchronously.
         /// </summary>
         /// <returns>A collection of account models.</returns>
-        Task<IEnumerable<AccountModel>> GetAllAccountsAsync();
+        Task<IEnumerable<AccountDto>> GetAllAccountsAsync();
 
         /// <summary>
         /// Retrieves an account by its ID asynchronously.
         /// </summary>
         /// <param name="accountId">The ID of the account.</param>
-        /// <returns>An account model if found, otherwise null.</returns>
-        Task<AccountModel?> GetAccountByIdAsync(int accountId);
+        /// <returns>An account dto if found, otherwise null.</returns>
+        Task<AccountDto?> GetAccountByIdAsync(int accountId);
 
         /// <summary>
         /// Adds a new account asynchronously.
         /// </summary>
-        /// <param name="model">The account model to add.</param>
+        /// <param name="dto">The account dto to add.</param>
         /// <returns>True if the account was added successfully, otherwise false.</returns>
-        Task<bool> AddAccountAsync(AccountModel model);
+        Task<bool> AddAccountAsync(AccountDto dto);
 
         /// <summary>
         /// Updates an existing account asynchronously.
         /// </summary>
-        /// <param name="model">The account model to update.</param>
+        /// <param name="dto">The account dto to update.</param>
         /// <returns>True if the account was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAccountAsync(AccountModel model);
+        Task<bool> UpdateAccountAsync(AccountDto dto);
 
         /// <summary>
         /// Deletes an account by its ID asynchronously.
@@ -45,15 +45,15 @@ namespace OMS.BL.IServices.Tables
         /// <summary>
         /// Deposits an amount into an account asynchronously.
         /// </summary>
-        /// <param name="model">The account transaction model.</param>
+        /// <param name="dto">The account transaction dto.</param>
         /// <returns>True if the deposit was successful, otherwise false.</returns>
-        Task<bool> DepositIntoAccountAsync(AccountTransactionModel model);
+        Task<bool> DepositIntoAccountAsync(AccountTransactionDto dto);
 
         /// <summary>
         /// Withdraws an amount from an account asynchronously.
         /// </summary>
-        /// <param name="model">The account transaction model.</param>
+        /// <param name="dto">The account transaction dto.</param>
         /// <returns>True if the withdrawal was successful, otherwise false.</returns>
-        Task<bool> WithdrawFromAccountAsync(AccountTransactionModel model);
+        Task<bool> WithdrawFromAccountAsync(AccountTransactionDto dto);
     }
 }

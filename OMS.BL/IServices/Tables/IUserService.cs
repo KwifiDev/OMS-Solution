@@ -1,4 +1,4 @@
-﻿using OMS.BL.Models.Tables;
+﻿using OMS.BL.Dtos.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -11,28 +11,28 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all users asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of user models.</returns>
-        Task<IEnumerable<UserModel>> GetAllUsersAsync();
+        Task<IEnumerable<UserDto>> GetAllUsersAsync();
 
         /// <summary>
         /// Retrieves a user by their ID asynchronously.
         /// </summary>
         /// <param name="userId">The ID of the user to retrieve.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the user model, or null if not found.</returns>
-        Task<UserModel?> GetUserByIdAsync(int userId);
+        /// <returns>A task that represents the asynchronous operation. The task result contains the user dto, or null if not found.</returns>
+        Task<UserDto?> GetUserByIdAsync(int userId);
 
         /// <summary>
         /// Adds a new user asynchronously.
         /// </summary>
-        /// <param name="model">The user model to add.</param>
+        /// <param name="dto">The user dto to add.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the user was added successfully.</returns>
-        Task<bool> AddUserAsync(UserModel model);
+        Task<bool> AddUserAsync(UserDto dto);
 
         /// <summary>
         /// Updates an existing user asynchronously.
         /// </summary>
-        /// <param name="model">The user model to update.</param>
+        /// <param name="dto">The user dto to update.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the user was updated successfully.</returns>
-        Task<bool> UpdateUserAsync(UserModel model);
+        Task<bool> UpdateUserAsync(UserDto dto);
 
         /// <summary>
         /// Deletes a user by their ID asynchronously.

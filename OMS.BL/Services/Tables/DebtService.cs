@@ -1,6 +1,6 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.DTOs_StoredProcedures;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.StoredProcedureParams;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.Enums;
 using OMS.DA.IRepositories.IEntityRepos;
@@ -16,11 +16,11 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<DebtModel>> GetAllDebtsAsync()
+        public async Task<IEnumerable<DebtDto>> GetAllDebtsAsync()
         {
             IEnumerable<Debt> debts = await _repository.GetAllAsync();
 
-            return debts?.Select(d => new DebtModel
+            return debts?.Select(d => new DebtDto
             {
                 DebtId = d.DebtId,
                 ClientId = d.ClientId,
@@ -37,14 +37,14 @@ namespace OMS.BL.Services.Tables
                 PaymentId = d.PaymentId,
                 CreatedByUserId = d.CreatedByUserId,
 
-            }) ?? Enumerable.Empty<DebtModel>();
+            }) ?? Enumerable.Empty<DebtDto>();
         }
 
-        public async Task<DebtModel?> GetDebtByIdAsync(int debtId)
+        public async Task<DebtDto?> GetDebtByIdAsync(int debtId)
         {
             Debt? debt = await _repository.GetByIdAsync(debtId);
 
-            return debt == null ? null : new DebtModel
+            return debt == null ? null : new DebtDto
             {
                 DebtId = debt.DebtId,
                 ClientId = debt.ClientId,
@@ -63,37 +63,37 @@ namespace OMS.BL.Services.Tables
             };
         }
 
-        public async Task<bool> AddDebtAsync(DebtModel model)
+        public async Task<bool> AddDebtAsync(DebtDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
             Debt debt = new Debt
             {
-                ClientId = model.ClientId,
-                ServiceId = model.ServiceId,
-                Quantity = model.Quantity,
-                Description = model.Description,
-                Notes = model.Notes,
-                CreatedByUserId = model.CreatedByUserId,
+                ClientId = dto.ClientId,
+                ServiceId = dto.ServiceId,
+                Quantity = dto.Quantity,
+                Description = dto.Description,
+                Notes = dto.Notes,
+                CreatedByUserId = dto.CreatedByUserId,
             };
 
             bool success = await _repository.AddAsync(debt);
 
-            if (success) model.DebtId = debt.DebtId;
+            if (success) dto.DebtId = debt.DebtId;
 
             return success;
         }
 
-        public async Task<bool> UpdateDebtAsync(DebtModel model)
+        public async Task<bool> UpdateDebtAsync(DebtDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
-            Debt? debt = await _repository.GetByIdAsync(model.DebtId);
+            Debt? debt = await _repository.GetByIdAsync(dto.DebtId);
 
             if (debt == null) return false;
 
-            debt.Description = model.Description;
-            debt.Notes = model.Notes;
+            debt.Description = dto.Description;
+            debt.Notes = dto.Notes;
 
             return await _repository.UpdateAsync(debt);
         }
@@ -105,16 +105,16 @@ namespace OMS.BL.Services.Tables
             return await _repository.DeleteAsync(debtId);
         }
 
-        public async Task<bool> PayDebtByIdAsync(PayDebtModel model)
+        public async Task<bool> PayDebtByIdAsync(PayDebtDto dto)
         {
-            model.PayDebtStatus = await _repository.PayDebtByIdAsync
+            dto.PayDebtStatus = await _repository.PayDebtByIdAsync
                 (
-                    debtId: model.DebtId,
-                    notes: model.Notes,
-                    createdByUserId: model.CreatedByUserId
+                    debtId: dto.DebtId,
+                    notes: dto.Notes,
+                    createdByUserId: dto.CreatedByUserId
                 );
 
-            return model.PayDebtStatus == EnPayDebtStatus.Success;
+            return dto.PayDebtStatus == EnPayDebtStatus.Success;
         }
     }
 }

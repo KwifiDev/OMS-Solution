@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Views;
-using OMS.BL.Models.Views;
+using OMS.BL.Dtos.Views;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Views
             _repository = repository;
         }
 
-        public async Task<IEnumerable<TransactionsSummaryModel>> GetAllTransactionsSummaryAsync()
+        public async Task<IEnumerable<TransactionsSummaryDto>> GetAllTransactionsSummaryAsync()
         {
             IEnumerable<TransactionsSummary> transactionsSummary = await _repository.GetAllAsync();
 
-            return transactionsSummary?.Select(t => new TransactionsSummaryModel
+            return transactionsSummary?.Select(t => new TransactionsSummaryDto
             {
                TransactionId = t.TransactionId,
                UserAccount = t.UserAccount,
@@ -27,14 +27,14 @@ namespace OMS.BL.Services.Views
                CreatedAt = t.CreatedAt,
                Notes = t.Notes
 
-            }) ?? Enumerable.Empty<TransactionsSummaryModel>();
+            }) ?? Enumerable.Empty<TransactionsSummaryDto>();
         }
 
-        public async Task<TransactionsSummaryModel?> GetTransactionSummaryByIdAsync(int transactionId)
+        public async Task<TransactionsSummaryDto?> GetTransactionSummaryByIdAsync(int transactionId)
         {
             TransactionsSummary? transaction = await _repository.GetTransactionSummaryByIdAsync(transactionId);
 
-            return transaction == null ? null : new TransactionsSummaryModel
+            return transaction == null ? null : new TransactionsSummaryDto
             {
                 TransactionId = transaction.TransactionId,
                 UserAccount = transaction.UserAccount,

@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Views;
-using OMS.BL.Models.Views;
+using OMS.BL.Dtos.Views;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Views
             _repository = repository;
         }
 
-        public async Task<IEnumerable<PaymentsSummaryModel>> GetAllPaymentsSummaryAsync()
+        public async Task<IEnumerable<PaymentsSummaryDto>> GetAllPaymentsSummaryAsync()
         {
             IEnumerable<PaymentsSummary> paymentsSummary = await _repository.GetAllAsync();
 
-            return paymentsSummary?.Select(p => new PaymentsSummaryModel
+            return paymentsSummary?.Select(p => new PaymentsSummaryDto
             {
                 PaymentId = p.PaymentId,
                 ClientName = p.ClientName,
@@ -26,14 +26,14 @@ namespace OMS.BL.Services.Views
                 CreatedAt = p.CreatedAt,
                 Notes = p.Notes
 
-            }) ?? Enumerable.Empty<PaymentsSummaryModel>();
+            }) ?? Enumerable.Empty<PaymentsSummaryDto>();
         }
 
-        public async Task<PaymentsSummaryModel?> GetPaymentSummaryByIdAsync(int paymentId)
+        public async Task<PaymentsSummaryDto?> GetPaymentSummaryByIdAsync(int paymentId)
         {
             PaymentsSummary? payment = await _repository.GetPaymentSummaryByIdAsync(paymentId);
 
-            return payment == null ? null : new PaymentsSummaryModel
+            return payment == null ? null : new PaymentsSummaryDto
             {
                 PaymentId = payment.PaymentId,
                 ClientName = payment.ClientName,

@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Views;
-using OMS.BL.Models.Views;
+using OMS.BL.Dtos.Views;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -14,16 +14,16 @@ namespace OMS.BL.Services.Views
             _repository = repository;
         }
 
-        public async Task<IEnumerable<ClientsByTypeModel>> GetAllClientsByTypeAsync()
+        public async Task<IEnumerable<ClientsByTypeDto>> GetAllClientsByTypeAsync()
         {
             IEnumerable<ClientsByType> accountBalancesTransaction = await _repository.GetAllAsync();
 
-            return accountBalancesTransaction?.Select(c => new ClientsByTypeModel
+            return accountBalancesTransaction?.Select(c => new ClientsByTypeDto
             {
                 ClientType = c.ClientType,
                 TotalClients = c.TotalClients
 
-            }) ?? Enumerable.Empty<ClientsByTypeModel>();
+            }) ?? Enumerable.Empty<ClientsByTypeDto>();
         }
 
     }

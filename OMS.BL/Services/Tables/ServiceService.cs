@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -14,25 +14,25 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<ServiceModel>> GetAllServicesAsync()
+        public async Task<IEnumerable<ServiceDto>> GetAllServicesAsync()
         {
             IEnumerable<Service> services = await _repository.GetAllAsync();
 
-            return services?.Select(s => new ServiceModel
+            return services?.Select(s => new ServiceDto
             {
                 ServiceId = s.ServiceId,
                 Name = s.Name,
                 Description = s.Description,
                 Price = s.Price
 
-            }) ?? Enumerable.Empty<ServiceModel>();
+            }) ?? Enumerable.Empty<ServiceDto>();
         }
 
-        public async Task<ServiceModel?> GetServiceByIdAsync(int serviceId)
+        public async Task<ServiceDto?> GetServiceByIdAsync(int serviceId)
         {
             Service? service = await _repository.GetByIdAsync(serviceId);
 
-            return service == null ? null : new ServiceModel
+            return service == null ? null : new ServiceDto
             {
                 ServiceId = service.ServiceId,
                 Name = service.Name,
@@ -41,35 +41,35 @@ namespace OMS.BL.Services.Tables
             };
         }
 
-        public async Task<bool> AddServiceAsync(ServiceModel model)
+        public async Task<bool> AddServiceAsync(ServiceDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
             Service service = new Service
             {
-                Name = model.Name,
-                Description = model.Description,
-                Price = model.Price
+                Name = dto.Name,
+                Description = dto.Description,
+                Price = dto.Price
             };
 
             bool success = await _repository.AddAsync(service);
 
-            if (success) model.ServiceId = service.ServiceId;
+            if (success) dto.ServiceId = service.ServiceId;
 
             return success;
         }
 
-        public async Task<bool> UpdateServiceAsync(ServiceModel model)
+        public async Task<bool> UpdateServiceAsync(ServiceDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
-            Service? service = await _repository.GetByIdAsync(model.ServiceId);
+            Service? service = await _repository.GetByIdAsync(dto.ServiceId);
 
             if (service == null) return false;
 
-            service.Name = model.Name;
-            service.Description = model.Description;
-            service.Price = model.Price;
+            service.Name = dto.Name;
+            service.Description = dto.Description;
+            service.Price = dto.Price;
 
             return await _repository.UpdateAsync(service);
 

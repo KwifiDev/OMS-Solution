@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -14,25 +14,25 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<RevenueModel>> GetAllRevenuesAsync()
+        public async Task<IEnumerable<RevenueDto>> GetAllRevenuesAsync()
         {
             IEnumerable<Revenue> revenues = await _repository.GetAllAsync();
 
-            return revenues?.Select(r => new RevenueModel
+            return revenues?.Select(r => new RevenueDto
             {
                 RevenueId = r.RevenueId,
                 Amount = r.Amount,
                 Notes = r.Notes,
                 CreatedAt = r.CreatedAt
 
-            }) ?? Enumerable.Empty<RevenueModel>();
+            }) ?? Enumerable.Empty<RevenueDto>();
         }
 
-        public async Task<RevenueModel?> GetRevenueByIdAsync(int revenueId)
+        public async Task<RevenueDto?> GetRevenueByIdAsync(int revenueId)
         {
             Revenue? revenue = await _repository.GetByIdAsync(revenueId);
 
-            return revenue == null ? null : new RevenueModel
+            return revenue == null ? null : new RevenueDto
             {
                 RevenueId = revenue.RevenueId,
                 Amount = revenue.Amount,
@@ -41,33 +41,33 @@ namespace OMS.BL.Services.Tables
             };
         }
 
-        public async Task<bool> AddRevenueAsync(RevenueModel model)
+        public async Task<bool> AddRevenueAsync(RevenueDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
             Revenue revenue = new Revenue
             {
-                Amount = model.Amount,
-                Notes = model.Notes
+                Amount = dto.Amount,
+                Notes = dto.Notes
             };
 
             bool success = await _repository.AddAsync(revenue);
 
-            if (success) model.RevenueId = revenue.RevenueId;
+            if (success) dto.RevenueId = revenue.RevenueId;
 
             return success;
         }
 
-        public async Task<bool> UpdateRevenueAsync(RevenueModel model)
+        public async Task<bool> UpdateRevenueAsync(RevenueDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
-            Revenue? revenue = await _repository.GetByIdAsync(model.RevenueId);
+            Revenue? revenue = await _repository.GetByIdAsync(dto.RevenueId);
 
             if (revenue == null) return false;
 
-            revenue.Amount = model.Amount;
-            revenue.Notes = model.Notes;
+            revenue.Amount = dto.Amount;
+            revenue.Notes = dto.Notes;
 
             return await _repository.UpdateAsync(revenue);
         }

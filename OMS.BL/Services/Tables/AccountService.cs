@@ -1,6 +1,6 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.DTOs_StoredProcedures;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.StoredProcedureParams;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.Enums;
 using OMS.DA.IRepositories.IEntityRepos;
@@ -16,25 +16,25 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<AccountModel>> GetAllAccountsAsync()
+        public async Task<IEnumerable<AccountDto>> GetAllAccountsAsync()
         {
             IEnumerable<Account> accounts = await _repository.GetAllAsync();
 
-            return accounts?.Select(a => new AccountModel
+            return accounts?.Select(a => new AccountDto
             {
                 AccountId = a.AccountId,
                 ClientId = a.ClientId,
                 Balance = a.Balance,
                 UserAccount = a.UserAccount
 
-            }) ?? Enumerable.Empty<AccountModel>();
+            }) ?? Enumerable.Empty<AccountDto>();
         }
 
-        public async Task<AccountModel?> GetAccountByIdAsync(int accountId)
+        public async Task<AccountDto?> GetAccountByIdAsync(int accountId)
         {
             Account? account = await _repository.GetByIdAsync(accountId);
 
-            return account == null ? null : new AccountModel
+            return account == null ? null : new AccountDto
             {
                 AccountId = account.AccountId,
                 ClientId = account.ClientId,
@@ -43,33 +43,33 @@ namespace OMS.BL.Services.Tables
             };
         }
 
-        public async Task<bool> AddAccountAsync(AccountModel model)
+        public async Task<bool> AddAccountAsync(AccountDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
             Account account = new Account
             {
-                ClientId = model.ClientId,
+                ClientId = dto.ClientId,
                 Balance = 0, // Default Value
-                UserAccount = model.UserAccount
+                UserAccount = dto.UserAccount
             };
 
             bool success = await _repository.AddAsync(account);
 
-            if (success) model.AccountId = account.AccountId;
+            if (success) dto.AccountId = account.AccountId;
 
             return success;
         }
 
-        public async Task<bool> UpdateAccountAsync(AccountModel model)
+        public async Task<bool> UpdateAccountAsync(AccountDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
-            Account? account = await _repository.GetByIdAsync(model.AccountId);
+            Account? account = await _repository.GetByIdAsync(dto.AccountId);
 
             if (account == null) return false;
 
-            account.UserAccount = model.UserAccount;
+            account.UserAccount = dto.UserAccount;
 
             return await _repository.UpdateAsync(account);
         }
@@ -81,30 +81,30 @@ namespace OMS.BL.Services.Tables
             return await _repository.DeleteAsync(accountId);
         }
 
-        public async Task<bool> DepositIntoAccountAsync(AccountTransactionModel model)
+        public async Task<bool> DepositIntoAccountAsync(AccountTransactionDto dto)
         {
-            model.TransactionStatus = await _repository.DepositAccountAsync
+            dto.TransactionStatus = await _repository.DepositAccountAsync
                (
-                   accountId: model.AccountId,
-                   amount: model.Amount,
-                   notes: model.Notes,
-                   createdByUserId: model.CreatedByUserId
+                   accountId: dto.AccountId,
+                   amount: dto.Amount,
+                   notes: dto.Notes,
+                   createdByUserId: dto.CreatedByUserId
                );
 
-            return model.TransactionStatus == EnAccountTransactionStatus.Success;
+            return dto.TransactionStatus == EnAccountTransactionStatus.Success;
         }
 
-        public async Task<bool> WithdrawFromAccountAsync(AccountTransactionModel model)
+        public async Task<bool> WithdrawFromAccountAsync(AccountTransactionDto dto)
         {
-            model.TransactionStatus = await _repository.WithdrawAccountAsync
+            dto.TransactionStatus = await _repository.WithdrawAccountAsync
                 (
-                    accountId: model.AccountId,
-                    amount: model.Amount,
-                    notes: model.Notes,
-                    createdByUserId: model.CreatedByUserId
+                    accountId: dto.AccountId,
+                    amount: dto.Amount,
+                    notes: dto.Notes,
+                    createdByUserId: dto.CreatedByUserId
                 );
 
-            return model.TransactionStatus == EnAccountTransactionStatus.Success;
+            return dto.TransactionStatus == EnAccountTransactionStatus.Success;
         }
     }
 }

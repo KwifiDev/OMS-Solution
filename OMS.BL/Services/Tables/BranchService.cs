@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -14,24 +14,24 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<BranchModel>> GetAllBranchesAsync()
+        public async Task<IEnumerable<BranchDto>> GetAllBranchesAsync()
         {
             IEnumerable<Branch> branches = await _repository.GetAllAsync();
 
-            return branches?.Select(b => new BranchModel
+            return branches?.Select(b => new BranchDto
             {
                 BranchId = b.BranchId,
                 Name = b.Name,
                 Address = b.Address
 
-            }) ?? Enumerable.Empty<BranchModel>();
+            }) ?? Enumerable.Empty<BranchDto>();
         }
 
-        public async Task<BranchModel?> GetBranchByIdAsync(int branchId)
+        public async Task<BranchDto?> GetBranchByIdAsync(int branchId)
         {
             Branch? branch = await _repository.GetByIdAsync(branchId);
 
-            return branch == null ? null : new BranchModel
+            return branch == null ? null : new BranchDto
             {
                 BranchId = branch.BranchId,
                 Name = branch.Name,
@@ -39,34 +39,34 @@ namespace OMS.BL.Services.Tables
             };
         }
 
-        public async Task<bool> AddBranchAsync(BranchModel model)
+        public async Task<bool> AddBranchAsync(BranchDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
             Branch branch = new Branch
             {
-                BranchId = model.BranchId,
-                Name = model.Name,
-                Address = model.Address
+                BranchId = dto.BranchId,
+                Name = dto.Name,
+                Address = dto.Address
             };
 
             bool success = await _repository.AddAsync(branch);
 
-            if (success) model.BranchId = branch.BranchId;
+            if (success) dto.BranchId = branch.BranchId;
 
             return success;
         }
 
-        public async Task<bool> UpdateBranchAsync(BranchModel model)
+        public async Task<bool> UpdateBranchAsync(BranchDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
-            Branch? branch = await _repository.GetByIdAsync(model.BranchId);
+            Branch? branch = await _repository.GetByIdAsync(dto.BranchId);
 
             if (branch == null) return false;
 
-            branch.Name = model.Name;
-            branch.Address = model.Address;
+            branch.Name = dto.Name;
+            branch.Address = dto.Address;
 
             return await _repository.UpdateAsync(branch);
         }

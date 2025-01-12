@@ -1,4 +1,4 @@
-﻿using OMS.BL.Models.Tables;
+﻿using OMS.BL.Dtos.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -11,13 +11,13 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all payments asynchronously.
         /// </summary>
         /// <returns>A collection of payment models.</returns>
-        Task<IEnumerable<PaymentModel>> GetAllPaymentsAsync();
+        Task<IEnumerable<PaymentDto>> GetAllPaymentsAsync();
 
         /// <summary>
         /// Retrieves a payment by its ID asynchronously.
         /// </summary>
         /// <param name="paymentId">The ID of the payment.</param>
         /// <returns>The payment model if found, otherwise null.</returns>
-        Task<PaymentModel?> GetPaymentByIdAsync(int paymentId);
+        Task<PaymentDto?> GetPaymentByIdAsync(int paymentId);
     }
 }

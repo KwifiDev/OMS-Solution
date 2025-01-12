@@ -1,6 +1,6 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.DTOs_StoredProcedures;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.StoredProcedureParams;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.Enums;
 using OMS.DA.IRepositories.IEntityRepos;
@@ -16,24 +16,24 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<ClientModel>> GetAllClientsAsync()
+        public async Task<IEnumerable<ClientDto>> GetAllClientsAsync()
         {
             IEnumerable<Client> clients = await _repository.GetAllAsync();
 
-            return clients?.Select(c => new ClientModel
+            return clients?.Select(c => new ClientDto
             {
                 ClientId = c.ClientId,
                 PersonId = c.PersonId,
                 ClientType = c.ClientType
 
-            }) ?? Enumerable.Empty<ClientModel>();
+            }) ?? Enumerable.Empty<ClientDto>();
         }
 
-        public async Task<ClientModel?> GetClientByIdAsync(int clientId)
+        public async Task<ClientDto?> GetClientByIdAsync(int clientId)
         {
             Client? client = await _repository.GetByIdAsync(clientId);
 
-            return client == null ? null : new ClientModel
+            return client == null ? null : new ClientDto
             {
                 ClientId = client.ClientId,
                 PersonId = client.PersonId,
@@ -41,33 +41,33 @@ namespace OMS.BL.Services.Tables
             };
         }
 
-        public async Task<bool> AddClientAsync(ClientModel model)
+        public async Task<bool> AddClientAsync(ClientDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
             Client client = new Client
             {
-                ClientId = model.ClientId,
-                PersonId = model.PersonId,
-                ClientType = model.ClientType
+                ClientId = dto.ClientId,
+                PersonId = dto.PersonId,
+                ClientType = dto.ClientType
             };
 
             bool success = await _repository.AddAsync(client);
 
-            if (success) model.ClientId = client.ClientId;
+            if (success) dto.ClientId = client.ClientId;
 
             return success;
         }
 
-        public async Task<bool> UpdateClientAsync(ClientModel model)
+        public async Task<bool> UpdateClientAsync(ClientDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
-            Client? client = await _repository.GetByIdAsync(model.ClientId);
+            Client? client = await _repository.GetByIdAsync(dto.ClientId);
 
             if (client == null) return false;
 
-            client.ClientType = model.ClientType;
+            client.ClientType = dto.ClientType;
 
             return await _repository.UpdateAsync(client);
 
@@ -80,16 +80,16 @@ namespace OMS.BL.Services.Tables
             return await _repository.DeleteAsync(clientId);
         }
 
-        public async Task<bool> PayAllDebtsById(PayDebtsModel model)
+        public async Task<bool> PayAllDebtsById(PayDebtsDto dto)
         {
-            model.PayDebtStatus = await _repository.PayAllDebtsByIdAsync
+            dto.PayDebtStatus = await _repository.PayAllDebtsByIdAsync
                 (
-                    model.ClientId,
-                    model.Notes,
-                    model.CreatedByUserId
+                    dto.ClientId,
+                    dto.Notes,
+                    dto.CreatedByUserId
                 );
 
-            return model.PayDebtStatus == EnPayDebtStatus.Success;
+            return dto.PayDebtStatus == EnPayDebtStatus.Success;
         }
     }
 }

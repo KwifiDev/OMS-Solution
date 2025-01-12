@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Views;
-using OMS.BL.Models.Views;
+using OMS.BL.Dtos.Views;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Views
             _repository = repository;
         }
 
-        public async Task<IEnumerable<DebtsSummaryModel>> GetAllDebtsSummaryAsync()
+        public async Task<IEnumerable<DebtsSummaryDto>> GetAllDebtsSummaryAsync()
         {
             IEnumerable<DebtsSummary> debtsSummaries = await _repository.GetAllAsync();
 
-            return debtsSummaries?.Select(d => new DebtsSummaryModel
+            return debtsSummaries?.Select(d => new DebtsSummaryDto
             {
                DebtId = d.DebtId,
                ClientName = d.ClientName,
@@ -27,14 +27,14 @@ namespace OMS.BL.Services.Views
                TotalDebts = d.TotalDebts,
                Status = d.Status
 
-            }) ?? Enumerable.Empty<DebtsSummaryModel>();
+            }) ?? Enumerable.Empty<DebtsSummaryDto>();
         }
 
-        public async Task<DebtsSummaryModel?> GetDebtSummaryByIdAsync(int debtId)
+        public async Task<DebtsSummaryDto?> GetDebtSummaryByIdAsync(int debtId)
         {
             DebtsSummary? debt = await _repository.GetDebtSummaryByIdAsync(debtId);
 
-            return debt == null ? null : new DebtsSummaryModel
+            return debt == null ? null : new DebtsSummaryDto
             {
                 DebtId = debt.DebtId,
                 ClientName = debt.ClientName,

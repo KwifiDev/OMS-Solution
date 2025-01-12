@@ -1,4 +1,4 @@
-﻿using OMS.BL.Models.Views;
+﻿using OMS.BL.Dtos.Views;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,13 +11,13 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all sales summary asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of sales summary models.</returns>
-        Task<IEnumerable<SalesSummaryModel>> GetAllSalesSummaryAsync();
+        Task<IEnumerable<SalesSummaryDto>> GetAllSalesSummaryAsync();
 
         /// <summary>
         /// Retrieves a sales summary by its ID asynchronously.
         /// </summary>
         /// <param name="saleId">The ID of the sales summary to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the sales summary model, or null if not found.</returns>
-        Task<SalesSummaryModel?> GetSaleSummaryByIdAsync(int saleId);
+        Task<SalesSummaryDto?> GetSaleSummaryByIdAsync(int saleId);
     }
 }

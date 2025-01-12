@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Views;
-using OMS.BL.Models.Views;
+using OMS.BL.Dtos.Views;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -14,25 +14,25 @@ namespace OMS.BL.Services.Views
             _repository = repository;
         }
 
-        public async Task<IEnumerable<ClientDetailModel>> GetAllClientsDetailAsync()
+        public async Task<IEnumerable<ClientDetailDto>> GetAllClientsDetailAsync()
         {
             IEnumerable<ClientDetail> clientDetail = await _repository.GetAllAsync();
 
-            return clientDetail?.Select(c => new ClientDetailModel
+            return clientDetail?.Select(c => new ClientDetailDto
             {
                 ClientId = c.ClientId,
                 ClientName = c.ClientName,
                 Phone = c.Phone,
                 ClientType = c.ClientType
 
-            }) ?? Enumerable.Empty<ClientDetailModel>();
+            }) ?? Enumerable.Empty<ClientDetailDto>();
         }
 
-        public async Task<ClientDetailModel?> GetClientDetailByIdAsync(int clientId)
+        public async Task<ClientDetailDto?> GetClientDetailByIdAsync(int clientId)
         {
             ClientDetail? client = await _repository.GetClientDetailByIdAsync(clientId);
 
-            return client == null ? null : new ClientDetailModel
+            return client == null ? null : new ClientDetailDto
             {
                 ClientId = client.ClientId,
                 ClientName = client.ClientName,

@@ -1,4 +1,4 @@
-﻿using OMS.BL.Models.Views;
+﻿using OMS.BL.Dtos.Views;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,6 +11,6 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all transactions grouped by type asynchronously.
         /// </summary>
         /// <returns>A collection of transactions grouped by type.</returns>
-        Task<IEnumerable<TransactionsByTypeModel>> GetAllTransactionsByTypeAsync();
+        Task<IEnumerable<TransactionsByTypeDto>> GetAllTransactionsByTypeAsync();
     }
 }

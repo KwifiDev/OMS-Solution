@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Models.Tables;
+using OMS.BL.Dtos.Tables;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -14,25 +14,25 @@ namespace OMS.BL.Services.Tables
             _repository = repository;
         }
 
-        public async Task<IEnumerable<DiscountModel>> GetAllDiscountsAsync()
+        public async Task<IEnumerable<DiscountDto>> GetAllDiscountsAsync()
         {
             IEnumerable<Discount> discounts = await _repository.GetAllAsync();
 
-            return discounts?.Select(d => new DiscountModel
+            return discounts?.Select(d => new DiscountDto
             {
                 DiscountId = d.DiscountId,
                 ServiceId = d.ServiceId,
                 ClientType = d.ClientType,
                 DiscountPercentage = d.DiscountPercentage
 
-            }) ?? Enumerable.Empty<DiscountModel>();
+            }) ?? Enumerable.Empty<DiscountDto>();
         }
 
-        public async Task<DiscountModel?> GetDiscountByIdAsync(int discountId)
+        public async Task<DiscountDto?> GetDiscountByIdAsync(int discountId)
         {
             Discount? discount = await _repository.GetByIdAsync(discountId);
 
-            return discount == null ? null : new DiscountModel
+            return discount == null ? null : new DiscountDto
             {
                 DiscountId = discount.DiscountId,
                 ServiceId = discount.ServiceId,
@@ -41,34 +41,34 @@ namespace OMS.BL.Services.Tables
             };
         }
 
-        public async Task<bool> AddDiscountAsync(DiscountModel model)
+        public async Task<bool> AddDiscountAsync(DiscountDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
             Discount discount = new Discount
             {
-                ServiceId = model.ServiceId,
-                ClientType = model.ClientType,
-                DiscountPercentage = model.DiscountPercentage
+                ServiceId = dto.ServiceId,
+                ClientType = dto.ClientType,
+                DiscountPercentage = dto.DiscountPercentage
             };
 
             bool success = await _repository.AddAsync(discount);
 
-            if (success) model.DiscountId = discount.DiscountId;
+            if (success) dto.DiscountId = discount.DiscountId;
 
             return success;
         }
 
-        public async Task<bool> UpdateDiscountAsync(DiscountModel model)
+        public async Task<bool> UpdateDiscountAsync(DiscountDto dto)
         {
-            if (model == null) return false;
+            if (dto == null) return false;
 
-            Discount? discount = await _repository.GetByIdAsync(model.DiscountId);
+            Discount? discount = await _repository.GetByIdAsync(dto.DiscountId);
 
             if (discount == null) return false;
 
-            discount.ClientType = model.ClientType;
-            discount.DiscountPercentage = model.DiscountPercentage;
+            discount.ClientType = dto.ClientType;
+            discount.DiscountPercentage = dto.DiscountPercentage;
 
             return await _repository.UpdateAsync(discount);
 

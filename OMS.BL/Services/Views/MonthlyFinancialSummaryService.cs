@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Views;
-using OMS.BL.Models.Views;
+using OMS.BL.Dtos.Views;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -14,17 +14,17 @@ namespace OMS.BL.Services.Views
             _repository = repository;
         }
 
-        public async Task<IEnumerable<MonthlyFinancialSummaryModel>> GetAllMonthlyFinancialSummariesAsync()
+        public async Task<IEnumerable<MonthlyFinancialSummaryDto>> GetAllMonthlyFinancialSummariesAsync()
         {
             IEnumerable<MonthlyFinancialSummary> monthlyFinancialSummary = await _repository.GetAllAsync();
 
-            return monthlyFinancialSummary?.Select(m => new MonthlyFinancialSummaryModel
+            return monthlyFinancialSummary?.Select(m => new MonthlyFinancialSummaryDto
             {
                 Year = m.Year,
                 Month = m.Month,
                 TotalRevenue = m.TotalRevenue
 
-            }) ?? Enumerable.Empty<MonthlyFinancialSummaryModel>();
+            }) ?? Enumerable.Empty<MonthlyFinancialSummaryDto>();
         }
 
     }

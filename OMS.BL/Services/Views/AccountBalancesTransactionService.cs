@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Views;
-using OMS.BL.Models.Views;
+using OMS.BL.Dtos.Views;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Views
             _repository = repository;
         }
 
-        public async Task<IEnumerable<AccountBalancesTransactionModel>> GetAllAccountsBalancesTransactionsAsync()
+        public async Task<IEnumerable<AccountBalancesTransactionDto>> GetAllAccountsBalancesTransactionsAsync()
         {
             IEnumerable<AccountBalancesTransaction> accountBalancesTransaction = await _repository.GetAllAsync();
 
-            return accountBalancesTransaction?.Select(a => new AccountBalancesTransactionModel
+            return accountBalancesTransaction?.Select(a => new AccountBalancesTransactionDto
             {
                 AccountId = a.AccountId,
                 ClientName = a.ClientName,
@@ -27,14 +27,14 @@ namespace OMS.BL.Services.Views
                 TotalTransactions = a.TotalTransactions,
                 TotalTransactionAmount = a.TotalTransactionAmount
 
-            }) ?? Enumerable.Empty<AccountBalancesTransactionModel>();
+            }) ?? Enumerable.Empty<AccountBalancesTransactionDto>();
         }
 
-        public async Task<AccountBalancesTransactionModel?> GetAccountBalancesTransactionByIdAsync(int accountId)
+        public async Task<AccountBalancesTransactionDto?> GetAccountBalancesTransactionByIdAsync(int accountId)
         {
             AccountBalancesTransaction? account = await _repository.GetAccountBalancesTransactionByIdAsync(accountId);
 
-            return account == null ? null : new AccountBalancesTransactionModel
+            return account == null ? null : new AccountBalancesTransactionDto
             {
                 AccountId = account.AccountId,
                 ClientName = account.ClientName,

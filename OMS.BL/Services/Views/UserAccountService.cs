@@ -1,5 +1,5 @@
 ﻿using OMS.BL.IServices.Views;
-using OMS.BL.Models.Views;
+using OMS.BL.Dtos.Views;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -14,11 +14,11 @@ namespace OMS.BL.Services.Views
             _repository = repository;
         }
 
-        public async Task<IEnumerable<UserAccountModel>> GetAllUsersAccountsAsync()
+        public async Task<IEnumerable<UserAccountDto>> GetAllUsersAccountsAsync()
         {
             IEnumerable<UserAccount> userAccount = await _repository.GetAllAsync();
 
-            return userAccount?.Select(a => new UserAccountModel
+            return userAccount?.Select(a => new UserAccountDto
             {
                AccountId = a.AccountId,
                UserAccount1 = a.UserAccount1,
@@ -26,14 +26,14 @@ namespace OMS.BL.Services.Views
                ClientType = a.ClientType,
                ClientBalance = a.ClientBalance
 
-            }) ?? Enumerable.Empty<UserAccountModel>();
+            }) ?? Enumerable.Empty<UserAccountDto>();
         }
 
-        public async Task<UserAccountModel?> GetUserAccountByIdAsync(int accountId)
+        public async Task<UserAccountDto?> GetUserAccountByIdAsync(int accountId)
         {
             UserAccount? userAccount = await _repository.GetUserAccountByIdAsync(accountId);
 
-            return userAccount == null ? null : new UserAccountModel
+            return userAccount == null ? null : new UserAccountDto
             {
                 AccountId = userAccount.AccountId,
                 UserAccount1 = userAccount.UserAccount1,
