@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.Context;
+using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.DA.Repositories.EntityRepos
 {
@@ -45,7 +45,7 @@ namespace OMS.DA.Repositories.EntityRepos
             T? entity = await _dbSet.FindAsync(id);
 
             if (entity == null) return false;
-            
+
             _dbSet.Remove(entity);
 
             int result = await _context.SaveChangesAsync();

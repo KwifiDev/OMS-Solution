@@ -1,10 +1,10 @@
-﻿using OMS.DA.IRepositories.IEntityRepos;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OMS.DA.Context;
 using OMS.DA.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Data.SqlClient;
-using System.Data;
 using OMS.DA.Enums;
+using OMS.DA.IRepositories.IEntityRepos;
+using System.Data;
 
 namespace OMS.DA.Repositories.EntityRepos
 {

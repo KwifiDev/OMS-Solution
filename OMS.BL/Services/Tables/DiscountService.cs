@@ -2,11 +2,6 @@
 using OMS.BL.Models.Tables;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OMS.BL.Services.Tables
 {

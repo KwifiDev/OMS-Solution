@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.Context;
-using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.Repositories.ViewRepos;
 using OMS.DA.Views;
