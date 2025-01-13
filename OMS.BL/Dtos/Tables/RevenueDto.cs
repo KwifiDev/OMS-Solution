@@ -1,7 +1,10 @@
-﻿namespace OMS.BL.Dtos.Tables;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OMS.BL.Dtos.Tables;
 
 public partial class RevenueDto
 {
+    [Key]
     public int RevenueId { get; internal set; }
 
     public required decimal Amount { get; set; }

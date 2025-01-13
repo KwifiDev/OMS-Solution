@@ -1,9 +1,11 @@
 ﻿using OMS.DA.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Dtos.Tables;
 
 public partial class DiscountDto
 {
+    [Key]
     public int DiscountId { get; internal set; }
 
     public required int ServiceId { get; set; }

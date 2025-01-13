@@ -1,7 +1,10 @@
-﻿namespace OMS.BL.Dtos.Tables;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OMS.BL.Dtos.Tables;
 
 public partial class PaymentDto
 {
+    [Key]
     public int PaymentId { get; internal set; }
 
     public int AccountId { get; internal set; }

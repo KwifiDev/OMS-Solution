@@ -1,8 +1,11 @@
-﻿namespace OMS.BL.Dtos.Tables;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OMS.BL.Dtos.Tables;
 
 
 public partial class ServiceDto
 {
+    [Key]
     public int ServiceId { get; internal set; }
 
     public required string Name { get; set; }

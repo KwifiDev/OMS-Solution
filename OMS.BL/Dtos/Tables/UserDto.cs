@@ -1,7 +1,10 @@
-﻿namespace OMS.BL.Dtos.Tables;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OMS.BL.Dtos.Tables;
 
 public partial class UserDto
 {
+    [Key]
     public int UserId { get; internal set; }
 
     public required int PersonId { get; set; }

@@ -1,9 +1,11 @@
 ﻿using OMS.DA.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Dtos.Tables;
 
 public partial class ClientDto
 {
+    [Key]
     public int ClientId { get; internal set; }
 
     public required int PersonId { get; set; }

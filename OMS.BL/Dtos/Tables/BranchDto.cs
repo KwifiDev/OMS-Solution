@@ -1,7 +1,10 @@
-﻿namespace OMS.BL.Dtos.Tables;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OMS.BL.Dtos.Tables;
 
 public partial class BranchDto
 {
+    [Key]
     public int BranchId { get; internal set; }
 
     public required string Name { get; set; }

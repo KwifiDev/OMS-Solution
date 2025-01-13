@@ -1,9 +1,11 @@
 ﻿using OMS.DA.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Dtos.Tables;
 
 public partial class TransactionDto
 {
+    [Key]
     public int TransactionId { get; internal set; }
 
     public int AccountId { get; internal set; }

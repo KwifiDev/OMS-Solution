@@ -1,8 +1,11 @@
-﻿namespace OMS.BL.Dtos.Tables;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OMS.BL.Dtos.Tables;
 
 
 public partial class AccountDto
 {
+    [Key]
     public int AccountId { get; internal set; }
 
     public required int ClientId { get; set; }
