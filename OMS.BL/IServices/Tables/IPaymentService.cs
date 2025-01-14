@@ -11,13 +11,13 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all payments asynchronously.
         /// </summary>
         /// <returns>A collection of payment models.</returns>
-        Task<IEnumerable<PaymentDto>> GetAllPaymentsAsync();
+        Task<IEnumerable<PaymentDto>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a payment by its ID asynchronously.
         /// </summary>
         /// <param name="paymentId">The ID of the payment.</param>
         /// <returns>The payment model if found, otherwise null.</returns>
-        Task<PaymentDto?> GetPaymentByIdAsync(int paymentId);
+        Task<PaymentDto?> GetByIdAsync(int paymentId);
     }
 }

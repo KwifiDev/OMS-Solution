@@ -1,20 +1,25 @@
-﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Dtos.Tables;
+using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class DiscountService : IDiscountService
+    public class DiscountService : GenericService<Discount, DiscountDto>, IDiscountService
     {
-        private readonly IDiscountRepository _repository;
+        private readonly IDiscountRepository _discountRepository;
 
-        public DiscountService(IDiscountRepository repository)
+        public DiscountService(IGenericRepository<Discount> repo,
+                               IMapperService mapper,
+                               IDiscountRepository repository) : base(repo, mapper)
         {
-            _repository = repository;
+            _discountRepository = repository;
         }
 
-        public async Task<IEnumerable<DiscountDto>> GetAllDiscountsAsync()
+
+        /*
+           public async Task<IEnumerable<DiscountDto>> GetAllDiscountsAsync()
         {
             IEnumerable<Discount> discounts = await _repository.GetAllAsync();
 
@@ -80,6 +85,7 @@ namespace OMS.BL.Services.Tables
 
             return await _repository.DeleteAsync(discountId);
         }
+         */
 
     }
 }

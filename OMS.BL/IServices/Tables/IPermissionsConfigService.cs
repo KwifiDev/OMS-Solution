@@ -11,13 +11,13 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all permissions configurations asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of permissions configurations.</returns>
-        Task<IEnumerable<PermissionsConfigDto>> GetAllPermissionsConfigsAsync();
+        Task<IEnumerable<PermissionsConfigDto>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a permissions configuration by its ID asynchronously.
         /// </summary>
         /// <param name="permissionsConfigId">The ID of the permissions configuration to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the permissions configuration, or null if not found.</returns>
-        Task<PermissionsConfigDto?> GetPermissionsConfigByIdAsync(int permissionsConfigId);
+        Task<PermissionsConfigDto?> GetByIdAsync(int permissionsConfigId);
     }
 }

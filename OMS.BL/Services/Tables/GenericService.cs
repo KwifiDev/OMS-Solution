@@ -1,23 +1,23 @@
-﻿using AutoMapper;
-using OMS.BL.IServices.Tables;
+﻿using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.IRepositories.IEntityRepos;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace OMS.BL.Services.Tables
 {
-    public class GenericService<TDto, TEntity> : IGenericService<TDto> where TEntity : class
+    public class GenericService<TEntity, TDto> : IGenericService<TDto> where TEntity : class
     {
         private readonly IGenericRepository<TEntity> _repository;
-        private readonly IMapper _mapper;
+        private readonly IMapperService _mapperService;
 
-        public GenericService(IGenericRepository<TEntity> repository, IMapper mapper)
+        public GenericService(IGenericRepository<TEntity> repository, IMapperService mapper)
         {
             _repository = repository;
-            _mapper = mapper;
+            _mapperService = mapper;
         }
 
-        public async Task<IEnumerable<TDto>> GetAllAsync()
+        public virtual async Task<IEnumerable<TDto>> GetAllAsync()
         {
             IEnumerable<TEntity> entities = await _repository.GetAllAsync();
 
@@ -26,21 +26,21 @@ namespace OMS.BL.Services.Tables
                 return Enumerable.Empty<TDto>();
             }
 
-            return _mapper.Map<IEnumerable<TDto>>(entities);
+            return _mapperService.Map<TEntity, TDto>(entities);
         }
 
-        public async Task<TDto?> GetByIdAsync(int id)
+        public virtual async Task<TDto?> GetByIdAsync(int id)
         {
             TEntity? entity = await _repository.GetByIdAsync(id);
 
-            return entity == null ? default(TDto) : _mapper.Map<TDto>(entity);
+            return entity == null ? default(TDto) : _mapperService.Map<TEntity, TDto>(entity);
         }
 
-        public async Task<bool> AddAsync(TDto dto)
+        public virtual async Task<bool> AddAsync(TDto dto)
         {
             if (dto == null) return false;
 
-            TEntity entity = _mapper.Map<TEntity>(dto);
+            TEntity entity = _mapperService.Map<TDto, TEntity>(dto);
 
             bool success = await _repository.AddAsync(entity);
 
@@ -49,7 +49,7 @@ namespace OMS.BL.Services.Tables
             return success;
         }
 
-        public async Task<bool> UpdateAsync(TDto dto)
+        public virtual async Task<bool> UpdateAsync(TDto dto)
         {
             int primaryKey = GetPrimaryKey(dto);
 
@@ -57,12 +57,12 @@ namespace OMS.BL.Services.Tables
 
             if (existingEntity == null) return false;
 
-            _mapper.Map(dto, existingEntity);
+            _mapperService.Map(dto, existingEntity);
 
             return await _repository.UpdateAsync(existingEntity);
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public virtual async Task<bool> DeleteAsync(int id)
         {
             if (id <= 0) return false;
 
@@ -75,33 +75,32 @@ namespace OMS.BL.Services.Tables
         {
             if (dto == null) return -1;
 
-            var keyProperty = typeof(TDto).GetProperties()
-                .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)))
-                ?? throw new ArgumentException("No primary key property found");
+            PropertyInfo? keyProperty = typeof(TDto).GetProperties()
+                .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
 
-            var primaryKey = keyProperty.GetValue(dto);
+            if (keyProperty == null) throw new ArgumentException("No primary key property found");
 
-            if (primaryKey == null) return -1;
+            object? primaryKey = keyProperty.GetValue(dto);
 
-            return Convert.ToInt32(primaryKey);
+            return primaryKey == null ? -1 : Convert.ToInt32(primaryKey);
         }
+
         private void SetNewPrimaryKey(TDto dto, TEntity entity)
         {
-            PropertyInfo? keyProperty = typeof(TDto).GetProperties()
-                    .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
+            PropertyInfo? dtoKeyProperty = typeof(TDto).GetProperties()
+                .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
 
-            if (keyProperty != null)
-            {
-                PropertyInfo? entityKeyProperty = typeof(TEntity).GetProperties()
-                    .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
+            if (dtoKeyProperty == null) return;
 
-                if (entityKeyProperty != null)
-                {
-                    object? newId = entityKeyProperty.GetValue(entity);
-                    keyProperty.SetValue(dto, newId);
-                }
-            }
+            PropertyInfo? entityKeyProperty = typeof(TEntity).GetProperties()
+                .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
+
+            if (entityKeyProperty == null) return;
+
+            object? newId = entityKeyProperty.GetValue(entity);
+            dtoKeyProperty.SetValue(dto, newId);
         }
+
 
     }
 }

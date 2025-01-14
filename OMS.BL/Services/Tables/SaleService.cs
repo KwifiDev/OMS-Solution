@@ -1,22 +1,28 @@
-﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Dtos.Tables;
+using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class SaleService : ISaleService
+    public class SaleService : GenericService<Sale, SaleDto>, ISaleService
     {
-        private readonly ISaleRepository _repository;
+        private readonly ISaleRepository _saleRepository;
 
-        public SaleService(ISaleRepository repository)
+        public SaleService(IGenericRepository<Sale> repo,
+                           IMapperService mapper,
+                           ISaleRepository repository) : base(repo, mapper)
         {
-            _repository = repository;
+            _saleRepository = repository;
         }
 
+
+        /*
+         
         public async Task<IEnumerable<SaleDto>> GetAllSalesAsync()
         {
-            IEnumerable<Sale> sales = await _repository.GetAllAsync();
+            IEnumerable<Sale> sales = await _saleRepository.GetAllAsync();
 
             return sales?.Select(s => new SaleDto
             {
@@ -39,7 +45,7 @@ namespace OMS.BL.Services.Tables
 
         public async Task<SaleDto?> GetSaleByIdAsync(int saleId)
         {
-            Sale? sale = await _repository.GetByIdAsync(saleId);
+            Sale? sale = await _saleRepository.GetByIdAsync(saleId);
 
             return sale == null ? null : new SaleDto
             {
@@ -74,7 +80,7 @@ namespace OMS.BL.Services.Tables
                 CreatedByUserId = dto.CreatedByUserId
             };
 
-            bool success = await _repository.AddAsync(sale);
+            bool success = await _saleRepository.AddAsync(sale);
 
             if (success) dto.SaleId = sale.SaleId;
 
@@ -85,7 +91,7 @@ namespace OMS.BL.Services.Tables
         {
             if (dto == null) return false;
 
-            Sale? sale = await _repository.GetByIdAsync(dto.SaleId);
+            Sale? sale = await _saleRepository.GetByIdAsync(dto.SaleId);
 
             if (sale == null) return false;
 
@@ -93,14 +99,15 @@ namespace OMS.BL.Services.Tables
             sale.Notes = dto.Notes;
             sale.Status = dto.Status;
 
-            return await _repository.UpdateAsync(sale);
+            return await _saleRepository.UpdateAsync(sale);
         }
 
         public async Task<bool> DeleteSaleAsync(int saleId)
         {
             if (saleId <= 0) return false;
 
-            return await _repository.DeleteAsync(saleId);
+            return await _saleRepository.DeleteAsync(saleId);
         }
+         */
     }
 }

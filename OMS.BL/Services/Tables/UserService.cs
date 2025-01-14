@@ -1,22 +1,28 @@
-﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Dtos.Tables;
+using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class UserService : IUserService
+    public class UserService : GenericService<User, UserDto>, IUserService
     {
-        private readonly IUserRepository _repository;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(IUserRepository repository)
+        public UserService(IGenericRepository<User> repo,
+                           IMapperService mapper,
+                           IUserRepository repository) : base(repo, mapper)
         {
-            _repository = repository;
+            _userRepository = repository;
         }
 
+
+        /*
+         
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
-            IEnumerable<User> Users = await _repository.GetAllAsync();
+            IEnumerable<User> Users = await _userRepository.GetAllAsync();
 
             return Users?.Select(u => new UserDto
             {
@@ -33,7 +39,7 @@ namespace OMS.BL.Services.Tables
 
         public async Task<UserDto?> GetUserByIdAsync(int userId)
         {
-            User? user = await _repository.GetByIdAsync(userId);
+            User? user = await _userRepository.GetByIdAsync(userId);
 
             return user == null ? null : new UserDto
             {
@@ -61,7 +67,7 @@ namespace OMS.BL.Services.Tables
                 IsActive = dto.IsActive
             };
 
-            bool success = await _repository.AddAsync(user);
+            bool success = await _userRepository.AddAsync(user);
 
             if (success) dto.UserId = user.UserId;
 
@@ -72,7 +78,7 @@ namespace OMS.BL.Services.Tables
         {
             if (dto == null) return false;
 
-            User? user = await _repository.GetByIdAsync(dto.UserId);
+            User? user = await _userRepository.GetByIdAsync(dto.UserId);
 
             if (user == null) return false;
 
@@ -82,14 +88,15 @@ namespace OMS.BL.Services.Tables
             user.Permissions = dto.Permissions;
             user.IsActive = dto.IsActive;
 
-            return await _repository.UpdateAsync(user);
+            return await _userRepository.UpdateAsync(user);
         }
 
         public async Task<bool> DeleteUserAsync(int userId)
         {
             if (userId <= 0) return false;
 
-            return await _repository.DeleteAsync(userId);
+            return await _userRepository.DeleteAsync(userId);
         }
+         */
     }
 }

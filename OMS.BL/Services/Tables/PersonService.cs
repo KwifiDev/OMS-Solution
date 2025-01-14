@@ -1,22 +1,28 @@
-﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Dtos.Tables;
+using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class PersonService : IPersonService
+    public class PersonService : GenericService<Person, PersonDto>, IPersonService
     {
-        private readonly IPersonRepository _repository;
+        private readonly IPersonRepository _personRepository;
 
-        public PersonService(IPersonRepository repository)
+        public PersonService(IGenericRepository<Person> repo,
+                             IMapperService mapper,
+                             IPersonRepository repository) : base(repo, mapper)
         {
-            _repository = repository;
+            _personRepository = repository;
         }
 
-        public async Task<IEnumerable<PersonDto>> GetAllPeopleAsync()
+
+
+        /*
+                 public async Task<IEnumerable<PersonDto>> GetAllPeopleAsync()
         {
-            IEnumerable<Person> people = await _repository.GetAllAsync();
+            IEnumerable<Person> people = await _personRepository.GetAllAsync();
 
             return people?.Select(p => new PersonDto
             {
@@ -31,7 +37,7 @@ namespace OMS.BL.Services.Tables
 
         public async Task<PersonDto?> GetPersonByIdAsync(int personId)
         {
-            Person? person = await _repository.GetByIdAsync(personId);
+            Person? person = await _personRepository.GetByIdAsync(personId);
 
             return person == null ? null : new PersonDto
             {
@@ -55,7 +61,7 @@ namespace OMS.BL.Services.Tables
                 Phone = dto.Phone,
             };
 
-            bool success = await _repository.AddAsync(person);
+            bool success = await _personRepository.AddAsync(person);
 
             if (success) dto.PersonId = person.PersonId;
 
@@ -66,7 +72,7 @@ namespace OMS.BL.Services.Tables
         {
             if (dto == null) return false;
 
-            Person? person = await _repository.GetByIdAsync(dto.PersonId);
+            Person? person = await _personRepository.GetByIdAsync(dto.PersonId);
 
             if (person == null) return false;
 
@@ -75,14 +81,15 @@ namespace OMS.BL.Services.Tables
             person.Gender = dto.Gender;
             person.Phone = dto.Phone;
 
-            return await _repository.UpdateAsync(person);
+            return await _personRepository.UpdateAsync(person);
         }
 
         public async Task<bool> DeletePersonAsync(int personId)
         {
             if (personId <= 0) return false;
 
-            return await _repository.DeleteAsync(personId);
+            return await _personRepository.DeleteAsync(personId);
         }
+         */
     }
 }

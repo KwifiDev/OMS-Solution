@@ -1,22 +1,34 @@
-﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Dtos.Tables;
+using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class TransactionService : ITransactionService
+    public class TransactionService : GenericService<Transaction, TransactionDto>, ITransactionService
     {
-        private readonly ITransactionRepository _repository;
+        private readonly ITransactionRepository _transactionRepository;
 
-        public TransactionService(ITransactionRepository repository)
+        public TransactionService(IGenericRepository<Transaction> repo,
+                                  IMapperService mapper,
+                                  ITransactionRepository repository) : base(repo, mapper)
         {
-            _repository = repository;
+            _transactionRepository = repository;
         }
 
+        public override Task<bool> AddAsync(TransactionDto dto)
+           => throw new NotSupportedException("Add operation is not supported for TransactionService.");
+        public override Task<bool> UpdateAsync(TransactionDto dto)
+            => throw new NotSupportedException("Update operation is not supported for TransactionService.");
+        public override Task<bool> DeleteAsync(int id)
+            => throw new NotSupportedException("Delete operation is not supported for TransactionService.");
+
+        /*
+         
         public async Task<IEnumerable<TransactionDto>> GetAllTransactionsAsync()
         {
-            IEnumerable<Transaction> transactions = await _repository.GetAllAsync();
+            IEnumerable<Transaction> transactions = await _transactionRepository.GetAllAsync();
 
             return transactions?.Select(t => new TransactionDto
             {
@@ -33,7 +45,7 @@ namespace OMS.BL.Services.Tables
 
         public async Task<TransactionDto?> GetTransactionByIdAsync(int transactionId)
         {
-            Transaction? transaction = await _repository.GetByIdAsync(transactionId);
+            Transaction? transaction = await _transactionRepository.GetByIdAsync(transactionId);
 
             return transaction == null ? null : new TransactionDto
             {
@@ -46,6 +58,7 @@ namespace OMS.BL.Services.Tables
                 CreatedByUserId = transaction.CreatedByUserId
             };
         }
+         */
 
     }
 }

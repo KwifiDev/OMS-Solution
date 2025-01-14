@@ -1,22 +1,38 @@
-﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Dtos.StoredProcedureParams;
+﻿using OMS.BL.Dtos.StoredProcedureParams;
 using OMS.BL.Dtos.Tables;
+using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.Enums;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class ClientService : IClientService
+    public class ClientService : GenericService<Client, ClientDto>, IClientService
     {
-        private readonly IClientRepository _repository;
+        private readonly IClientRepository _clientRepository;
 
-        public ClientService(IClientRepository repository)
+        public ClientService(IGenericRepository<Client> repo,
+                             IMapperService mapper,
+                             IClientRepository repository) : base(repo, mapper)
         {
-            _repository = repository;
+            _clientRepository = repository;
         }
 
-        public async Task<IEnumerable<ClientDto>> GetAllClientsAsync()
+        public async Task<bool> PayAllDebtsById(PayDebtsDto dto)
+        {
+            dto.PayDebtStatus = await _clientRepository.PayAllDebtsByIdAsync
+                (
+                    dto.ClientId,
+                    dto.Notes,
+                    dto.CreatedByUserId
+                );
+
+            return dto.PayDebtStatus == EnPayDebtStatus.Success;
+        }
+
+        /*
+         public async Task<IEnumerable<ClientDto>> GetAllClientsAsync()
         {
             IEnumerable<Client> clients = await _repository.GetAllAsync();
 
@@ -79,17 +95,6 @@ namespace OMS.BL.Services.Tables
 
             return await _repository.DeleteAsync(clientId);
         }
-
-        public async Task<bool> PayAllDebtsById(PayDebtsDto dto)
-        {
-            dto.PayDebtStatus = await _repository.PayAllDebtsByIdAsync
-                (
-                    dto.ClientId,
-                    dto.Notes,
-                    dto.CreatedByUserId
-                );
-
-            return dto.PayDebtStatus == EnPayDebtStatus.Success;
-        }
+         */
     }
 }

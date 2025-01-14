@@ -1,22 +1,28 @@
-﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Dtos.Tables;
+using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class RevenueService : IRevenueService
+    public class RevenueService : GenericService<Revenue, RevenueDto>, IRevenueService
     {
-        private readonly IRevenueRepository _repository;
+        private readonly IRevenueRepository _revenueRepository;
 
-        public RevenueService(IRevenueRepository repository)
+        public RevenueService(IGenericRepository<Revenue> repo,
+                              IMapperService mapper,
+                              IRevenueRepository repository) : base(repo, mapper)
         {
-            _repository = repository;
+            _revenueRepository = repository;
         }
 
+
+        /*
+         
         public async Task<IEnumerable<RevenueDto>> GetAllRevenuesAsync()
         {
-            IEnumerable<Revenue> revenues = await _repository.GetAllAsync();
+            IEnumerable<Revenue> revenues = await _revenueRepository.GetAllAsync();
 
             return revenues?.Select(r => new RevenueDto
             {
@@ -30,7 +36,7 @@ namespace OMS.BL.Services.Tables
 
         public async Task<RevenueDto?> GetRevenueByIdAsync(int revenueId)
         {
-            Revenue? revenue = await _repository.GetByIdAsync(revenueId);
+            Revenue? revenue = await _revenueRepository.GetByIdAsync(revenueId);
 
             return revenue == null ? null : new RevenueDto
             {
@@ -51,7 +57,7 @@ namespace OMS.BL.Services.Tables
                 Notes = dto.Notes
             };
 
-            bool success = await _repository.AddAsync(revenue);
+            bool success = await _revenueRepository.AddAsync(revenue);
 
             if (success) dto.RevenueId = revenue.RevenueId;
 
@@ -62,21 +68,22 @@ namespace OMS.BL.Services.Tables
         {
             if (dto == null) return false;
 
-            Revenue? revenue = await _repository.GetByIdAsync(dto.RevenueId);
+            Revenue? revenue = await _revenueRepository.GetByIdAsync(dto.RevenueId);
 
             if (revenue == null) return false;
 
             revenue.Amount = dto.Amount;
             revenue.Notes = dto.Notes;
 
-            return await _repository.UpdateAsync(revenue);
+            return await _revenueRepository.UpdateAsync(revenue);
         }
 
         public async Task<bool> DeleteRevenueAsync(int revenueId)
         {
             if (revenueId <= 0) return false;
 
-            return await _repository.DeleteAsync(revenueId);
+            return await _revenueRepository.DeleteAsync(revenueId);
         }
+         */
     }
 }

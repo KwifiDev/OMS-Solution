@@ -1,22 +1,26 @@
-﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Dtos.Tables;
+using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class ServiceService : IServiceService
+    public class ServiceService : GenericService<Service, ServiceDto>, IServiceService
     {
-        private readonly IServiceRepository _repository;
+        private readonly IServiceRepository _serviceRepository;
 
-        public ServiceService(IServiceRepository repository)
+        public ServiceService(IGenericRepository<Service> repo,
+                              IMapperService mapper,
+                              IServiceRepository repository) : base(repo, mapper)
         {
-            _repository = repository;
+            _serviceRepository = repository;
         }
 
-        public async Task<IEnumerable<ServiceDto>> GetAllServicesAsync()
+        /*
+                 public async Task<IEnumerable<ServiceDto>> GetAllServicesAsync()
         {
-            IEnumerable<Service> services = await _repository.GetAllAsync();
+            IEnumerable<Service> services = await _serviceRepository.GetAllAsync();
 
             return services?.Select(s => new ServiceDto
             {
@@ -30,7 +34,7 @@ namespace OMS.BL.Services.Tables
 
         public async Task<ServiceDto?> GetServiceByIdAsync(int serviceId)
         {
-            Service? service = await _repository.GetByIdAsync(serviceId);
+            Service? service = await _serviceRepository.GetByIdAsync(serviceId);
 
             return service == null ? null : new ServiceDto
             {
@@ -52,7 +56,7 @@ namespace OMS.BL.Services.Tables
                 Price = dto.Price
             };
 
-            bool success = await _repository.AddAsync(service);
+            bool success = await _serviceRepository.AddAsync(service);
 
             if (success) dto.ServiceId = service.ServiceId;
 
@@ -63,7 +67,7 @@ namespace OMS.BL.Services.Tables
         {
             if (dto == null) return false;
 
-            Service? service = await _repository.GetByIdAsync(dto.ServiceId);
+            Service? service = await _serviceRepository.GetByIdAsync(dto.ServiceId);
 
             if (service == null) return false;
 
@@ -71,7 +75,7 @@ namespace OMS.BL.Services.Tables
             service.Description = dto.Description;
             service.Price = dto.Price;
 
-            return await _repository.UpdateAsync(service);
+            return await _serviceRepository.UpdateAsync(service);
 
         }
 
@@ -79,8 +83,9 @@ namespace OMS.BL.Services.Tables
         {
             if (serviceId <= 0) return false;
 
-            return await _repository.DeleteAsync(serviceId);
+            return await _serviceRepository.DeleteAsync(serviceId);
         }
+         */
 
     }
 }

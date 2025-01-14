@@ -8,44 +8,31 @@ namespace OMS.BL.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Account, AccountDto>();
-            CreateMap<AccountDto, Account>();
+            CreateMap<Account, AccountDto>().ReverseMap();
 
-            CreateMap<Branch, BranchDto>();
-            CreateMap<BranchDto, Branch>();
+            CreateMap<Branch, BranchDto>().ReverseMap();
 
-            CreateMap<Client, ClientDto>();
-            CreateMap<ClientDto, Client>();
+            CreateMap<Client, ClientDto>().ReverseMap();
 
-            CreateMap<Debt, DebtDto>();
-            CreateMap<DebtDto, Debt>();
+            CreateMap<Debt, DebtDto>().ReverseMap();
 
-            CreateMap<Discount, DiscountDto>();
-            CreateMap<DiscountDto, Discount>();
+            CreateMap<Discount, DiscountDto>().ReverseMap();
 
-            CreateMap<Payment, PaymentDto>();
-            CreateMap<PaymentDto, Payment>();
+            CreateMap<Payment, PaymentDto>().ReverseMap();
 
-            CreateMap<PermissionsConfig, PermissionsConfigDto>();
-            CreateMap<PermissionsConfigDto, PermissionsConfig>();
+            CreateMap<PermissionsConfig, PermissionsConfigDto>().ReverseMap();
 
-            CreateMap<Person, PersonDto>();
-            CreateMap<PersonDto, Person>();
+            CreateMap<Person, PersonDto>().ReverseMap();
 
-            CreateMap<Revenue, RevenueDto>();
-            CreateMap<RevenueDto, Revenue>();
+            CreateMap<Revenue, RevenueDto>().ReverseMap();
 
-            CreateMap<Sale, SaleDto>();
-            CreateMap<SaleDto, Sale>();
+            CreateMap<Sale, SaleDto>().ReverseMap();
 
-            CreateMap<Service, ServiceDto>();
-            CreateMap<ServiceDto, Service>();
+            CreateMap<Service, ServiceDto>().ReverseMap();
 
-            CreateMap<Transaction, TransactionDto>();
-            CreateMap<TransactionDto, Transaction>();
+            CreateMap<Transaction, TransactionDto>().ReverseMap();
 
-            CreateMap<User, UserDto>();
-            CreateMap<UserDto, User>();
+            CreateMap<User, UserDto>().ReverseMap();
 
         }
     }

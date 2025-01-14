@@ -1,22 +1,34 @@
-﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Dtos.Tables;
+using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
+using OMS.DA.Repositories.EntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class PaymentService : IPaymentService
+    public class PaymentService : GenericService<Payment, PaymentDto>, IPaymentService
     {
-        private readonly IPaymentRepository _repository;
+        private readonly IPaymentRepository _paymentRepository;
 
-        public PaymentService(IPaymentRepository repository)
+        public PaymentService(IGenericRepository<Payment> repo,
+                              IMapperService mapper,
+                              IPaymentRepository repository) : base(repo, mapper)
         {
-            _repository = repository;
+            _paymentRepository = repository;
         }
 
-        public async Task<IEnumerable<PaymentDto>> GetAllPaymentsAsync()
+        public override Task<bool> AddAsync(PaymentDto dto)
+            => throw new NotSupportedException("Add operation is not supported for PaymentService.");
+        public override Task<bool> UpdateAsync(PaymentDto dto)
+            => throw new NotSupportedException("Update operation is not supported for PaymentService.");
+        public override Task<bool> DeleteAsync(int id)
+            => throw new NotSupportedException("Delete operation is not supported for PaymentService.");
+
+        /*
+          public async Task<IEnumerable<PaymentDto>> GetAllPaymentsAsync()
         {
-            IEnumerable<Payment> payments = await _repository.GetAllAsync();
+            IEnumerable<Payment> payments = await _paymentRepository.GetAllAsync();
 
             return payments?.Select(p => new PaymentDto
             {
@@ -32,7 +44,7 @@ namespace OMS.BL.Services.Tables
 
         public async Task<PaymentDto?> GetPaymentByIdAsync(int paymentId)
         {
-            Payment? payment = await _repository.GetByIdAsync(paymentId);
+            Payment? payment = await _paymentRepository.GetByIdAsync(paymentId);
 
             return payment == null ? null : new PaymentDto
             {
@@ -43,7 +55,8 @@ namespace OMS.BL.Services.Tables
                 CreatedAt = payment.CreatedAt,
                 CreatedByUserId = payment.CreatedByUserId
             };
-        }
+        } 
+         */
 
     }
 }

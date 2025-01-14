@@ -1,20 +1,26 @@
-﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Dtos.Tables;
+using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class BranchService : IBranchService
+    public class BranchService : GenericService<Branch, BranchDto>, IBranchService
     {
-        private readonly IBranchRepository _repository;
+        private readonly IBranchRepository _branchRepository;
 
-        public BranchService(IBranchRepository repository)
+        public BranchService(IGenericRepository<Branch> repo,
+                             IMapperService mapper,
+                             IBranchRepository branchRepository) : base(repo, mapper)
         {
-            _repository = repository;
+            _branchRepository = branchRepository;
         }
 
-        public async Task<IEnumerable<BranchDto>> GetAllBranchesAsync()
+
+
+        /*
+         public async Task<IEnumerable<BranchDto>> GetAllBranchesAsync()
         {
             IEnumerable<Branch> branches = await _repository.GetAllAsync();
 
@@ -77,5 +83,7 @@ namespace OMS.BL.Services.Tables
 
             return await _repository.DeleteAsync(branchId);
         }
+         */
+
     }
 }

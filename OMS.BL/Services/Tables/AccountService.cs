@@ -1,22 +1,53 @@
-﻿using OMS.BL.IServices.Tables;
-using OMS.BL.Dtos.StoredProcedureParams;
+﻿using OMS.BL.Dtos.StoredProcedureParams;
 using OMS.BL.Dtos.Tables;
+using OMS.BL.IServices.Tables;
+using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.Enums;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class AccountService : IAccountService
+    public class AccountService : GenericService<Account, AccountDto>, IAccountService
     {
-        private readonly IAccountRepository _repository;
+        private readonly IAccountRepository _accountRepository;
 
-        public AccountService(IAccountRepository repository)
+        public AccountService(IGenericRepository<Account> repo,
+                              IMapperService mapper,
+                              IAccountRepository accountRepository) : base(repo, mapper)
         {
-            _repository = repository;
+            _accountRepository = accountRepository;
         }
 
-        public async Task<IEnumerable<AccountDto>> GetAllAccountsAsync()
+        public async Task<bool> DepositIntoAccountAsync(AccountTransactionDto dto)
+        {
+            dto.TransactionStatus = await _accountRepository.DepositAccountAsync
+               (
+                   accountId: dto.AccountId,
+                   amount: dto.Amount,
+                   notes: dto.Notes,
+                   createdByUserId: dto.CreatedByUserId
+               );
+
+            return dto.TransactionStatus == EnAccountTransactionStatus.Success;
+        }
+
+        public async Task<bool> WithdrawFromAccountAsync(AccountTransactionDto dto)
+        {
+            dto.TransactionStatus = await _accountRepository.WithdrawAccountAsync
+                (
+                    accountId: dto.AccountId,
+                    amount: dto.Amount,
+                    notes: dto.Notes,
+                    createdByUserId: dto.CreatedByUserId
+                );
+
+            return dto.TransactionStatus == EnAccountTransactionStatus.Success;
+        }
+
+        /*
+         
+          public async Task<IEnumerable<AccountDto>> GetAllAccountsAsync()
         {
             IEnumerable<Account> accounts = await _repository.GetAllAsync();
 
@@ -80,31 +111,8 @@ namespace OMS.BL.Services.Tables
 
             return await _repository.DeleteAsync(accountId);
         }
-
-        public async Task<bool> DepositIntoAccountAsync(AccountTransactionDto dto)
-        {
-            dto.TransactionStatus = await _repository.DepositAccountAsync
-               (
-                   accountId: dto.AccountId,
-                   amount: dto.Amount,
-                   notes: dto.Notes,
-                   createdByUserId: dto.CreatedByUserId
-               );
-
-            return dto.TransactionStatus == EnAccountTransactionStatus.Success;
-        }
-
-        public async Task<bool> WithdrawFromAccountAsync(AccountTransactionDto dto)
-        {
-            dto.TransactionStatus = await _repository.WithdrawAccountAsync
-                (
-                    accountId: dto.AccountId,
-                    amount: dto.Amount,
-                    notes: dto.Notes,
-                    createdByUserId: dto.CreatedByUserId
-                );
-
-            return dto.TransactionStatus == EnAccountTransactionStatus.Success;
-        }
+          
+          
+         */
     }
 }
