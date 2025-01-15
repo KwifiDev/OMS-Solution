@@ -1,15 +1,20 @@
-﻿using OMS.DA.IRepositories.IEntityRepos;
-using OMS.DA.Views;
+﻿using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
-    public interface IUserDetailRepository : IGenericViewRepository<UserDetail>
+    public interface IUserDetailRepository
     {
+        /// <summary>
+        /// Retrieves all UserDetail.
+        /// </summary>
+        /// <returns>The task result contains the collection of UserDetail.</returns>
+        Task<IEnumerable<UserDetail>> GetAllAsync();
+
         /// <summary>
         /// Retrieves an UserDetail by UserId.
         /// </summary>
         /// <param name="userId">The ID of the user.</param>
         /// <returns>The UserDetail if found; otherwise, null.</returns>
-        Task<UserDetail?> GetUserDetailByIdAsync(int userId);
+        Task<UserDetail?> GetByIdAsync(int userId);
     }
 }

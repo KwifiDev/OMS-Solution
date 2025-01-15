@@ -32,7 +32,7 @@ namespace OMS.BL.Services.Views
 
         public async Task<DebtsSummaryDto?> GetDebtSummaryByIdAsync(int debtId)
         {
-            DebtsSummary? debt = await _repository.GetDebtSummaryByIdAsync(debtId);
+            DebtsSummary? debt = await _repository.GetByIdAsync(debtId);
 
             return debt == null ? null : new DebtsSummaryDto
             {

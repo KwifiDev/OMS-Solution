@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.Context;
-using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.Repositories.ViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
-    public class PaymentsSummaryRepository : GenericViewRepository<PaymentsSummary>, IGenericViewRepository<PaymentsSummary>, IPaymentsSummaryRepository
+    public class PaymentsSummaryRepository : GenericViewRepository<PaymentsSummary>, IPaymentsSummaryRepository
     {
         private readonly DbSet<PaymentsSummary> _paymentsSummaries;
 
@@ -15,6 +14,8 @@ namespace OMS.DA.IRepositories.IViewRepos
             _paymentsSummaries = context.Set<PaymentsSummary>();
         }
 
+        /*
+         
         public async Task<PaymentsSummary?> GetPaymentSummaryByIdAsync(int paymentId)
         {
             return await _paymentsSummaries
@@ -22,5 +23,6 @@ namespace OMS.DA.IRepositories.IViewRepos
                         .Where(m => m.PaymentId == paymentId)
                         .SingleOrDefaultAsync();
         }
+         */
     }
 }

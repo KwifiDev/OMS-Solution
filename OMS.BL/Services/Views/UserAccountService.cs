@@ -31,7 +31,7 @@ namespace OMS.BL.Services.Views
 
         public async Task<UserAccountDto?> GetUserAccountByIdAsync(int accountId)
         {
-            UserAccount? userAccount = await _repository.GetUserAccountByIdAsync(accountId);
+            UserAccount? userAccount = await _repository.GetByIdAsync(accountId);
 
             return userAccount == null ? null : new UserAccountDto
             {

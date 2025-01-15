@@ -31,7 +31,7 @@ namespace OMS.BL.Services.Views
 
         public async Task<DiscountsAppliedDto?> GetDiscountAppliedByIdAsync(int discountId)
         {
-            DiscountsApplied? discount = await _repository.GetDiscountAppliedByIdAsync(discountId);
+            DiscountsApplied? discount = await _repository.GetByIdAsync(discountId);
 
             return discount == null ? null : new DiscountsAppliedDto
             {

@@ -32,7 +32,7 @@ namespace OMS.BL.Services.Views
 
         public async Task<TransactionsSummaryDto?> GetTransactionSummaryByIdAsync(int transactionId)
         {
-            TransactionsSummary? transaction = await _repository.GetTransactionSummaryByIdAsync(transactionId);
+            TransactionsSummary? transaction = await _repository.GetByIdAsync(transactionId);
 
             return transaction == null ? null : new TransactionsSummaryDto
             {

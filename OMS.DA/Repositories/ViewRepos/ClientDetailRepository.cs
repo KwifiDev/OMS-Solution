@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.Context;
-using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.Repositories.ViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
-    public class ClientDetailRepository : GenericViewRepository<ClientDetail>, IGenericViewRepository<ClientDetail>, IClientDetailRepository
+    public class ClientDetailRepository : GenericViewRepository<ClientDetail>, IClientDetailRepository
     {
         private readonly DbSet<ClientDetail> _clientDetails;
 
@@ -15,6 +14,9 @@ namespace OMS.DA.IRepositories.IViewRepos
             _clientDetails = context.Set<ClientDetail>();
         }
 
+
+        /*
+         
         public async Task<ClientDetail?> GetClientDetailByIdAsync(int clientId)
         {
             return await _clientDetails
@@ -22,5 +24,6 @@ namespace OMS.DA.IRepositories.IViewRepos
                         .Where(m => m.ClientId == clientId)
                         .SingleOrDefaultAsync();
         }
+         */
     }
 }

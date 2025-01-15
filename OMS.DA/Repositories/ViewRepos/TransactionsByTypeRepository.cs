@@ -1,11 +1,10 @@
 ﻿using OMS.DA.Context;
-using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.Repositories.ViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
-    public class TransactionsByTypeRepository : GenericViewRepository<TransactionsByType>, IGenericViewRepository<TransactionsByType>
+    public class TransactionsByTypeRepository : GenericViewRepository<TransactionsByType>, ITransactionsByTypeRepository
     {
         public TransactionsByTypeRepository(AppDbContext context) : base(context)
         {

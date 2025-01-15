@@ -31,7 +31,7 @@ namespace OMS.BL.Services.Views
 
         public async Task<UserDetailDto?> GetUserDetailByIdAsync(int userId)
         {
-            UserDetail? user = await _repository.GetUserDetailByIdAsync(userId);
+            UserDetail? user = await _repository.GetByIdAsync(userId);
 
             return user == null ? null : new UserDetailDto
             {

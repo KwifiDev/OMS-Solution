@@ -30,7 +30,7 @@ namespace OMS.BL.Services.Views
 
         public async Task<BranchOperationalMetricDto?> GetBranchOperationalMetricByIdAsync(int branchId)
         {
-            BranchOperationalMetric? branch = await _repository.GetBranchOperationalMetricByIdAsync(branchId);
+            BranchOperationalMetric? branch = await _repository.GetByIdAsync(branchId);
 
             return branch == null ? null : new BranchOperationalMetricDto
             {

@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.Context;
-using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.Repositories.ViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
-    public class UserDetailRepository : GenericViewRepository<UserDetail>, IGenericViewRepository<UserDetail>, IUserDetailRepository
+    public class UserDetailRepository : GenericViewRepository<UserDetail>, IUserDetailRepository
     {
         private readonly DbSet<UserDetail> _userDetails;
 
@@ -15,12 +14,14 @@ namespace OMS.DA.IRepositories.IViewRepos
             _userDetails = context.Set<UserDetail>();
         }
 
-        public async Task<UserDetail?> GetUserDetailByIdAsync(int userId)
+        /*
+                 public async Task<UserDetail?> GetUserDetailByIdAsync(int userId)
         {
             return await _userDetails
                         .AsNoTracking()
                         .Where(m => m.UserId == userId)
                         .SingleOrDefaultAsync();
         }
+         */
     }
 }

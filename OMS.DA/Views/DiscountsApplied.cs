@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OMS.DA.CustomAttributes;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,6 +8,7 @@ namespace OMS.DA.Views;
 [Keyless]
 public partial class DiscountsApplied
 {
+    [Id]
     public int DiscountId { get; set; }
 
     [StringLength(25)]

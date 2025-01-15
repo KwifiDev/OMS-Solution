@@ -30,7 +30,7 @@ namespace OMS.BL.Services.Views
 
         public async Task<ClientDetailDto?> GetClientDetailByIdAsync(int clientId)
         {
-            ClientDetail? client = await _repository.GetClientDetailByIdAsync(clientId);
+            ClientDetail? client = await _repository.GetByIdAsync(clientId);
 
             return client == null ? null : new ClientDetailDto
             {

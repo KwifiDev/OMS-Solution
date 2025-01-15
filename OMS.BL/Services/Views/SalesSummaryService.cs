@@ -32,7 +32,7 @@ namespace OMS.BL.Services.Views
 
         public async Task<SalesSummaryDto?> GetSaleSummaryByIdAsync(int saleId)
         {
-            SalesSummary? sale = await _repository.GetSaleSummaryByIdAsync(saleId);
+            SalesSummary? sale = await _repository.GetByIdAsync(saleId);
 
             return sale == null ? null : new SalesSummaryDto
             {

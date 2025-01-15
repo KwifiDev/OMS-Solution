@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.Context;
-using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.Repositories.ViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
-    public class DiscountsAppliedRepository : GenericViewRepository<DiscountsApplied>, IGenericViewRepository<DiscountsApplied>, IDiscountsAppliedRepository
+    public class DiscountsAppliedRepository : GenericViewRepository<DiscountsApplied>, IDiscountsAppliedRepository
     {
         private readonly DbSet<DiscountsApplied> _discountsApplieds;
 
@@ -15,12 +14,16 @@ namespace OMS.DA.IRepositories.IViewRepos
             _discountsApplieds = context.Set<DiscountsApplied>();
         }
 
-        public async Task<DiscountsApplied?> GetDiscountAppliedByIdAsync(int discountId)
+
+
+        /*
+                 public async Task<DiscountsApplied?> GetDiscountAppliedByIdAsync(int discountId)
         {
             return await _discountsApplieds
                         .AsNoTracking()
                         .Where(m => m.DiscountId == discountId)
                         .SingleOrDefaultAsync();
         }
+         */
     }
 }

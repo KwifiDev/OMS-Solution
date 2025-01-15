@@ -31,7 +31,7 @@ namespace OMS.BL.Services.Views
 
         public async Task<PaymentsSummaryDto?> GetPaymentSummaryByIdAsync(int paymentId)
         {
-            PaymentsSummary? payment = await _repository.GetPaymentSummaryByIdAsync(paymentId);
+            PaymentsSummary? payment = await _repository.GetByIdAsync(paymentId);
 
             return payment == null ? null : new PaymentsSummaryDto
             {

@@ -32,7 +32,7 @@ namespace OMS.BL.Services.Views
 
         public async Task<AccountBalancesTransactionDto?> GetAccountBalancesTransactionByIdAsync(int accountId)
         {
-            AccountBalancesTransaction? account = await _repository.GetAccountBalancesTransactionByIdAsync(accountId);
+            AccountBalancesTransaction? account = await _repository.GetByIdAsync(accountId);
 
             return account == null ? null : new AccountBalancesTransactionDto
             {

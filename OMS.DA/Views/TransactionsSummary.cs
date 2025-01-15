@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OMS.DA.CustomAttributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace OMS.DA.Views;
@@ -6,6 +7,7 @@ namespace OMS.DA.Views;
 [Keyless]
 public partial class TransactionsSummary
 {
+    [Id]
     public int TransactionId { get; set; }
 
     [StringLength(20)]
