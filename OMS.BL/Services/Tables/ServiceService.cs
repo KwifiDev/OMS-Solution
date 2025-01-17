@@ -10,9 +10,9 @@ namespace OMS.BL.Services.Tables
     {
         private readonly IServiceRepository _serviceRepository;
 
-        public ServiceService(IGenericRepository<Service> repo,
+        public ServiceService(IGenericRepository<Service> genericRepo,
                               IMapperService mapper,
-                              IServiceRepository repository) : base(repo, mapper)
+                              IServiceRepository repository) : base(genericRepo, mapper)
         {
             _serviceRepository = repository;
         }

@@ -1,20 +1,27 @@
-﻿using OMS.BL.IServices.Views;
-using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Dtos.Views;
+using OMS.BL.IServices.Views;
+using OMS.BL.Mapping;
+using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class UserAccountService : IUserAccountService
+    public class UserAccountService : GenericViewService<UserAccount, UserAccountDto>, IUserAccountService
     {
-        private readonly IUserAccountRepository _repository;
+        private readonly IUserAccountRepository _userAccountRepository;
 
-        public UserAccountService(IUserAccountRepository repository)
+        public UserAccountService(IGenericViewRepository<UserAccount> genericRepo,
+                                  IMapperService mapper,
+                                  IUserAccountRepository repository) : base(genericRepo, mapper)
         {
-            _repository = repository;
+            _userAccountRepository = repository;
         }
 
-        public async Task<IEnumerable<UserAccountDto>> GetAllUsersAccountsAsync()
+
+
+        /*
+                 public async Task<IEnumerable<UserAccountDto>> GetAllUsersAccountsAsync()
         {
             IEnumerable<UserAccount> userAccount = await _repository.GetAllAsync();
 
@@ -42,6 +49,7 @@ namespace OMS.BL.Services.Views
                 ClientBalance = userAccount.ClientBalance
             };
         }
+         */
 
     }
 }

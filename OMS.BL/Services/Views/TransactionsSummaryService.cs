@@ -1,20 +1,27 @@
-﻿using OMS.BL.IServices.Views;
-using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Dtos.Views;
+using OMS.BL.IServices.Views;
+using OMS.BL.Mapping;
+using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class TransactionsSummaryService : ITransactionsSummaryService
+    public class TransactionsSummaryService : GenericViewService<TransactionsSummary, TransactionsSummaryDto>, ITransactionsSummaryService
     {
-        private readonly ITransactionsSummaryRepository _repository;
+        private readonly ITransactionsSummaryRepository _transactionsSummaryRepository;
 
-        public TransactionsSummaryService(ITransactionsSummaryRepository repository)
+        public TransactionsSummaryService(IGenericViewRepository<TransactionsSummary> genericRepo,
+                                          IMapperService mapper,
+                                          ITransactionsSummaryRepository repository) : base(genericRepo, mapper)
         {
-            _repository = repository;
+            _transactionsSummaryRepository = repository;
         }
 
-        public async Task<IEnumerable<TransactionsSummaryDto>> GetAllTransactionsSummaryAsync()
+
+
+        /*
+                 public async Task<IEnumerable<TransactionsSummaryDto>> GetAllTransactionsSummaryAsync()
         {
             IEnumerable<TransactionsSummary> transactionsSummary = await _repository.GetAllAsync();
 
@@ -44,6 +51,7 @@ namespace OMS.BL.Services.Views
                 Notes = transaction.Notes
             };
         }
+         */
 
     }
 }

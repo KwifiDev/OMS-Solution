@@ -11,6 +11,6 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all debts by status asynchronously.
         /// </summary>
         /// <returns>A collection of debts by status.</returns>
-        Task<IEnumerable<DebtsByStatusDto>> GetAllDebtsByStatusAsync();
+        Task<IEnumerable<DebtsByStatusDto>> GetAllAsync();
     }
 }

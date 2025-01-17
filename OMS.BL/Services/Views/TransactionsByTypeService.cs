@@ -1,19 +1,26 @@
-﻿using OMS.BL.IServices.Views;
-using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Dtos.Views;
+using OMS.BL.IServices.Views;
+using OMS.BL.Mapping;
+using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class TransactionsByTypeService : ITransactionsByTypeService
+    public class TransactionsByTypeService : GenericViewService<TransactionsByType, TransactionsByTypeDto>, ITransactionsByTypeService
     {
-        private readonly ITransactionsByTypeRepository _repository;
+        private readonly ITransactionsByTypeRepository _transactionsByTypeRepository;
 
-        public TransactionsByTypeService(ITransactionsByTypeRepository repository)
+        public TransactionsByTypeService(IGenericViewRepository<TransactionsByType> genericRepo,
+                                         IMapperService mapper,
+                                         ITransactionsByTypeRepository repository) : base(genericRepo, mapper)
         {
-            _repository = repository;
+            _transactionsByTypeRepository = repository;
         }
 
+
+        /*
+         
         public async Task<IEnumerable<TransactionsByTypeDto>> GetAllTransactionsByTypeAsync()
         {
             IEnumerable<TransactionsByType> transactionsByType = await _repository.GetAllAsync();
@@ -26,6 +33,7 @@ namespace OMS.BL.Services.Views
 
             }) ?? Enumerable.Empty<TransactionsByTypeDto>();
         }
+         */
 
     }
 }

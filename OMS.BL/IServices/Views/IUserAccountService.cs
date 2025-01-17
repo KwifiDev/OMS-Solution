@@ -11,13 +11,13 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all user accounts asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of user account models.</returns>
-        Task<IEnumerable<UserAccountDto>> GetAllUsersAccountsAsync();
+        Task<IEnumerable<UserAccountDto>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a user account by its ID asynchronously.
         /// </summary>
         /// <param name="accountId">The ID of the user account to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the user account model, or null if not found.</returns>
-        Task<UserAccountDto?> GetUserAccountByIdAsync(int accountId);
+        Task<UserAccountDto?> GetByIdAsync(int accountId);
     }
 }

@@ -10,9 +10,9 @@ namespace OMS.BL.Services.Tables
     {
         private readonly IBranchRepository _branchRepository;
 
-        public BranchService(IGenericRepository<Branch> repo,
+        public BranchService(IGenericRepository<Branch> genericRepo,
                              IMapperService mapper,
-                             IBranchRepository branchRepository) : base(repo, mapper)
+                             IBranchRepository branchRepository) : base(genericRepo, mapper)
         {
             _branchRepository = branchRepository;
         }

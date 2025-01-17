@@ -1,20 +1,27 @@
-﻿using OMS.BL.IServices.Views;
-using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Dtos.Views;
+using OMS.BL.IServices.Views;
+using OMS.BL.Mapping;
+using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class DiscountsAppliedService : IDiscountsAppliedService
+    public class DiscountsAppliedService : GenericViewService<DiscountsApplied, DiscountsAppliedDto>, IDiscountsAppliedService
     {
-        private readonly IDiscountsAppliedRepository _repository;
+        private readonly IDiscountsAppliedRepository _discountsAppliedRepository;
 
-        public DiscountsAppliedService(IDiscountsAppliedRepository repository)
+        public DiscountsAppliedService(IGenericViewRepository<DiscountsApplied> genericRepo,
+                                       IMapperService mapper,
+                                       IDiscountsAppliedRepository repository) : base(genericRepo, mapper)
         {
-            _repository = repository;
+            _discountsAppliedRepository = repository;
         }
 
-        public async Task<IEnumerable<DiscountsAppliedDto>> GetAllDiscountsAppliedAsync()
+
+
+        /*
+                 public async Task<IEnumerable<DiscountsAppliedDto>> GetAllDiscountsAppliedAsync()
         {
             IEnumerable<DiscountsApplied> discountsApplied = await _repository.GetAllAsync();
 
@@ -42,6 +49,7 @@ namespace OMS.BL.Services.Views
                 Discount = discount.Discount
             };
         }
+         */
 
     }
 }

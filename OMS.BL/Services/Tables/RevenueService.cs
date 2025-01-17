@@ -10,9 +10,9 @@ namespace OMS.BL.Services.Tables
     {
         private readonly IRevenueRepository _revenueRepository;
 
-        public RevenueService(IGenericRepository<Revenue> repo,
+        public RevenueService(IGenericRepository<Revenue> genericRepo,
                               IMapperService mapper,
-                              IRevenueRepository repository) : base(repo, mapper)
+                              IRevenueRepository repository) : base(genericRepo, mapper)
         {
             _revenueRepository = repository;
         }

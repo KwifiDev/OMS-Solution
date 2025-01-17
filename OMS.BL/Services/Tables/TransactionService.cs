@@ -10,9 +10,9 @@ namespace OMS.BL.Services.Tables
     {
         private readonly ITransactionRepository _transactionRepository;
 
-        public TransactionService(IGenericRepository<Transaction> repo,
+        public TransactionService(IGenericRepository<Transaction> genericRepo,
                                   IMapperService mapper,
-                                  ITransactionRepository repository) : base(repo, mapper)
+                                  ITransactionRepository repository) : base(genericRepo, mapper)
         {
             _transactionRepository = repository;
         }

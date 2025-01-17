@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using OMS.BL.Dtos.Tables;
+using OMS.BL.Dtos.Views;
 using OMS.DA.Entities;
+using OMS.DA.Views;
 
 namespace OMS.BL.Mapping
 {
@@ -33,6 +35,34 @@ namespace OMS.BL.Mapping
             CreateMap<Transaction, TransactionDto>().ReverseMap();
 
             CreateMap<User, UserDto>().ReverseMap();
+
+            CreateMap<AccountBalancesTransaction, AccountBalancesTransactionDto>().ReverseMap();
+
+            CreateMap<BranchOperationalMetric, BranchOperationalMetricDto>().ReverseMap();
+
+            CreateMap<ClientDetail, ClientDetailDto>().ReverseMap();
+
+            CreateMap<ClientsByType, ClientsByTypeDto>().ReverseMap();
+
+            CreateMap<DebtsByStatus, DebtsByStatusDto>().ReverseMap();
+
+            CreateMap<DebtsSummary, DebtsSummaryDto>().ReverseMap();
+
+            CreateMap<DiscountsApplied, DiscountsAppliedDto>().ReverseMap();
+
+            CreateMap<MonthlyFinancialSummary, MonthlyFinancialSummaryDto>().ReverseMap();
+
+            CreateMap<PaymentsSummary, PaymentsSummaryDto>().ReverseMap();
+
+            CreateMap<SalesSummary, SalesSummaryDto>().ReverseMap();
+
+            CreateMap<TransactionsByType, TransactionsByTypeDto>().ReverseMap();
+
+            CreateMap<TransactionsSummary, TransactionsSummaryDto>().ReverseMap();
+
+            CreateMap<UserAccount, UserAccountDto>().ReverseMap();
+
+            CreateMap<UserDetail, UserDetailDto>().ReverseMap();
 
         }
     }

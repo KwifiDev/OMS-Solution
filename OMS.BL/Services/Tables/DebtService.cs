@@ -12,9 +12,9 @@ namespace OMS.BL.Services.Tables
     {
         private readonly IDebtRepository _debtRepository;
 
-        public DebtService(IGenericRepository<Debt> repo,
+        public DebtService(IGenericRepository<Debt> genericRepo,
                            IMapperService mapper,
-                           IDebtRepository repository) : base(repo, mapper)
+                           IDebtRepository repository) : base(genericRepo, mapper)
         {
             _debtRepository = repository;
         }

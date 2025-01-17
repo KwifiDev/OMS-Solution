@@ -12,9 +12,9 @@ namespace OMS.BL.Services.Tables
     {
         private readonly IClientRepository _clientRepository;
 
-        public ClientService(IGenericRepository<Client> repo,
+        public ClientService(IGenericRepository<Client> genericRepo,
                              IMapperService mapper,
-                             IClientRepository repository) : base(repo, mapper)
+                             IClientRepository repository) : base(genericRepo, mapper)
         {
             _clientRepository = repository;
         }

@@ -11,6 +11,6 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all monthly financial summaries asynchronously.
         /// </summary>
         /// <returns>A collection of MonthlyFinancialSummaryModel objects.</returns>
-        Task<IEnumerable<MonthlyFinancialSummaryDto>> GetAllMonthlyFinancialSummariesAsync();
+        Task<IEnumerable<MonthlyFinancialSummaryDto>> GetAllAsync();
     }
 }

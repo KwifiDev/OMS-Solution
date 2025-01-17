@@ -1,20 +1,26 @@
-﻿using OMS.BL.IServices.Views;
-using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Dtos.Views;
+using OMS.BL.IServices.Views;
+using OMS.BL.Mapping;
+using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class SalesSummaryService : ISalesSummaryService
+    public class SalesSummaryService : GenericViewService<SalesSummary, SalesSummaryDto>, ISalesSummaryService
     {
-        private readonly ISalesSummaryRepository _repository;
+        private readonly ISalesSummaryRepository _salesSummaryRepository;
 
-        public SalesSummaryService(ISalesSummaryRepository repository)
+        public SalesSummaryService(IGenericViewRepository<SalesSummary> genericRepo,
+                                   IMapperService mapper,
+                                   ISalesSummaryRepository repository) : base(genericRepo, mapper)
         {
-            _repository = repository;
+            _salesSummaryRepository = repository;
         }
 
-        public async Task<IEnumerable<SalesSummaryDto>> GetAllSalesSummaryAsync()
+
+        /*
+                 public async Task<IEnumerable<SalesSummaryDto>> GetAllSalesSummaryAsync()
         {
             IEnumerable<SalesSummary> SalesSummaries = await _repository.GetAllAsync();
 
@@ -44,6 +50,8 @@ namespace OMS.BL.Services.Views
                 Status = sale.Status
             };
         }
+
+         */
 
     }
 }

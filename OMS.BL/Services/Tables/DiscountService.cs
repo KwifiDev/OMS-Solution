@@ -10,9 +10,9 @@ namespace OMS.BL.Services.Tables
     {
         private readonly IDiscountRepository _discountRepository;
 
-        public DiscountService(IGenericRepository<Discount> repo,
+        public DiscountService(IGenericRepository<Discount> genericRepo,
                                IMapperService mapper,
-                               IDiscountRepository repository) : base(repo, mapper)
+                               IDiscountRepository repository) : base(genericRepo, mapper)
         {
             _discountRepository = repository;
         }

@@ -1,20 +1,26 @@
-﻿using OMS.BL.IServices.Views;
-using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Dtos.Views;
+using OMS.BL.IServices.Views;
+using OMS.BL.Mapping;
+using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class UserDetailService : IUserDetailService
+    public class UserDetailService : GenericViewService<UserDetail, UserDetailDto>, IUserDetailService
     {
-        private readonly IUserDetailRepository _repository;
+        private readonly IUserDetailRepository _userDetailRepository;
 
-        public UserDetailService(IUserDetailRepository repository)
+        public UserDetailService(IGenericViewRepository<UserDetail> genericRepo,
+                                 IMapperService mapper,
+                                 IUserDetailRepository repository) : base(genericRepo, mapper)
         {
-            _repository = repository;
+            _userDetailRepository = repository;
         }
 
-        public async Task<IEnumerable<UserDetailDto>> GetAllUsersDetailAsync()
+
+        /*
+                 public async Task<IEnumerable<UserDetailDto>> GetAllUsersDetailAsync()
         {
             IEnumerable<UserDetail> userDetail = await _repository.GetAllAsync();
 
@@ -42,6 +48,7 @@ namespace OMS.BL.Services.Views
                 WorkingBranch = user.WorkingBranch
             };
         }
+         */
 
     }
 }

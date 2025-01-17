@@ -10,9 +10,9 @@ namespace OMS.BL.Services.Tables
     {
         private readonly IPermissionsConfigRepository _permissionsConfigRepository;
 
-        public PermissionsConfigService(IGenericRepository<PermissionsConfig> repo,
+        public PermissionsConfigService(IGenericRepository<PermissionsConfig> genericRepo,
                                         IMapperService mapper,
-                                        IPermissionsConfigRepository repository) : base(repo, mapper)
+                                        IPermissionsConfigRepository repository) : base(genericRepo, mapper)
         {
             _permissionsConfigRepository = repository;
         }

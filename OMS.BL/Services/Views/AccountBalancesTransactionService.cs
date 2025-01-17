@@ -1,20 +1,26 @@
-﻿using OMS.BL.IServices.Views;
-using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Dtos.Views;
+using OMS.BL.IServices.Views;
+using OMS.BL.Mapping;
+using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class AccountBalancesTransactionService : IAccountBalancesTransactionService
+    public class AccountBalancesTransactionService : GenericViewService<AccountBalancesTransaction, AccountBalancesTransactionDto>, IAccountBalancesTransactionService
     {
-        private readonly IAccountBalancesTransactionRepository _repository;
+        private readonly IAccountBalancesTransactionRepository _accountBalancesTransactionRepository;
 
-        public AccountBalancesTransactionService(IAccountBalancesTransactionRepository repository)
+        public AccountBalancesTransactionService(IGenericViewRepository<AccountBalancesTransaction> genericRepo,
+                                                 IMapperService mapper,
+                                                 IAccountBalancesTransactionRepository repository) : base(genericRepo, mapper)
         {
-            _repository = repository;
+            _accountBalancesTransactionRepository = repository;
         }
 
-        public async Task<IEnumerable<AccountBalancesTransactionDto>> GetAllAccountsBalancesTransactionsAsync()
+
+        /*
+                 public async Task<IEnumerable<AccountBalancesTransactionDto>> GetAllAccountsBalancesTransactionsAsync()
         {
             IEnumerable<AccountBalancesTransaction> accountBalancesTransaction = await _repository.GetAllAsync();
 
@@ -44,6 +50,7 @@ namespace OMS.BL.Services.Views
                 TotalTransactionAmount = account.TotalTransactionAmount
             };
         }
+         */
 
     }
 }

@@ -1,15 +1,15 @@
-﻿using AutoMapper;
-using OMS.BL.IServices.Views;
+﻿using OMS.BL.IServices.Views;
+using OMS.BL.Mapping;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Views
 {
-    public class GenericViewService<TDto, TEntity> : IGenericViewService<TDto> where TEntity : class
+    public class GenericViewService<TEntity, TDto> : IGenericViewService<TDto> where TEntity : class
     {
         private readonly IGenericViewRepository<TEntity> _repository;
-        private readonly IMapper _mapper;
+        private readonly IMapperService _mapper;
 
-        public GenericViewService(IGenericViewRepository<TEntity> repository, IMapper mapper)
+        public GenericViewService(IGenericViewRepository<TEntity> repository, IMapperService mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -24,14 +24,14 @@ namespace OMS.BL.Services.Views
                 return Enumerable.Empty<TDto>();
             }
 
-            return _mapper.Map<IEnumerable<TDto>>(entities);
+            return _mapper.Map<TEntity, TDto>(entities);
         }
 
-        //public async Task<TDto?> GetByIdAsync(int id)
-        //{
-        //    TEntity? entity = await _repository.GetByIdAsync(id);
+        public async Task<TDto?> GetByIdAsync(int id)
+        {
+            TEntity? entity = await _repository.GetByIdAsync(id);
 
-        //    return entity == null ? default(TDto) : _mapper.Map<TDto>(entity);
-        //}
+            return entity == null ? default(TDto) : _mapper.Map<TEntity, TDto>(entity);
+        }
     }
 }

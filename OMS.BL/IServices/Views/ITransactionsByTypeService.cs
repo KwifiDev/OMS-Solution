@@ -11,6 +11,6 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all transactions grouped by type asynchronously.
         /// </summary>
         /// <returns>A collection of transactions grouped by type.</returns>
-        Task<IEnumerable<TransactionsByTypeDto>> GetAllTransactionsByTypeAsync();
+        Task<IEnumerable<TransactionsByTypeDto>> GetAllAsync();
     }
 }

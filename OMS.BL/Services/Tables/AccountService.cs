@@ -12,9 +12,9 @@ namespace OMS.BL.Services.Tables
     {
         private readonly IAccountRepository _accountRepository;
 
-        public AccountService(IGenericRepository<Account> repo,
+        public AccountService(IGenericRepository<Account> genericRepo,
                               IMapperService mapper,
-                              IAccountRepository accountRepository) : base(repo, mapper)
+                              IAccountRepository accountRepository) : base(genericRepo, mapper)
         {
             _accountRepository = accountRepository;
         }

@@ -1,22 +1,29 @@
-﻿using OMS.BL.IServices.Views;
-using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Dtos.Views;
+using OMS.BL.IServices.Views;
+using OMS.BL.Mapping;
+using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class MonthlyFinancialSummaryService : IMonthlyFinancialSummaryService
+    public class MonthlyFinancialSummaryService : GenericViewService<MonthlyFinancialSummary, MonthlyFinancialSummaryDto>, IMonthlyFinancialSummaryService
     {
-        private readonly IMonthlyFinancialSummaryRepository _repository;
+        private readonly IMonthlyFinancialSummaryRepository _monthlyFinancialSummaryRepository;
 
-        public MonthlyFinancialSummaryService(IMonthlyFinancialSummaryRepository repository)
+        public MonthlyFinancialSummaryService(IGenericViewRepository<MonthlyFinancialSummary> genericRepo,
+                                              IMapperService mapper,
+                                              IMonthlyFinancialSummaryRepository repository) : base(genericRepo, mapper)
         {
-            _repository = repository;
+            _monthlyFinancialSummaryRepository = repository;
         }
 
+
+        /*
+         
         public async Task<IEnumerable<MonthlyFinancialSummaryDto>> GetAllMonthlyFinancialSummariesAsync()
         {
-            IEnumerable<MonthlyFinancialSummary> monthlyFinancialSummary = await _repository.GetAllAsync();
+            IEnumerable<MonthlyFinancialSummary> monthlyFinancialSummary = await _monthlyFinancialSummaryRepository.GetAllAsync();
 
             return monthlyFinancialSummary?.Select(m => new MonthlyFinancialSummaryDto
             {
@@ -26,6 +33,7 @@ namespace OMS.BL.Services.Views
 
             }) ?? Enumerable.Empty<MonthlyFinancialSummaryDto>();
         }
+         */
 
     }
 }

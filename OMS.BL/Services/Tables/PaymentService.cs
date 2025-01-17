@@ -11,9 +11,9 @@ namespace OMS.BL.Services.Tables
     {
         private readonly IPaymentRepository _paymentRepository;
 
-        public PaymentService(IGenericRepository<Payment> repo,
+        public PaymentService(IGenericRepository<Payment> genericRepo,
                               IMapperService mapper,
-                              IPaymentRepository repository) : base(repo, mapper)
+                              IPaymentRepository repository) : base(genericRepo, mapper)
         {
             _paymentRepository = repository;
         }

@@ -1,6 +1,4 @@
-﻿using OMS.BL.Dtos.Views;
-
-namespace OMS.BL.IServices.Views
+﻿namespace OMS.BL.IServices.Views
 {
     /// <summary>
     /// Represents a Generic View service for retrieving T.
@@ -18,6 +16,6 @@ namespace OMS.BL.IServices.Views
         /// </summary>
         /// <param name="id">The ID of the entity.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the entity.</returns>
-        //Task<TDto?> GetByIdAsync(int id);
+        Task<TDto?> GetByIdAsync(int id);
     }
 }

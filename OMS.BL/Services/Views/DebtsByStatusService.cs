@@ -1,20 +1,26 @@
-﻿using OMS.BL.IServices.Views;
-using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Dtos.Views;
+using OMS.BL.IServices.Views;
+using OMS.BL.Mapping;
+using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class DebtsByStatusService : IDebtsByStatusService
+    public class DebtsByStatusService : GenericViewService<DebtsByStatus, DebtsByStatusDto>, IDebtsByStatusService
     {
-        private readonly IDebtsByStatusRepository _repository;
+        private readonly IDebtsByStatusRepository _debtsByStatusRepository;
 
-        public DebtsByStatusService(IDebtsByStatusRepository repository)
+        public DebtsByStatusService(IGenericViewRepository<DebtsByStatus> genericRepo,
+                                    IMapperService mapper,
+                                    IDebtsByStatusRepository repository) : base(genericRepo, mapper)
         {
-            _repository = repository;
+            _debtsByStatusRepository = repository;
         }
 
-        public async Task<IEnumerable<DebtsByStatusDto>> GetAllDebtsByStatusAsync()
+
+        /*
+                 public async Task<IEnumerable<DebtsByStatusDto>> GetAllDebtsByStatusAsync()
         {
             IEnumerable<DebtsByStatus> debtsByStatus = await _repository.GetAllAsync();
 
@@ -26,6 +32,7 @@ namespace OMS.BL.Services.Views
 
             }) ?? Enumerable.Empty<DebtsByStatusDto>();
         }
+         */
 
     }
 }

@@ -1,20 +1,25 @@
-﻿using OMS.BL.IServices.Views;
-using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Dtos.Views;
+using OMS.BL.IServices.Views;
+using OMS.BL.Mapping;
+using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class ClientDetailService : IClientDetailService
+    public class ClientDetailService : GenericViewService<ClientDetail, ClientDetailDto>, IClientDetailService
     {
-        private readonly IClientDetailRepository _repository;
+        private readonly IClientDetailRepository _clientDetailRepository;
 
-        public ClientDetailService(IClientDetailRepository repository)
+        public ClientDetailService(IGenericViewRepository<ClientDetail> genericRepo,
+                                   IMapperService mapper,
+                                   IClientDetailRepository repository) : base(genericRepo, mapper)
         {
-            _repository = repository;
+            _clientDetailRepository = repository;
         }
 
-        public async Task<IEnumerable<ClientDetailDto>> GetAllClientsDetailAsync()
+        /*
+                 public async Task<IEnumerable<ClientDetailDto>> GetAllClientsDetailAsync()
         {
             IEnumerable<ClientDetail> clientDetail = await _repository.GetAllAsync();
 
@@ -40,6 +45,7 @@ namespace OMS.BL.Services.Views
                 ClientType = client.ClientType
             };
         }
+         */
 
     }
 }
