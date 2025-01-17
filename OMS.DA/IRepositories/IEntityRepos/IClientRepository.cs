@@ -1,12 +1,11 @@
-﻿using OMS.DA.Entities;
-using OMS.DA.Enums;
+﻿using OMS.DA.Enums;
 
 namespace OMS.DA.IRepositories.IEntityRepos
 {
     /// <summary>
     /// Represents a repository for managing clients.
     /// </summary>
-    public interface IClientRepository : IGenericRepository<Client>
+    public interface IClientRepository
     {
         /// <summary>
         /// Pays all debts for a client by their ID.

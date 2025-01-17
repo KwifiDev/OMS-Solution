@@ -7,7 +7,7 @@ namespace OMS.DA.IRepositories.IEntityRepos
     /// <summary>
     /// Represents a repository for managing Debt entities.
     /// </summary>
-    public interface IDebtRepository : IGenericRepository<Debt>
+    public interface IDebtRepository
     {
         /// <summary>
         /// Pays a debt by its ID asynchronously.

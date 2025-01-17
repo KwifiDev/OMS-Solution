@@ -1,12 +1,11 @@
-﻿using OMS.DA.Entities;
-using OMS.DA.Enums;
+﻿using OMS.DA.Enums;
 
 namespace OMS.DA.IRepositories.IEntityRepos
 {
     /// <summary>
     /// Represents a repository for managing accounts.
     /// </summary>
-    public interface IAccountRepository : IGenericRepository<Account>
+    public interface IAccountRepository
     {
         /// <summary>
         /// Deposits the specified amount into the account.
