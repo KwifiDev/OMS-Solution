@@ -1,0 +1,43 @@
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using System.Windows.Controls;
+using System.Windows.Navigation;
+
+namespace OMS.UI.Services.Navigation
+{
+
+    public class NavigationService : INavigationService
+    {
+        private readonly Frame _mainFrame;
+
+        private Page? _currentSelectedPage;
+
+        public object? SelectedViewModelPage => _currentSelectedPage?.DataContext;
+
+        public NavigationService(Frame mainFrame)
+        {
+            _mainFrame = mainFrame;
+            _mainFrame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
+        }
+
+        public async Task NavigateToPageAsync<T>() where T : Page
+        {
+            _currentSelectedPage = Ioc.Default.GetRequiredService<T>();
+            _mainFrame.Navigate(_currentSelectedPage);
+            await ClearHistoryAsync();
+        }
+
+        public async Task ClearHistoryAsync()
+        {
+            await Task.Run(() =>
+            {
+                _mainFrame.Dispatcher.Invoke(() =>
+                {
+                    while (_mainFrame.NavigationService.CanGoBack)
+                    {
+                        _mainFrame.NavigationService.RemoveBackEntry();
+                    }
+                });
+            });
+        }
+    }
+}

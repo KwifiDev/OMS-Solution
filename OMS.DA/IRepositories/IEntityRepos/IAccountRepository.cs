@@ -1,4 +1,5 @@
-﻿using OMS.DA.Enums;
+﻿
+using OMS.Common.Enums;
 
 namespace OMS.DA.IRepositories.IEntityRepos
 {

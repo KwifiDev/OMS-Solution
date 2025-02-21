@@ -1,8 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using OMS.Common.Enums;
 using OMS.DA.Context;
 using OMS.DA.Entities;
-using OMS.DA.Enums;
 using OMS.DA.IRepositories.IEntityRepos;
 using System.Data;
 

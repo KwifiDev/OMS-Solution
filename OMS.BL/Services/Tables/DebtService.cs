@@ -2,8 +2,8 @@
 using OMS.BL.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
+using OMS.Common.Enums;
 using OMS.DA.Entities;
-using OMS.DA.Enums;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables

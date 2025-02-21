@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OMS.DA.Enums;
+using OMS.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

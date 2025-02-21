@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OMS.Common\OMS.Common.csproj" />
     <ProjectReference Include="..\OMS.DA\OMS.DA.csproj" />
   </ItemGroup>
 

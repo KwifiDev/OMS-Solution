@@ -1,4 +1,4 @@
-﻿using OMS.DA.Enums;
+﻿using OMS.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Dtos.Tables;

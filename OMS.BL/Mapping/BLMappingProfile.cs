@@ -6,9 +6,9 @@ using OMS.DA.Views;
 
 namespace OMS.BL.Mapping
 {
-    public class MappingProfile : Profile
+    public class BLMappingProfile : Profile
     {
-        public MappingProfile()
+        public BLMappingProfile()
         {
             CreateMap<Account, AccountDto>().ReverseMap();
 

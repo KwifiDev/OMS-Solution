@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using OMS.Common.Enums;
 using OMS.DA.Entities;
-using OMS.DA.Enums;
 
 namespace OMS.DA.Configurations.EntitiesConfigurations
 {

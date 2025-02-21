@@ -1,4 +1,4 @@
-﻿using OMS.DA.Enums;
+﻿using OMS.Common.Enums;
 
 namespace OMS.BL.Dtos.StoredProcedureParams
 {

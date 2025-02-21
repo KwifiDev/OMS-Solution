@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMS.BL", "OMS.BL\OMS.BL.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMS.UI", "OMS.UI\OMS.UI.csproj", "{ABF847D4-CF06-456C-BCF7-2A1019DFEB42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OMS.Common", "OMS.Common\OMS.Common.csproj", "{F63883A8-1D50-475B-8572-F1DD4086FE3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{ABF847D4-CF06-456C-BCF7-2A1019DFEB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABF847D4-CF06-456C-BCF7-2A1019DFEB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABF847D4-CF06-456C-BCF7-2A1019DFEB42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F63883A8-1D50-475B-8572-F1DD4086FE3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F63883A8-1D50-475B-8572-F1DD4086FE3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F63883A8-1D50-475B-8572-F1DD4086FE3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F63883A8-1D50-475B-8572-F1DD4086FE3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
