@@ -27,13 +27,12 @@
     <Folder Include="Resources\Images\" />
     <Folder Include="Resources\Icons\" />
     <Folder Include="ViewModels\UserControls\" />
-    <Folder Include="ViewModels\Pages\" />
-    <Folder Include="Views\Pages\" />
     <Folder Include="Views\UserControls\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
     <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />

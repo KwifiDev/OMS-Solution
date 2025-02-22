@@ -16,7 +16,6 @@ namespace OMS.UI.Services.Navigation
         public NavigationService(Frame mainFrame)
         {
             _mainFrame = mainFrame;
-            _mainFrame.NavigationUIVisibility = NavigationUIVisibility.Hidden;
         }
 
         public async Task NavigateToPageAsync<T>() where T : Page

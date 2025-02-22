@@ -3,10 +3,220 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:OMS.UI.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:OMS.UI.Views" 
+        xmlns:ViewModels="clr-namespace:OMS.UI.ViewModels.Windows" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        d:DataContext="{d:DesignInstance Type=ViewModels:MainWindowViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Height="600" 
+        Width="1000"
+        MinHeight="600" 
+        MinWidth="1000"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource MaterialDesignWindow}"
+        FlowDirection="RightToLeft"
+        FontFamily="LBC"
+        WindowStyle="None"
+        AllowsTransparency="True">
+
+    <Window.Resources>
+        <ResourceDictionary Source="pack://application:,,,/Resources/Styles/MainWindowStyle.xaml"/>
+    </Window.Resources>
+
+    <!-- Main Grid -->
     <Grid>
-        <Frame x:Name="mainFrame" />
+        <!-- App Bar -->
+        <DockPanel Style="{StaticResource AppBarDockPanel}">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDown">
+                    <i:InvokeCommandAction Command="{Binding DragWindowCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            
+            <!-- Left Section -->
+            <StackPanel Style="{StaticResource LeftHeaderPanel}">
+                <materialDesign:PackIcon Kind="OfficeBuilding" 
+                                       Foreground="White" 
+                                       Width="50" 
+                                       Height="50"
+                                       Margin="0 0 10 0"/>
+                <TextBlock Text="نظام إدارة المكاتب" 
+                         FontSize="20"
+                         Foreground="White"
+                         VerticalAlignment="Center"
+                         FontWeight="SemiBold"/>
+            </StackPanel>
+
+            <!-- Window Controls -->
+            <StackPanel Style="{StaticResource WindowControlsPanel}">
+                <Button Width="25" Height="25"
+                      Style="{StaticResource MaterialDesignIconButton}"
+                      Foreground="White"
+                      ToolTip="تصغير"
+                      Command="{Binding MinimizeCommand}">
+                    <materialDesign:PackIcon Kind="WindowMinimize" Width="15" Height="15"/>
+                </Button>
+                <Button Width="25" Height="25"
+                      Style="{StaticResource MaterialDesignIconButton}"
+                      Foreground="White"
+                      ToolTip="تكبير"
+                      Command="{Binding MaximizeCommand}">
+                    <materialDesign:PackIcon Kind="WindowMaximize" Width="15" Height="15"/>
+                </Button>
+                <Button Width="25" Height="25" 
+                      Style="{StaticResource MaterialDesignIconButton}"
+                      Foreground="White"
+                      ToolTip="إغلاق"
+                      Command="{Binding CloseCommand}">
+                    <materialDesign:PackIcon Kind="WindowClose" Width="15" Height="15"/>
+                </Button>
+            </StackPanel>
+
+            <!-- User Profile -->
+            <Menu HorizontalAlignment="Right" 
+                Margin="0 5 20 0">
+                <Menu.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </Menu.ItemsPanel>
+
+                <MenuItem FontSize="12" 
+                        Header="محمد منير الكويفي" 
+                        Foreground="White"
+                        FontWeight="Bold">
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon VerticalAlignment="Stretch"
+                                          HorizontalAlignment="Right"
+                                          Width="50" 
+                                          Height="50"
+                                          Margin="-15"
+                                          Kind="AccountCircle"/>
+                    </MenuItem.Icon>
+                    <MenuItem Header="تعديل الملف الشخصي"
+                           Style="{StaticResource MaterialDesignMenuItem}"
+                           Background="#34495E"
+                           FontSize="12"
+                           FontWeight="Light"/>
+                    <MenuItem Header="تسجيل الخروج"
+                           Style="{StaticResource MaterialDesignMenuItem}"
+                           Background="#34495E"
+                           FontSize="12"
+                           FontWeight="Light"
+                           Command="{Binding LogoutCommand}"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+
+        <!-- Main Content -->
+        <Grid Margin="0 60 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Navigation Panel -->
+            <Border Grid.Column="0" Style="{StaticResource NavigationBorder}">
+                <StackPanel>
+                    <Border Style="{StaticResource NavigationHeader}" Margin="0 10 0 0">
+                        <TextBlock Text="القائمة الرئيسية" 
+                               FontSize="18"
+                               Foreground="White"
+                               Margin="20 10"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                    </Border>
+
+                    <!-- Navigation Items -->
+                    <Button Style="{StaticResource MenuButtonStyle}"
+                          Command="{Binding OpenDashboardCommand}">
+                        <StackPanel Orientation="Horizontal" 
+                                  HorizontalAlignment="Left" 
+                                  Width="180">
+                            <materialDesign:PackIcon Kind="ViewDashboard" 
+                                                   Width="28" 
+                                                   Height="28" 
+                                                   Margin="10"/>
+                            <TextBlock Text="لوحة المعلومات" 
+                                   VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}"
+                          Command="{Binding OpenPeopleCommand}">
+                        <StackPanel Orientation="Horizontal" 
+                                  HorizontalAlignment="Right"  
+                                  Width="180">
+                            <materialDesign:PackIcon Kind="AccountGroup" 
+                                                   Width="28" 
+                                                   Height="28" 
+                                                   Margin="10"/>
+                            <TextBlock Text="الأشخاص" 
+                                   VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}">
+                        <StackPanel Orientation="Horizontal" 
+                                  HorizontalAlignment="Right"  
+                                  Width="180">
+                            <materialDesign:PackIcon Kind="AccountCircle" 
+                                                   Width="28" 
+                                                   Height="28" 
+                                                   Margin="10"/>
+                            <TextBlock Text="حسابات الموظفين" 
+                                   VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}">
+                        <StackPanel Orientation="Horizontal" 
+                                  HorizontalAlignment="Right"  
+                                  Width="180">
+                            <materialDesign:PackIcon Kind="Account" 
+                                                   Width="28" 
+                                                   Height="28" 
+                                                   Margin="10"/>
+                            <TextBlock Text="العملاء" 
+                                   VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}">
+                        <StackPanel Orientation="Horizontal" 
+                                  HorizontalAlignment="Right"  
+                                  Width="180">
+                            <materialDesign:PackIcon Kind="FileChart" 
+                                                   Width="28" 
+                                                   Height="28" 
+                                                   Margin="10"/>
+                            <TextBlock Text="التقارير" 
+                                   VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}">
+                        <StackPanel Orientation="Horizontal" 
+                                  HorizontalAlignment="Right"  
+                                  Width="180">
+                            <materialDesign:PackIcon Kind="Cog" 
+                                                   Width="28" 
+                                                   Height="28" 
+                                                   Margin="10"/>
+                            <TextBlock Text="الإعدادات" 
+                                   VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <!-- Content Frame -->
+            <Frame Grid.Column="1"
+               x:Name="mainFrame" 
+               Content="{Binding CurrentPage}"
+               NavigationUIVisibility="Hidden"/>
+        </Grid>
     </Grid>
 </Window>

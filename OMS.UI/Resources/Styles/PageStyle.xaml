@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Gradient Brushes -->
+    <LinearGradientBrush x:Key="PageHeaderGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#4954cb" Offset="0.5"/>
+        <GradientStop Color="#3498db" Offset="1"/>
+    </LinearGradientBrush>
+
+</ResourceDictionary>

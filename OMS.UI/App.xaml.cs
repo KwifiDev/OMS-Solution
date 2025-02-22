@@ -10,8 +10,10 @@ using OMS.UI.Mapping;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Navigation;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.ViewModels.Pages;
 using OMS.UI.ViewModels.Windows;
 using OMS.UI.Views;
+using OMS.UI.Views.Pages;
 using System.Windows;
 
 namespace OMS.UI
@@ -81,11 +83,19 @@ namespace OMS.UI
         private static void RegisterViewModels(IServiceCollection services)
         {
             services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<DashboardPageViewModel>();
+            services.AddSingleton<PeoplePageViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
         {
             services.AddSingleton<MainWindow>();
+
+            services.AddSingleton(provider => 
+                new DashboardPage { DataContext = provider.GetRequiredService<DashboardPageViewModel>() });
+
+            services.AddSingleton(provider =>
+                new PeoplePage { DataContext = provider.GetRequiredService<PeoplePageViewModel>() });
         }
 
         private static void RegisterMVVMServices(IServiceCollection services)
@@ -93,9 +103,7 @@ namespace OMS.UI
             services.AddTransient<IDialogService, DialogService>();
             services.AddSingleton<IMessageService, MessageService>();
             services.AddSingleton<INavigationService, NavigationService>(provider =>
-            {
-                return new NavigationService(provider.GetRequiredService<MainWindow>().mainFrame);
-            });
+                new NavigationService(provider.GetRequiredService<MainWindow>().mainFrame));
         }
 
         private async Task TryConnectToDBAsync()
