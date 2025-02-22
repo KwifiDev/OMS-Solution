@@ -1,6 +1,6 @@
 # OMS Solution
 
-Office Management System (OMS) Project (Windows Form)
+Office Management System (OMS) Project (WPF)
 
 ## Description
 
