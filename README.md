@@ -1,6 +1,6 @@
 # OMS Solution
 
-Office Management System (OMS) Project (WPF)
+Office Management System (OMS) Project (WPF MVVM)
 
 ## Description
 
