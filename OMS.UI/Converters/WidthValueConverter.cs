@@ -9,7 +9,7 @@ namespace OMS.UI.Converters
         {
             if (value is double width)
             {
-                return width - 61.0;
+                return width - 66.0;
             }
 
             return value;

@@ -4,16 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
+using OMS.BL.Services.Tables;
 using OMS.DA.Context;
+using OMS.DA.IRepositories.IEntityRepos;
+using OMS.DA.Repositories.EntityRepos;
 using OMS.UI.Mapping;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Navigation;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
 using OMS.UI.ViewModels.Windows;
 using OMS.UI.Views;
 using OMS.UI.Views.Pages;
+using OMS.UI.Views.Windows;
 using System.Windows;
 
 namespace OMS.UI
@@ -64,8 +70,9 @@ namespace OMS.UI
 
         private static void RegisterServices(IServiceCollection services)
         {
-            //services.AddScoped(typeof(IGenericService<>), typeof(GenericService<,>));
-            // Register other services
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<IPersonRepository, PersonRepository>();
+            services.AddTransient<IPersonService, PersonService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)
@@ -85,6 +92,7 @@ namespace OMS.UI
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<DashboardPageViewModel>();
             services.AddSingleton<PeoplePageViewModel>();
+            services.AddTransient<PersonDetailsViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -96,14 +104,21 @@ namespace OMS.UI
 
             services.AddSingleton(provider =>
                 new PeoplePage { DataContext = provider.GetRequiredService<PeoplePageViewModel>() });
+
+            services.AddTransient(provider =>
+                new PersonDetailsWindow { DataContext = provider.GetRequiredService<PersonDetailsViewModel>() });
         }
 
         private static void RegisterMVVMServices(IServiceCollection services)
         {
             services.AddTransient<IDialogService, DialogService>();
+
             services.AddSingleton<IMessageService, MessageService>();
+
             services.AddSingleton<INavigationService, NavigationService>(provider =>
                 new NavigationService(provider.GetRequiredService<MainWindow>().mainFrame));
+
+            services.AddSingleton<IWindowService, WindowService>();
         }
 
         private async Task TryConnectToDBAsync()

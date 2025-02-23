@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OMS.UI.Services.Navigation;
+using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
 using OMS.UI.Views.Pages;
 using System.Windows;
@@ -11,10 +12,12 @@ namespace OMS.UI.ViewModels.Windows
     public partial class MainWindowViewModel : ObservableObject
     {
         private readonly INavigationService _navigationService;
+        private readonly IWindowService _windowService;
 
-        public MainWindowViewModel(INavigationService navigationService)
+        public MainWindowViewModel(INavigationService navigationService, IWindowService windowService)
         {
             _navigationService = navigationService;
+            _windowService = windowService;
         }
 
 
@@ -45,29 +48,25 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private void Minimize()
         {
-            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            _windowService.Minimize();
         }
 
         [RelayCommand]
         private void Maximize()
         {
-            Window window = Application.Current.MainWindow;
-            window.WindowState = window.WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
+            _windowService.Maximize();
         }
 
         [RelayCommand]
         private void Close()
         {
-            Application.Current.MainWindow.Close();
+            _windowService.Close();
         }
 
         [RelayCommand]
-        private void DragWindow(Window window)
+        private void DragWindow()
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
-            {
-                window.DragMove();
-            }
+            _windowService.DragMove();
         }
 
         private bool CanOpenPage<TViewModel>() where TViewModel : class

@@ -31,7 +31,7 @@
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDown">
-                    <i:InvokeCommandAction Command="{Binding DragWindowCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                    <i:InvokeCommandAction Command="{Binding DragWindowCommand}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             
@@ -84,28 +84,29 @@
                 </Menu.ItemsPanel>
 
                 <MenuItem FontSize="12" 
-                        Header="محمد منير الكويفي" 
-                        Foreground="White"
-                        FontWeight="Bold">
+                          Header="محمد منير الكويفي" 
+                          Foreground="White"
+                          FontWeight="Bold">
+                    
                     <MenuItem.Icon>
                         <materialDesign:PackIcon VerticalAlignment="Stretch"
-                                          HorizontalAlignment="Right"
-                                          Width="50" 
-                                          Height="50"
-                                          Margin="-15"
-                                          Kind="AccountCircle"/>
+                                                 HorizontalAlignment="Right"
+                                                 Width="50" 
+                                                 Height="50"
+                                                 Margin="-15"
+                                                 Kind="AccountCircle"/>
                     </MenuItem.Icon>
                     <MenuItem Header="تعديل الملف الشخصي"
                            Style="{StaticResource MaterialDesignMenuItem}"
                            Background="#34495E"
                            FontSize="12"
                            FontWeight="Light"/>
+                    
                     <MenuItem Header="تسجيل الخروج"
                            Style="{StaticResource MaterialDesignMenuItem}"
                            Background="#34495E"
                            FontSize="12"
-                           FontWeight="Light"
-                           Command="{Binding LogoutCommand}"/>
+                           FontWeight="Light"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
@@ -215,7 +216,6 @@
             <!-- Content Frame -->
             <Frame Grid.Column="1"
                x:Name="mainFrame" 
-               Content="{Binding CurrentPage}"
                NavigationUIVisibility="Hidden"/>
         </Grid>
     </Grid>
