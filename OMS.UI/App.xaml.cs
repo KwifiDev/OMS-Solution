@@ -93,6 +93,7 @@ namespace OMS.UI
             services.AddSingleton<DashboardPageViewModel>();
             services.AddSingleton<PeoplePageViewModel>();
             services.AddTransient<PersonDetailsViewModel>();
+            services.AddTransient<AddEditPersonViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -107,6 +108,9 @@ namespace OMS.UI
 
             services.AddTransient(provider =>
                 new PersonDetailsWindow { DataContext = provider.GetRequiredService<PersonDetailsViewModel>() });
+
+            services.AddTransient(provider =>
+                new AddEditPersonWindow { DataContext = provider.GetRequiredService<AddEditPersonViewModel>() });
         }
 
         private static void RegisterMVVMServices(IServiceCollection services)

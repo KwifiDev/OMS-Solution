@@ -55,6 +55,7 @@ namespace OMS.UI.Models
         }
 
         // DisplayProperty
+        public string GenderDisplay => _gender == EnGender.Male ? "ذكر" : "انثى";
         public string PhoneDisplay => _phone ?? "لا يوجد";
         public string PersonIdDisplay => _personId > 0 ? _personId.ToString() : "لا يوجد";
         public string FullName => $"{FirstName} {LastName}";

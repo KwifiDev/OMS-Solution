@@ -75,7 +75,7 @@
                               CommandParameter="{Binding SelectedPerson}"
                               Icon="{materialDesign:PackIcon Kind=AccountDetails}"/>
 
-                    <Separator Style="{StaticResource MaterialDesignLightSeparator}"/>
+                    <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
                     <MenuItem Header="اضافة شخص" 
                               Command="{Binding AddPersonCommand}"
@@ -92,7 +92,7 @@
                               Icon="{materialDesign:PackIcon Kind=AccountRemove}"
                               Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"/>
 
-                    <Separator Style="{StaticResource MaterialDesignLightSeparator}"/>
+                    <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
                     <MenuItem Header="تحديث" 
                               Command="{Binding LoadDataCommand}"

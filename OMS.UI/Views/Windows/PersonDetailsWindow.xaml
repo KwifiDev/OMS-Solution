@@ -55,17 +55,12 @@
                             <materialDesign:PackIcon Kind="WindowClose" Width="15" Height="15"/>
                         </Button>
                     
-                    <Border>
-
-
-
                         <TextBlock Text="بطاقة المعلومات" 
                                    FontSize="26"
                                    Margin="24 16"
                                    HorizontalAlignment="Center"
                                    Foreground="{DynamicResource MaterialDesignPaper}"
                                    FontFamily="Segoe UI Semibold"/>
-                    </Border>
 
                 </StackPanel>
             </materialDesign:ColorZone>
@@ -79,10 +74,18 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Profile Section -->
+                <Border BorderBrush="Black" BorderThickness="0 0 1 0" Margin="0 0 20 0">
+                    
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                 <Border Style="{StaticResource PhotoBorder}" 
                         Grid.Column="0" 
-                        VerticalAlignment="Top"
-                        Margin="16 0 32 0">
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Margin="32 0 32 0">
                         <materialDesign:PackIcon 
                         Kind="{Binding Person.Gender, Converter={StaticResource GenderImage}}" 
                         Width="56"
@@ -92,70 +95,110 @@
                         HorizontalAlignment="Center"/>
                 </Border>
 
+                    <!-- Gender -->
+                    <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                                Height="30"
+                                Style="{StaticResource IconTextItem}">
+
+                        <materialDesign:PackIcon Kind="Account"
+                              Width="30"
+                              Height="30"
+                              Margin="0 0 10 0"
+                              VerticalAlignment="Center"
+                              Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+
+                        <TextBlock Text="{Binding Person.GenderDisplay, FallbackValue='الجنس'}"
+                                   FontSize="16"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                    </StackPanel>
+
+                </Grid>
+                </Border>
+
                 <!-- Personal Info Section -->
-                <StackPanel Grid.Column="1" Margin="10 0">
-                    <TextBlock HorizontalAlignment="Center" Text="المعلومات الشخصية" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+
+                    </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                               Text="المعلومات الشخصية"
+                               Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
 
                     <!-- Person ID -->
-                    <StackPanel Orientation="Vertical" 
+                    <StackPanel Grid.Row="1" Orientation="Vertical" 
                                 HorizontalAlignment="Stretch"
                                 Style="{StaticResource DetailItem}">
                         
                         <TextBlock Text="رقم المعرف" 
                                    MinWidth="120"
                                    FontWeight="Bold"
-                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
-                        
+                                   Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                        <Separator/>
+
                         <TextBlock Text="{Binding Person.PersonId, FallbackValue='???'}" 
                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"
                                    Foreground="{DynamicResource MaterialDesignBody}"
                                    FontSize="16"/>
-                        <Separator/>
                     </StackPanel>
 
                     <!-- Name -->
-                    <StackPanel Orientation="Vertical"
+                    <StackPanel Grid.Row="2" Orientation="Vertical"
                                 HorizontalAlignment="Stretch"
                                 Style="{StaticResource DetailItem}">
                         
                         <TextBlock Text="الاسم الأول" 
                                    MinWidth="120"
                                    FontWeight="Bold"
-                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
-                        
+                                   Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                        <Separator/>
+
                         <TextBlock Text="{Binding Person.FirstName, FallbackValue='???'}" 
                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"
                                    FontSize="16"/>
-                        <Separator/>
 
                     </StackPanel>
 
                     <!-- Last Name -->
-                    <StackPanel Orientation="Vertical"
+                    <StackPanel Grid.Row="3" Orientation="Vertical"
                                 HorizontalAlignment="Stretch"
                                 Style="{StaticResource DetailItem}">
                         
                         <TextBlock Text="النسبة" 
                                    MinWidth="120"
                                    FontWeight="Bold"
-                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
-                        
+                                   Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                        <Separator/>
+
                         <TextBlock Text="{Binding Person.LastName, FallbackValue='???'}" 
                                    Style="{StaticResource MaterialDesignCaptionTextBlock}"
                                    FontSize="16"/>
-                        <Separator/>
 
 
                     </StackPanel>
-                </StackPanel>
+                </Grid>
 
                 <!-- Contact Info Section -->
-                <StackPanel Grid.Column="2" Margin="10 0">
-                    <TextBlock HorizontalAlignment="Center" Text="معلومات اخرى" Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
+                <Grid Grid.Column="2" Margin="15 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+
+                    </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                               Text="معلومات اخرى"
+                               Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
 
                     <!-- Phone -->
-                    <StackPanel HorizontalAlignment="Stretch"
-                                Height="50"
+                    <StackPanel Grid.Row="1" HorizontalAlignment="Stretch"
+                                Height="30"
                                 Style="{StaticResource IconTextItem}">
                         
                         <materialDesign:PackIcon Kind="Phone" 
@@ -172,25 +215,8 @@
 
                     </StackPanel>
 
-                    <!-- Gender -->
-                    <StackPanel HorizontalAlignment="Stretch"
-                                Height="50"
-                                Style="{StaticResource IconTextItem}">
-                        
-                        <materialDesign:PackIcon Kind="Account"
-                                                 Width="30"
-                                                 Height="30"
-                                                 Margin="0 0 10 0"
-                                                 VerticalAlignment="Center"
-                                                 Foreground="{DynamicResource PrimaryHueMidBrush}"/>
-                        
-                        <TextBlock Text="{Binding Person.Gender, FallbackValue='الجنس'}"
-                                   FontSize="16"
-                                   VerticalAlignment="Center"
-                                   Foreground="{DynamicResource MaterialDesignBody}"/>
-
-                    </StackPanel>
-                </StackPanel>
+                   
+                </Grid>
             </Grid>
         </Grid>
     </materialDesign:Card>

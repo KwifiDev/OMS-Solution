@@ -63,20 +63,20 @@ namespace OMS.UI.ViewModels.Pages
             await _dialogService.ShowDialog<PersonDetailsWindow, PersonDetailsViewModel>(person.PersonId);
         }
 
-        //[RelayCommand]
-        //private async Task AddPerson()
-        //{
-        //    await _dialogService.ShowDialog<WDAddEditPerson, VMAddEditPerson>();
-        //}
+        [RelayCommand]
+        private async Task AddPerson()
+        {
+            await _dialogService.ShowDialog<AddEditPersonWindow, AddEditPersonViewModel>();
+        }
 
-        //[RelayCommand]
-        //private async Task EditPerson(PersonModel? person)
-        //{
-        //    if (person == null) return;
-        //    SelectItem(person);
+        [RelayCommand]
+        private async Task EditPerson(PersonModel? person)
+        {
+            if (person == null) return;
+            SelectItem(person);
 
-        //    await _dialogService.ShowDialog<WDAddEditPerson, VMAddEditPerson>(person.PersonId);
-        //}
+            await _dialogService.ShowDialog<AddEditPersonWindow, AddEditPersonViewModel>(person.PersonId);
+        }
 
         [RelayCommand]
         private async Task DeletePerson(PersonModel? person)
