@@ -4,8 +4,6 @@ using OMS.UI.Services.Navigation;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
 using OMS.UI.Views.Pages;
-using System.Windows;
-using System.Windows.Input;
 
 namespace OMS.UI.ViewModels.Windows
 {
@@ -18,6 +16,7 @@ namespace OMS.UI.ViewModels.Windows
         {
             _navigationService = navigationService;
             _windowService = windowService;
+            _navigationService.NavigateToPageAsync<DashboardPage>();
         }
 
 
@@ -42,6 +41,30 @@ namespace OMS.UI.ViewModels.Windows
         private bool CanOpenPeople()
         {
             return CanOpenPage<PeoplePageViewModel>();
+        }
+
+
+        [RelayCommand(CanExecute = nameof(CanOpenUsers))]
+        private async Task OpenUsers()
+        {
+            await _navigationService.NavigateToPageAsync<UsersPage>();
+            NotifyCommandsCanExecuteChanged();
+        }
+        private bool CanOpenUsers()
+        {
+            return CanOpenPage<UsersPageViewModel>();
+        }
+
+
+        [RelayCommand(CanExecute = nameof(CanOpenBranches))]
+        private async Task OpenBranches()
+        {
+            await _navigationService.NavigateToPageAsync<BranchesPage>();
+            NotifyCommandsCanExecuteChanged();
+        }
+        private bool CanOpenBranches()
+        {
+            return CanOpenPage<BranchesPageViewModel>();
         }
 
 
@@ -78,8 +101,8 @@ namespace OMS.UI.ViewModels.Windows
         {
             OpenDashboardCommand.NotifyCanExecuteChanged();
             OpenPeopleCommand.NotifyCanExecuteChanged();
+            OpenUsersCommand.NotifyCanExecuteChanged();
+            OpenBranchesCommand.NotifyCanExecuteChanged();
         }
-
-
     }
 }

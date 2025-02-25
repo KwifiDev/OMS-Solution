@@ -159,17 +159,36 @@
                         </StackPanel>
                     </Button>
 
-                    <Button Style="{StaticResource MenuButtonStyle}">
+                    <Button Style="{StaticResource MenuButtonStyle}"
+                            Command="{Binding OpenBranchesCommand}">
+
                         <StackPanel Orientation="Horizontal" 
-                                  HorizontalAlignment="Right"  
-                                  Width="180">
+                                    HorizontalAlignment="Right"  
+                                    Width="180">
+                            <materialDesign:PackIcon Kind="Building" 
+                                                     Width="28" 
+                                                     Height="28" 
+                                                     Margin="10"/>
+                            <TextBlock Text="الفروع" 
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}"
+                            Command="{Binding OpenUsersCommand}">
+                        
+                        <StackPanel Orientation="Horizontal" 
+                                    HorizontalAlignment="Right"  
+                                    Width="180">
                             <materialDesign:PackIcon Kind="AccountCircle" 
-                                                   Width="28" 
-                                                   Height="28" 
-                                                   Margin="10"/>
+                                                     Width="28" 
+                                                     Height="28" 
+                                                     Margin="10"/>
                             <TextBlock Text="حسابات الموظفين" 
                                    VerticalAlignment="Center"/>
                         </StackPanel>
+                        
                     </Button>
 
                     <Button Style="{StaticResource MenuButtonStyle}">

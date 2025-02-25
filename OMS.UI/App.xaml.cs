@@ -90,10 +90,17 @@ namespace OMS.UI
         private static void RegisterViewModels(IServiceCollection services)
         {
             services.AddSingleton<MainWindowViewModel>();
+
             services.AddSingleton<DashboardPageViewModel>();
+
             services.AddSingleton<PeoplePageViewModel>();
             services.AddTransient<PersonDetailsViewModel>();
             services.AddTransient<AddEditPersonViewModel>();
+
+            services.AddSingleton<BranchesPageViewModel>();
+
+            services.AddSingleton<UsersPageViewModel>();
+
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -111,6 +118,12 @@ namespace OMS.UI
 
             services.AddTransient(provider =>
                 new AddEditPersonWindow { DataContext = provider.GetRequiredService<AddEditPersonViewModel>() });
+
+            services.AddSingleton(provider =>
+                new BranchesPage { DataContext = provider.GetRequiredService<BranchesPageViewModel>() });
+
+            services.AddSingleton(provider =>
+                new UsersPage { DataContext = provider.GetRequiredService<UsersPageViewModel>() });
         }
 
         private static void RegisterMVVMServices(IServiceCollection services)

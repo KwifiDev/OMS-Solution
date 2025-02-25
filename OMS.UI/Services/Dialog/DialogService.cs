@@ -6,14 +6,37 @@ namespace OMS.UI.Services.Dialog
 {
     public class DialogService : IDialogService
     {
+        public async Task<bool> ShowDialog<TWindow>(int? id = null)
+        where TWindow : Window
+        {
+            var viewModel = await ShowDialogInternal<TWindow, IViewModelInitializer>(id);
+            return viewModel != null;
+        }
+
         private async Task<TViewModel?> ShowDialogInternal<TWindow, TViewModel>(int? id)
         where TWindow : Window
         where TViewModel : class, IViewModelInitializer
         {
             var window = Ioc.Default.GetRequiredService<TWindow>();
+            return await InitializeAndShowDialog<TWindow, TViewModel>(window, id);
+        }
+
+        private async Task<TViewModel?> InitializeAndShowDialog<TWindow, TViewModel>(TWindow window, int? id)
+        where TWindow : Window
+        where TViewModel : class, IViewModelInitializer
+        {
             if (window.DataContext is TViewModel viewModel)
             {
-                bool isSuccess = await viewModel.Initialize(id);
+                bool isSuccess = false;
+                try
+                {
+                    isSuccess = await viewModel.Initialize(id);
+                }
+                catch (Exception ex)
+                {
+                    HandleInitializationError(ex);
+                }
+
                 if (isSuccess)
                 {
                     window.ShowDialog();
@@ -23,12 +46,9 @@ namespace OMS.UI.Services.Dialog
             return null;
         }
 
-        public async Task<bool> ShowDialog<TWindow, TViewModel>(int? id = null)
-        where TWindow : Window
-        where TViewModel : class, IViewModelInitializer
+        private void HandleInitializationError(Exception ex)
         {
-            var viewModel = await ShowDialogInternal<TWindow, TViewModel>(id);
-            return viewModel != null;
+            // You can add additional instructions here to handle specific types of errors.
         }
     }
 }

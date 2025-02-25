@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 
 namespace OMS.UI.Services.Navigation
 {

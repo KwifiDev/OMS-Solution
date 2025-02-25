@@ -9,7 +9,6 @@ using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.Status;
-using OMS.UI.ViewModels.Windows;
 using OMS.UI.Views.Windows;
 using System.Collections.ObjectModel;
 
@@ -60,13 +59,13 @@ namespace OMS.UI.ViewModels.Pages
             if (person == null) return;
             SelectItem(person);
 
-            await _dialogService.ShowDialog<PersonDetailsWindow, PersonDetailsViewModel>(person.PersonId);
+            await _dialogService.ShowDialog<PersonDetailsWindow>(person.PersonId);
         }
 
         [RelayCommand]
         private async Task AddPerson()
         {
-            await _dialogService.ShowDialog<AddEditPersonWindow, AddEditPersonViewModel>();
+            await _dialogService.ShowDialog<AddEditPersonWindow>();
         }
 
         [RelayCommand]
@@ -75,7 +74,7 @@ namespace OMS.UI.ViewModels.Pages
             if (person == null) return;
             SelectItem(person);
 
-            await _dialogService.ShowDialog<AddEditPersonWindow, AddEditPersonViewModel>(person.PersonId);
+            await _dialogService.ShowDialog<AddEditPersonWindow>(person.PersonId);
         }
 
         [RelayCommand]
