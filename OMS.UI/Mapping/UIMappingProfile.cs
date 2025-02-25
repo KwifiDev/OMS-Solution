@@ -9,6 +9,7 @@ namespace OMS.UI.Mapping
         public UIMappingProfile()
         {
             CreateMap<PersonDto, PersonModel>().ReverseMap();
+            CreateMap<BranchDto, BranchModel>().ReverseMap();
         }
     }
 }

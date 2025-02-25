@@ -15,11 +15,6 @@
       FontFamily="LBC"
       Name="PGPeople">
 
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadDataCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
 
     <Page.Resources>
         <ResourceDictionary>
@@ -29,6 +24,15 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
+
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadDataCommand}" />
+            <i:ControlStoryboardAction Storyboard="{StaticResource PageLoadAnimation}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
 
     <Grid>
         <Grid.RowDefinitions>
@@ -58,7 +62,8 @@
             </StackPanel>
         </materialDesign:Card>
 
-        <ListView Margin="0 0 5 0"
+        <ListView Name="peopleList"
+                  Margin="0 0 5 0"
                   Grid.Row="1"
                   ItemsSource="{Binding People}"
                   SelectedItem="{Binding SelectedPerson}"

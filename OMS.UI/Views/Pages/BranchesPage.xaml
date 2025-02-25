@@ -5,26 +5,31 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
       xmlns:local="clr-namespace:OMS.UI.Views.Pages"
-      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+      xmlns:pages="clr-namespace:OMS.UI.ViewModels.Pages"
+      d:DataContext="{d:DesignInstance Type=pages:BranchesPageViewModel}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       FlowDirection="RightToLeft"
       FontFamily="LBC"
-      Title="BranchesPage">
-
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadDataCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+      Title="BranchesPage"
+      Name="PGBranches">
 
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/BranchesListViewStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/PageStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadDataCommand}" />
+            <i:ControlStoryboardAction Storyboard="{StaticResource PageLoadAnimation}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -46,13 +51,51 @@
                              Height="54"/>
 
                 <TextBlock Text="قائمة الافرع"
-               Foreground="White"
-               FontSize="20"
-               FontWeight="Bold"
-               Margin="10 0 0 0"
-               VerticalAlignment="Center"/>
+                           Foreground="White"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Margin="10 0 0 0"
+                           VerticalAlignment="Center"/>
             </StackPanel>
         </materialDesign:Card>
+
+        <ListView x:Name="branchesList"
+                  Margin="0 0 5 0"
+                  Grid.Row="1"
+                  ItemsSource="{Binding Branches}"
+                  SelectedItem="{Binding SelectedBranch}"
+                  ItemTemplate="{StaticResource BranchItemTemplate}"
+                  ItemContainerStyle="{StaticResource MaterialDesignNavigationPrimaryListBoxItem}"
+                  Style="{StaticResource MaterialListView}"
+                  materialDesign:RippleAssist.Feedback="#10000000">
+
+            <ListView.ContextMenu>
+                <ContextMenu Style="{StaticResource MaterialDesignContextMenu}">
+
+                    <MenuItem Header="اضافة فرع" 
+                       Command="{Binding AddPersonCommand}"
+                       Icon="{materialDesign:PackIcon Kind=HouseAdd}"/>
+
+                    <MenuItem Header="تعديل فرع" 
+                       Command="{Binding EditPersonCommand}" 
+                       CommandParameter="{Binding SelectedBranch}"
+                       Icon="{materialDesign:PackIcon Kind=HouseEdit}"/>
+
+                    <MenuItem Header="حذف فرع" 
+                       Command="{Binding DeletePersonCommand}" 
+                       CommandParameter="{Binding SelectedBranch}"
+                       Icon="{materialDesign:PackIcon Kind=HouseRemove}"
+                       Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"/>
+
+                    <Separator Style="{StaticResource MaterialDesignSeparator}"/>
+
+                    <MenuItem Header="تحديث" 
+                       Command="{Binding LoadDataCommand}"
+                       Icon="{materialDesign:PackIcon Kind=Refresh}"/>
+
+                </ContextMenu>
+            </ListView.ContextMenu>
+        </ListView>
 
     </Grid>
 </Page>

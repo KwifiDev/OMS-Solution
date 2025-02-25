@@ -71,8 +71,12 @@ namespace OMS.UI
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
             services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IPersonService, PersonService>();
+
+            services.AddTransient<IBranchRepository, BranchRepository>();
+            services.AddTransient<IBranchService, BranchService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)
