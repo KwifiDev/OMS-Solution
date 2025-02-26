@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models
 {
@@ -7,7 +8,6 @@ namespace OMS.UI.Models
         private int _branchId;
         private string _name = null!;
         private string _address = null!;
-
 
         public int BranchId
         {
@@ -19,16 +19,20 @@ namespace OMS.UI.Models
             }
         }
 
+        [Required(ErrorMessage = "الاسم الفرع مطلوب")]
+        [MinLength(5, ErrorMessage = "الاسم على الاقل مكون من خمس احرف")]
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value);
+            set => SetProperty(ref _name, value, validate: true);
         }
 
+        [Required(ErrorMessage = "عنوان الفرع مطلوب")]
+        [MinLength(10, ErrorMessage = "العناون على الاقل مكون من عشر احرف")]
         public string Address
         {
             get => _address;
-            set => SetProperty(ref _address, value);
+            set => SetProperty(ref _address, value, validate: true);
         }
 
         // DisplayProperty

@@ -43,4 +43,16 @@
     <ProjectReference Include="..\OMS.Common\OMS.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\Windows\AddEditBranchWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Windows\AddEditBranchWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

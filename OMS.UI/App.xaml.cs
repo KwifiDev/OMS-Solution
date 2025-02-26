@@ -103,6 +103,8 @@ namespace OMS.UI
 
             services.AddSingleton<BranchesPageViewModel>();
 
+            services.AddTransient<AddEditBranchViewModel>();
+
             services.AddSingleton<UsersPageViewModel>();
 
         }
@@ -126,8 +128,13 @@ namespace OMS.UI
             services.AddSingleton(provider =>
                 new BranchesPage { DataContext = provider.GetRequiredService<BranchesPageViewModel>() });
 
+            services.AddTransient(provider =>
+                new AddEditBranchWindow { DataContext = provider.GetRequiredService<AddEditBranchViewModel>() });
+
             services.AddSingleton(provider =>
                 new UsersPage { DataContext = provider.GetRequiredService<UsersPageViewModel>() });
+
+
         }
 
         private static void RegisterMVVMServices(IServiceCollection services)

@@ -5,9 +5,9 @@ namespace OMS.UI.Views.Windows
     /// <summary>
     /// Interaction logic for AddEditPersonWindow.xaml
     /// </summary>
-    public partial class AddEditPersonWindow : Window
+    public partial class AddEditBranchWindow : Window
     {
-        public AddEditPersonWindow()
+        public AddEditBranchWindow()
         {
             InitializeComponent();
         }

@@ -73,16 +73,16 @@
                 <ContextMenu Style="{StaticResource MaterialDesignContextMenu}">
 
                     <MenuItem Header="اضافة فرع" 
-                       Command="{Binding AddPersonCommand}"
+                       Command="{Binding AddBranchCommand}"
                        Icon="{materialDesign:PackIcon Kind=HouseAdd}"/>
 
                     <MenuItem Header="تعديل فرع" 
-                       Command="{Binding EditPersonCommand}" 
+                       Command="{Binding EditBranchCommand}" 
                        CommandParameter="{Binding SelectedBranch}"
                        Icon="{materialDesign:PackIcon Kind=HouseEdit}"/>
 
                     <MenuItem Header="حذف فرع" 
-                       Command="{Binding DeletePersonCommand}" 
+                       Command="{Binding DeleteBranchCommand}" 
                        CommandParameter="{Binding SelectedBranch}"
                        Icon="{materialDesign:PackIcon Kind=HouseRemove}"
                        Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"/>
