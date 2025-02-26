@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OMS.BL.Dtos.Tables;
+using OMS.BL.Dtos.Views;
 using OMS.UI.Models;
 
 namespace OMS.UI.Mapping
@@ -10,6 +11,8 @@ namespace OMS.UI.Mapping
         {
             CreateMap<PersonDto, PersonModel>().ReverseMap();
             CreateMap<BranchDto, BranchModel>().ReverseMap();
+            CreateMap<UserDto, UserModel>().ReverseMap();
+            CreateMap<UserDetailDto, UserDetailModel>().ReverseMap();
         }
     }
 }

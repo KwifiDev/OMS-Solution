@@ -5,11 +5,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OMS.BL.IServices.Tables;
+using OMS.BL.IServices.Views;
 using OMS.BL.Mapping;
 using OMS.BL.Services.Tables;
+using OMS.BL.Services.Views;
 using OMS.DA.Context;
 using OMS.DA.IRepositories.IEntityRepos;
+using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Repositories.EntityRepos;
+using OMS.DA.Repositories.ViewRepos;
 using OMS.UI.Mapping;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Navigation;
@@ -45,7 +49,6 @@ namespace OMS.UI
                 .ConfigureServices((context, services) =>
                 {
                     RegisterDbContext(services, context.Configuration);
-                    RegisterRepositories(services);
                     RegisterServices(services);
                     RegisterMapper(services);
                     RegisterViewModels(services);
@@ -62,21 +65,22 @@ namespace OMS.UI
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
         }
 
-        private static void RegisterRepositories(IServiceCollection services)
-        {
-            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            // Register other repositories
-        }
-
         private static void RegisterServices(IServiceCollection services)
         {
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient(typeof(IGenericViewRepository<>), typeof(GenericViewRepository<>));
 
             services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IPersonService, PersonService>();
 
             services.AddTransient<IBranchRepository, BranchRepository>();
             services.AddTransient<IBranchService, BranchService>();
+
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserService, UserService>();
+
+            services.AddTransient<IUserDetailRepository, UserDetailRepository>();
+            services.AddTransient<IUserDetailService, UserDetailService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)

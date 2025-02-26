@@ -42,12 +42,12 @@ namespace OMS.UI.Models
         public string Username
         {
             get => _userName;
-            set => SetProperty(ref _userName, value);
+            set => SetProperty(ref _userName, value, validate: true);
         }
         public string Password
         {
             get => _password;
-            set => SetProperty(ref _password, value);
+            set => SetProperty(ref _password, value, validate: true);
         }
         public int Permissions
         {

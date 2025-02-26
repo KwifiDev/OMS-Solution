@@ -12,21 +12,24 @@
       d:DesignHeight="450" d:DesignWidth="800"
       FlowDirection="RightToLeft"
       FontFamily="LBC"
-      Title="UsersPage">
-
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadDataCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+      Title="UsersPage"
+      Name="PGUsers">
 
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/PageStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/UsersListViewStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadDataCommand}"/>
+            <i:ControlStoryboardAction Storyboard="{StaticResource PageLoadAnimation}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -55,6 +58,51 @@
                    VerticalAlignment="Center"/>
             </StackPanel>
         </materialDesign:Card>
-        
+
+        <ListView Name="usersList"
+           Margin="0 0 5 0"
+           Grid.Row="1"
+           ItemsSource="{Binding Users}"
+           SelectedItem="{Binding SelectedUser}"
+           ItemTemplate="{StaticResource UserItemTemplate}"
+           ItemContainerStyle="{StaticResource MaterialDesignNavigationPrimaryListBoxItem}"
+           Style="{StaticResource MaterialListView}"
+           materialDesign:RippleAssist.Feedback="#10000000">
+
+            <ListView.ContextMenu>
+                <ContextMenu Style="{StaticResource MaterialDesignContextMenu}">
+
+                    <MenuItem Header="عرض التفاصيل" 
+                       Command="{Binding ShowDetailsCommand}"
+                       CommandParameter="{Binding SelectedUser}"
+                       Icon="{materialDesign:PackIcon Kind=AccountDetails}"/>
+
+                    <Separator Style="{StaticResource MaterialDesignSeparator}"/>
+
+                    <MenuItem Header="اضافة موظف" 
+                       Command="{Binding AddUserCommand}"
+                       Icon="{materialDesign:PackIcon Kind=AccountPlus}"/>
+
+                    <MenuItem Header="تعديل بيانات موظف" 
+                       Command="{Binding EditUserCommand}" 
+                       CommandParameter="{Binding SelectedUser}"
+                       Icon="{materialDesign:PackIcon Kind=AccountEdit}"/>
+
+                    <MenuItem Header="حذف موظف" 
+                       Command="{Binding DeleteUserCommand}" 
+                       CommandParameter="{Binding SelectedUser}"
+                       Icon="{materialDesign:PackIcon Kind=AccountRemove}"
+                       Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"/>
+
+                    <Separator Style="{StaticResource MaterialDesignSeparator}"/>
+
+                    <MenuItem Header="تحديث" 
+                       Command="{Binding LoadDataCommand}"
+                       Icon="{materialDesign:PackIcon Kind=Refresh}"/>
+
+                </ContextMenu>
+            </ListView.ContextMenu>
+        </ListView>
+
     </Grid>
 </Page>

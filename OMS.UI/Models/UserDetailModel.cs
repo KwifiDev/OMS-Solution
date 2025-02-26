@@ -1,0 +1,58 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace OMS.UI.Models
+{
+    public class UserDetailModel : ObservableObject
+    {
+        //DA
+        //public int UserId { get; set; }
+        //public string EmployeeName { get; set; } = null!;
+        //public string Username { get; set; } = null!;
+        //public string? IsActive { get; set; }
+        //public string WorkingBranch { get; set; } = null!;
+
+        //BL
+        //public int UserId { get; set; }
+        //public string EmployeeName { get; set; } = null!;
+        //public string Username { get; set; } = null!;
+        //public string? IsActive { get; set; }
+        //public string WorkingBranch { get; set; } = null!;
+
+        private int _userId;
+        private string _employeeName = null!;
+        private string _username = null!;
+        private string? _isActive;
+        private string _workingBranch = null!;
+
+        public int UserId
+        {
+            get => _userId;
+            set => SetProperty(ref _userId, value);
+        }
+
+        public string EmployeeName
+        {
+            get => _employeeName;
+            set => SetProperty(ref _employeeName, value);
+        }
+
+        public string Username
+        {
+            get => _username;
+            set => SetProperty(ref _username, value);
+        }
+
+        public string? IsActive
+        {
+            get => _isActive;
+            set => SetProperty(ref _isActive, value);
+        }
+
+        public string WorkingBranch
+        {
+            get => _workingBranch;
+            set => SetProperty(ref _workingBranch, value);
+        }
+
+    }
+}
