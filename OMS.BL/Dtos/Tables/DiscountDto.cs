@@ -16,13 +16,4 @@ public partial class DiscountDto
     public required EnClientType ClientType { get; set; }
 
     public required decimal DiscountPercentage { get; set; }
-
-    // ===========================================================
-    public string ClientTypeText
-    {
-        get => ClientType == EnClientType.Normal ? "عادي" :
-                ClientType == EnClientType.Lawyer ? "محامي" :
-                ClientType == EnClientType.Other ? "غير ذلك" :
-                "غير معروف";
-    }
 }

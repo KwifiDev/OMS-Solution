@@ -18,7 +18,4 @@ public partial class UserDto
     public required int Permissions { get; set; }
 
     public bool IsActive { get; set; } = false;
-
-    // ===========================================================
-    public string IsActiveText { get => IsActive ? "نشط" : "غير نشط"; }
 }

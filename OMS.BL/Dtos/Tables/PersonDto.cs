@@ -19,9 +19,4 @@ public partial class PersonDto
 
     public string? Phone { get; set; }
 
-    // ========================================================================
-    public string GenderText { get => Gender == EnGender.Male ? "ذكر" : "انثى"; }
-    public string FullName { get => $"{FirstName} {LastName}"; }
-
-
 }

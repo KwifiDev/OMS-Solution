@@ -36,13 +36,4 @@ public partial class DebtDto
     public int? PaymentId { get; set; }
 
     public required int CreatedByUserId { get; set; }
-
-    // ============================================================
-    public string StatusText
-    {
-        get => Status == EnDebtStatus.NotPaid ? "غير مدفوع" :
-                Status == EnDebtStatus.Paid ? "مدفوع" :
-                Status == EnDebtStatus.Canceled ? "ملغا" :
-                "غير معرف";
-    }
 }

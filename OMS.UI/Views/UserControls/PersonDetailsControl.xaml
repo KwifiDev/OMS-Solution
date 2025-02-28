@@ -1,0 +1,176 @@
+﻿<UserControl x:Class="OMS.UI.Views.UserControls.PersonDetailsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OMS.UI.Views.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="600"
+             FlowDirection="RightToLeft"
+             FontFamily="LBC">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Resources/Styles/PersonDetailsStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <!-- Content Grid -->
+    <Grid Margin="10 15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Profile Section -->
+        <Border BorderBrush="Black" BorderThickness="0 0 1 0" Margin="0 0 20 0">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Border Style="{StaticResource PhotoBorder}" 
+            Grid.Column="0" 
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Margin="32 0 32 0">
+                    <materialDesign:PackIcon 
+            Kind="{Binding Person.Gender, Converter={StaticResource GenderImage}}" 
+            Width="56"
+            Height="56"
+            Foreground="{StaticResource MaterialDesignShadowBrush}"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"/>
+                </Border>
+
+                <!-- Gender -->
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                    Height="30"
+                    Style="{StaticResource IconTextItem}">
+
+                    <materialDesign:PackIcon Kind="Account"
+                  Width="30"
+                  Height="30"
+                  Margin="0 0 10 0"
+                  VerticalAlignment="Center"
+                  Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+
+                    <TextBlock Text="{Binding Person.GenderDisplay, FallbackValue='الجنس'}"
+                       FontSize="16"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                </StackPanel>
+
+            </Grid>
+        </Border>
+
+        <!-- Personal Info Section -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+
+            </Grid.RowDefinitions>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                   Text="المعلومات الشخصية"
+                   Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
+
+            <!-- Person ID -->
+            <StackPanel Grid.Row="1" Orientation="Vertical" 
+                    HorizontalAlignment="Stretch"
+                    Style="{StaticResource DetailItem}">
+
+                <TextBlock Text="رقم المعرف" 
+                       MinWidth="120"
+                       FontWeight="Bold"
+                       Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                <Separator/>
+
+                <TextBlock Text="{Binding Person.PersonId, FallbackValue='???'}" 
+                       Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                       Foreground="{DynamicResource MaterialDesignBody}"
+                       FontSize="16"/>
+            </StackPanel>
+
+            <!-- Name -->
+            <StackPanel Grid.Row="2" Orientation="Vertical"
+                    HorizontalAlignment="Stretch"
+                    Style="{StaticResource DetailItem}">
+
+                <TextBlock Text="الاسم الأول" 
+                       MinWidth="120"
+                       FontWeight="Bold"
+                       Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                <Separator/>
+
+                <TextBlock Text="{Binding Person.FirstName, FallbackValue='???'}" 
+                       Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                       FontSize="16"/>
+
+            </StackPanel>
+
+            <!-- Last Name -->
+            <StackPanel Grid.Row="3" Orientation="Vertical"
+                    HorizontalAlignment="Stretch"
+                    Style="{StaticResource DetailItem}">
+
+                <TextBlock Text="النسبة" 
+                       MinWidth="120"
+                       FontWeight="Bold"
+                       Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                <Separator/>
+
+                <TextBlock Text="{Binding Person.LastName, FallbackValue='???'}" 
+                       Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                       FontSize="16"/>
+
+
+            </StackPanel>
+        </Grid>
+
+        <!-- Contact Info Section -->
+        <Grid Grid.Column="2" Margin="15 0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+
+            </Grid.RowDefinitions>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                   Text="معلومات اخرى"
+                   Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
+
+            <!-- Phone -->
+            <StackPanel Grid.Row="1" HorizontalAlignment="Stretch"
+                    Height="30"
+                    Style="{StaticResource IconTextItem}">
+
+                <materialDesign:PackIcon Kind="Phone" 
+                                     Width="30"
+                                     Height="30"
+                                     Margin="0 0 10 0"
+                                     VerticalAlignment="Center"
+                                     Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+
+                <TextBlock Text="{Binding Person.PhoneDisplay, FallbackValue='0900000000'}"
+                       FontSize="16"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource MaterialDesignBody}"/>
+
+            </StackPanel>
+
+
+        </Grid>
+    </Grid>
+
+
+</UserControl>

@@ -22,13 +22,4 @@ public partial class TransactionDto
     public DateOnly CreatedAt { get; internal set; }
 
     public int CreatedByUserId { get; internal set; }
-
-    // =======================================================
-    public string TransactionTypeText
-    {
-        get => TransactionType == EnTransactionType.Deposit ? "ايداع" :
-                TransactionType == EnTransactionType.Withdraw ? "سحب" :
-                TransactionType == EnTransactionType.Transfer ? "تحويل" :
-                "غير معرف";
-    }
 }

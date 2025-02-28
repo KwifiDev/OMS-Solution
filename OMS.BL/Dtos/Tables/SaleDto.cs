@@ -34,14 +34,4 @@ public partial class SaleDto
     public EnSaleStatus Status { get; set; }
 
     public required int CreatedByUserId { get; set; }
-
-
-    // =============================================================
-    public string StatusText
-    {
-        get => Status == EnSaleStatus.Uncompleted ? "غير مكتمل" :
-                Status == EnSaleStatus.Completed ? "مكتمل" :
-                Status == EnSaleStatus.Canceled ? "ملغا" :
-                "غير معرف";
-    }
 }
