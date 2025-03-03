@@ -1,11 +1,11 @@
 ﻿
-using OMS.UI.Services.Status;
+using OMS.UI.Services.StatusManagement;
 
 namespace OMS.UI.Services.ModelTransfer
 {
     public interface IMessage<TModel> where TModel : class
     {
-        StatusInfo Status { get; set; }
+        AddEditStatus Status { get; set; }
         TModel Model { get; set; }
     }
 }

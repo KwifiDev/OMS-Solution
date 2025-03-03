@@ -1,0 +1,147 @@
+﻿<Window x:Class="OMS.UI.Views.Windows.AddEditUserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
+        xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows"
+        xmlns:uc="clr-namespace:OMS.UI.Views.UserControls"
+        d:DataContext="{d:DesignInstance Type=windows:AddEditUserViewModel}"
+        mc:Ignorable="d"
+        Height="600" 
+        Width="600"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource MaterialDesignWindow}"
+        FlowDirection="RightToLeft"
+        FontFamily="LBC"
+        ResizeMode="NoResize"
+        WindowStyle="None">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/PageStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid FlowDirection="RightToLeft">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            
+            <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                    Height="25"
+                    Foreground="White"
+                    Command="{Binding CloseCommand}">
+                <materialDesign:PackIcon Kind="WindowClose" Width="15" Height="15"/>
+            </Button>
+
+            <Label x:Name="lblTitle"
+                     Style="{StaticResource MaterialDesignLabel}"
+                     FontWeight="Bold" 
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     FontSize="24"
+                     Content="نمط العملية"
+                     Background="{StaticResource PageHeaderGradient}"
+                     Grid.ColumnSpan="5"
+                     Foreground="White">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <i:InvokeCommandAction Command="{Binding DragWindowCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </Label>
+        </StackPanel>
+        
+
+        <uc:FindPersonControl VerticalAlignment="Top"
+                              DataContext="{Binding FindPersonViewModel}"
+                              Grid.Row="1"/>
+
+        <Grid Grid.Row="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <TextBox Name="txtUsername" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding User.Username, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                     FontSize="16"
+                     Margin="10,5,10,5"
+                     Grid.Row="0" Grid.Column="0"
+                     materialDesign:HintAssist.Hint="الاسم المستخدم"
+                     IsEnabled="{Binding Status.IsInChangeMode}"/>
+
+            <TextBox Name="txtPassword"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding User.Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                     FontSize="16"
+                     Margin="10,5,10,5"
+                     Grid.Row="1" Grid.Column="0"
+                     materialDesign:HintAssist.Hint="كلمة السر"
+                     IsEnabled="{Binding Status.IsInChangeMode}">
+            </TextBox>
+
+
+            <CheckBox Style="{StaticResource MaterialDesignDarkCheckBox}"
+                      Content="تفعيل الحساب"
+                      FontSize="16"
+                      Margin="10,5,10,5"
+                      Grid.Row="1" Grid.Column="1"
+                      IsChecked="{Binding User.IsActive}"
+                      IsEnabled="{Binding Status.IsInChangeMode}"/>
+
+            <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                      ItemsSource="{Binding Branches}"
+                      DisplayMemberPath="Name"
+                      SelectedValuePath="BranchId"
+                      SelectedValue="{Binding User.BranchId}"
+                      Height="50"
+                      FontSize="16" 
+                      Margin="10,0,10,0"
+                      Padding="15 0"
+                      Grid.Row="0" Grid.Column="1"
+                      materialDesign:HintAssist.Hint="الفرع"
+                      IsEnabled="{Binding Status.IsInChangeMode}">
+            </ComboBox>
+
+            <Button x:Name="btnSave"
+                    Grid.Row="5"
+                    Style="{StaticResource MaterialDesignOutlinedDarkButton}"
+                    Width="120"
+                    Content="{Binding Status.ClickContent, FallbackValue=اضافة}"
+                    Command="{Binding SaveUserCommand}"
+                    IsEnabled="{Binding Status.IsInChangeMode}">
+            </Button>
+
+            <Button
+                    Grid.Row="5"
+                    Grid.Column="2"
+                    Style="{StaticResource MaterialDesignOutlinedDarkButton}"
+                    Width="120"
+                    Content="اغلاق"
+                    Command="{Binding CloseCommand}">
+            </Button>
+
+        </Grid>
+        
+    </Grid>
+</Window>

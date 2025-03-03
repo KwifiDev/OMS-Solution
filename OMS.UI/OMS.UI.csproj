@@ -26,7 +26,6 @@
   <ItemGroup>
     <Folder Include="Resources\Images\" />
     <Folder Include="Resources\Icons\" />
-    <Folder Include="ViewModels\UserControls\" />
   </ItemGroup>
 
   <ItemGroup>

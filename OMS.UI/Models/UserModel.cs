@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models
 {
@@ -12,6 +13,8 @@ namespace OMS.UI.Models
         private int _permissions;
         private bool _isActive;
 
+
+        
         public int UserId
         {
             get => _userId;
@@ -39,11 +42,17 @@ namespace OMS.UI.Models
                 OnPropertyChanged(nameof(BranchIdDisplay));
             }
         }
+
+        [Required(ErrorMessage = "اسم المستخدم مطلوب")]
+        [MinLength(3, ErrorMessage = "اسم المستخدم على الاقل مكون من ثلاث احرف")]
         public string Username
         {
             get => _userName;
             set => SetProperty(ref _userName, value, validate: true);
         }
+
+        [Required(ErrorMessage = "نسيت تعيين كلمة السر")]
+        [MinLength(5, ErrorMessage = "كلمة السر على الاقل مكون من 5 محارف")]
         public string Password
         {
             get => _password;

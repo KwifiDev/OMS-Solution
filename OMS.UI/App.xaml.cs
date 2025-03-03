@@ -20,6 +20,8 @@ using OMS.UI.Services.Navigation;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
+using OMS.UI.ViewModels.UserControls;
+using OMS.UI.ViewModels.UserControls.Interfaces;
 using OMS.UI.ViewModels.Windows;
 using OMS.UI.Views;
 using OMS.UI.Views.Pages;
@@ -81,6 +83,9 @@ namespace OMS.UI
 
             services.AddTransient<IUserDetailRepository, UserDetailRepository>();
             services.AddTransient<IUserDetailService, UserDetailService>();
+
+            services.AddTransient<IBranchOptionRepository, BranchOptionRepository>();
+            services.AddTransient<IBranchOptionService, BranchOptionService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)
@@ -111,6 +116,9 @@ namespace OMS.UI
 
             services.AddSingleton<UsersPageViewModel>();
 
+            services.AddTransient<IFindPersonViewModel, FindPersonViewModel>();
+
+            services.AddTransient<AddEditUserViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -138,6 +146,8 @@ namespace OMS.UI
             services.AddSingleton(provider =>
                 new UsersPage { DataContext = provider.GetRequiredService<UsersPageViewModel>() });
 
+            services.AddTransient(provider =>
+                new AddEditUserWindow { DataContext = provider.GetRequiredService<AddEditUserViewModel>() });
 
         }
 

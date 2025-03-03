@@ -1,17 +1,17 @@
 ﻿
-using OMS.UI.Services.Status;
+using OMS.UI.Services.StatusManagement;
 
 namespace OMS.UI.Services.ModelTransfer
 {
     public class ModelTransferService<TModel> : IMessage<TModel> where TModel : class
     {
-        private WeakReference<StatusInfo> _status = null!;
+        private WeakReference<AddEditStatus> _status = null!;
         private WeakReference<TModel> _model = null!;
 
-        public required StatusInfo Status
+        public required AddEditStatus Status
         {
             get => _status.TryGetTarget(out var status) ? status : throw new InvalidOperationException("Status reference is null.");
-            set => _status = new WeakReference<StatusInfo>(value);
+            set => _status = new WeakReference<AddEditStatus>(value);
         }
 
         public required TModel Model

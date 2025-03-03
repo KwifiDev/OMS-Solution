@@ -8,7 +8,7 @@ using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
-using OMS.UI.Services.Status;
+using OMS.UI.Services.StatusManagement;
 using OMS.UI.Views.Windows;
 using System.Collections.ObjectModel;
 
@@ -42,10 +42,10 @@ namespace OMS.UI.ViewModels.Pages
         {
             switch (message.Status.Operation)
             {
-                case StatusInfo.EnExecuteOperation.Added:
+                case AddEditStatus.EnExecuteOperation.Added:
                     OnBranchAdd(message.Model);
                     break;
-                case StatusInfo.EnExecuteOperation.Updated:
+                case AddEditStatus.EnExecuteOperation.Updated:
                     OnBranchEdit(message.Model);
                     break;
                 default:

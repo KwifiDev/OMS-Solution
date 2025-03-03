@@ -1,13 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace OMS.UI.Services.Status
+namespace OMS.UI.Services.StatusManagement
 {
-    public class StatusInfo : ObservableObject
+    public class AddEditStatus : ObservableObject
     {
         public enum EnExecuteOperation { Added, Updated }
         public enum EnMode { Add, Edit }
 
-        public StatusInfo()
+        public AddEditStatus()
         {
             Title = "اضافة/تعديل";
             ClickContent = "حفظ";

@@ -13,6 +13,7 @@ namespace OMS.UI.Mapping
             CreateMap<BranchDto, BranchModel>().ReverseMap();
             CreateMap<UserDto, UserModel>().ReverseMap();
             CreateMap<UserDetailDto, UserDetailModel>().ReverseMap();
+            CreateMap<BranchOptionDto, BranchOption>().ReverseMap();
         }
     }
 }

@@ -25,6 +25,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<BranchOperationalMetric> BranchOperationalMetrics { get; set; }
 
+    public virtual DbSet<BranchOption> BranchOptions { get; set; }
+
     public virtual DbSet<Client> Clients { get; set; }
 
     public virtual DbSet<ClientDetail> ClientDetails { get; set; }
@@ -90,6 +92,8 @@ public partial class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new BranchConfig());
 
         modelBuilder.ApplyConfiguration(new BranchOperationalMetricConfig());
+
+        modelBuilder.ApplyConfiguration(new BranchOptionConfig());
 
         modelBuilder.ApplyConfiguration(new ClientConfig());
 

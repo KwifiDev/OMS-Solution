@@ -40,6 +40,8 @@ namespace OMS.BL.Mapping
 
             CreateMap<BranchOperationalMetric, BranchOperationalMetricDto>().ReverseMap();
 
+            CreateMap<BranchOption, BranchOptionDto>().ReverseMap();
+
             CreateMap<ClientDetail, ClientDetailDto>().ReverseMap();
 
             CreateMap<ClientsByType, ClientsByTypeDto>().ReverseMap();

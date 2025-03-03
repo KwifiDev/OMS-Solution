@@ -8,7 +8,7 @@ using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
-using OMS.UI.Services.Status;
+using OMS.UI.Services.StatusManagement;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Interfaces;
 using System.Collections.ObjectModel;
@@ -26,7 +26,7 @@ namespace OMS.UI.ViewModels.Windows
         private PersonModel _person = null!;
 
         [ObservableProperty]
-        private StatusInfo _status;
+        private AddEditStatus _status;
 
         public AddEditPersonViewModel(IPersonService personService, IMapper mapper, IMessageService messageService, IWindowService windowService)
         {
@@ -35,7 +35,7 @@ namespace OMS.UI.ViewModels.Windows
             _mapper = mapper;
             _messageService = messageService;
             _windowService = windowService;
-            Status = new StatusInfo();
+            Status = new AddEditStatus();
         }
 
         public ObservableCollection<GenderOption> Genders { get; }
@@ -55,7 +55,7 @@ namespace OMS.UI.ViewModels.Windows
 
         private bool SetAddStatus()
         {
-            Status.SelectMode = StatusInfo.EnMode.Add;
+            Status.SelectMode = AddEditStatus.EnMode.Add;
             Status.Title = "نمط الأضافة";
             Status.ClickContent = "أضافة";
             Person = new PersonModel();
@@ -77,7 +77,7 @@ namespace OMS.UI.ViewModels.Windows
                 return false;
             }
 
-            Status.SelectMode = StatusInfo.EnMode.Edit;
+            Status.SelectMode = AddEditStatus.EnMode.Edit;
             Status.Title = "نمط التعديل";
             Status.ClickContent = "تعديل";
 
@@ -91,7 +91,7 @@ namespace OMS.UI.ViewModels.Windows
             if (!ValidatePerson()) return;
 
             var personDto = MapPersonToDto();
-            var isAdding = Status.SelectMode == StatusInfo.EnMode.Add;
+            var isAdding = Status.SelectMode == AddEditStatus.EnMode.Add;
 
             bool isSuccess = await SavePersonData(isAdding, personDto);
 
@@ -146,14 +146,14 @@ namespace OMS.UI.ViewModels.Windows
             {
                 Person.PersonId = personDto.PersonId;
                 Status.ClickContent = "تم الاضافة";
-                Status.SelectMode = StatusInfo.EnMode.Edit;
-                Status.Operation = StatusInfo.EnExecuteOperation.Added;
+                Status.SelectMode = AddEditStatus.EnMode.Edit;
+                Status.Operation = AddEditStatus.EnExecuteOperation.Added;
                 _messageService.ShowInfoMessage("اجراء اضافة شخص جديد", MessageTemplates.AdditionSuccessMessage);
             }
             else
             {
                 Status.ClickContent = "تم التعديل";
-                Status.Operation = StatusInfo.EnExecuteOperation.Updated;
+                Status.Operation = AddEditStatus.EnExecuteOperation.Updated;
                 _messageService.ShowInfoMessage("اجراء تعديل بيانات شخص", MessageTemplates.UpdateSuccessMessage);
             }
 
