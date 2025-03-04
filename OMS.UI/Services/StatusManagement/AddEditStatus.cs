@@ -1,44 +1,19 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace OMS.UI.Services.StatusManagement
+﻿namespace OMS.UI.Services.StatusManagement
 {
-    public class AddEditStatus : ObservableObject
+    public class AddEditStatus : BaseStatus
     {
         public enum EnExecuteOperation { Added, Updated }
-        public enum EnMode { Add, Edit }
+        public enum EnMode { Empty, Add, Edit }
+
+        private EnMode _selectMode;
+        private string _title = "نمط العملية";
+        private string _color = "#FF4682B4";
+        private EnExecuteOperation _operation;
 
         public AddEditStatus()
         {
-            Title = "اضافة/تعديل";
             ClickContent = "حفظ";
-            Color = SelectMode == EnMode.Add ? "#FF4682B4" : "#FFFF8C00";
-            IsInChangeMode = true;
-        }
-
-
-        private EnExecuteOperation _operation;
-        private string? _title;
-        private string? _btnContent;
-        private string? _color;
-        private EnMode _selectMode;
-        private bool _isInChangeMode;
-
-        public string? Title
-        {
-            get => _title;
-            set => SetProperty(ref _title, value);
-        }
-
-        public string? ClickContent
-        {
-            get => _btnContent;
-            set => SetProperty(ref _btnContent, value);
-        }
-
-        public string? Color
-        {
-            get => _color;
-            set => SetProperty(ref _color, value);
+            IsModifiable = true;
         }
 
         public EnMode SelectMode
@@ -48,25 +23,62 @@ namespace OMS.UI.Services.StatusManagement
             {
                 if (SetProperty(ref _selectMode, value))
                 {
-                    Color = _selectMode == EnMode.Add ? "#FF4682B4" : "#FFFF8C00";
+                    UpdateProperties();
                 }
             }
         }
 
-        public bool IsInChangeMode
+        public string? Title
         {
-            get => _isInChangeMode;
-            set => SetProperty(ref _isInChangeMode, value);
+            get => _title;
+            private set => SetProperty(ref _title!, value);
+        }
+
+        public string? Color
+        {
+            get => _color;
+            private set => SetProperty(ref _color!, value);
         }
 
         public EnExecuteOperation Operation
         {
             get => _operation;
-            set => SetProperty(ref _operation, value);
+            set
+            {
+                UpdateClickContent();
+                SetProperty(ref _operation, value);
+            }
         }
 
-        public bool IsUpdated => !IsInChangeMode;
+        private void UpdateClickContent()
+        {
+            if (SelectMode == EnMode.Add)
+            {
+                SelectMode = EnMode.Edit;
+                ClickContent = "تم الأضافة";
+            }
+            else
+            {
+                ClickContent = "تم التعديل";
+            }
+        }
 
-        public object? SavedObject { get; set; }
+        private void UpdateProperties()
+        {
+            switch (SelectMode)
+            {
+                case EnMode.Add:
+                    Title = "نمط الإضافة";
+                    Color = "#FF4682B4";
+                    ClickContent = "أضافة";
+                    break;
+
+                case EnMode.Edit:
+                    Title = "نمط التعديل";
+                    Color = "#FFFF8C00";
+                    ClickContent = "تعديل";
+                    break;
+            }
+        }
     }
 }

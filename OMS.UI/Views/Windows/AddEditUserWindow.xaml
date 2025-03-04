@@ -88,7 +88,7 @@
                      Margin="10,5,10,5"
                      Grid.Row="0" Grid.Column="0"
                      materialDesign:HintAssist.Hint="الاسم المستخدم"
-                     IsEnabled="{Binding Status.IsInChangeMode}"/>
+                     IsEnabled="{Binding Status.IsModifiable}"/>
 
             <TextBox Name="txtPassword"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -97,7 +97,7 @@
                      Margin="10,5,10,5"
                      Grid.Row="1" Grid.Column="0"
                      materialDesign:HintAssist.Hint="كلمة السر"
-                     IsEnabled="{Binding Status.IsInChangeMode}">
+                     IsEnabled="{Binding Status.IsModifiable}">
             </TextBox>
 
 
@@ -107,7 +107,7 @@
                       Margin="10,5,10,5"
                       Grid.Row="1" Grid.Column="1"
                       IsChecked="{Binding User.IsActive}"
-                      IsEnabled="{Binding Status.IsInChangeMode}"/>
+                      IsEnabled="{Binding Status.IsModifiable}"/>
 
             <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
                       ItemsSource="{Binding Branches}"
@@ -120,7 +120,7 @@
                       Padding="15 0"
                       Grid.Row="0" Grid.Column="1"
                       materialDesign:HintAssist.Hint="الفرع"
-                      IsEnabled="{Binding Status.IsInChangeMode}">
+                      IsEnabled="{Binding Status.IsModifiable}">
             </ComboBox>
 
             <Button x:Name="btnSave"
@@ -129,7 +129,7 @@
                     Width="120"
                     Content="{Binding Status.ClickContent, FallbackValue=اضافة}"
                     Command="{Binding SaveUserCommand}"
-                    IsEnabled="{Binding Status.IsInChangeMode}">
+                    IsEnabled="{Binding Status.IsModifiable}">
             </Button>
 
             <Button

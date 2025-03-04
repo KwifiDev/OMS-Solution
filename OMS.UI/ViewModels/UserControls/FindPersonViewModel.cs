@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OMS.BL.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
+using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.ViewModels.UserControls.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
@@ -25,12 +27,14 @@ namespace OMS.UI.ViewModels.UserControls
         [ObservableProperty]
         private SearchStatus _status;
 
-        public FindPersonViewModel(IPersonService personService, IMapper mapper, IMessageService messageService)
+        public FindPersonViewModel(IPersonService personService, IMapper mapper, IMessageService messageService,
+                                   IStatusService statusService)
         {
             _personService = personService;
             _mapper = mapper;
             _messageService = messageService;
-            Status = new SearchStatus();
+
+            Status = statusService.CreateSearchStatus();
         }
 
 
@@ -46,15 +50,10 @@ namespace OMS.UI.ViewModels.UserControls
         [RelayCommand]
         public async Task FindPerson()
         {
-            if (PersonId == null)
-            {
-                ValidateAllProperties();
-                return;
-            }
+            if (!ValidatePersonId()) return;
 
             if (!int.TryParse(PersonId, out int id)) 
             {
-                ValidateAllProperties();
                 _messageService.ShowErrorMessage("خطأ بحث", MessageTemplates.InvalidNumberMessage);
                 return;
             }
@@ -63,13 +62,19 @@ namespace OMS.UI.ViewModels.UserControls
 
             if (personDto == null)
             {
-                ValidateAllProperties();
                 _messageService.ShowErrorMessage("خطأ بحث", MessageTemplates.SearchErrorMessage);
                 return;
             }
 
             Person = _mapper.Map<PersonModel>(personDto);
-            Status.IsInChangeMode = false;
+            Status.IsModifiable = false;
         }
+
+        private bool ValidatePersonId()
+        {
+            ValidateAllProperties();
+            return !HasErrors;
+        }
+
     }
 }

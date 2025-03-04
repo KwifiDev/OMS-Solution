@@ -23,7 +23,7 @@ namespace OMS.UI.Models
         }
 
         [Required(ErrorMessage = "الاسم الاول مطلوب")]
-        [MinLength(3, ErrorMessage = "الاسم على الاقل مكون من ثلاث احرف")]
+        [MinLength(3, ErrorMessage = "الاسم على الاقل مكون من 3 احرف")]
         public string FirstName
         {
             get => _firstName;
@@ -31,7 +31,7 @@ namespace OMS.UI.Models
         }
 
         [Required(ErrorMessage = "النسب مطلوب")]
-        [MinLength(3, ErrorMessage = "النسب على الاقل مكون من ثلاث احرف")]
+        [MinLength(3, ErrorMessage = "النسب على الاقل مكون من 3 احرف")]
         public string LastName
         {
             get => _lastName;
@@ -44,12 +44,13 @@ namespace OMS.UI.Models
             set => SetProperty(ref _gender, value);
         }
 
+        [Length(10, 10, ErrorMessage = "الهاتف يجب يتكون من 10 ارقام")]
         public string? Phone
         {
             get => string.IsNullOrWhiteSpace(_phone) ? null : _phone;
             set
             {
-                SetProperty(ref _phone, value);
+                SetProperty(ref _phone, value, validate: true);
                 OnPropertyChanged(nameof(PhoneDisplay));
             }
         }

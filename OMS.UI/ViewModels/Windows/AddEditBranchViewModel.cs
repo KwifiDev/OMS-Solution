@@ -9,6 +9,7 @@ using OMS.UI.Resources.Strings;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
+using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Interfaces;
 
@@ -27,20 +28,21 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private AddEditStatus _status;
 
-        public AddEditBranchViewModel(IBranchService branchService, IMapper mapper, IMessageService messageService, IWindowService windowService)
+        public AddEditBranchViewModel(IBranchService branchService, IMapper mapper, IMessageService messageService,
+                                      IWindowService windowService, IStatusService statusService)
         {
             _branchService = branchService;
             _mapper = mapper;
             _messageService = messageService;
             _windowService = windowService;
-            Status = new AddEditStatus();
+            Status = statusService.CreateAddEditStatus();
         }
 
         public async Task<bool> Initialize(int? personId = -1)
         {
             try
             {
-                return personId > 0 ? await LoadData(personId) : SetAddStatus();
+                return personId > 0 ? await RunEditingMode(personId) : RunAddingMode();
             }
             catch (Exception ex)
             {
@@ -49,16 +51,15 @@ namespace OMS.UI.ViewModels.Windows
             }
         }
 
-        private bool SetAddStatus()
+        private bool RunAddingMode()
         {
             Status.SelectMode = AddEditStatus.EnMode.Add;
-            Status.Title = "نمط الأضافة";
-            Status.ClickContent = "أضافة";
+
             Branch = new BranchModel();
             return true;
         }
 
-        private async Task<bool> LoadData(int? branchId)
+        private async Task<bool> RunEditingMode(int? branchId)
         {
             if (branchId == null)
             {
@@ -74,8 +75,6 @@ namespace OMS.UI.ViewModels.Windows
             }
 
             Status.SelectMode = AddEditStatus.EnMode.Edit;
-            Status.Title = "نمط التعديل";
-            Status.ClickContent = "تعديل";
 
             Branch = _mapper.Map<BranchModel>(branchDto);
             return true;
@@ -98,8 +97,8 @@ namespace OMS.UI.ViewModels.Windows
             }
 
             UpdateStatusAndNotify(isAdding, branchDto);
-            Status.IsInChangeMode = false;
-            Status.SavedObject = Branch;
+            Status.IsModifiable = false;
+            Status.ModelObject = Branch;
         }
 
         [RelayCommand]
@@ -141,15 +140,14 @@ namespace OMS.UI.ViewModels.Windows
             if (isAdding)
             {
                 Branch.BranchId = branchDto.BranchId;
-                Status.ClickContent = "تم الاضافة";
-                Status.SelectMode = AddEditStatus.EnMode.Edit;
                 Status.Operation = AddEditStatus.EnExecuteOperation.Added;
+
                 _messageService.ShowInfoMessage("اجراء اضافة فرع جديد", MessageTemplates.AdditionSuccessMessage);
             }
             else
             {
-                Status.ClickContent = "تم التعديل";
                 Status.Operation = AddEditStatus.EnExecuteOperation.Updated;
+
                 _messageService.ShowInfoMessage("اجراء تعديل بيانات فرع", MessageTemplates.UpdateSuccessMessage);
             }
 

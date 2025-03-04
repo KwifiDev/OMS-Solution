@@ -10,6 +10,7 @@ using OMS.UI.Resources.Strings;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
+using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Interfaces;
 using OMS.UI.ViewModels.UserControls.Interfaces;
@@ -37,7 +38,9 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private ObservableCollection<BranchOption> _branches;
 
-        public AddEditUserViewModel(IUserService userService, IBranchOptionService branchOptionService, IMapper mapper, IFindPersonViewModel findPersonViewModel, IMessageService messageService, IWindowService windowService)
+        public AddEditUserViewModel(IUserService userService, IBranchOptionService branchOptionService, IMapper mapper,
+                                    IFindPersonViewModel findPersonViewModel, IMessageService messageService,
+                                    IWindowService windowService, IStatusService statusService)
         {
             _findPersonViewModel = findPersonViewModel;
             _messageService = messageService;
@@ -47,7 +50,7 @@ namespace OMS.UI.ViewModels.Windows
             _userService = userService;
 
             Branches = new ObservableCollection<BranchOption>();
-            Status = new AddEditStatus();
+            Status = statusService.CreateAddEditStatus();
         }
 
         public async Task<bool> Initialize(int? userId = -1)
@@ -55,7 +58,7 @@ namespace OMS.UI.ViewModels.Windows
             try
             {
                 await LoadBranchComboBox();
-                return userId > 0 ? await LoadData(userId) : SetAddStatus();
+                return userId > 0 ? await RunEditingMode(userId) : RunAddingMode();
             }
             catch (Exception ex)
             {
@@ -64,16 +67,15 @@ namespace OMS.UI.ViewModels.Windows
             }
         }
 
-        private bool SetAddStatus()
+        private bool RunAddingMode()
         {
             Status.SelectMode = AddEditStatus.EnMode.Add;
-            Status.Title = "نمط الأضافة";
-            Status.ClickContent = "أضافة";
+
             User = new UserModel();
             return true;
         }
 
-        private async Task<bool> LoadData(int? userId)
+        private async Task<bool> RunEditingMode(int? userId)
         {
             if (userId == null)
             {
@@ -89,8 +91,6 @@ namespace OMS.UI.ViewModels.Windows
             }
 
             Status.SelectMode = AddEditStatus.EnMode.Edit;
-            Status.Title = "نمط التعديل";
-            Status.ClickContent = "تعديل";
 
             User = _mapper.Map<UserModel>(userDto);
 
@@ -134,8 +134,8 @@ namespace OMS.UI.ViewModels.Windows
             }
 
             UpdateStatusAndNotify(isAdding, userDto);
-            Status.IsInChangeMode = false;
-            Status.SavedObject = User;
+            Status.IsModifiable = false;
+            Status.ModelObject = User;
         }
 
         private void SetPersonIdToUser()
@@ -148,15 +148,14 @@ namespace OMS.UI.ViewModels.Windows
             if (isAdding)
             {
                 User.UserId = userDto.UserId;
-                Status.ClickContent = "تم الاضافة";
-                Status.SelectMode = AddEditStatus.EnMode.Edit;
                 Status.Operation = AddEditStatus.EnExecuteOperation.Added;
+
                 _messageService.ShowInfoMessage("اجراء اضافة موظف جديد", MessageTemplates.AdditionSuccessMessage);
             }
             else
             {
-                Status.ClickContent = "تم التعديل";
                 Status.Operation = AddEditStatus.EnExecuteOperation.Updated;
+
                 _messageService.ShowInfoMessage("اجراء تعديل بيانات شخص", MessageTemplates.UpdateSuccessMessage);
             }
 

@@ -9,6 +9,7 @@ using OMS.UI.Resources.Strings;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
+using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Interfaces;
 using System.Collections.ObjectModel;
@@ -28,14 +29,16 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private AddEditStatus _status;
 
-        public AddEditPersonViewModel(IPersonService personService, IMapper mapper, IMessageService messageService, IWindowService windowService)
+        public AddEditPersonViewModel(IPersonService personService, IMapper mapper, IMessageService messageService,
+                                      IWindowService windowService, IStatusService statusService)
         {
             Genders = GenderOption.Genders;
             _personService = personService;
             _mapper = mapper;
             _messageService = messageService;
             _windowService = windowService;
-            Status = new AddEditStatus();
+
+            Status = statusService.CreateAddEditStatus();
         }
 
         public ObservableCollection<GenderOption> Genders { get; }
@@ -44,7 +47,7 @@ namespace OMS.UI.ViewModels.Windows
         {
             try
             {
-                return personId > 0 ? await LoadData(personId) : SetAddStatus();
+                return personId > 0 ? await RunEditingMode(personId) : RunAddingMode();
             }
             catch (Exception ex)
             {
@@ -53,16 +56,15 @@ namespace OMS.UI.ViewModels.Windows
             }
         }
 
-        private bool SetAddStatus()
+        private bool RunAddingMode()
         {
             Status.SelectMode = AddEditStatus.EnMode.Add;
-            Status.Title = "نمط الأضافة";
-            Status.ClickContent = "أضافة";
+
             Person = new PersonModel();
             return true;
         }
 
-        private async Task<bool> LoadData(int? personId)
+        private async Task<bool> RunEditingMode(int? personId)
         {
             if (personId == null)
             {
@@ -78,8 +80,6 @@ namespace OMS.UI.ViewModels.Windows
             }
 
             Status.SelectMode = AddEditStatus.EnMode.Edit;
-            Status.Title = "نمط التعديل";
-            Status.ClickContent = "تعديل";
 
             Person = _mapper.Map<PersonModel>(personDto);
             return true;
@@ -102,8 +102,9 @@ namespace OMS.UI.ViewModels.Windows
             }
 
             UpdateStatusAndNotify(isAdding, personDto);
-            Status.IsInChangeMode = false;
-            Status.SavedObject = Person;
+
+            Status.IsModifiable = false;
+            Status.ModelObject = Person;
         }
 
         [RelayCommand]
@@ -145,15 +146,14 @@ namespace OMS.UI.ViewModels.Windows
             if (isAdding)
             {
                 Person.PersonId = personDto.PersonId;
-                Status.ClickContent = "تم الاضافة";
-                Status.SelectMode = AddEditStatus.EnMode.Edit;
                 Status.Operation = AddEditStatus.EnExecuteOperation.Added;
+
                 _messageService.ShowInfoMessage("اجراء اضافة شخص جديد", MessageTemplates.AdditionSuccessMessage);
             }
             else
             {
-                Status.ClickContent = "تم التعديل";
                 Status.Operation = AddEditStatus.EnExecuteOperation.Updated;
+
                 _messageService.ShowInfoMessage("اجراء تعديل بيانات شخص", MessageTemplates.UpdateSuccessMessage);
             }
 

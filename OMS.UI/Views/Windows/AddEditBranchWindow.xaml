@@ -100,7 +100,7 @@
               Margin="10,5,10,5"
               Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
               materialDesign:HintAssist.Hint="اسم الفرع"
-              IsEnabled="{Binding Status.IsInChangeMode}"/>
+              IsEnabled="{Binding Status.IsModifiable}"/>
 
         <TextBox Name="txtBranchAddress"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -112,7 +112,7 @@
                  AcceptsReturn="True"
                  TextWrapping="Wrap"
                  materialDesign:HintAssist.Hint="عنوان الفرع"
-                 IsEnabled="{Binding Status.IsInChangeMode}">
+                 IsEnabled="{Binding Status.IsModifiable}">
         </TextBox>
 
         <Button x:Name="btnSave"
@@ -121,7 +121,7 @@
              Width="120"
              Content="{Binding Status.ClickContent, FallbackValue='اضافة'}"
              Command="{Binding SaveBranchCommand}"
-             IsEnabled="{Binding Status.IsInChangeMode}">
+             IsEnabled="{Binding Status.IsModifiable}">
         </Button>
 
         <Button

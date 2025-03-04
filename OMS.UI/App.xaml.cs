@@ -18,6 +18,7 @@ using OMS.UI.Mapping;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Navigation;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
 using OMS.UI.ViewModels.UserControls;
@@ -161,6 +162,8 @@ namespace OMS.UI
                 new NavigationService(provider.GetRequiredService<MainWindow>().mainFrame));
 
             services.AddSingleton<IWindowService, WindowService>();
+
+            services.AddTransient<IStatusService, StatusService>();
         }
 
         private async Task TryConnectToDBAsync()

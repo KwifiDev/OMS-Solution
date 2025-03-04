@@ -6,6 +6,8 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
              xmlns:uc="clr-namespace:OMS.UI.Views.UserControls"
              xmlns:local="clr-namespace:OMS.UI.Views.UserControls"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:customBehaviors="clr-namespace:OMS.UI.Behaviors"
              xmlns:usercontrols="clr-namespace:OMS.UI.ViewModels.UserControls"
              d:DataContext="{d:DesignInstance Type=usercontrols:FindPersonViewModel}"
              mc:Ignorable="d" 
@@ -29,7 +31,11 @@
                      Height="40"
                      VerticalAlignment="Top"
                      materialDesign:HintAssist.Hint="رقم تعريف الشخص"
-                     IsEnabled="{Binding Status.IsInChangeMode}"/>
+                     IsEnabled="{Binding Status.IsModifiable}">
+                <i:Interaction.Behaviors>
+                    <customBehaviors:NumericInputBehavior/>
+                </i:Interaction.Behaviors>
+            </TextBox>
 
             <Button DockPanel.Dock="Right"
                     Style="{StaticResource MaterialDesignOutlinedDarkButton}"
@@ -39,7 +45,7 @@
                     VerticalAlignment="Top"
                     Content="{Binding Status.ClickContent, FallbackValue='بحث'}"
                     Command="{Binding FindPersonCommand}"
-                    IsEnabled="{Binding Status.IsInChangeMode}">
+                    IsEnabled="{Binding Status.IsModifiable}">
             </Button>
         </DockPanel>
 
