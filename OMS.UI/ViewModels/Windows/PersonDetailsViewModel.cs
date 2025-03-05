@@ -3,12 +3,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OMS.BL.IServices.Tables;
 using OMS.UI.Models;
+using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Windows;
-using OMS.UI.ViewModels.Interfaces;
 
 namespace OMS.UI.ViewModels.Windows
 {
-    public partial class PersonDetailsViewModel : ObservableObject, IViewModelInitializer
+    public partial class PersonDetailsViewModel : ObservableObject, IDialogInitializer
     {
         private readonly IPersonService _personService;
         private readonly IMapper _mapper;

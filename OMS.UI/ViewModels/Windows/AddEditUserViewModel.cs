@@ -7,18 +7,18 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.IServices.Views;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
+using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
 using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.Windows;
-using OMS.UI.ViewModels.Interfaces;
 using OMS.UI.ViewModels.UserControls.Interfaces;
 using System.Collections.ObjectModel;
 
 namespace OMS.UI.ViewModels.Windows
 {
-    public partial class AddEditUserViewModel : ObservableObject, IViewModelInitializer
+    public partial class AddEditUserViewModel : ObservableObject, IDialogInitializer
     {
         private readonly IMessageService _messageService;
         private readonly IWindowService _windowService;
@@ -57,8 +57,8 @@ namespace OMS.UI.ViewModels.Windows
         {
             try
             {
-                await LoadBranchComboBox();
-                return userId > 0 ? await RunEditingMode(userId) : RunAddingMode();
+                await LoadBranchesAsync();
+                return userId > 0 ? await EnterEditModeAsync(userId) : EnterAddMode();
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace OMS.UI.ViewModels.Windows
             }
         }
 
-        private bool RunAddingMode()
+        private bool EnterAddMode()
         {
             Status.SelectMode = AddEditStatus.EnMode.Add;
 
@@ -75,7 +75,7 @@ namespace OMS.UI.ViewModels.Windows
             return true;
         }
 
-        private async Task<bool> RunEditingMode(int? userId)
+        private async Task<bool> EnterEditModeAsync(int? userId)
         {
             if (userId == null)
             {
@@ -94,56 +94,30 @@ namespace OMS.UI.ViewModels.Windows
 
             User = _mapper.Map<UserModel>(userDto);
 
-            SelectPerson();
+            LoadSelectedPerson();
 
             return true;
         }
 
-        private void SelectPerson()
+        private void LoadSelectedPerson()
         {
             FindPersonViewModel.PersonId = User.PersonId.ToString();
             FindPersonViewModel.FindPerson();
         }
 
-        private async Task LoadBranchComboBox()
+        private async Task LoadBranchesAsync()
         {
             var branchOptionDto = await _branchOptionService.GetAllAsync();
             var branchOption = _mapper.Map<IEnumerable<BranchOption>>(branchOptionDto);
             Branches = new ObservableCollection<BranchOption>(branchOption);
         }
 
-
-        [RelayCommand]
-        private async Task SaveUser(object? parameter)
-        {
-            if (!ValidateSelectedPerson()) return;
-
-            SetPersonIdToUser();
-
-            if (!ValidateUser()) return;
-
-            var userDto = MapUserToDto();
-            var isAdding = Status.SelectMode == AddEditStatus.EnMode.Add;
-
-            bool isSuccess = await SaveUserData(isAdding, userDto);
-
-            if (!isSuccess)
-            {
-                _messageService.ShowErrorMessage("اجراء حفظ بيانات شخص", MessageTemplates.SaveErrorMessage);
-                return;
-            }
-
-            UpdateStatusAndNotify(isAdding, userDto);
-            Status.IsModifiable = false;
-            Status.ModelObject = User;
-        }
-
-        private void SetPersonIdToUser()
+        private void SetUserPersonId()
         {
             User.PersonId = FindPersonViewModel.Person!.PersonId;
         }
 
-        private void UpdateStatusAndNotify(bool isAdding, UserDto userDto)
+        private void UpdateStatusAndNotifyUser(bool isAdding, UserDto userDto)
         {
             if (isAdding)
             {
@@ -169,7 +143,7 @@ namespace OMS.UI.ViewModels.Windows
             WeakReferenceMessenger.Default.Send<IMessage<UserModel>>(message);
         }
 
-        private async Task<bool> SaveUserData(bool isAdding, UserDto userDto)
+        private async Task<bool> SaveUserDataAsync(bool isAdding, UserDto userDto)
         {
             return isAdding
                 ? await _userService.AddAsync(userDto)
@@ -203,9 +177,35 @@ namespace OMS.UI.ViewModels.Windows
             return true;
         }
 
-        private UserDto MapUserToDto()
+        private UserDto MapUserModelToDto()
         {
             return _mapper.Map<UserDto>(User);
+        }
+
+
+        [RelayCommand]
+        private async Task SaveUser(object? parameter)
+        {
+            if (!ValidateSelectedPerson()) return;
+
+            SetUserPersonId();
+
+            if (!ValidateUser()) return;
+
+            var userDto = MapUserModelToDto();
+            var isAdding = Status.SelectMode == AddEditStatus.EnMode.Add;
+
+            bool isSuccess = await SaveUserDataAsync(isAdding, userDto);
+
+            if (!isSuccess)
+            {
+                _messageService.ShowErrorMessage("اجراء حفظ بيانات شخص", MessageTemplates.SaveErrorMessage);
+                return;
+            }
+
+            UpdateStatusAndNotifyUser(isAdding, userDto);
+            Status.IsModifiable = false;
+            Status.ModelObject = User;
         }
 
         [RelayCommand]

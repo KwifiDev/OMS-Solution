@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using OMS.BL.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
@@ -52,7 +51,7 @@ namespace OMS.UI.ViewModels.UserControls
         {
             if (!ValidatePersonId()) return;
 
-            if (!int.TryParse(PersonId, out int id)) 
+            if (!int.TryParse(PersonId, out int id))
             {
                 _messageService.ShowErrorMessage("خطأ بحث", MessageTemplates.InvalidNumberMessage);
                 return;

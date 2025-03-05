@@ -1,4 +1,5 @@
 ﻿using OMS.UI.Models;
+using OMS.UI.Services.StatusManagement;
 
 namespace OMS.UI.ViewModels.UserControls.Interfaces
 {
@@ -7,5 +8,6 @@ namespace OMS.UI.ViewModels.UserControls.Interfaces
         Task FindPerson();
         string? PersonId { set; }
         PersonModel? Person { get; }
+        SearchStatus Status { get; }
     }
 }

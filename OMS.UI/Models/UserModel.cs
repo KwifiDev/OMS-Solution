@@ -44,7 +44,7 @@ namespace OMS.UI.Models
         }
 
         [Required(ErrorMessage = "اسم المستخدم مطلوب")]
-        [MinLength(3, ErrorMessage = "اسم المستخدم على الاقل مكون من ثلاث احرف")]
+        [MinLength(3, ErrorMessage = "اسم المستخدم على الاقل من 3 احرف")]
         public string Username
         {
             get => _userName;

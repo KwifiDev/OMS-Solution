@@ -6,16 +6,16 @@ using OMS.BL.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
+using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
 using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.Windows;
-using OMS.UI.ViewModels.Interfaces;
 
 namespace OMS.UI.ViewModels.Windows
 {
-    public partial class AddEditBranchViewModel : ObservableObject, IViewModelInitializer
+    public partial class AddEditBranchViewModel : ObservableObject, IDialogInitializer
     {
         private readonly IBranchService _branchService;
         private readonly IMapper _mapper;
@@ -42,7 +42,7 @@ namespace OMS.UI.ViewModels.Windows
         {
             try
             {
-                return personId > 0 ? await RunEditingMode(personId) : RunAddingMode();
+                return personId > 0 ? await EnterEditModeAsync(personId) : EnterAddMode();
             }
             catch (Exception ex)
             {
@@ -51,7 +51,7 @@ namespace OMS.UI.ViewModels.Windows
             }
         }
 
-        private bool RunAddingMode()
+        private bool EnterAddMode()
         {
             Status.SelectMode = AddEditStatus.EnMode.Add;
 
@@ -59,7 +59,7 @@ namespace OMS.UI.ViewModels.Windows
             return true;
         }
 
-        private async Task<bool> RunEditingMode(int? branchId)
+        private async Task<bool> EnterEditModeAsync(int? branchId)
         {
             if (branchId == null)
             {
@@ -78,39 +78,6 @@ namespace OMS.UI.ViewModels.Windows
 
             Branch = _mapper.Map<BranchModel>(branchDto);
             return true;
-        }
-
-        [RelayCommand]
-        private async Task SaveBranch(object? parameter)
-        {
-            if (!ValidateBranch()) return;
-
-            var branchDto = MapBranchToDto();
-            var isAdding = Status.SelectMode == AddEditStatus.EnMode.Add;
-
-            bool isSuccess = await SavePersonData(isAdding, branchDto);
-
-            if (!isSuccess)
-            {
-                _messageService.ShowErrorMessage("اجراء حفظ بيانات شخص", MessageTemplates.SaveErrorMessage);
-                return;
-            }
-
-            UpdateStatusAndNotify(isAdding, branchDto);
-            Status.IsModifiable = false;
-            Status.ModelObject = Branch;
-        }
-
-        [RelayCommand]
-        private void Close()
-        {
-            _windowService.Close();
-        }
-
-        [RelayCommand]
-        private void DragWindow()
-        {
-            _windowService.DragMove();
         }
 
         private bool ValidateBranch()
@@ -135,7 +102,7 @@ namespace OMS.UI.ViewModels.Windows
                 : await _branchService.UpdateAsync(branchDto);
         }
 
-        private void UpdateStatusAndNotify(bool isAdding, BranchDto branchDto)
+        private void UpdateStatusAndNotifyBranch(bool isAdding, BranchDto branchDto)
         {
             if (isAdding)
             {
@@ -159,6 +126,40 @@ namespace OMS.UI.ViewModels.Windows
         {
             var message = new ModelTransferService<BranchModel> { Model = Branch, Status = Status };
             WeakReferenceMessenger.Default.Send<IMessage<BranchModel>>(message);
+        }
+
+
+        [RelayCommand]
+        private async Task SaveBranch(object? parameter)
+        {
+            if (!ValidateBranch()) return;
+
+            var branchDto = MapBranchToDto();
+            var isAdding = Status.SelectMode == AddEditStatus.EnMode.Add;
+
+            bool isSuccess = await SavePersonData(isAdding, branchDto);
+
+            if (!isSuccess)
+            {
+                _messageService.ShowErrorMessage("اجراء حفظ بيانات شخص", MessageTemplates.SaveErrorMessage);
+                return;
+            }
+
+            UpdateStatusAndNotifyBranch(isAdding, branchDto);
+            Status.IsModifiable = false;
+            Status.ModelObject = Branch;
+        }
+
+        [RelayCommand]
+        private void Close()
+        {
+            _windowService.Close();
+        }
+
+        [RelayCommand]
+        private void DragWindow()
+        {
+            _windowService.DragMove();
         }
     }
 }

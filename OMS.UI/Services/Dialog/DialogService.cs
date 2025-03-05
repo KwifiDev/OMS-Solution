@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using OMS.UI.ViewModels.Interfaces;
 using System.Windows;
 
 namespace OMS.UI.Services.Dialog
@@ -9,13 +8,13 @@ namespace OMS.UI.Services.Dialog
         public async Task<bool> ShowDialog<TWindow>(int? id = null)
         where TWindow : Window
         {
-            var viewModel = await ShowDialogInternal<TWindow, IViewModelInitializer>(id);
+            var viewModel = await ShowDialogInternal<TWindow, IDialogInitializer>(id);
             return viewModel != null;
         }
 
         private async Task<TViewModel?> ShowDialogInternal<TWindow, TViewModel>(int? id)
         where TWindow : Window
-        where TViewModel : class, IViewModelInitializer
+        where TViewModel : class, IDialogInitializer
         {
             var window = Ioc.Default.GetRequiredService<TWindow>();
             return await InitializeAndShowDialog<TWindow, TViewModel>(window, id);
@@ -23,7 +22,7 @@ namespace OMS.UI.Services.Dialog
 
         private async Task<TViewModel?> InitializeAndShowDialog<TWindow, TViewModel>(TWindow window, int? id)
         where TWindow : Window
-        where TViewModel : class, IViewModelInitializer
+        where TViewModel : class, IDialogInitializer
         {
             if (window.DataContext is TViewModel viewModel)
             {

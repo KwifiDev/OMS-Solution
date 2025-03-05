@@ -8,6 +8,7 @@
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
         xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows"
         xmlns:uc="clr-namespace:OMS.UI.Views.UserControls"
+        xmlns:converters="clr-namespace:OMS.UI.Converters"
         d:DataContext="{d:DesignInstance Type=windows:AddEditUserViewModel}"
         mc:Ignorable="d"
         Height="600" 
@@ -24,6 +25,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/PageStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <converters:VisiblilityUIConverter x:Key="VisiblilityUI"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -34,16 +36,8 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <StackPanel>
-            
-            <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                    Height="25"
-                    Foreground="White"
-                    Command="{Binding CloseCommand}">
-                <materialDesign:PackIcon Kind="WindowClose" Width="15" Height="15"/>
-            </Button>
 
-            <Label x:Name="lblTitle"
+        <Label x:Name="lblTitle"
                      Style="{StaticResource MaterialDesignLabel}"
                      FontWeight="Bold" 
                      HorizontalContentAlignment="Center"
@@ -54,20 +48,18 @@
                      Grid.ColumnSpan="5"
                      Foreground="White">
 
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDown">
-                        <i:InvokeCommandAction Command="{Binding DragWindowCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDown">
+                    <i:InvokeCommandAction Command="{Binding DragWindowCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
 
-            </Label>
-        </StackPanel>
-        
+        </Label>
+
 
         <uc:FindPersonControl VerticalAlignment="Top"
                               DataContext="{Binding FindPersonViewModel}"
                               Grid.Row="1"/>
-
         <Grid Grid.Row="2">
 
             <Grid.ColumnDefinitions>
@@ -81,8 +73,8 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            
-            <TextBox Name="txtUsername" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+
+            <TextBox x:Name="txtUsername" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Text="{Binding User.Username, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                      FontSize="16"
                      Margin="10,5,10,5"
@@ -90,15 +82,14 @@
                      materialDesign:HintAssist.Hint="الاسم المستخدم"
                      IsEnabled="{Binding Status.IsModifiable}"/>
 
-            <TextBox Name="txtPassword"
+            <TextBox x:Name="txtPassword"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Text="{Binding User.Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                      FontSize="16"
                      Margin="10,5,10,5"
                      Grid.Row="1" Grid.Column="0"
                      materialDesign:HintAssist.Hint="كلمة السر"
-                     IsEnabled="{Binding Status.IsModifiable}">
-            </TextBox>
+                     IsEnabled="{Binding Status.IsModifiable}"/>
 
 
             <CheckBox Style="{StaticResource MaterialDesignDarkCheckBox}"
@@ -120,28 +111,34 @@
                       Padding="15 0"
                       Grid.Row="0" Grid.Column="1"
                       materialDesign:HintAssist.Hint="الفرع"
-                      IsEnabled="{Binding Status.IsModifiable}">
-            </ComboBox>
+                      IsEnabled="{Binding Status.IsModifiable}"/>
 
             <Button x:Name="btnSave"
-                    Grid.Row="5"
+                    Grid.Row="1"
+                    Grid.Column="3"
                     Style="{StaticResource MaterialDesignOutlinedDarkButton}"
                     Width="120"
                     Content="{Binding Status.ClickContent, FallbackValue=اضافة}"
                     Command="{Binding SaveUserCommand}"
-                    IsEnabled="{Binding Status.IsModifiable}">
-            </Button>
+                    IsEnabled="{Binding Status.IsModifiable}"/>
 
             <Button
                     Grid.Row="5"
-                    Grid.Column="2"
+                    Grid.Column="1"
                     Style="{StaticResource MaterialDesignOutlinedDarkButton}"
                     Width="120"
                     Content="اغلاق"
-                    Command="{Binding CloseCommand}">
-            </Button>
+                    Command="{Binding CloseCommand}"/>
 
+
+            <Label Grid.RowSpan="2" Grid.ColumnSpan="3"
+                   Visibility="{Binding FindPersonViewModel.Status.IsModifiable, Converter={StaticResource VisiblilityUI}, FallbackValue=Hidden}"
+                   Background="WhiteSmoke"
+                   Content="ادخل رقم تعريف الشخص الذي تريد انشاء حساب موظف به"
+                   FontSize="20"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Center"/>
         </Grid>
-        
+
     </Grid>
 </Window>

@@ -6,17 +6,17 @@ using OMS.BL.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
+using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
 using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.Windows;
-using OMS.UI.ViewModels.Interfaces;
 using System.Collections.ObjectModel;
 
 namespace OMS.UI.ViewModels.Windows
 {
-    public partial class AddEditPersonViewModel : ObservableObject, IViewModelInitializer
+    public partial class AddEditPersonViewModel : ObservableObject, IDialogInitializer
     {
         private readonly IPersonService _personService;
         private readonly IMapper _mapper;
@@ -47,7 +47,7 @@ namespace OMS.UI.ViewModels.Windows
         {
             try
             {
-                return personId > 0 ? await RunEditingMode(personId) : RunAddingMode();
+                return personId > 0 ? await EnterEditModeAsync(personId) : EnterAddMode();
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace OMS.UI.ViewModels.Windows
             }
         }
 
-        private bool RunAddingMode()
+        private bool EnterAddMode()
         {
             Status.SelectMode = AddEditStatus.EnMode.Add;
 
@@ -64,7 +64,7 @@ namespace OMS.UI.ViewModels.Windows
             return true;
         }
 
-        private async Task<bool> RunEditingMode(int? personId)
+        private async Task<bool> EnterEditModeAsync(int? personId)
         {
             if (personId == null)
             {
@@ -85,40 +85,6 @@ namespace OMS.UI.ViewModels.Windows
             return true;
         }
 
-        [RelayCommand]
-        private async Task SavePerson(object? parameter)
-        {
-            if (!ValidatePerson()) return;
-
-            var personDto = MapPersonToDto();
-            var isAdding = Status.SelectMode == AddEditStatus.EnMode.Add;
-
-            bool isSuccess = await SavePersonData(isAdding, personDto);
-
-            if (!isSuccess)
-            {
-                _messageService.ShowErrorMessage("اجراء حفظ بيانات شخص", MessageTemplates.SaveErrorMessage);
-                return;
-            }
-
-            UpdateStatusAndNotify(isAdding, personDto);
-
-            Status.IsModifiable = false;
-            Status.ModelObject = Person;
-        }
-
-        [RelayCommand]
-        private void Close()
-        {
-            _windowService.Close();
-        }
-
-        [RelayCommand]
-        private void DragWindow()
-        {
-            _windowService.DragMove();
-        }
-
         private bool ValidatePerson()
         {
             if (!Person.ArePropertiesValid())
@@ -129,7 +95,7 @@ namespace OMS.UI.ViewModels.Windows
             return true;
         }
 
-        private PersonDto MapPersonToDto()
+        private PersonDto MapPersonModelToDto()
         {
             return _mapper.Map<PersonDto>(Person);
         }
@@ -141,7 +107,7 @@ namespace OMS.UI.ViewModels.Windows
                 : await _personService.UpdateAsync(personDto);
         }
 
-        private void UpdateStatusAndNotify(bool isAdding, PersonDto personDto)
+        private void UpdateStatusAndNotifyPerson(bool isAdding, PersonDto personDto)
         {
             if (isAdding)
             {
@@ -165,6 +131,41 @@ namespace OMS.UI.ViewModels.Windows
         {
             var message = new ModelTransferService<PersonModel> { Model = Person, Status = Status };
             WeakReferenceMessenger.Default.Send<IMessage<PersonModel>>(message);
+        }
+
+
+        [RelayCommand]
+        private async Task SavePerson(object? parameter)
+        {
+            if (!ValidatePerson()) return;
+
+            var personDto = MapPersonModelToDto();
+            var isAdding = Status.SelectMode == AddEditStatus.EnMode.Add;
+
+            bool isSuccess = await SavePersonData(isAdding, personDto);
+
+            if (!isSuccess)
+            {
+                _messageService.ShowErrorMessage("اجراء حفظ بيانات شخص", MessageTemplates.SaveErrorMessage);
+                return;
+            }
+
+            UpdateStatusAndNotifyPerson(isAdding, personDto);
+
+            Status.IsModifiable = false;
+            Status.ModelObject = Person;
+        }
+
+        [RelayCommand]
+        private void Close()
+        {
+            _windowService.Close();
+        }
+
+        [RelayCommand]
+        private void DragWindow()
+        {
+            _windowService.DragMove();
         }
     }
 }

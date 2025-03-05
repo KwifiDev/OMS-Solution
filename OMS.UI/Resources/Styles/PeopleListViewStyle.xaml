@@ -10,12 +10,8 @@
     <!-- LoadAnimation Style -->
     <Storyboard x:Key="PageLoadAnimation">
         <DoubleAnimation Storyboard.TargetName="peopleList" 
-                     Storyboard.TargetProperty="Opacity"
-                     From="0" To="1" Duration="0:0:0.3"/>
-        <ThicknessAnimation Storyboard.TargetName="peopleList"
-                        Storyboard.TargetProperty="Margin"
-                        From="0,20,0,0" To="0,0,0,0" 
-                        Duration="0:0:0.4"/>
+                      Storyboard.TargetProperty="Opacity"
+                      From="0" To="1" Duration="0:0:0.5"/>
     </Storyboard>
 
     <!-- ListView Style -->
