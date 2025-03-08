@@ -3,9 +3,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace OMS.UI.Behaviors
+namespace OMS.UI.Behaviors.Inputs
 {
-    public class NumericInputBehavior : Behavior<TextBox>
+    public abstract class BaseInputBehavior : Behavior<TextBox>
     {
         protected override void OnAttached()
         {
@@ -42,9 +42,6 @@ namespace OMS.UI.Behaviors
             }
         }
 
-        private static bool IsTextAllowed(string text)
-        {
-            return text.All(char.IsDigit);
-        }
+        protected abstract bool IsTextAllowed(string text);
     }
 }

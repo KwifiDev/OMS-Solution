@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
-        xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows"
+        xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows.AddEditViewModel"
         d:DataContext="{d:DesignInstance Type=windows:AddEditBranchViewModel}"
         mc:Ignorable="d"
         Height="350" 
@@ -86,7 +86,7 @@
                         Foreground="White"
                         FontSize="16"/>
 
-                <TextBlock Text="{Binding Branch.BranchIdDisplay, FallbackValue='لا يوجد'}"
+                <TextBlock Text="{Binding Model.BranchIdDisplay, FallbackValue='لا يوجد'}"
                         VerticalAlignment="Center"
                         FontWeight="Bold"
                         Foreground="White"
@@ -95,7 +95,7 @@
         </Border>
 
         <TextBox Name="txtBranchName" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              Text="{Binding Branch.Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+              Text="{Binding Model.Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
               FontSize="16"
               Margin="10,5,10,5"
               Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
@@ -104,7 +104,7 @@
 
         <TextBox Name="txtBranchAddress"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 Text="{Binding Branch.Address, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                 Text="{Binding Model.Address, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                  FontSize="16"
                  Margin="10,5,10,5"
                  Grid.Row="3" Grid.ColumnSpan="3" Grid.RowSpan="2"
@@ -120,7 +120,7 @@
              Style="{StaticResource MaterialDesignOutlinedDarkButton}"
              Width="120"
              Content="{Binding Status.ClickContent, FallbackValue='اضافة'}"
-             Command="{Binding SaveBranchCommand}"
+             Command="{Binding SaveCommand}"
              IsEnabled="{Binding Status.IsModifiable}">
         </Button>
 

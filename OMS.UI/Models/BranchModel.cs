@@ -1,9 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models
 {
-    public class BranchModel : ObservableValidator
+    public class BranchModel : BaseModel
     {
         private int _branchId;
         private string _name = null!;
@@ -37,11 +36,5 @@ namespace OMS.UI.Models
 
         // DisplayProperty
         public string BranchIdDisplay => _branchId > 0 ? _branchId.ToString() : "لا يوجد";
-
-        public bool ArePropertiesValid()
-        {
-            ValidateAllProperties();
-            return !HasErrors;
-        }
     }
 }

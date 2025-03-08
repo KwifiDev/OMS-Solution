@@ -1,10 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using OMS.Common.Enums;
+﻿using OMS.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models
 {
-    public partial class PersonModel : ObservableValidator
+    public partial class PersonModel : BaseModel
     {
         private int _personId;
         private string _firstName = null!;
@@ -60,11 +59,5 @@ namespace OMS.UI.Models
         public string PhoneDisplay => _phone ?? "لا يوجد";
         public string PersonIdDisplay => _personId > 0 ? _personId.ToString() : "لا يوجد";
         public string FullName => $"{FirstName} {LastName}";
-
-        public bool ArePropertiesValid()
-        {
-            ValidateAllProperties();
-            return !HasErrors;
-        }
     }
 }

@@ -7,7 +7,7 @@
              xmlns:uc="clr-namespace:OMS.UI.Views.UserControls"
              xmlns:local="clr-namespace:OMS.UI.Views.UserControls"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:customBehaviors="clr-namespace:OMS.UI.Behaviors"
+             xmlns:customBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
              xmlns:usercontrols="clr-namespace:OMS.UI.ViewModels.UserControls"
              d:DataContext="{d:DesignInstance Type=usercontrols:FindPersonViewModel}"
              mc:Ignorable="d" 

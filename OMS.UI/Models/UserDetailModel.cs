@@ -4,19 +4,6 @@ namespace OMS.UI.Models
 {
     public class UserDetailModel : ObservableObject
     {
-        //DA
-        //public int UserId { get; set; }
-        //public string EmployeeName { get; set; } = null!;
-        //public string Username { get; set; } = null!;
-        //public string? IsActive { get; set; }
-        //public string WorkingBranch { get; set; } = null!;
-
-        //BL
-        //public int UserId { get; set; }
-        //public string EmployeeName { get; set; } = null!;
-        //public string Username { get; set; } = null!;
-        //public string? IsActive { get; set; }
-        //public string WorkingBranch { get; set; } = null!;
 
         private int _userId;
         private string _employeeName = null!;

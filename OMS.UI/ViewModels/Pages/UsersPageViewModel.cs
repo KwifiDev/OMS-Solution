@@ -93,7 +93,7 @@ namespace OMS.UI.ViewModels.Pages
             SelectItem(user);
 
             await Task.Run(() => user);
-            throw new NotImplementedException();
+            _messageService.ShowInfoMessage("لم يتم اجراء", "لم يتم انشاء هذه الأضافة بعد");
         }
 
         [RelayCommand]

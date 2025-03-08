@@ -1,9 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using OMS.UI.Models.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models
 {
-    public partial class UserModel : ObservableValidator
+    public partial class UserModel : BaseModel
     {
         private int _userId;
         private int _personId;
@@ -45,6 +46,7 @@ namespace OMS.UI.Models
 
         [Required(ErrorMessage = "اسم المستخدم مطلوب")]
         [MinLength(3, ErrorMessage = "اسم المستخدم على الاقل من 3 احرف")]
+        [CustomValidation(typeof(UserValidation), nameof(UserValidation.ValidateUsername))]
         public string Username
         {
             get => _userName;
@@ -78,11 +80,5 @@ namespace OMS.UI.Models
         public string PersonIdDisplay => _personId > 0 ? _userId.ToString() : "لا يوجد";
         public string BranchIdDisplay => _branchId > 0 ? _userId.ToString() : "لا يوجد";
         public string IsActiveDisplay => IsActive ? "نشط" : "معطل";
-
-        public bool ArePropertiesValid()
-        {
-            ValidateAllProperties();
-            return !HasErrors;
-        }
     }
 }

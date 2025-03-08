@@ -2,7 +2,7 @@
 {
     public class AddEditStatus : BaseStatus
     {
-        public enum EnExecuteOperation { Added, Updated }
+        public enum EnExecuteOperation { Empty, Added, Updated }
         public enum EnMode { Empty, Add, Edit }
 
         private EnMode _selectMode;
@@ -47,6 +47,7 @@
             {
                 UpdateClickContent();
                 SetProperty(ref _operation, value);
+                UpdateModifiableStatus();
             }
         }
 
@@ -61,6 +62,11 @@
             {
                 ClickContent = "تم التعديل";
             }
+        }
+
+        private void UpdateModifiableStatus()
+        {
+            IsModifiable = !(Operation == EnExecuteOperation.Added || Operation == EnExecuteOperation.Updated);
         }
 
         private void UpdateProperties()

@@ -2,6 +2,6 @@
 {
     public interface IDialogInitializer
     {
-        Task<bool> Initialize(int? id);
+        Task<bool> OnOpeningDialog(int? id);
     }
 }

@@ -6,9 +6,9 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
         xmlns:converters="clr-namespace:OMS.UI.Converters"
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
-        xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows" 
+        xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows.AddEditViewModel" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:customBehaviors="clr-namespace:OMS.UI.Behaviors"
+        xmlns:customBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
         d:DataContext="{d:DesignInstance Type=windows:AddEditPersonViewModel}"
         mc:Ignorable="d"
         Height="350" 
@@ -69,7 +69,7 @@
                 Margin="32 0 32 0">
             
             <materialDesign:PackIcon 
-                                    Kind="{Binding Person.Gender, Converter={StaticResource GenderImage}}" 
+                                    Kind="{Binding Model.Gender, Converter={StaticResource GenderImage}}" 
                                     Width="56"
                                     Height="56"
                                     Foreground="{StaticResource MaterialDesignShadowBrush}"
@@ -78,7 +78,7 @@
         </Border>
 
         <Border Padding="10"
-             Background="{Binding Status.Color}"
+             Background="{Binding Status.Color, FallbackValue={StaticResource PageHeaderGradient}}"
              VerticalAlignment="Top"
              Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
             <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
@@ -90,7 +90,7 @@
                         Foreground="White"
                         FontSize="16"/>
 
-                <TextBlock Text="{Binding Person.PersonIdDisplay, FallbackValue='لا يوجد'}"
+                <TextBlock Text="{Binding Model.PersonIdDisplay, FallbackValue='لا يوجد'}"
                         VerticalAlignment="Center"
                         FontWeight="Bold"
                         Foreground="White"
@@ -99,26 +99,33 @@
         </Border>
 
         <TextBox Name="txtFirstName" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              Text="{Binding Person.FirstName, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+              Text="{Binding Model.FirstName, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
               FontSize="16"
               Margin="10,5,10,5"
               Grid.Row="3" Grid.Column="0"
               materialDesign:HintAssist.Hint="الاسم الأول"
-              IsEnabled="{Binding Status.IsModifiable}"/>
+              IsEnabled="{Binding Status.IsModifiable}">
+            <i:Interaction.Behaviors>
+                <customBehaviors:ArabicOnlyInputBehavior/>
+            </i:Interaction.Behaviors>
+        </TextBox>
 
         <TextBox Name="txtLastName"
               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              Text="{Binding Person.LastName, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+              Text="{Binding Model.LastName, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
               FontSize="16"
               Margin="10,5,10,5"
               Grid.Row="4" Grid.Column="0"
               materialDesign:HintAssist.Hint="النسب"
               IsEnabled="{Binding Status.IsModifiable}">
+            <i:Interaction.Behaviors>
+                <customBehaviors:ArabicOnlyInputBehavior/>
+            </i:Interaction.Behaviors>
         </TextBox>
 
 
         <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-              Text="{Binding Person.Phone}"
+              Text="{Binding Model.Phone}"
               FontSize="16"
               Margin="10,5,10,5"
               Grid.Row="3" Grid.Column="1"
@@ -134,7 +141,7 @@
                ItemsSource="{Binding Genders}"
                DisplayMemberPath="DisplayMember"
                SelectedValuePath="Value"
-               SelectedValue="{Binding Person.Gender}"
+               SelectedValue="{Binding Model.Gender}"
                Height="40"
                FontSize="16" 
                Margin="10,10,10,0"
@@ -149,7 +156,7 @@
              Style="{StaticResource MaterialDesignOutlinedDarkButton}"
              Width="120"
              Content="{Binding Status.ClickContent, FallbackValue=اضافة}"
-             Command="{Binding SavePersonCommand}"
+             Command="{Binding SaveCommand}"
              IsEnabled="{Binding Status.IsModifiable}">
         </Button>
 

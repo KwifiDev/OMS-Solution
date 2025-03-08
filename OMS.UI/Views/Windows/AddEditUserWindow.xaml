@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:customBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
-        xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows"
+        xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows.AddEditViewModel"
         xmlns:uc="clr-namespace:OMS.UI.Views.UserControls"
         xmlns:converters="clr-namespace:OMS.UI.Converters"
         d:DataContext="{d:DesignInstance Type=windows:AddEditUserViewModel}"
@@ -75,16 +76,21 @@
             </Grid.RowDefinitions>
 
             <TextBox x:Name="txtUsername" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding User.Username, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                     Text="{Binding Model.Username, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                      FontSize="16"
                      Margin="10,5,10,5"
                      Grid.Row="0" Grid.Column="0"
                      materialDesign:HintAssist.Hint="الاسم المستخدم"
-                     IsEnabled="{Binding Status.IsModifiable}"/>
+                     IsEnabled="{Binding Status.IsModifiable}">
+                
+                <i:Interaction.Behaviors>
+                    <customBehaviors:UsernameInputBehavior/>
+                </i:Interaction.Behaviors>
+            </TextBox>
 
             <TextBox x:Name="txtPassword"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding User.Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                     Text="{Binding Model.Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                      FontSize="16"
                      Margin="10,5,10,5"
                      Grid.Row="1" Grid.Column="0"
@@ -97,14 +103,14 @@
                       FontSize="16"
                       Margin="10,5,10,5"
                       Grid.Row="1" Grid.Column="1"
-                      IsChecked="{Binding User.IsActive}"
+                      IsChecked="{Binding Model.IsActive}"
                       IsEnabled="{Binding Status.IsModifiable}"/>
 
             <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
                       ItemsSource="{Binding Branches}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="BranchId"
-                      SelectedValue="{Binding User.BranchId}"
+                      SelectedValue="{Binding Model.BranchId}"
                       Height="50"
                       FontSize="16" 
                       Margin="10,0,10,0"
@@ -119,7 +125,7 @@
                     Style="{StaticResource MaterialDesignOutlinedDarkButton}"
                     Width="120"
                     Content="{Binding Status.ClickContent, FallbackValue=اضافة}"
-                    Command="{Binding SaveUserCommand}"
+                    Command="{Binding SaveCommand}"
                     IsEnabled="{Binding Status.IsModifiable}"/>
 
             <Button

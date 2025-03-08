@@ -29,7 +29,7 @@ namespace OMS.UI.Services.Dialog
                 bool isSuccess = false;
                 try
                 {
-                    isSuccess = await viewModel.Initialize(id);
+                    isSuccess = await viewModel.OnOpeningDialog(id);
                 }
                 catch (Exception ex)
                 {

@@ -24,6 +24,7 @@ using OMS.UI.ViewModels.Pages;
 using OMS.UI.ViewModels.UserControls;
 using OMS.UI.ViewModels.UserControls.Interfaces;
 using OMS.UI.ViewModels.Windows;
+using OMS.UI.ViewModels.Windows.AddEditViewModel;
 using OMS.UI.Views;
 using OMS.UI.Views.Pages;
 using OMS.UI.Views.Windows;
@@ -126,7 +127,7 @@ namespace OMS.UI
         {
             services.AddSingleton<MainWindow>();
 
-            services.AddSingleton(provider => 
+            services.AddSingleton(provider =>
                 new DashboardPage { DataContext = provider.GetRequiredService<DashboardPageViewModel>() });
 
             services.AddSingleton(provider =>

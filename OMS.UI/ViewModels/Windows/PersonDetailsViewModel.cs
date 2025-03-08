@@ -25,7 +25,7 @@ namespace OMS.UI.ViewModels.Windows
         }
 
 
-        public async Task<bool> Initialize(int? personId)
+        public async Task<bool> OnOpeningDialog(int? personId)
         {
             if (personId == null) return false;
 
