@@ -93,7 +93,7 @@
 
                     <Button 
                         Style="{StaticResource MaterialDesignFlatDarkButton}"
-                        Command="{Binding DataContext.EditPersonCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                        Command="{Binding DataContext.EditItemCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                         CommandParameter="{Binding}"
                         ToolTip="تعديل"
                         Padding="3"
@@ -103,7 +103,7 @@
 
                     <Button 
                         Style="{StaticResource MaterialDesignFlatDarkButton}"
-                        Command="{Binding DataContext.DeletePersonCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                        Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                         CommandParameter="{Binding}"
                         ToolTip="حذف"
                         Margin="3 0 0 0"

@@ -62,8 +62,8 @@
         <ListView x:Name="branchesList"
                   Margin="0 0 5 0"
                   Grid.Row="1"
-                  ItemsSource="{Binding Branches}"
-                  SelectedItem="{Binding SelectedBranch}"
+                  ItemsSource="{Binding Items}"
+                  SelectedItem="{Binding SelectedItem}"
                   ItemTemplate="{StaticResource BranchItemTemplate}"
                   ItemContainerStyle="{StaticResource MaterialDesignNavigationPrimaryListBoxItem}"
                   Style="{StaticResource MaterialListView}"
@@ -73,17 +73,17 @@
                 <ContextMenu Style="{StaticResource MaterialDesignContextMenu}">
 
                     <MenuItem Header="اضافة فرع" 
-                       Command="{Binding AddBranchCommand}"
+                       Command="{Binding AddItemCommand}"
                        Icon="{materialDesign:PackIcon Kind=HouseAdd}"/>
 
                     <MenuItem Header="تعديل فرع" 
-                       Command="{Binding EditBranchCommand}" 
-                       CommandParameter="{Binding SelectedBranch}"
+                       Command="{Binding EditItemCommand}" 
+                       CommandParameter="{Binding SelectedItem}"
                        Icon="{materialDesign:PackIcon Kind=HouseEdit}"/>
 
                     <MenuItem Header="حذف فرع" 
-                       Command="{Binding DeleteBranchCommand}" 
-                       CommandParameter="{Binding SelectedBranch}"
+                       Command="{Binding DeleteItemCommand}" 
+                       CommandParameter="{Binding SelectedItem}"
                        Icon="{materialDesign:PackIcon Kind=HouseRemove}"
                        Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"/>
 

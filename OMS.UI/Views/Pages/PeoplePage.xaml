@@ -65,8 +65,8 @@
         <ListView Name="peopleList"
                   Margin="0 0 5 0"
                   Grid.Row="1"
-                  ItemsSource="{Binding People}"
-                  SelectedItem="{Binding SelectedPerson}"
+                  ItemsSource="{Binding Items}"
+                  SelectedItem="{Binding SelectedItem}"
                   ItemTemplate="{StaticResource PersonItemTemplate}"
                   ItemContainerStyle="{StaticResource MaterialDesignNavigationPrimaryListBoxItem}"
                   Style="{StaticResource MaterialListView}"
@@ -77,23 +77,23 @@
                     
                     <MenuItem Header="عرض التفاصيل" 
                               Command="{Binding ShowDetailsCommand}"
-                              CommandParameter="{Binding SelectedPerson}"
+                              CommandParameter="{Binding SelectedItem}"
                               Icon="{materialDesign:PackIcon Kind=AccountDetails}"/>
 
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
                     <MenuItem Header="اضافة شخص" 
-                              Command="{Binding AddPersonCommand}"
+                              Command="{Binding AddItemCommand}"
                               Icon="{materialDesign:PackIcon Kind=AccountPlus}"/>
 
                     <MenuItem Header="تعديل شخص" 
-                              Command="{Binding EditPersonCommand}" 
-                              CommandParameter="{Binding SelectedPerson}"
+                              Command="{Binding EditItemCommand}" 
+                              CommandParameter="{Binding SelectedItem}"
                               Icon="{materialDesign:PackIcon Kind=AccountEdit}"/>
 
                     <MenuItem Header="حذف شخص" 
-                              Command="{Binding DeletePersonCommand}" 
-                              CommandParameter="{Binding SelectedPerson}"
+                              Command="{Binding DeleteItemCommand}" 
+                              CommandParameter="{Binding SelectedItem}"
                               Icon="{materialDesign:PackIcon Kind=AccountRemove}"
                               Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"/>
 
