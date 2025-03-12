@@ -71,7 +71,7 @@
                         Foreground="{DynamicResource MaterialDesignBody}"/>
                     <TextBlock 
                         Style="{StaticResource MaterialDesignBody1TextBlock}"
-                        Text="{Binding PhoneDisplay}"
+                        Text="{Binding Phone}"
                         Foreground="{DynamicResource MaterialDesignBody}"/>
                 </StackPanel>
 

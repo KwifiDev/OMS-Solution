@@ -17,7 +17,7 @@ namespace OMS.DA.Configurations.EntitiesConfigurations
                 .HasConversion(
                   g => g == EnGender.Male,
                   g => g ? EnGender.Male : EnGender.Female
-              );
+                );
         }
     }
 }

@@ -42,6 +42,8 @@ namespace OMS.BL.Mapping
 
             CreateMap<BranchOption, BranchOptionDto>().ReverseMap();
 
+            CreateMap<PersonDetail, PersonDetailDto>().ReverseMap();
+
             CreateMap<ClientDetail, ClientDetailDto>().ReverseMap();
 
             CreateMap<ClientsByType, ClientsByTypeDto>().ReverseMap();

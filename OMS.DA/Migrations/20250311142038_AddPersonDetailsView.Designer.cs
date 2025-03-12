@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OMS.DA.Context;
 
 #nullable disable
 
-namespace OMS.DA.Migrations
+namespace OMS1.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311142038_AddPersonDetailsView")]
+    partial class AddPersonDetailsView
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -744,27 +747,6 @@ namespace OMS.DA.Migrations
                     b.ToTable((string)null);
 
                     b.ToView("PaymentsSummary", (string)null);
-                });
-
-            modelBuilder.Entity("OMS.DA.Views.PersonDetail", b =>
-                {
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(41)
-                        .HasColumnType("nvarchar(41)");
-
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(15)");
-
-                    b.ToTable((string)null);
-
-                    b.ToView("PersonDetails", (string)null);
                 });
 
             modelBuilder.Entity("OMS.DA.Views.SalesSummary", b =>

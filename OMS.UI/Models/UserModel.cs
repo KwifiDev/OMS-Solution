@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using OMS.UI.Models.Validations;
+﻿using OMS.UI.Models.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models
@@ -15,7 +14,7 @@ namespace OMS.UI.Models
         private bool _isActive;
 
 
-        
+
         public int UserId
         {
             get => _userId;

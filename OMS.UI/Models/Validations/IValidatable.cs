@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OMS.UI.Models
+namespace OMS.UI.Models.Validations
 {
     public interface IValidatable
     {

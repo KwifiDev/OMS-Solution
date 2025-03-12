@@ -33,6 +33,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -52,8 +53,7 @@
                                              HorizontalAlignment="Center"/>
                 </Border>
 
-                <!-- Content -->
-                <StackPanel Grid.Column="1" Orientation="Vertical">
+                <StackPanel Grid.Column="1" Orientation="Vertical" Margin="5">
                     
                     <TextBlock Text="{Binding Name}"
                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
@@ -64,8 +64,8 @@
 
                     <StackPanel Orientation="Horizontal" Margin="0 4">
                         <materialDesign:PackIcon Kind="MapMarker" 
-                                                 Width="16"
-                                                 Height="16"
+                                                 Width="20"
+                                                 Height="20"
                                                  Margin="0 0 8 0"
                                                  Foreground="{DynamicResource MaterialDesignBody}"/>
 
@@ -76,6 +76,31 @@
 
                     </StackPanel>
                 </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Vertical" Margin="5">
+
+                    <TextBlock Text="عدد الموظفين"
+                               Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                               Margin="0 0 0 8"/>
+                    <Separator/>
+
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Margin="0 4">
+                        <materialDesign:PackIcon Kind="Users" 
+                                 Width="20"
+                                 Height="20"
+                                 Margin="0 0 8 0"
+                                 Foreground="{DynamicResource MaterialDesignBody}"/>
+
+                        <TextBlock Text="{Binding TotalEmployees}"
+                                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                   Foreground="{DynamicResource MaterialDesignBody}"
+                                   TextWrapping="Wrap"/>
+
+                    </StackPanel>
+                </StackPanel>
+
             </Grid>
         </materialDesign:Card>
     </DataTemplate>

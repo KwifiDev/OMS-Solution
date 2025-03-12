@@ -14,6 +14,8 @@ namespace OMS.UI.Mapping
             CreateMap<UserDto, UserModel>().ReverseMap();
             CreateMap<UserDetailDto, UserDetailModel>().ReverseMap();
             CreateMap<BranchOptionDto, BranchOption>().ReverseMap();
+            CreateMap<PersonDetailDto, PersonDetailModel>().ReverseMap();
+            CreateMap<BranchOperationalMetricDto, BranchOperationalMetricModel>().ReverseMap();
         }
     }
 }

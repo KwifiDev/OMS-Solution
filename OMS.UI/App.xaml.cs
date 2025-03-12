@@ -88,6 +88,12 @@ namespace OMS.UI
 
             services.AddTransient<IBranchOptionRepository, BranchOptionRepository>();
             services.AddTransient<IBranchOptionService, BranchOptionService>();
+
+            services.AddTransient<IPersonDetailRepository, PersonDetailRepository>();
+            services.AddTransient<IPersonDetailService, PersonDetailService>();
+
+            services.AddTransient<IBranchOperationalMetricRepository, BranchOperationalMetricRepository>();
+            services.AddTransient<IBranchOperationalMetricService, BranchOperationalMetricService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)

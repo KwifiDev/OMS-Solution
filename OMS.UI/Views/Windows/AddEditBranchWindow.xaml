@@ -7,6 +7,7 @@
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
         xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows.AddEditViewModel"
+        xmlns:customBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
         d:DataContext="{d:DesignInstance Type=windows:AddEditBranchViewModel}"
         mc:Ignorable="d"
         Height="350" 
@@ -100,7 +101,11 @@
               Margin="10,5,10,5"
               Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
               materialDesign:HintAssist.Hint="اسم الفرع"
-              IsEnabled="{Binding Status.IsModifiable}"/>
+              IsEnabled="{Binding Status.IsModifiable}">
+            <i:Interaction.Behaviors>
+                <customBehaviors:ArabicOnlyInputBehavior/>
+            </i:Interaction.Behaviors>
+        </TextBox>
 
         <TextBox Name="txtBranchAddress"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -113,6 +118,9 @@
                  TextWrapping="Wrap"
                  materialDesign:HintAssist.Hint="عنوان الفرع"
                  IsEnabled="{Binding Status.IsModifiable}">
+            <i:Interaction.Behaviors>
+                <customBehaviors:ArabicOnlyInputBehavior/>
+            </i:Interaction.Behaviors>
         </TextBox>
 
         <Button x:Name="btnSave"

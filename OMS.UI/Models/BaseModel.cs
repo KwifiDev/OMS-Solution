@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using OMS.UI.Models.Validations;
 using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models

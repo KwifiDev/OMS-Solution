@@ -11,10 +11,12 @@ using System.Collections.ObjectModel;
 
 namespace OMS.UI.ViewModels.Pages
 {
-    public abstract partial class BasePageViewModel<TService, TModel> : ObservableObject
+    public abstract partial class BasePageViewModel<TService, TDisplayService, TModel, TMessageModel> : ObservableObject
         where TModel : class
+        where TMessageModel : class
     {
         protected readonly TService _service;
+        protected readonly TDisplayService _displayService;
         protected readonly IMapper _mapper;
         protected readonly IDialogService _dialogService;
         protected readonly IMessageService _messageService;
@@ -25,38 +27,39 @@ namespace OMS.UI.ViewModels.Pages
         [ObservableProperty]
         private TModel? _selectedItem;
 
-        public BasePageViewModel(TService service, IMapper mapper, IDialogService dialogService, IMessageService messageService)
+        public BasePageViewModel(TService service, TDisplayService displayService, IMapper mapper, IDialogService dialogService, IMessageService messageService)
         {
             _service = service;
+            _displayService = displayService;
             _mapper = mapper;
             _dialogService = dialogService;
             _messageService = messageService;
 
-            WeakReferenceMessenger.Default.Register<IMessage<TModel>>(this, OnMessageReceived);
+            WeakReferenceMessenger.Default.Register<IMessage<TMessageModel>>(this, OnMessageReceived);
         }
 
-        protected virtual void OnMessageReceived(object recipient, IMessage<TModel> message)
+        protected virtual async void OnMessageReceived(object recipient, IMessage<TMessageModel> message)
         {
             switch (message.Status.Operation)
             {
                 case AddEditStatus.EnExecuteOperation.Added:
-                    HandleAddItem(message.Model);
+                    await HandleAddItem(message.Model);
                     break;
                 case AddEditStatus.EnExecuteOperation.Updated:
-                    HandleEditItem(message.Model);
+                    await HandleEditItem(message.Model);
                     break;
             }
         }
 
-        protected virtual void HandleAddItem(TModel model)
+        protected virtual async Task HandleAddItem(TMessageModel model)
         {
-            Items.Add(model);
+            Items.Add(await ConvertToModel(model));
         }
 
-        protected virtual void HandleEditItem(TModel model)
+        protected virtual async Task HandleEditItem(TMessageModel model)
         {
             int index = Items.IndexOf(SelectedItem!);
-            if (index >= 0) Items[index] = model;
+            if (index >= 0) Items[index] = await ConvertToModel(model);
         }
 
 
@@ -101,6 +104,7 @@ namespace OMS.UI.ViewModels.Pages
         [RelayCommand]
         protected abstract Task LoadData();
 
+        protected abstract Task<TModel> ConvertToModel(TMessageModel messageModel);
         protected abstract int GetItemId(TModel item);
         protected abstract Task<bool> ExecuteDelete(int itemId);
         protected abstract Task ShowEditorWindow(int? itemId = null);
