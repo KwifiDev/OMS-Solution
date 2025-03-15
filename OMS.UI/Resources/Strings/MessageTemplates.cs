@@ -53,7 +53,7 @@
         public static string LoginErrorMessage => "حدث خطأ أثناء تسجيل الدخول";
         public static string InvalidCredentialsErrorMessage => "بيانات الاعتماد غير صحيحة";
         public static string AccountLockedErrorMessage => "الحساب مقفل بسبب عدة محاولات فاشلة";
-        public static string AccountInActiveErrorMessage => "الحساب معطل الخص بك معطل";
+        public static string AccountInActiveErrorMessage => "الحساب الخص بك معطل";
 
         public static string LogoutErrorMessage => "حدث خطأ أثناء تسجيل الخروج";
         public static string RegistrationErrorMessage => "حدث خطأ أثناء إنشاء الحساب";

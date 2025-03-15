@@ -2,9 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using OMS.UI.Models;
+using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.Navigation;
+using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
@@ -19,21 +21,26 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IWindowService _windowService;
         private readonly IUserSessionService _userSessionService;
         private readonly IDialogService _dialogService;
+        private readonly IMessageService _messageService;
 
         [ObservableProperty]
         private UserModel? _currentUser;
 
         public MainWindowViewModel(INavigationService navigationService, IWindowService windowService,
-                                   IUserSessionService userSessionService, IDialogService dialogService)
+                                   IUserSessionService userSessionService, IDialogService dialogService, IMessageService messageService)
         {
             _navigationService = navigationService;
             _windowService = windowService;
             _userSessionService = userSessionService;
             _dialogService = dialogService;
+            _messageService = messageService;
 
             CurrentUser = _userSessionService.CurrentUser;
 
-            WeakReferenceMessenger.Default.Register<IMessage<UserModel>>(this, (r, m) => { CurrentUser = m.Model; });
+            WeakReferenceMessenger.Default.Register<IMessage<UserModel>>(this, (r, m) => 
+            {
+                if (CurrentUser!.UserId == m.Model.UserId) CurrentUser = m.Model;
+            });
         }        
 
 
@@ -55,6 +62,9 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private void Logout()
         {
+            var ok = _messageService.ShowQuestionMessage("تسجيل خروج", MessageTemplates.LogoutConfirmation);
+            if (!ok) return;
+
             _userSessionService.Logout();
             _windowService.Close();
             _windowService.Open<LoginWindow>();

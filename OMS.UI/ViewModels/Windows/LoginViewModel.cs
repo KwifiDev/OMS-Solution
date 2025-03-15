@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using OMS.DA.Entities;
 using OMS.UI.Models;
 using OMS.UI.Models.Validations;
 using OMS.UI.Resources.Strings;
@@ -66,7 +65,7 @@ namespace OMS.UI.ViewModels.Windows
 
         [RelayCommand]
         private void Exit() => _windowService.Exit();
-        
+
         private bool ValidateInputs()
         {
             ValidateAllProperties();
@@ -86,7 +85,7 @@ namespace OMS.UI.ViewModels.Windows
 
             if (!user.IsActive)
             {
-                _messageService.ShowErrorMessage("حساب غير مفعل", MessageTemplates.AccountLockedErrorMessage);
+                _messageService.ShowErrorMessage("حالة الحساب", MessageTemplates.AccountInActiveErrorMessage);
                 return false;
             }
 
