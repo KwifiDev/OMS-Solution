@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:customBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
+        xmlns:inputBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
+        xmlns:windowBehaviors="clr-namespace:OMS.UI.Behaviors.Windows"
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
         xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows.AddEditViewModel"
         xmlns:uc="clr-namespace:OMS.UI.Views.UserControls"
@@ -49,12 +50,11 @@
                      Grid.ColumnSpan="5"
                      Foreground="White">
 
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDown">
-                    <i:InvokeCommandAction Command="{Binding DragWindowCommand}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-
+            <i:Interaction.Behaviors>
+                <windowBehaviors:DragWindowBehavior/>
+            </i:Interaction.Behaviors>
+            
+            
         </Label>
 
 
@@ -84,18 +84,18 @@
                      IsEnabled="{Binding Status.IsModifiable}">
                 
                 <i:Interaction.Behaviors>
-                    <customBehaviors:UsernameInputBehavior/>
+                    <inputBehaviors:UsernameInputBehavior/>
                 </i:Interaction.Behaviors>
             </TextBox>
 
-            <TextBox x:Name="txtPassword"
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding Model.Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
-                     FontSize="16"
-                     Margin="10,5,10,5"
-                     Grid.Row="1" Grid.Column="0"
-                     materialDesign:HintAssist.Hint="كلمة السر"
-                     IsEnabled="{Binding Status.IsModifiable}"/>
+            <PasswordBox x:Name="txtPassword"
+                         Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                         materialDesign:PasswordBoxAssist.Password="{Binding Model.Password, ValidatesOnNotifyDataErrors=True}"
+                         FontSize="16"
+                         Margin="10,5,10,5"
+                         Grid.Row="1" Grid.Column="0"
+                         materialDesign:HintAssist.Hint="كلمة السر"
+                         IsEnabled="{Binding Status.IsModifiable}"/>
 
 
             <CheckBox Style="{StaticResource MaterialDesignDarkCheckBox}"

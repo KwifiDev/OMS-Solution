@@ -8,7 +8,8 @@
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
         xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows.AddEditViewModel" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:customBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
+        xmlns:inputBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
+        xmlns:windowBehaviors="clr-namespace:OMS.UI.Behaviors.Windows"
         d:DataContext="{d:DesignInstance Type=windows:AddEditPersonViewModel}"
         mc:Ignorable="d"
         Height="350" 
@@ -30,11 +31,9 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="MouseDown">
-            <i:InvokeCommandAction Command="{Binding DragWindowCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    <i:Interaction.Behaviors>
+        <windowBehaviors:DragWindowBehavior/>
+    </i:Interaction.Behaviors>
 
     <Grid FlowDirection="RightToLeft">
         <Grid.ColumnDefinitions>
@@ -106,7 +105,7 @@
               materialDesign:HintAssist.Hint="الاسم الأول"
               IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
-                <customBehaviors:ArabicOnlyInputBehavior/>
+                <inputBehaviors:ArabicOnlyInputBehavior/>
             </i:Interaction.Behaviors>
         </TextBox>
 
@@ -119,7 +118,7 @@
               materialDesign:HintAssist.Hint="النسب"
               IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
-                <customBehaviors:ArabicOnlyInputBehavior/>
+                <inputBehaviors:ArabicOnlyInputBehavior/>
             </i:Interaction.Behaviors>
         </TextBox>
 
@@ -133,7 +132,7 @@
               IsEnabled="{Binding Status.IsModifiable}">
             
             <i:Interaction.Behaviors>
-                <customBehaviors:NumericInputBehavior/>
+                <inputBehaviors:NumericInputBehavior/>
             </i:Interaction.Behaviors>
         </TextBox>
 

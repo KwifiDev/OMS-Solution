@@ -7,6 +7,8 @@
         xmlns:local="clr-namespace:OMS.UI.Views" 
         xmlns:ViewModels="clr-namespace:OMS.UI.ViewModels.Windows" 
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:windowBehaviors="clr-namespace:OMS.UI.Behaviors.Windows"
+        xmlns:navBehaviors="clr-namespace:OMS.UI.Behaviors.Navigation"
         d:DataContext="{d:DesignInstance Type=ViewModels:MainWindowViewModel}"
         mc:Ignorable="d"
         Height="600" 
@@ -24,16 +26,16 @@
         <ResourceDictionary Source="pack://application:,,,/Resources/Styles/MainWindowStyle.xaml"/>
     </Window.Resources>
 
+    
+
     <!-- Main Grid -->
     <Grid>
         <!-- App Bar -->
         <DockPanel Style="{StaticResource AppBarDockPanel}">
 
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDown">
-                    <i:InvokeCommandAction Command="{Binding DragWindowCommand}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+            <i:Interaction.Behaviors>
+                <windowBehaviors:DragWindowBehavior/>
+            </i:Interaction.Behaviors>
             
             <!-- Left Section -->
             <StackPanel Style="{StaticResource LeftHeaderPanel}">
@@ -69,7 +71,7 @@
                       Style="{StaticResource MaterialDesignIconButton}"
                       Foreground="White"
                       ToolTip="إغلاق"
-                      Command="{Binding CloseCommand}">
+                      Command="{Binding ExitCommand}">
                     <materialDesign:PackIcon Kind="WindowClose" Width="15" Height="15"/>
                 </Button>
             </StackPanel>
@@ -84,7 +86,7 @@
                 </Menu.ItemsPanel>
 
                 <MenuItem FontSize="12" 
-                          Header="محمد منير الكويفي" 
+                          Header="{Binding CurrentUser.Username ,FallbackValue='اسم الموظف هنا'}" 
                           Foreground="White"
                           FontWeight="Bold">
                     
@@ -100,13 +102,15 @@
                            Style="{StaticResource MaterialDesignMenuItem}"
                            Background="#34495E"
                            FontSize="12"
-                           FontWeight="Light"/>
+                           FontWeight="Light"
+                           Command="{Binding EditUserCommand}"/>
                     
                     <MenuItem Header="تسجيل الخروج"
                            Style="{StaticResource MaterialDesignMenuItem}"
                            Background="#34495E"
                            FontSize="12"
-                           FontWeight="Light"/>
+                           FontWeight="Light"
+                           Command="{Binding LogoutCommand}"/>
                 </MenuItem>
             </Menu>
         </DockPanel>
@@ -234,8 +238,21 @@
 
             <!-- Content Frame -->
             <Frame Grid.Column="1"
-               x:Name="mainFrame" 
-               NavigationUIVisibility="Hidden"/>
+               x:Name="mainFrame"
+               navBehaviors:NavigationServiceBehavior.RegisterFrame="True"
+               NavigationUIVisibility="Hidden">
+
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Loaded">
+                        <i:InvokeCommandAction Command="{Binding LoadDataCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </Frame>
+
+
         </Grid>
     </Grid>
+
 </Window>

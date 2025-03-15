@@ -8,6 +8,7 @@
         xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows" 
         xmlns:userControl="clr-namespace:OMS.UI.Views.UserControls"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:windowBehaviors="clr-namespace:OMS.UI.Behaviors.Windows"
         d:DataContext="{d:DesignInstance Type=windows:PersonDetailsViewModel}"
         mc:Ignorable="d"
         Height="350" 
@@ -27,11 +28,9 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="MouseDown">
-            <i:InvokeCommandAction Command="{Binding DragWindowCommand}"/>
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    <i:Interaction.Behaviors>
+        <windowBehaviors:DragWindowBehavior/>
+    </i:Interaction.Behaviors>
 
     <materialDesign:Card UniformCornerRadius="0" FlowDirection="RightToLeft">
         <Grid>

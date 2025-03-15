@@ -42,10 +42,5 @@ namespace OMS.UI.ViewModels.Windows
             _windowService.Close();
         }
 
-        [RelayCommand]
-        private void DragWindow()
-        {
-            _windowService.DragMove();
-        }
     }
 }

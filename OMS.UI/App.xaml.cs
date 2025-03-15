@@ -15,10 +15,12 @@ using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Repositories.EntityRepos;
 using OMS.DA.Repositories.ViewRepos;
 using OMS.UI.Mapping;
+using OMS.UI.Services.Authentication;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Navigation;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement.Service;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
 using OMS.UI.ViewModels.UserControls;
@@ -110,7 +112,9 @@ namespace OMS.UI
 
         private static void RegisterViewModels(IServiceCollection services)
         {
-            services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<LoginViewModel>();
+
+            services.AddTransient<MainWindowViewModel>();
 
             services.AddSingleton<DashboardPageViewModel>();
 
@@ -131,7 +135,11 @@ namespace OMS.UI
 
         private static void RegisterViews(IServiceCollection services)
         {
-            services.AddSingleton<MainWindow>();
+            services.AddSingleton(provider =>
+                new LoginWindow { DataContext = provider.GetRequiredService<LoginViewModel>() });
+
+            services.AddTransient(provider =>
+                new MainWindow { DataContext = provider.GetRequiredService<MainWindowViewModel>() });
 
             services.AddSingleton(provider =>
                 new DashboardPage { DataContext = provider.GetRequiredService<DashboardPageViewModel>() });
@@ -165,12 +173,15 @@ namespace OMS.UI
 
             services.AddSingleton<IMessageService, MessageService>();
 
-            services.AddSingleton<INavigationService, NavigationService>(provider =>
-                new NavigationService(provider.GetRequiredService<MainWindow>().mainFrame));
+            services.AddSingleton<INavigationService, NavigationService>();
 
             services.AddSingleton<IWindowService, WindowService>();
 
             services.AddTransient<IStatusService, StatusService>();
+
+            services.AddSingleton<IUserSessionService, UserSessionService>();
+
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
         }
 
         private async Task TryConnectToDBAsync()
@@ -196,9 +207,9 @@ namespace OMS.UI
         {
             await _host.StartAsync();
             await TryConnectToDBAsync();
-            MainWindow = Ioc.Default.GetRequiredService<MainWindow>();
-            MainWindow.DataContext = Ioc.Default.GetRequiredService<MainWindowViewModel>();
-            MainWindow.Show();
+
+            var loginWindow = Ioc.Default.GetRequiredService<LoginWindow>();
+            loginWindow.Show();
 
             base.OnStartup(e);
         }

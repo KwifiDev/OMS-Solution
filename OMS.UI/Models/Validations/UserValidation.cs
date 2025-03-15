@@ -10,7 +10,7 @@ namespace OMS.UI.Models.Validations
             var regex = new Regex(@"^[a-zA-Z][a-zA-Z0-9]*$");
             return regex.IsMatch(username)
                 ? ValidationResult.Success
-                : new ValidationResult("اسم المستخدم يجب أن يبدأ على الاقل بحرف.");
+                : new ValidationResult("اسم المستخدم يجب أن يبدأ على الاقل بحرف[EN].");
         }
     }
 }

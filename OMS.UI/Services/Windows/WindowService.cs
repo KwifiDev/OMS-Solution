@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using System.Windows;
 
 namespace OMS.UI.Services.Windows
 {
@@ -30,18 +30,26 @@ namespace OMS.UI.Services.Windows
             }
         }
 
-        public void DragMove()
+        public void Open<TWindow>() where TWindow : Window
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
-            {
-                var activeWindow = Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
-                activeWindow?.DragMove();
-            }
+            Ioc.Default.GetRequiredService<TWindow>().Show();
         }
 
         public void Close()
         {
             Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive)?.Close();
         }
+
+        public void Exit()
+        {
+            Application.Current.Shutdown();
+        }
+
+        public void Hide()
+        {
+            Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive)?.Hide();
+        }
+
+
     }
 }

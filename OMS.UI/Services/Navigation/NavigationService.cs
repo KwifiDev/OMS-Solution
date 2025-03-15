@@ -6,13 +6,13 @@ namespace OMS.UI.Services.Navigation
 
     public class NavigationService : INavigationService
     {
-        private readonly Frame _mainFrame;
+        private Frame _mainFrame = null!;
 
         private Page? _currentSelectedPage;
 
         public object? SelectedViewModelPage => _currentSelectedPage?.DataContext;
 
-        public NavigationService(Frame mainFrame)
+        public void SetFrame(Frame mainFrame)
         {
             _mainFrame = mainFrame;
         }

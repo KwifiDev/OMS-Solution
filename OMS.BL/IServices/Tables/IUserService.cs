@@ -40,5 +40,13 @@ namespace OMS.BL.IServices.Tables
         /// <param name="userId">The ID of the user to delete.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the user was deleted successfully.</returns>
         Task<bool> DeleteAsync(int userId);
+
+        /// <summary>
+        /// Retrieves a user by their username and password asynchronously.
+        /// </summary>
+        /// <param name="username">The username of the user to retrieve.</param>
+        /// <param name="password">The password of the user to retrieve.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the user dto, or null if not found.</returns>
+        Task<UserDto?> GetByUsernameAndPasswordAsync(string username, string password);
     }
 }

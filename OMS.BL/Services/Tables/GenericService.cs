@@ -9,7 +9,7 @@ namespace OMS.BL.Services.Tables
     public class GenericService<TEntity, TDto> : IGenericService<TDto> where TEntity : class
     {
         private readonly IGenericRepository<TEntity> _repository;
-        private readonly IMapperService _mapperService;
+        protected readonly IMapperService _mapperService;
 
         public GenericService(IGenericRepository<TEntity> repository, IMapperService mapper)
         {

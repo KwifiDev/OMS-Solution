@@ -166,8 +166,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         [RelayCommand]
         protected virtual void Close() => _windowService.Close();
 
-        [RelayCommand]
-        protected virtual void DragWindow() => _windowService.DragMove();
         #endregion
 
         #region Common Message Handlers

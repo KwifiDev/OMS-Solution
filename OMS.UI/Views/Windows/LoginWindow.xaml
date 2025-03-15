@@ -1,0 +1,202 @@
+﻿<Window x:Class="OMS.UI.Views.Windows.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OMS.UI.Views.Windows"
+        xmlns:ViewModels="clr-namespace:OMS.UI.ViewModels.Windows" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:behaviors="clr-namespace:OMS.UI.Behaviors.Windows"
+        xmlns:inputBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
+        d:DataContext="{d:DesignInstance Type=ViewModels:LoginViewModel}"
+        mc:Ignorable="d"
+        Height="600" 
+        Width="800"
+        MinHeight="600" 
+        MinWidth="800"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource MaterialDesignWindow}"
+        FlowDirection="RightToLeft"
+        FontFamily="LBC"
+        WindowStyle="None"
+        AllowsTransparency="True">
+
+
+    <i:Interaction.Behaviors>
+        <behaviors:DragWindowBehavior/>
+    </i:Interaction.Behaviors>
+
+    <Window.Resources>
+        <LinearGradientBrush x:Key="PrimaryGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#1E88E5" Offset="0"/>
+            <GradientStop Color="#3949AB" Offset="1"/>
+        </LinearGradientBrush>
+
+        <Style TargetType="Button" x:Key="ModernButton">
+            <Setter Property="Background" Value="{StaticResource PrimaryGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" Opacity="0.2" ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                CornerRadius="10"
+                                Background="{TemplateBinding Background}"
+                                RenderTransformOrigin="0.5,0.5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border.RenderTransform>
+                                <ScaleTransform/>
+                            </Border.RenderTransform>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect BlurRadius="15" Opacity="0.3" ShadowDepth="3"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- تأثير الزجاج المعتم -->
+        <Border Margin="20" CornerRadius="20" Background="#7FFFFFFF">
+            <Border.Effect>
+                <BlurEffect Radius="10"/>
+            </Border.Effect>
+        </Border>
+
+        <!-- التصميم الرئيسي -->
+        <Border CornerRadius="20" Background="White" 
+                Effect="{StaticResource MaterialDesignShadowDepth4}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.2*"/>
+                    <ColumnDefinition Width="1.5*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- الجانب الأيسر مع تأثير متحرك -->
+                <Border Grid.Column="0" CornerRadius="20 0 0 20" ClipToBounds="True">
+                    <Grid>
+                        <Image Source="pack://application:,,,/Resources/Images/Login.jpg" 
+                               Stretch="UniformToFill" Opacity="0.9">
+                            <Image.Effect>
+                                <BlurEffect Radius="5"/>
+                            </Image.Effect>
+                        </Image>
+
+                        <Border Background="{StaticResource PrimaryGradient}" Opacity="0.8"/>
+
+                        <!-- النص مع تأثير الظل -->
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                    TextBlock.TextAlignment="Center">
+                            <TextBlock Text="مرحبًا بعودتك!"
+                                       FontSize="36"
+                                       Foreground="White"
+                                       FontWeight="ExtraBold"
+                                       Effect="{StaticResource MaterialDesignShadowDepth2}"
+                                       Margin="0 0 0 30"/>
+
+                            <TextBlock Text="سجّل دخولك الآن للوصول إلى لوحة التحكم الشاملة"
+                                       FontSize="18"
+                                       Foreground="#EEEEEE"
+                                       LineHeight="28"
+                                       TextWrapping="Wrap"
+                                       Width="300"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- الجانب الأيمن مع تفاصيل الدخول -->
+                <StackPanel Grid.Column="1" Margin="20 40" VerticalAlignment="Stretch">
+                    <!-- إغلاق النافذة -->
+                    <Button Style="{StaticResource MaterialDesignIconButton}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Margin="-20 -20 0 0"
+                            Foreground="#666"
+                            Content="{materialDesign:PackIcon Kind=Close}"
+                            ToolTip="إغلاق النافذة"
+                            Command="{Binding ExitCommand}"/>
+
+                    <!-- أيقونة المستخدم -->
+                    <materialDesign:PackIcon Kind="AccountCircleOutline" 
+                                            Width="80" 
+                                            Height="80"
+                                            Foreground="{StaticResource PrimaryGradient}"
+                                            HorizontalAlignment="Center"
+                                            Margin="0 0 0 40"/>
+
+                    <!-- حقل اسم المستخدم -->
+                    <materialDesign:Card Padding="0" Margin="0 10" >
+                        <TextBox materialDesign:HintAssist.Hint="اسم المستخدم" 
+                                 Style="{StaticResource MaterialDesignFilledTextBox}"
+                                 FontSize="16"
+                                 Background="Transparent"
+                                 BorderBrush="Black"
+                                 BorderThickness="0.5"
+                                 materialDesign:TextFieldAssist.UnderlineBrush="Transparent"
+                                 Padding="15 15"
+                                 Text="{Binding Username, UpdateSourceTrigger=LostFocus}">
+
+                            <i:Interaction.Behaviors>
+                                <inputBehaviors:UsernameInputBehavior/>
+                            </i:Interaction.Behaviors>
+                            
+                        </TextBox>
+                    </materialDesign:Card>
+
+                    <!-- حقل كلمة المرور -->
+                    <materialDesign:Card Padding="0" Margin="0 20" >
+                        <PasswordBox materialDesign:HintAssist.Hint="كلمة المرور" 
+                                     Style="{StaticResource MaterialDesignFilledPasswordBox}"
+                                     FontSize="16"
+                                     Background="Transparent"
+                                     BorderBrush="Black"
+                                     BorderThickness="0.5"
+                                     materialDesign:TextFieldAssist.UnderlineBrush="Transparent"
+                                     Padding="15 15"
+                                     materialDesign:PasswordBoxAssist.Password="{Binding Password, UpdateSourceTrigger=LostFocus}"/>
+                    </materialDesign:Card>
+
+                    <!-- خيارات إضافية -->
+                    <Grid Margin="0 20">
+                        <CheckBox Content="تذكر بيانات الدخول"
+                                 Style="{StaticResource MaterialDesignCheckBox}"
+                                 FontSize="14"
+                                 HorizontalAlignment="Left"/>
+                    </Grid>
+
+                    <!-- زر الدخول -->
+                    <Button Content="تسجيل الدخول" 
+                           Style="{StaticResource ModernButton}"
+                           Margin="0 30 0 20"
+                           FontWeight="SemiBold"
+                           Command="{Binding LoginCommand}"/>
+
+                    
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+
+</Window>

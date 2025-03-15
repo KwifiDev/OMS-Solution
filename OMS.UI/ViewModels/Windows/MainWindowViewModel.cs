@@ -1,9 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using OMS.UI.Models;
+using OMS.UI.Services.Dialog;
+using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.Navigation;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
 using OMS.UI.Views.Pages;
+using OMS.UI.Views.Windows;
 
 namespace OMS.UI.ViewModels.Windows
 {
@@ -11,14 +17,48 @@ namespace OMS.UI.ViewModels.Windows
     {
         private readonly INavigationService _navigationService;
         private readonly IWindowService _windowService;
+        private readonly IUserSessionService _userSessionService;
+        private readonly IDialogService _dialogService;
 
-        public MainWindowViewModel(INavigationService navigationService, IWindowService windowService)
+        [ObservableProperty]
+        private UserModel? _currentUser;
+
+        public MainWindowViewModel(INavigationService navigationService, IWindowService windowService,
+                                   IUserSessionService userSessionService, IDialogService dialogService)
         {
             _navigationService = navigationService;
             _windowService = windowService;
-            _navigationService.NavigateToPageAsync<DashboardPage>();
+            _userSessionService = userSessionService;
+            _dialogService = dialogService;
+
+            CurrentUser = _userSessionService.CurrentUser;
+
+            WeakReferenceMessenger.Default.Register<IMessage<UserModel>>(this, (r, m) => { CurrentUser = m.Model; });
+        }        
+
+
+        [RelayCommand]
+        private async Task LoadData()
+        {
+            await OpenDashboard();
         }
 
+        [RelayCommand]
+        private void EditUser()
+        {
+            int? userId = _userSessionService.CurrentUser?.UserId;
+
+            if (userId != null && userId > 0)
+                _dialogService.ShowDialog<AddEditUserWindow>(userId);
+        }
+
+        [RelayCommand]
+        private void Logout()
+        {
+            _userSessionService.Logout();
+            _windowService.Close();
+            _windowService.Open<LoginWindow>();
+        }
 
         [RelayCommand(CanExecute = nameof(CanOpenDashboard))]
         private async Task OpenDashboard()
@@ -69,28 +109,15 @@ namespace OMS.UI.ViewModels.Windows
 
 
         [RelayCommand]
-        private void Minimize()
-        {
-            _windowService.Minimize();
-        }
+        private void Minimize() => _windowService.Minimize();
+
 
         [RelayCommand]
-        private void Maximize()
-        {
-            _windowService.Maximize();
-        }
+        private void Maximize() => _windowService.Maximize();
+
 
         [RelayCommand]
-        private void Close()
-        {
-            _windowService.Close();
-        }
-
-        [RelayCommand]
-        private void DragWindow()
-        {
-            _windowService.DragMove();
-        }
+        private void Exit() => _windowService.Exit();
 
         private bool CanOpenPage<TViewModel>() where TViewModel : class
         {
