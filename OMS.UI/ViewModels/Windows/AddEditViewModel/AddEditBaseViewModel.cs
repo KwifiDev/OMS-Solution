@@ -153,7 +153,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             WeakReferenceMessenger.Default.Send<IMessage<TModel>>(message);
         }
 
-
         #region Common Abstract Methods
         // This Methods will be implemented in Derived class
         protected abstract Task<TDto?> GetByIdAsync(int id);

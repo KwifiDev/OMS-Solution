@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using OMS.BL.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.IServices.Views;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
+using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement.Service;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.UserControls.Interfaces;
 using System.Collections.ObjectModel;
@@ -16,6 +19,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
     public partial class AddEditUserViewModel : AddEditBaseViewModel<UserModel, UserDto, IUserService>
     {
         private readonly IBranchOptionService _branchOptionService;
+        private readonly IUserSessionService _userSessionService;
 
         [ObservableProperty]
         private IFindPersonViewModel _findPersonViewModel;
@@ -25,11 +29,12 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         public AddEditUserViewModel(IUserService userService, IBranchOptionService branchOptionService, IMapper mapper,
                                     IFindPersonViewModel findPersonViewModel, IMessageService messageService,
-                                    IWindowService windowService, IStatusService statusService)
+                                    IWindowService windowService, IStatusService statusService, IUserSessionService userSessionService)
                                     : base(userService, mapper, messageService, windowService, statusService)
         {
             _findPersonViewModel = findPersonViewModel;
             _branchOptionService = branchOptionService;
+            _userSessionService = userSessionService;
 
             Branches = new ObservableCollection<BranchOption>();
         }
@@ -80,6 +85,14 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             if (!base.ValidateModel()) return false;
 
             return ValidateUser();
+        }
+
+        protected override void SendMessage()
+        {
+            base.SendMessage();
+
+            if (Model.UserId == _userSessionService.CurrentUser?.UserId)
+                WeakReferenceMessenger.Default.Send(Model);
         }
 
         private async Task LoadBranchesAsync()

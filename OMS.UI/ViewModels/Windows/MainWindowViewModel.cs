@@ -37,10 +37,7 @@ namespace OMS.UI.ViewModels.Windows
 
             CurrentUser = _userSessionService.CurrentUser;
 
-            WeakReferenceMessenger.Default.Register<IMessage<UserModel>>(this, (r, m) => 
-            {
-                if (CurrentUser!.UserId == m.Model.UserId) CurrentUser = m.Model;
-            });
+            WeakReferenceMessenger.Default.Register<UserModel>(this, (r, user) => { CurrentUser = user; });
         }        
 
 
