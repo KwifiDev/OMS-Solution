@@ -86,7 +86,7 @@
                 </Menu.ItemsPanel>
 
                 <MenuItem FontSize="12" 
-                          Header="{Binding CurrentUser.Username ,FallbackValue='اسم الموظف هنا'}" 
+                          Header="{Binding CurrentUser.FullName ,FallbackValue='اسم الموظف هنا'}" 
                           Foreground="White"
                           FontWeight="Bold">
                     

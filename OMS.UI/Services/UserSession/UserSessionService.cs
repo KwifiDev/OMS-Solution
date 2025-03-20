@@ -10,10 +10,10 @@ namespace OMS.UI.Services.UserSession
         private bool _isLoggedIn;
 
         [ObservableProperty]
-        private UserModel? _currentUser;
+        private UserLoginModel? _currentUser;
 
 
-        public void Login(UserModel user)
+        public void Login(UserLoginModel user)
         {
             CurrentUser = user;
             IsLoggedIn = true;

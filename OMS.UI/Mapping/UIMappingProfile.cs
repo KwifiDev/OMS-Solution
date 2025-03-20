@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OMS.BL.Dtos.Hybrid;
 using OMS.BL.Dtos.Tables;
 using OMS.BL.Dtos.Views;
 using OMS.UI.Models;
@@ -16,6 +17,7 @@ namespace OMS.UI.Mapping
             CreateMap<BranchOptionDto, BranchOption>().ReverseMap();
             CreateMap<PersonDetailDto, PersonDetailModel>().ReverseMap();
             CreateMap<BranchOperationalMetricDto, BranchOperationalMetricModel>().ReverseMap();
+            CreateMap<UserLoginDto, UserLoginModel>().ReverseMap();
         }
     }
 }

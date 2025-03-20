@@ -15,10 +15,10 @@ namespace OMS.UI.Services.Authentication
             _mapper = mapper;
         }
 
-        public async Task<UserModel> AuthenticateAsync(string username, string password)
+        public async Task<UserLoginModel> AuthenticateAsync(string username, string password)
         {
-            var userDto = await _userService.GetByUsernameAndPasswordAsync(username, password);
-            return _mapper.Map<UserModel>(userDto);
+            var userLoginDto = await _userService.GetByUsernameAndPasswordAsync(username, password);
+            return _mapper.Map<UserLoginModel>(userLoginDto);
         }
     }
 }

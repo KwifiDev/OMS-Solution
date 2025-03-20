@@ -1,4 +1,5 @@
-﻿using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Dtos.Hybrid;
+using OMS.BL.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
 using OMS.DA.Entities;
@@ -17,11 +18,18 @@ namespace OMS.BL.Services.Tables
             _userRepository = repository;
         }
 
-        public async Task<UserDto?> GetByUsernameAndPasswordAsync(string username, string password)
+        public async Task<UserLoginDto?> GetByUsernameAndPasswordAsync(string username, string password)
         {
             User? user = await _userRepository.GetByUsernameAndPasswordAsync(username, password);
 
-            return user == null ? null : _mapperService.Map<User, UserDto>(user);
+            return user == null ? null : _mapperService.Map<User, UserLoginDto>(user);
+        }
+
+        public async Task<UserLoginDto?> GetUserLoginByPersonIdAsync(int personId)
+        {
+            User? user = await _userRepository.GetUserLoginByPersonIdAsync(personId);
+
+            return user == null ? null : _mapperService.Map<User, UserLoginDto>(user);
         }
     }
 }

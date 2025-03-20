@@ -4,9 +4,9 @@ namespace OMS.UI.Services.UserSession
 {
     public interface IUserSessionService
     {
-        UserModel? CurrentUser { get; }
+        UserLoginModel? CurrentUser { get; }
         bool IsLoggedIn { get; }
-        void Login(UserModel user);
+        void Login(UserLoginModel user);
         void Logout();
     }
 }

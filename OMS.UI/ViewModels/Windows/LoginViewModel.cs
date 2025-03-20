@@ -75,7 +75,7 @@ namespace OMS.UI.ViewModels.Windows
         private void ShowValidationError(string? error) =>
             _messageService.ShowInfoMessage("تحقق", MessageTemplates.ValidationErrorMessage(error));
 
-        private bool ValidateUserAccount(UserModel? user)
+        private bool ValidateUserAccount(UserLoginModel? user)
         {
             if (user == null)
             {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OMS.BL.Dtos.Hybrid;
 using OMS.BL.Dtos.Tables;
 using OMS.BL.Dtos.Views;
 using OMS.DA.Entities;
@@ -67,6 +68,12 @@ namespace OMS.BL.Mapping
             CreateMap<UserAccount, UserAccountDto>().ReverseMap();
 
             CreateMap<UserDetail, UserDetailDto>().ReverseMap();
+
+            CreateMap<User, UserLoginDto>()
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(scr => scr.Person.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(scr => scr.Person.LastName))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(scr => scr.Person.Gender))
+                .ReverseMap();
 
         }
     }

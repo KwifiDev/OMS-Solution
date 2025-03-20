@@ -1,4 +1,5 @@
-﻿using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Dtos.Hybrid;
+using OMS.BL.Dtos.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -47,6 +48,16 @@ namespace OMS.BL.IServices.Tables
         /// <param name="username">The username of the user to retrieve.</param>
         /// <param name="password">The password of the user to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the user dto, or null if not found.</returns>
-        Task<UserDto?> GetByUsernameAndPasswordAsync(string username, string password);
+        Task<UserLoginDto?> GetByUsernameAndPasswordAsync(string username, string password);
+
+
+        /// <summary>
+        /// Retrieves a user by their person Id asynchronously.
+        /// </summary>
+        /// <param name="personId">The person Id of the user to retrieve.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the user dto, or null if not found.</returns>
+        Task<UserLoginDto?> GetUserLoginByPersonIdAsync(int personId);
+
+
     }
 }
