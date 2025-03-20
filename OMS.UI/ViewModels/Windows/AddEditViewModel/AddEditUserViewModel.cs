@@ -88,7 +88,8 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         protected override void SendMessage()
         {
             base.SendMessage();
-            _userSessionService.UpdateModel();
+            if (_userSessionService.CurrentUser?.PersonId == Model.PersonId)
+                _userSessionService.UpdateModel();
         }
 
         private async Task LoadBranchesAsync()
