@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CommunityToolkit.Mvvm.Messaging;
 using OMS.BL.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.UI.Models;
@@ -42,10 +41,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         protected override void SendMessage()
         {
             base.SendMessage();
-
-            if (Model.PersonId == _userSessionService.CurrentUser?.PersonId)
-                WeakReferenceMessenger.Default.Send(Model);
-
+            _userSessionService.UpdateModel();
         }
     }
 }

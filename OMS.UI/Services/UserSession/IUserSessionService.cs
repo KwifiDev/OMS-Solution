@@ -8,5 +8,6 @@ namespace OMS.UI.Services.UserSession
         bool IsLoggedIn { get; }
         void Login(UserLoginModel user);
         void Logout();
+        Task UpdateModel();
     }
 }

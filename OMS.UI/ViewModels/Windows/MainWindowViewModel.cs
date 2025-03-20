@@ -42,18 +42,7 @@ namespace OMS.UI.ViewModels.Windows
 
             CurrentUser = _userSessionService.CurrentUser;
 
-            WeakReferenceMessenger.Default.Register<UserModel>(this, async (r, user) => { CurrentUser = await OnGetUserModel(user.PersonId); });
-            WeakReferenceMessenger.Default.Register<PersonModel>(this, async (r, person) => { CurrentUser = await OnGetUserModel(person.PersonId); });
-
-        }
-
-        private async Task<UserLoginModel?> OnGetUserModel(int personId)
-        {
-            var userLoginDto = await _userService.GetUserLoginByPersonIdAsync(personId);
-
-            var userLoginModel = _mapper.Map<UserLoginModel>(userLoginDto);
-
-            return userLoginModel ?? CurrentUser;
+            WeakReferenceMessenger.Default.Register<UserLoginModel>(this, (r, user) => CurrentUser = user );
         }
 
         [RelayCommand]

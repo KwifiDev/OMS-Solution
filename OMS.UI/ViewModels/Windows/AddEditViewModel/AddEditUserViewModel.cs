@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 using OMS.BL.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.IServices.Views;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
-using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.UserSession;
@@ -90,9 +88,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         protected override void SendMessage()
         {
             base.SendMessage();
-
-            if (Model.UserId == _userSessionService.CurrentUser?.UserId)
-                WeakReferenceMessenger.Default.Send(Model);
+            _userSessionService.UpdateModel();
         }
 
         private async Task LoadBranchesAsync()
