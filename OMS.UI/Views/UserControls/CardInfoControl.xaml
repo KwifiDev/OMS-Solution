@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="OMS.UI.Views.UserControls.CardInfoControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="245"
+             Width="245" Height="150"
+             FlowDirection="RightToLeft"
+             FontFamily="LBC">
+
+    <materialDesign:Card Margin="5" Width="Auto" Height="150">
+        <StackPanel Margin="15">
+            <materialDesign:PackIcon
+                Kind="{Binding Image, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                Foreground="{DynamicResource SecondaryHueMidBrush}"
+                Width="40"
+                Height="40"/>
+
+            <TextBlock
+                Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue='.....................'}"
+                Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                Margin="0 10 0 0"/>
+
+            <TextBlock
+                Text="{Binding Description, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue='................................'}"
+                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                Foreground="{DynamicResource PrimaryHueMidBrush}"/>
+        </StackPanel>
+    </materialDesign:Card>
+</UserControl>

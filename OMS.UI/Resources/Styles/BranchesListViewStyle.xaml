@@ -80,6 +80,7 @@
                 <StackPanel Grid.Column="2" Orientation="Vertical" Margin="5">
 
                     <TextBlock Text="عدد الموظفين"
+                               HorizontalAlignment="Center"
                                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                                FontWeight="SemiBold"
                                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"

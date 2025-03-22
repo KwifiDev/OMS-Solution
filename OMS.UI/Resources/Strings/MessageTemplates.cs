@@ -39,6 +39,7 @@
         public static string PasswordMismatchMessage => "كلمتا المرور غير متطابقتين.";
         public static string InvalidDateMessage => "التاريخ المدخل غير صالح.";
         public static string InvalidRangeMessage => "القيمة المدخلة خارج النطاق المسموح.";
+
         public static string ValidationErrorMessage(string? fieldName) => $"خطأ في عمليات الادخال:\n{fieldName}";
 
         // Login Success Messages
@@ -64,6 +65,9 @@
         // Login Confirmation Messages
         public static string LogoutConfirmation => "هل أنت متأكد من رغبتك في تسجيل الخروج؟";
         public static string AccountDeletionConfirmation => "هل أنت متأكد من حذف الحساب بشكل دائم؟";
+
+
+        public static string InvalidDeleteUserMessage => "لا يمكن حذف الحساب المستخدم لانك تستخدمه.";
 
 
     }
