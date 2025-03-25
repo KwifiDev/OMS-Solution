@@ -6,11 +6,10 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="245"
-             Width="245" Height="150"
              FlowDirection="RightToLeft"
              FontFamily="LBC">
 
-    <materialDesign:Card Margin="5" Width="Auto" Height="150">
+    <materialDesign:Card Margin="5" Height="150" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
         <StackPanel Margin="15">
             <materialDesign:PackIcon
                 Kind="{Binding Image, RelativeSource={RelativeSource AncestorType=UserControl}}"

@@ -3,9 +3,9 @@
 
 
     <Storyboard x:Key="PageLoadAnimation">
-        <DoubleAnimation Storyboard.TargetName="wrap" 
-      Storyboard.TargetProperty="Opacity"
-      From="0" To="1" Duration="0:0:0.5"/>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                         Storyboard.TargetName="scroll"
+                         From="0" To="1" Duration="0:0:0.5"/>
     </Storyboard>
 
 </ResourceDictionary>

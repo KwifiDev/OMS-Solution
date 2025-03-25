@@ -11,7 +11,7 @@
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       d:DataContext="{d:DesignInstance Type=pages:DashboardPageViewModel}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="1000"
       FlowDirection="RightToLeft"
       FontFamily="LBC"
       Name="PGDashboard">
@@ -56,21 +56,32 @@
         </materialDesign:Card>
 
         <!-- محتوى Dashboard -->
-        <ScrollViewer Grid.Row="1" Margin="5" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Name="scroll" Grid.Row="1" Margin="5" VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding Cards}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel ItemWidth="{Binding ActualWidth, 
-                            Converter={StaticResource Width},
-                            RelativeSource={RelativeSource AncestorType=ScrollViewer}}"/>
+                        <WrapPanel ItemWidth="{Binding ActualWidth, Converter={StaticResource Width},
+                                   RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Loaded">
+                                    <i:ControlStoryboardAction Storyboard="{StaticResource PageLoadAnimation}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
+                        </WrapPanel>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <uc:CardInfoControl 
+                            HorizontalAlignment="Stretch" 
+                            HorizontalContentAlignment="Stretch"
                             Margin="5"
-                            Width="{Binding ItemWidth, RelativeSource={RelativeSource AncestorType=WrapPanel}}"
+                            Height="150"
+                            Width="{Binding ItemWidth, 
+                            RelativeSource={RelativeSource AncestorType=WrapPanel}}"
                             Image="{Binding Icon}"
                             Title="{Binding Title}"
                             Description="{Binding Value}"/>

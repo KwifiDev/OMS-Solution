@@ -7,12 +7,12 @@ namespace OMS.UI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is double width)
+            if (value is double width && width > 0)
             {
-                return width / 3.15;
+                double totalMargin = 20;
+                return (width - totalMargin) / 3;
             }
-
-            return value;
+            return double.NaN; 
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
