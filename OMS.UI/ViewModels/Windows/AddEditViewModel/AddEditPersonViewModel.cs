@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using OMS.BL.Dtos.Tables;
 using OMS.BL.IServices.Tables;
+using OMS.Common.Enums;
 using OMS.UI.Models;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement.Service;
@@ -19,10 +20,11 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
                                       IWindowService windowService, IStatusService statusService, IUserSessionService userSessionService)
                                       : base(personService, mapper, messageService, windowService, statusService)
         {
-            Genders = GenderOption.Genders;
+            Genders = [new("ذكر", EnGender.Male), new("انثى", EnGender.Female)];
             _userSessionService = userSessionService;
         }
 
+        public record GenderOption(string DisplayMember, EnGender Value);
         public ObservableCollection<GenderOption> Genders { get; }
 
 

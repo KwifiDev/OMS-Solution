@@ -88,9 +88,6 @@ namespace OMS.UI
             services.AddTransient<IUserDetailRepository, UserDetailRepository>();
             services.AddTransient<IUserDetailService, UserDetailService>();
 
-            services.AddTransient<IBranchOptionRepository, BranchOptionRepository>();
-            services.AddTransient<IBranchOptionService, BranchOptionService>();
-
             services.AddTransient<IPersonDetailRepository, PersonDetailRepository>();
             services.AddTransient<IPersonDetailService, PersonDetailService>();
 

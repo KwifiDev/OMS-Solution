@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace OMS.UI.Behaviors.Windows
+namespace OMS.UI.Behaviors.Controls
 {
     public class FocusBehavior : Behavior<Control>
     {

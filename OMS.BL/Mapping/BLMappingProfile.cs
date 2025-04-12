@@ -15,6 +15,8 @@ namespace OMS.BL.Mapping
 
             CreateMap<Branch, BranchDto>().ReverseMap();
 
+            CreateMap<Branch, BranchOptionDto>().ReverseMap();
+
             CreateMap<Client, ClientDto>().ReverseMap();
 
             CreateMap<Debt, DebtDto>().ReverseMap();
@@ -40,8 +42,6 @@ namespace OMS.BL.Mapping
             CreateMap<AccountBalancesTransaction, AccountBalancesTransactionDto>().ReverseMap();
 
             CreateMap<BranchOperationalMetric, BranchOperationalMetricDto>().ReverseMap();
-
-            CreateMap<BranchOption, BranchOptionDto>().ReverseMap();
 
             CreateMap<PersonDetail, PersonDetailDto>().ReverseMap();
 

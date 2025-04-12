@@ -8,6 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:behaviors="clr-namespace:OMS.UI.Behaviors.Windows"
+        xmlns:controlsBehaviors="clr-namespace:OMS.UI.Behaviors.Controls"
         xmlns:inputBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
         d:DataContext="{d:DesignInstance Type=ViewModels:LoginViewModel}"
         mc:Ignorable="d"
@@ -115,7 +116,7 @@
 
                             <i:Interaction.Behaviors>
                                 <inputBehaviors:UsernameInputBehavior/>
-                                <behaviors:FocusBehavior TargetButton="{Binding ElementName=LoginButton}"/>
+                                <controlsBehaviors:FocusBehavior TargetButton="{Binding ElementName=LoginButton}"/>
                             </i:Interaction.Behaviors>
                         </TextBox>
                     </materialDesign:Card>
@@ -134,7 +135,7 @@
                                      materialDesign:PasswordBoxAssist.Password="{Binding Password, UpdateSourceTrigger=LostFocus}">
 
                             <i:Interaction.Behaviors>
-                                <behaviors:FocusBehavior TargetButton="{Binding ElementName=LoginButton}"/>
+                                <controlsBehaviors:FocusBehavior TargetButton="{Binding ElementName=LoginButton}"/>
                             </i:Interaction.Behaviors>
 
 

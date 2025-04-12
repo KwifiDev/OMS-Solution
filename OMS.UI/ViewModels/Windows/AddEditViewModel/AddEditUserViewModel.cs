@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using OMS.BL.Dtos.Tables;
 using OMS.BL.IServices.Tables;
-using OMS.BL.IServices.Views;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.ShowMassage;
@@ -16,7 +15,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
     public partial class AddEditUserViewModel : AddEditBaseViewModel<UserModel, UserDto, IUserService>
     {
-        private readonly IBranchOptionService _branchOptionService;
+        private readonly IBranchService _branchService;
         private readonly IUserSessionService _userSessionService;
 
         [ObservableProperty]
@@ -25,18 +24,17 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         [ObservableProperty]
         private ObservableCollection<BranchOption> _branches;
 
-        public AddEditUserViewModel(IUserService userService, IBranchOptionService branchOptionService, IMapper mapper,
+        public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMapper mapper,
                                     IFindPersonViewModel findPersonViewModel, IMessageService messageService,
                                     IWindowService windowService, IStatusService statusService, IUserSessionService userSessionService)
                                     : base(userService, mapper, messageService, windowService, statusService)
         {
             _findPersonViewModel = findPersonViewModel;
-            _branchOptionService = branchOptionService;
+            _branchService = branchService;
             _userSessionService = userSessionService;
 
             Branches = new ObservableCollection<BranchOption>();
         }
-
 
         public override async Task<bool> OnOpeningDialog(int? id = -1)
         {
@@ -94,7 +92,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         private async Task LoadBranchesAsync()
         {
-            var branchOptionDto = await _branchOptionService.GetAllAsync();
+            var branchOptionDto = await _branchService.GetAllBranchesOption();
             var branchOption = _mapper.Map<IEnumerable<BranchOption>>(branchOptionDto);
             Branches = new ObservableCollection<BranchOption>(branchOption);
         }

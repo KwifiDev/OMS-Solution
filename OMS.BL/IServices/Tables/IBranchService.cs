@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Dtos.Tables;
+using OMS.BL.Dtos.Views;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -40,5 +41,11 @@ namespace OMS.BL.IServices.Tables
         /// <param name="branchId">The ID of the branch to delete.</param>
         /// <returns>True if the branch was deleted successfully, otherwise false.</returns>
         Task<bool> DeleteAsync(int branchId);
+
+        /// <summary>
+        /// Retrieves all branches Option asynchronously.
+        /// </summary>
+        /// <returns>A collection of branch option.</returns>
+        Task<IEnumerable<BranchOptionDto>?> GetAllBranchesOption();
     }
 }
