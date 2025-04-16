@@ -5,11 +5,13 @@ using OMS.BL.IServices.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.Services.StatusManagement;
 using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.UserControls.Interfaces;
 using System.Collections.ObjectModel;
+using static OMS.UI.ViewModels.UserControls.FindPersonViewModel;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
@@ -22,123 +24,114 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private IFindPersonViewModel _findPersonViewModel;
 
         [ObservableProperty]
-        private ObservableCollection<BranchOption> _branches;
+        private ObservableCollection<BranchOption> _branches = null!;
 
-        public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMapper mapper,
-                                    IFindPersonViewModel findPersonViewModel, IMessageService messageService,
-                                    IWindowService windowService, IStatusService statusService, IUserSessionService userSessionService)
-                                    : base(userService, mapper, messageService, windowService, statusService)
+        public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMapper mapper, IMessageService messageService,
+                                    IFindPersonViewModel findPersonViewModel, IWindowService windowService, IStatusService statusService,
+                                    IUserSessionService userSessionService) : base(userService, mapper, messageService, windowService, statusService)
         {
-            _findPersonViewModel = findPersonViewModel;
             _branchService = branchService;
             _userSessionService = userSessionService;
+            _findPersonViewModel = findPersonViewModel;
 
-            Branches = new ObservableCollection<BranchOption>();
+            FindPersonViewModel.PersonFound += OnPersonFound;
+            InitializeBranches();
         }
 
-        public override async Task<bool> OnOpeningDialog(int? id = -1)
+        private async void OnPersonFound(object? obj, PersonFoundEventArgs e)
         {
-            await LoadBranchesAsync();
-            return await base.OnOpeningDialog(id);
+            if (Status.SelectMode == AddEditStatus.EnMode.Edit) return;
+
+            var userId = await _service.GetIdByPersonIdAsync(e.PersonId);
+            if (userId == 0) return;
+
+            await EnterEditModeAsync(userId);
         }
 
-        protected override async Task<UserDto?> GetByIdAsync(int userId)
-            => await _service.GetByIdAsync(userId);
+        protected override async Task<UserDto?> GetByIdAsync(int id)
+            => await _service.GetByIdAsync(id);
 
         protected override async Task<bool> EnterEditModeAsync(int? id)
         {
-            if (await base.EnterEditModeAsync(id))
-            {
-                LoadSelectedPerson();
-                return true;
-            }
+            if (!await base.EnterEditModeAsync(id)) return false;
 
-            return false;
+            LoadAssociatedPerson();
+            return true;
         }
 
         protected override async Task Save(object? parameter)
         {
-            if (!ValidateSelectedPerson()) return;
+            if (!ValidatePersonSelection()) return;
 
-            SetUserPersonId();
-
+            SetPersonReference();
             await base.Save(parameter);
         }
-
-        protected override async Task<bool> SaveDataAsync(bool isAdding, UserDto userDto)
-            => isAdding ? await _service.AddAsync(userDto) : await _service.UpdateAsync(userDto);
-
-        protected override void UpdateModelAfterSave(UserDto userDto)
-            => Model.UserId = userDto.UserId;
 
         protected override string GetEntityName()
             => "موظف";
 
+        protected override async Task<bool> SaveDataAsync(bool isAdding, UserDto userDto)
+            => isAdding
+                ? await _service.AddAsync(userDto)
+                : await _service.UpdateAsync(userDto);
+
+        protected override void UpdateModelAfterSave(UserDto userDto)
+            => Model.UserId = userDto.UserId;
+
         protected override bool ValidateModel()
         {
-            if (!ValidateFindPerson()) return false;
-
             if (!base.ValidateModel()) return false;
+            if (!ValidatePersonSelection()) return false;
+            if (!ValidateBranchSelection()) return false;
 
-            return ValidateUser();
+            return true;
         }
 
         protected override void SendMessage()
         {
             base.SendMessage();
-            if (_userSessionService.CurrentUser?.PersonId == Model.PersonId)
-                _userSessionService.UpdateModel();
+            RefreshUserSession();
         }
 
-        private async Task LoadBranchesAsync()
+        private async void InitializeBranches()
         {
             var branchOptionDto = await _branchService.GetAllBranchesOption();
             var branchOption = _mapper.Map<IEnumerable<BranchOption>>(branchOptionDto);
             Branches = new ObservableCollection<BranchOption>(branchOption);
         }
 
-        private void LoadSelectedPerson()
+        private void LoadAssociatedPerson()
         {
             FindPersonViewModel.PersonId = Model.PersonId.ToString();
             FindPersonViewModel.FindPerson();
         }
 
-        private bool ValidateSelectedPerson()
+        private bool ValidatePersonSelection()
         {
-            if (FindPersonViewModel.Person == null)
-            {
-                _messageService.ShowErrorMessage("شخص غير محدد", MessageTemplates.SaveErrorMessage);
-                return false;
-            }
+            if (FindPersonViewModel.Person != null) return true;
 
-            return true;
+            ShowValidationError("تحقق", MessageTemplates.ValidationErrorMessage("يجب تحديد الشخص"));
+            return false;
         }
 
-        private void SetUserPersonId()
+        private bool ValidateBranchSelection()
         {
-            Model.PersonId = FindPersonViewModel.Person!.PersonId;
+            if (Model.BranchId != 0) return true;
+
+            ShowValidationError("تحقق", MessageTemplates.ValidationErrorMessage("يجب تحديد الفرع"));
+            return false;
         }
 
-        private bool ValidateFindPerson()
-        {
-            if (FindPersonViewModel.Person == null || FindPersonViewModel.Person.PersonId <= 0)
-            {
-                _messageService.ShowInfoMessage("تحقق", MessageTemplates.ValidationErrorMessage("يجب تحديد الشخص الذي سوف يتم تفعيل الحساب عليه"));
-                return false;
-            }
+        private void SetPersonReference()
+            => Model.PersonId = FindPersonViewModel.Person!.PersonId;
 
-            return true;
+        private void RefreshUserSession()
+        {
+            if (_userSessionService.CurrentUser?.PersonId == Model.PersonId)
+                _userSessionService.UpdateModel();
         }
 
-        private bool ValidateUser()
-        {
-            if (Model.BranchId == 0)
-            {
-                _messageService.ShowInfoMessage("تحقق", MessageTemplates.ValidationErrorMessage("يجب تحديد الفرع الذي سوف يتم بناء الحساب عليه"));
-                return false;
-            }
-
-            return true;
-        }
+        private void ShowValidationError(string title, string message)
+            => _messageService.ShowInfoMessage(title, message);
     }
 }

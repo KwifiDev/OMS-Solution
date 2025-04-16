@@ -31,70 +31,17 @@ namespace OMS.BL.Services.Tables
             return dto.PayDebtStatus == EnPayDebtStatus.Success;
         }
 
-        /*
-         public async Task<IEnumerable<ClientDto>> GetAllClientsAsync()
+
+        public async Task<ClientDto?> GetByPersonIdAsync(int personId)
         {
-            IEnumerable<Client> clients = await _repository.GetAllAsync();
+            var client = await _clientRepository.GetByPersonIdAsync(personId);
 
-            return clients?.Select(c => new ClientDto
-            {
-                ClientId = c.ClientId,
-                PersonId = c.PersonId,
-                ClientType = c.ClientType
-
-            }) ?? Enumerable.Empty<ClientDto>();
+            return client != null ? _mapperService.Map<Client, ClientDto>(client) : null;
         }
 
-        public async Task<ClientDto?> GetClientByIdAsync(int clientId)
+        public async Task<int> GetIdByPersonIdAsync(int personId)
         {
-            Client? client = await _repository.GetByIdAsync(clientId);
-
-            return client == null ? null : new ClientDto
-            {
-                ClientId = client.ClientId,
-                PersonId = client.PersonId,
-                ClientType = client.ClientType
-            };
+            return await _clientRepository.GetIdByPersonIdAsync(personId);
         }
-
-        public async Task<bool> AddClientAsync(ClientDto dto)
-        {
-            if (dto == null) return false;
-
-            Client client = new Client
-            {
-                ClientId = dto.ClientId,
-                PersonId = dto.PersonId,
-                ClientType = dto.ClientType
-            };
-
-            bool success = await _repository.AddAsync(client);
-
-            if (success) dto.ClientId = client.ClientId;
-
-            return success;
-        }
-
-        public async Task<bool> UpdateClientAsync(ClientDto dto)
-        {
-            if (dto == null) return false;
-
-            Client? client = await _repository.GetByIdAsync(dto.ClientId);
-
-            if (client == null) return false;
-
-            client.ClientType = dto.ClientType;
-
-            return await _repository.UpdateAsync(client);
-
-        }
-
-        public async Task<bool> DeleteClientAsync(int clientId)
-        {
-            if (clientId <= 0) return false;
-
-            return await _repository.DeleteAsync(clientId);
-        }
-         */
     }
 }

@@ -57,5 +57,15 @@ namespace OMS.DA.Repositories.EntityRepos
                        })
                        .FirstOrDefaultAsync();
         }
+
+        public async Task<User?> GetByPersonIdAsync(int personId)
+        {
+            return await _users.Where(u => u.PersonId == personId).FirstOrDefaultAsync();
+        }
+
+        public async Task<int> GetIdByPersonIdAsync(int personId)
+        {
+            return await _users.Where(u => u.PersonId == personId).Select(u => u.UserId).FirstOrDefaultAsync();
+        }
     }
 }

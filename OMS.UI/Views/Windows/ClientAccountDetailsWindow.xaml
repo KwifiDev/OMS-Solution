@@ -1,0 +1,72 @@
+﻿<Window x:Class="OMS.UI.Views.Windows.ClientAccountDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OMS.UI.Views.Windows"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows" 
+        xmlns:userControl="clr-namespace:OMS.UI.Views.UserControls"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:windowBehaviors="clr-namespace:OMS.UI.Behaviors.Windows" 
+        d:DataContext="{d:DesignInstance Type=windows:ClientAccountDetailsViewModel}"
+        mc:Ignorable="d"
+        Height="350" 
+        Width="600"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource MaterialDesignWindow}"
+        FlowDirection="RightToLeft"
+        FontFamily="LBC"
+        ResizeMode="NoResize"
+        WindowStyle="None">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/PageStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <i:Interaction.Behaviors>
+        <windowBehaviors:DragWindowBehavior/>
+    </i:Interaction.Behaviors>
+
+    <materialDesign:Card UniformCornerRadius="0" FlowDirection="RightToLeft">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header with Gradient -->
+            <materialDesign:ColorZone Mode="PrimaryMid" 
+                                      Background="{StaticResource PageHeaderGradient}">
+
+
+                <StackPanel>
+
+
+                    <Button Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                                Height="25"
+                                Foreground="White"
+                                Command="{Binding CloseCommand}">
+                        <materialDesign:PackIcon Kind="WindowClose" Width="15" Height="15"/>
+                    </Button>
+
+                    <TextBlock Text="بطاقة المعلومات" 
+                                   FontSize="26"
+                                   Margin="24 16"
+                                   HorizontalAlignment="Center"
+                                   Foreground="{DynamicResource MaterialDesignPaper}"
+                                   FontFamily="Segoe UI Semibold"/>
+
+                </StackPanel>
+            </materialDesign:ColorZone>
+
+            <userControl:ClientAccountDetailsControl Grid.Row="1" UserAccount="{Binding UserAccount}"/>
+
+        </Grid>
+    </materialDesign:Card>
+
+</Window>

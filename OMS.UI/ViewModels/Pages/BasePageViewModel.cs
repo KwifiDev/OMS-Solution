@@ -25,7 +25,7 @@ namespace OMS.UI.ViewModels.Pages
         private ObservableCollection<TModel> _items = new();
 
         [ObservableProperty]
-        private TModel? _selectedItem;
+        protected TModel? _selectedItem;
 
         public BasePageViewModel(TService service, TDisplayService displayService, IMapper mapper, IDialogService dialogService, IMessageService messageService)
         {

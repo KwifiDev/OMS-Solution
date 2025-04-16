@@ -118,6 +118,18 @@ namespace OMS.UI.ViewModels.Windows
             return CanOpenPage<BranchesPageViewModel>();
         }
 
+        [RelayCommand(CanExecute = nameof(CanOpenClients))]
+        private async Task OpenClients()
+        {
+            await _navigationService.NavigateToPageAsync<ClientsPage>();
+            NotifyCommandsCanExecuteChanged();
+        }
+
+        private bool CanOpenClients()
+        {
+            return CanOpenPage<ClientsPageViewModel>();
+        }
+
 
         [RelayCommand]
         private void Minimize() => _windowService.Minimize();
@@ -141,6 +153,7 @@ namespace OMS.UI.ViewModels.Windows
             OpenPeopleCommand.NotifyCanExecuteChanged();
             OpenUsersCommand.NotifyCanExecuteChanged();
             OpenBranchesCommand.NotifyCanExecuteChanged();
+            OpenClientsCommand.NotifyCanExecuteChanged();
         }
     }
 }

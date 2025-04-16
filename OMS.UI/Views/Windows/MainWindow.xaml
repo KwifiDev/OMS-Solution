@@ -195,16 +195,20 @@
                         
                     </Button>
 
-                    <Button Style="{StaticResource MenuButtonStyle}">
+                    <Button Style="{StaticResource MenuButtonStyle}"
+                            Command="{Binding OpenClientsCommand}">
                         <StackPanel Orientation="Horizontal" 
-                                  HorizontalAlignment="Right"  
-                                  Width="180">
+                                    HorizontalAlignment="Right"  
+                                    Width="180">
+                            
                             <materialDesign:PackIcon Kind="Account" 
-                                                   Width="28" 
-                                                   Height="28" 
-                                                   Margin="10"/>
+                                                     Width="28" 
+                                                     Height="28" 
+                                                     Margin="10"/>
+                            
                             <TextBlock Text="العملاء" 
-                                   VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center"/>
+                            
                         </StackPanel>
                     </Button>
 

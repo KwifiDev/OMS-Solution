@@ -22,6 +22,20 @@ namespace OMS.BL.IServices.Tables
         Task<UserDto?> GetByIdAsync(int userId);
 
         /// <summary>
+        /// Retrieves a user by their person ID asynchronously.
+        /// </summary>
+        /// <param name="personId">The person ID of the user to retrieve.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the user dto, or null if not found.</returns>
+        Task<UserDto?> GetByPersonIdAsync(int personId);
+
+        /// <summary>
+        /// Retrieves a user ID by their person ID asynchronously.
+        /// </summary>
+        /// <param name="personId">The person ID of the user to retrieve.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the user ID, or null if not found.</returns>
+        Task<int> GetIdByPersonIdAsync(int personId);
+
+        /// <summary>
         /// Adds a new user asynchronously.
         /// </summary>
         /// <param name="dto">The user dto to add.</param>

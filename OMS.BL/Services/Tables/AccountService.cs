@@ -19,6 +19,13 @@ namespace OMS.BL.Services.Tables
             _accountRepository = accountRepository;
         }
 
+        public async Task<AccountDto?> GetByClientIdAsync(int clientId)
+        {
+            var account = await _accountRepository.GetByClientIdAsync(clientId);
+
+            return account != null ? _mapperService.Map<Account, AccountDto>(account) : null;
+        }
+
         public async Task<bool> DepositIntoAccountAsync(AccountTransactionDto dto)
         {
             dto.TransactionStatus = await _accountRepository.DepositAccountAsync

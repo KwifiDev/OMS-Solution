@@ -93,6 +93,19 @@ namespace OMS.UI
 
             services.AddTransient<IBranchOperationalMetricRepository, BranchOperationalMetricRepository>();
             services.AddTransient<IBranchOperationalMetricService, BranchOperationalMetricService>();
+
+            services.AddTransient<IClientRepository, ClientRepository>();
+            services.AddTransient<IClientService, ClientService>();
+
+            services.AddTransient<IClientsSummaryRepository, ClientsSummaryRepository>();
+            services.AddTransient<IClientsSummaryService, ClientsSummaryService>();
+
+            services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<IAccountService, AccountService>();
+
+            services.AddTransient<IUserAccountRepository, UserAccountRepository>();
+            services.AddTransient<IUserAccountService, UserAccountService>();
+
         }
 
         private static void RegisterMapper(IServiceCollection services)
@@ -128,6 +141,12 @@ namespace OMS.UI
             services.AddTransient<IFindPersonViewModel, FindPersonViewModel>();
 
             services.AddTransient<AddEditUserViewModel>();
+
+            services.AddSingleton<ClientsPageViewModel>();
+
+            services.AddTransient<AddEditClientViewModel>();
+
+            services.AddTransient<ClientAccountDetailsViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -161,6 +180,15 @@ namespace OMS.UI
 
             services.AddTransient(provider =>
                 new AddEditUserWindow { DataContext = provider.GetRequiredService<AddEditUserViewModel>() });
+
+            services.AddSingleton(provider =>
+                new ClientsPage { DataContext = provider.GetRequiredService<ClientsPageViewModel>() });
+
+            services.AddTransient(provider =>
+                new AddEditClientWindow { DataContext = provider.GetRequiredService<AddEditClientViewModel>() });
+
+            services.AddTransient(provider =>
+                new ClientAccountDetailsWindow { DataContext = provider.GetRequiredService<ClientAccountDetailsViewModel>() });
 
         }
 

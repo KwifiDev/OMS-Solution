@@ -31,5 +31,17 @@ namespace OMS.BL.Services.Tables
 
             return user == null ? null : _mapperService.Map<User, UserLoginDto>(user);
         }
+
+        public async Task<UserDto?> GetByPersonIdAsync(int personId)
+        {
+            User? user = await _userRepository.GetByPersonIdAsync(personId);
+
+            return user == null ? null : _mapperService.Map<User, UserDto>(user);
+        }
+
+        public async Task<int> GetIdByPersonIdAsync(int personId)
+        {
+            return await _userRepository.GetIdByPersonIdAsync(personId);
+        }
     }
 }

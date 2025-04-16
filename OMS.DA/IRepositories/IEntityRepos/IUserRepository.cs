@@ -7,5 +7,9 @@ namespace OMS.DA.IRepositories.IEntityRepos
         Task<User?> GetByUsernameAndPasswordAsync(string username, string password);
 
         Task<User?> GetUserLoginByPersonIdAsync(int personId);
+
+        Task<User?> GetByPersonIdAsync(int person);
+
+        Task<int> GetIdByPersonIdAsync(int personId);
     }
 }

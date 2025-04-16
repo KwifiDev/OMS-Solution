@@ -17,6 +17,11 @@ namespace OMS.DA.Repositories.EntityRepos
             _context = context;
         }
 
+        public async Task<Account?> GetByClientIdAsync(int clientId)
+        {
+            return await _context.Accounts.Where(a => a.ClientId == clientId).FirstOrDefaultAsync();
+        }
+
         public async Task<EnAccountTransactionStatus> DepositAccountAsync(int accountId, decimal amount, string? notes, int createdByUserId)
         {
             SqlParameter returnValue = new SqlParameter

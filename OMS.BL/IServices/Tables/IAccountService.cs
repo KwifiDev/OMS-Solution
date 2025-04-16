@@ -22,6 +22,13 @@ namespace OMS.BL.IServices.Tables
         Task<AccountDto?> GetByIdAsync(int accountId);
 
         /// <summary>
+        /// Retrieves an account by client ID asynchronously.
+        /// </summary>
+        /// <param name="clientId">The ID of the client.</param>
+        /// <returns>An account dto if found, otherwise null.</returns>
+        Task<AccountDto?> GetByClientIdAsync(int clientId);
+
+        /// <summary>
         /// Adds a new account asynchronously.
         /// </summary>
         /// <param name="dto">The account dto to add.</param>

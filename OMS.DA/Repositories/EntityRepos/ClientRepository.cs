@@ -17,6 +17,7 @@ namespace OMS.DA.Repositories.EntityRepos
             _context = context;
         }
 
+
         public async Task<EnPayDebtStatus> PayAllDebtsByIdAsync(int clientId, string? notes, int createdByUserId)
         {
             SqlParameter returnValue = new SqlParameter
@@ -30,6 +31,16 @@ namespace OMS.DA.Repositories.EntityRepos
                 ($"EXEC dbo.SP_PayAllDebtsByClientId {clientId}, {notes}, {createdByUserId}, {returnValue} OUTPUT");
 
             return (EnPayDebtStatus)returnValue.Value;
+        }
+
+        public async Task<Client?> GetByPersonIdAsync(int personId)
+        {
+            return await _context.Clients.Where(c => c.PersonId == personId).FirstOrDefaultAsync();
+        }
+
+        public async Task<int> GetIdByPersonIdAsync(int personId)
+        {
+            return await _context.Clients.Where(c => c.PersonId == personId).Select(c => c.ClientId).FirstOrDefaultAsync();
         }
     }
 }

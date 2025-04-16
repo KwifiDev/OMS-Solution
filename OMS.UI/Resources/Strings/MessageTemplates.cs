@@ -70,5 +70,14 @@
         public static string InvalidDeleteUserMessage => "لا يمكن حذف الحساب المستخدم لانك تستخدمه.";
 
 
+        // Creating Client Account Messages
+
+        public static string ClientAccountAdditionSuccess => "تم انشاء حساب الكتروني للعميل بنجاح";
+
+        public static string ClientAccountAdditionError => "حدث خطأ اثناء عملية انشاء حساب الكتروني للعميل";
+
+        public static string ClientAccountDeletionError => "حدث خطأ اثناء عملية حذف الحساب الكتروني الخاص في العميل";
+
+
     }
 }

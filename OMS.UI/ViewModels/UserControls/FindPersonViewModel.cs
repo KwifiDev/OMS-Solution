@@ -14,6 +14,17 @@ namespace OMS.UI.ViewModels.UserControls
 {
     public partial class FindPersonViewModel : ObservableValidator, IFindPersonViewModel
     {
+        public class PersonFoundEventArgs : EventArgs
+        {
+            public int PersonId { get; }
+
+            public PersonFoundEventArgs(int personId)
+            {
+                PersonId = personId;
+            }
+        }
+        public event EventHandler<PersonFoundEventArgs>? PersonFound;
+
         private readonly IPersonService _personService;
         private readonly IMapper _mapper;
         private readonly IMessageService _messageService;
@@ -67,12 +78,19 @@ namespace OMS.UI.ViewModels.UserControls
 
             Person = _mapper.Map<PersonModel>(personDto);
             Status.IsModifiable = false;
+            OnPersonFound();
         }
 
         private bool ValidatePersonId()
         {
             ValidateAllProperties();
             return !HasErrors;
+        }
+
+
+        private void OnPersonFound()
+        {
+            PersonFound?.Invoke(this, new PersonFoundEventArgs(Person!.PersonId));
         }
 
     }

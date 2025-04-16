@@ -31,6 +31,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<ClientDetail> ClientDetails { get; set; }
 
+    public virtual DbSet<ClientsSummary> ClientsSummaries { get; set; }
+
     public virtual DbSet<ClientsByType> ClientsByTypes { get; set; }
 
     public virtual DbSet<Debt> Debts { get; set; }
@@ -98,6 +100,8 @@ public partial class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ClientConfig());
 
         modelBuilder.ApplyConfiguration(new ClientDetailConfig());
+
+        modelBuilder.ApplyConfiguration(new ClientsSummaryConfig());
 
         modelBuilder.ApplyConfiguration(new ClientsByTypeConfig());
 
