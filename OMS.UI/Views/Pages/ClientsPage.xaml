@@ -82,6 +82,20 @@
 
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
+                    <MenuItem Header="إيداع رصيد" 
+                              Command="{Binding ShowClientAccountDepositCommand}"
+                              Icon="{materialDesign:PackIcon Kind=AccountArrowUp}"/>
+
+                    <MenuItem Header="سحب رصيد" 
+                              Command="{Binding ShowClientAccountWithdrawCommand}"
+                              Icon="{materialDesign:PackIcon Kind=AccountArrowDownOutline}"/>
+
+                    <MenuItem Header="تحويل لحساب اخر" 
+                              Command="{Binding ShowClientAccountTransferCommand}"
+                              Icon="{materialDesign:PackIcon Kind=AccountConvert}"/>
+
+                    <Separator Style="{StaticResource MaterialDesignSeparator}"/>
+                    
                     <MenuItem Header="اضافة عميل" 
                      Command="{Binding AddItemCommand}"
                      Icon="{materialDesign:PackIcon Kind=PersonAdd}"/>

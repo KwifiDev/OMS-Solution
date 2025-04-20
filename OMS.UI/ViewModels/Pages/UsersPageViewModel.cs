@@ -39,7 +39,7 @@ namespace OMS.UI.ViewModels.Pages
         }
 
         protected override async Task ShowEditorWindow(int? itemId = null)
-            => await _dialogService.ShowDialog<AddEditUserWindow>(itemId);
+            => await _dialogService.ShowDialog<AddEditUserWindow, int?>(itemId);
 
         protected override async Task<UserDetailModel> ConvertToModel(UserModel messageModel)
         {

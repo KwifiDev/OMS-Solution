@@ -34,7 +34,7 @@ namespace OMS.UI.ViewModels.Pages
         }
 
         protected override async Task ShowEditorWindow(int? itemId = null)
-            => await _dialogService.ShowDialog<AddEditBranchWindow>(itemId);
+            => await _dialogService.ShowDialog<AddEditBranchWindow, int?>(itemId);
 
         protected override async Task<BranchOperationalMetricModel> ConvertToModel(BranchModel messageModel)
         {

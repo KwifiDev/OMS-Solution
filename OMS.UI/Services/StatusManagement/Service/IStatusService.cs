@@ -4,5 +4,6 @@
     {
         AddEditStatus CreateAddEditStatus();
         SearchStatus CreateSearchStatus();
+        TransactionStatus CreateTransactionStatus();
     }
 }

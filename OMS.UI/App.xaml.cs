@@ -147,6 +147,8 @@ namespace OMS.UI
             services.AddTransient<AddEditClientViewModel>();
 
             services.AddTransient<ClientAccountDetailsViewModel>();
+
+            services.AddTransient<ClientAccountTransactionViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -189,6 +191,9 @@ namespace OMS.UI
 
             services.AddTransient(provider =>
                 new ClientAccountDetailsWindow { DataContext = provider.GetRequiredService<ClientAccountDetailsViewModel>() });
+
+            services.AddTransient(provider =>
+                new ClientAccountTransactionWindow { DataContext = provider.GetRequiredService<ClientAccountTransactionViewModel>() });
 
         }
 

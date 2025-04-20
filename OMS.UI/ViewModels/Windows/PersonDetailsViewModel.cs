@@ -8,7 +8,7 @@ using OMS.UI.Services.Windows;
 
 namespace OMS.UI.ViewModels.Windows
 {
-    public partial class PersonDetailsViewModel : ObservableObject, IDialogInitializer
+    public partial class PersonDetailsViewModel : ObservableObject, IDialogInitializer<int?>
     {
         private readonly IPersonService _personService;
         private readonly IMapper _mapper;

@@ -1,7 +1,7 @@
 ﻿namespace OMS.UI.Services.Dialog
 {
-    public interface IDialogInitializer
+    public interface IDialogInitializer<TParam>
     {
-        Task<bool> OnOpeningDialog(int? id);
+        Task<bool> OnOpeningDialog(TParam? parameters);
     }
 }

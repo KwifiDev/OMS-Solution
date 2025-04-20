@@ -79,5 +79,25 @@
         public static string ClientAccountDeletionError => "حدث خطأ اثناء عملية حذف الحساب الكتروني الخاص في العميل";
 
 
+        // Transaction Success Messages
+        public static string DepositSuccessMessage => "تمت عملية الإيداع بنجاح";
+        public static string WithdrawalSuccessMessage => "تمت عملية السحب بنجاح";
+        public static string TransferSuccessMessage => "تمت عملية التحويل بنجاح";
+
+        // Transaction Error Messages
+        public static string DepositErrorMessage => "حدث خطأ أثناء عملية الإيداع";
+        public static string WithdrawalErrorMessage => "حدث خطأ أثناء عملية السحب";
+        public static string TransferErrorMessage => "حدث خطأ أثناء عملية التحويل";
+        public static string InsufficientBalanceErrorMessage => "عملية السحب لم تتم بسبب عدم توفر رصيد كافٍ.\n يرجى التحقق من الرصيد والمحاولة مرة أخرى.";
+
+        // Transaction Confirmation Messages
+        public static string DepositConfirmation => "هل أنت متأكد من رغبتك في إجراء عملية الإيداع؟";
+        public static string WithdrawalConfirmation => "هل أنت متأكد من رغبتك في إجراء عملية السحب؟";
+        public static string TransferConfirmation => "هل أنت متأكد من رغبتك في إجراء عملية التحويل؟";
+
+        // Transaction Validation Messages
+        public static string InvalidTransactionAmountMessage => "المبلغ المدخل غير صالح. الرجاء إدخال قيمة موجبة";
+        public static string InvalidRecipientAccountMessage => "رقم حساب المستلم غير صحيح. الرجاء التحقق والمحاولة مرة أخرى";
+
     }
 }

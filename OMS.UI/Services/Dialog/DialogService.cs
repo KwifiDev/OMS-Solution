@@ -5,31 +5,17 @@ namespace OMS.UI.Services.Dialog
 {
     public class DialogService : IDialogService
     {
-        public async Task<bool> ShowDialog<TWindow>(int? id = null)
-        where TWindow : Window
-        {
-            var viewModel = await ShowDialogInternal<TWindow, IDialogInitializer>(id);
-            return viewModel != null;
-        }
-
-        private async Task<TViewModel?> ShowDialogInternal<TWindow, TViewModel>(int? id)
-        where TWindow : Window
-        where TViewModel : class, IDialogInitializer
+        public async Task<bool> ShowDialog<TWindow, TParam>(TParam? parameters = default)
+            where TWindow : Window
         {
             var window = Ioc.Default.GetRequiredService<TWindow>();
-            return await InitializeAndShowDialog<TWindow, TViewModel>(window, id);
-        }
 
-        private async Task<TViewModel?> InitializeAndShowDialog<TWindow, TViewModel>(TWindow window, int? id)
-        where TWindow : Window
-        where TViewModel : class, IDialogInitializer
-        {
-            if (window.DataContext is TViewModel viewModel)
+            if (window.DataContext is IDialogInitializer<TParam> viewModel)
             {
                 bool isSuccess = false;
                 try
                 {
-                    isSuccess = await viewModel.OnOpeningDialog(id);
+                    isSuccess = await viewModel.OnOpeningDialog(parameters);
                 }
                 catch (Exception ex)
                 {
@@ -39,10 +25,10 @@ namespace OMS.UI.Services.Dialog
                 if (isSuccess)
                 {
                     window.ShowDialog();
-                    return viewModel;
+                    return true;
                 }
             }
-            return null;
+            return false;
         }
 
         private void HandleInitializationError(Exception ex)

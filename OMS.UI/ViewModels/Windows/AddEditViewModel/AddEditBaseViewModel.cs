@@ -13,7 +13,7 @@ using OMS.UI.Services.Windows;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
-    public abstract partial class AddEditBaseViewModel<TModel, TDto, TService> : ObservableObject, IDialogInitializer
+    public abstract partial class AddEditBaseViewModel<TModel, TDto, TService> : ObservableObject, IDialogInitializer<int?>
         where TModel : class, new()
         where TDto : class
         where TService : class

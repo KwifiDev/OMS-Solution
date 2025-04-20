@@ -57,7 +57,7 @@ namespace OMS.UI.ViewModels.Windows
             int? userId = _userSessionService.CurrentUser?.UserId;
 
             if (userId != null && userId > 0)
-                _dialogService.ShowDialog<AddEditUserWindow>(userId);
+                _dialogService.ShowDialog<AddEditUserWindow, int?>(userId);
         }
 
         [RelayCommand]

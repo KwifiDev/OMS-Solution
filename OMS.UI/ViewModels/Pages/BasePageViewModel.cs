@@ -15,6 +15,8 @@ namespace OMS.UI.ViewModels.Pages
         where TModel : class
         where TMessageModel : class
     {
+        protected event EventHandler? SelectedItemChanged;
+
         protected readonly TService _service;
         protected readonly TDisplayService _displayService;
         protected readonly IMapper _mapper;
@@ -24,8 +26,8 @@ namespace OMS.UI.ViewModels.Pages
         [ObservableProperty]
         private ObservableCollection<TModel> _items = new();
 
-        [ObservableProperty]
-        protected TModel? _selectedItem;
+
+        private TModel? _selectedItem;
 
         public BasePageViewModel(TService service, TDisplayService displayService, IMapper mapper, IDialogService dialogService, IMessageService messageService)
         {
@@ -36,6 +38,15 @@ namespace OMS.UI.ViewModels.Pages
             _messageService = messageService;
 
             WeakReferenceMessenger.Default.Register<IMessage<TMessageModel>>(this, OnMessageReceived);
+        }
+
+        public TModel? SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                if (SetProperty(ref _selectedItem, value)) OnSelectedItemChanged();
+            }
         }
 
         protected virtual async void OnMessageReceived(object recipient, IMessage<TMessageModel> message)
@@ -97,6 +108,10 @@ namespace OMS.UI.ViewModels.Pages
                                             success ? MessageTemplates.DeletionSuccessMessage : MessageTemplates.DeletionErrorMessage);
         }
 
+        private void OnSelectedItemChanged()
+        {
+            SelectedItemChanged?.Invoke(this, EventArgs.Empty);
+        }
 
         #region Common Abstract Methods
         // This Methods will be implemented in Derived class

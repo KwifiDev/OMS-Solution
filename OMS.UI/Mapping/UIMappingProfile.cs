@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OMS.BL.Dtos.Hybrid;
+using OMS.BL.Dtos.StoredProcedureParams;
 using OMS.BL.Dtos.Tables;
 using OMS.BL.Dtos.Views;
 using OMS.UI.Models;
@@ -22,6 +23,7 @@ namespace OMS.UI.Mapping
             CreateMap<ClientsSummaryDto, ClientsSummaryModel>().ReverseMap();
             CreateMap<AccountDto, AccountModel>().ReverseMap();
             CreateMap<UserAccountDto, UserAccountModel>().ReverseMap();
+            CreateMap<AccountTransactionDto, AccountTransactionModel>().ReverseMap();
         }
     }
 }

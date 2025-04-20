@@ -28,10 +28,10 @@ namespace OMS.UI.ViewModels.Pages
         }
 
         protected override async Task ShowDetailsWindow(int itemId)
-            => await _dialogService.ShowDialog<PersonDetailsWindow>(itemId);
+            => await _dialogService.ShowDialog<PersonDetailsWindow, int?>(itemId);
 
         protected override async Task ShowEditorWindow(int? itemId = null)
-            => await _dialogService.ShowDialog<AddEditPersonWindow>(itemId);
+            => await _dialogService.ShowDialog<AddEditPersonWindow, int?>(itemId);
 
         protected override async Task<PersonDetailModel> ConvertToModel(PersonModel messageModel)
         {
