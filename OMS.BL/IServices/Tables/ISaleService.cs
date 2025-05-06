@@ -1,4 +1,4 @@
-﻿using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Models.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -11,28 +11,28 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all sales asynchronously.
         /// </summary>
         /// <returns>A collection of SaleModel objects.</returns>
-        Task<IEnumerable<SaleDto>> GetAllAsync();
+        Task<IEnumerable<SaleModel>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a sale by its ID asynchronously.
         /// </summary>
         /// <param name="saleId">The ID of the sale to retrieve.</param>
         /// <returns>The SaleModel object if found, otherwise null.</returns>
-        Task<SaleDto?> GetByIdAsync(int saleId);
+        Task<SaleModel?> GetByIdAsync(int saleId);
 
         /// <summary>
         /// Adds a new sale asynchronously.
         /// </summary>
         /// <param name="dto">The SaleModel object representing the sale to add.</param>
         /// <returns>True if the sale was added successfully, otherwise false.</returns>
-        Task<bool> AddAsync(SaleDto dto);
+        Task<bool> AddAsync(SaleModel dto);
 
         /// <summary>
         /// Updates an existing sale asynchronously.
         /// </summary>
         /// <param name="dto">The SaleModel object representing the sale to update.</param>
         /// <returns>True if the sale was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAsync(SaleDto dto);
+        Task<bool> UpdateAsync(SaleModel dto);
 
         /// <summary>
         /// Deletes a sale by its ID asynchronously.

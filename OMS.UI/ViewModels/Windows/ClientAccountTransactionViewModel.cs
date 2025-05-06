@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using OMS.BL.Dtos.StoredProcedureParams;
+using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.IServices.Tables;
 using OMS.BL.IServices.Views;
 using OMS.UI.Models;
@@ -26,7 +26,7 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IWindowService _windowService;
 
         [ObservableProperty]
-        private AccountTransactionModel _accountTransaction = null!;
+        private Models.AccountTransactionModel _accountTransaction = null!;
 
         [ObservableProperty]
         private UserAccountModel _userAccount = null!;
@@ -63,7 +63,7 @@ namespace OMS.UI.ViewModels.Windows
                 {
                     if (isSuccess)
                     {
-                        AccountTransaction = new AccountTransactionModel
+                        AccountTransaction = new Models.AccountTransactionModel
                         {
                             AccountId = (int)transaction.AccountId,
                             CreatedByUserId = _userSessionService.CurrentUser!.UserId
@@ -110,7 +110,7 @@ namespace OMS.UI.ViewModels.Windows
 
             if (!ValidateModel()) return;
 
-            var dto = _mapper.Map<AccountTransactionDto>(AccountTransaction);
+            var dto = _mapper.Map<BL.Models.StoredProcedureParams.AccountTransactionModel>(AccountTransaction);
 
             bool isSuccess = await SaveDataAsync(dto);
 
@@ -166,7 +166,7 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private void Close() => _windowService.Close();
 
-        private async Task<bool> SaveDataAsync(AccountTransactionDto dto)
+        private async Task<bool> SaveDataAsync(BL.Models.StoredProcedureParams.AccountTransactionModel dto)
         {
             bool isSuccess = false;
             switch (TransactionStatus.SelectMode)

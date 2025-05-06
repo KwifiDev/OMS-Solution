@@ -1,5 +1,5 @@
-﻿using OMS.BL.Dtos.StoredProcedureParams;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Models.StoredProcedureParams;
+using OMS.BL.Models.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,35 +12,35 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all accounts asynchronously.
         /// </summary>
         /// <returns>A collection of account models.</returns>
-        Task<IEnumerable<AccountDto>> GetAllAsync();
+        Task<IEnumerable<AccountModel>> GetAllAsync();
 
         /// <summary>
         /// Retrieves an account by its ID asynchronously.
         /// </summary>
         /// <param name="accountId">The ID of the account.</param>
         /// <returns>An account dto if found, otherwise null.</returns>
-        Task<AccountDto?> GetByIdAsync(int accountId);
+        Task<AccountModel?> GetByIdAsync(int accountId);
 
         /// <summary>
         /// Retrieves an account by client ID asynchronously.
         /// </summary>
         /// <param name="clientId">The ID of the client.</param>
         /// <returns>An account dto if found, otherwise null.</returns>
-        Task<AccountDto?> GetByClientIdAsync(int clientId);
+        Task<AccountModel?> GetByClientIdAsync(int clientId);
 
         /// <summary>
         /// Adds a new account asynchronously.
         /// </summary>
         /// <param name="dto">The account dto to add.</param>
         /// <returns>True if the account was added successfully, otherwise false.</returns>
-        Task<bool> AddAsync(AccountDto dto);
+        Task<bool> AddAsync(AccountModel dto);
 
         /// <summary>
         /// Updates an existing account asynchronously.
         /// </summary>
         /// <param name="dto">The account dto to update.</param>
         /// <returns>True if the account was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAsync(AccountDto dto);
+        Task<bool> UpdateAsync(AccountModel dto);
 
         /// <summary>
         /// Deletes an account by its ID asynchronously.
@@ -54,13 +54,13 @@ namespace OMS.BL.IServices.Tables
         /// </summary>
         /// <param name="dto">The account transaction dto.</param>
         /// <returns>True if the deposit was successful, otherwise false.</returns>
-        Task<bool> DepositIntoAccountAsync(AccountTransactionDto dto);
+        Task<bool> DepositIntoAccountAsync(AccountTransactionModel dto);
 
         /// <summary>
         /// Withdraws an amount from an account asynchronously.
         /// </summary>
         /// <param name="dto">The account transaction dto.</param>
         /// <returns>True if the withdrawal was successful, otherwise false.</returns>
-        Task<bool> WithdrawFromAccountAsync(AccountTransactionDto dto);
+        Task<bool> WithdrawFromAccountAsync(AccountTransactionModel dto);
     }
 }

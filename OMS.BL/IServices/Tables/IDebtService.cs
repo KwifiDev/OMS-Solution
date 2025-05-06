@@ -1,5 +1,5 @@
-﻿using OMS.BL.Dtos.StoredProcedureParams;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Models.StoredProcedureParams;
+using OMS.BL.Models.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,28 +12,28 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all debts asynchronously.
         /// </summary>
         /// <returns>A collection of DebtModel objects.</returns>
-        Task<IEnumerable<DebtDto>> GetAllAsync();
+        Task<IEnumerable<DebtModel>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a debt by its ID asynchronously.
         /// </summary>
         /// <param name="debtId">The ID of the debt.</param>
         /// <returns>The DebtModel object if found, otherwise null.</returns>
-        Task<DebtDto?> GetByIdAsync(int debtId);
+        Task<DebtModel?> GetByIdAsync(int debtId);
 
         /// <summary>
         /// Adds a new debt asynchronously.
         /// </summary>
         /// <param name="dto">The DebtModel object representing the new debt.</param>
         /// <returns>True if the debt was added successfully, otherwise false.</returns>
-        Task<bool> AddAsync(DebtDto dto);
+        Task<bool> AddAsync(DebtModel dto);
 
         /// <summary>
         /// Updates an existing debt asynchronously.
         /// </summary>
         /// <param name="dto">The DebtModel object representing the updated debt.</param>
         /// <returns>True if the debt was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAsync(DebtDto dto);
+        Task<bool> UpdateAsync(DebtModel dto);
 
         /// <summary>
         /// Deletes a debt by its ID asynchronously.
@@ -47,6 +47,6 @@ namespace OMS.BL.IServices.Tables
         /// </summary>
         /// <param name="dto">The PayDebtModel object representing the payment details.</param>
         /// <returns>True if the debt was paid successfully, otherwise false.</returns>
-        Task<bool> PayDebtByIdAsync(PayDebtDto dto);
+        Task<bool> PayDebtByIdAsync(PayDebtModel dto);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using OMS.BL.Dtos.Hybrid;
-using OMS.BL.Dtos.Tables;
-using OMS.BL.Dtos.Views;
+using OMS.BL.Models.Hybrid;
+using OMS.BL.Models.Tables;
+using OMS.BL.Models.Views;
 using OMS.DA.Entities;
 using OMS.DA.Views;
 
@@ -11,67 +11,67 @@ namespace OMS.BL.Mapping
     {
         public BLMappingProfile()
         {
-            CreateMap<Account, AccountDto>().ReverseMap();
+            CreateMap<Account, AccountModel>().ReverseMap();
 
-            CreateMap<Branch, BranchDto>().ReverseMap();
+            CreateMap<Branch, BranchModel>().ReverseMap();
 
-            CreateMap<Branch, BranchOptionDto>().ReverseMap();
+            CreateMap<Branch, BranchOptionModel>().ReverseMap();
 
-            CreateMap<Client, ClientDto>().ReverseMap();
+            CreateMap<Client, ClientModel>().ReverseMap();
 
-            CreateMap<Debt, DebtDto>().ReverseMap();
+            CreateMap<Debt, DebtModel>().ReverseMap();
 
-            CreateMap<Discount, DiscountDto>().ReverseMap();
+            CreateMap<Discount, DiscountModel>().ReverseMap();
 
-            CreateMap<Payment, PaymentDto>().ReverseMap();
+            CreateMap<Payment, PaymentModel>().ReverseMap();
 
-            CreateMap<PermissionsConfig, PermissionsConfigDto>().ReverseMap();
+            CreateMap<PermissionsConfig, PermissionsConfigModel>().ReverseMap();
 
-            CreateMap<Person, PersonDto>().ReverseMap();
+            CreateMap<Person, PersonModel>().ReverseMap();
 
-            CreateMap<Revenue, RevenueDto>().ReverseMap();
+            CreateMap<Revenue, RevenueModel>().ReverseMap();
 
-            CreateMap<Sale, SaleDto>().ReverseMap();
+            CreateMap<Sale, SaleModel>().ReverseMap();
 
-            CreateMap<Service, ServiceDto>().ReverseMap();
+            CreateMap<Service, ServiceModel>().ReverseMap();
 
-            CreateMap<Transaction, TransactionDto>().ReverseMap();
+            CreateMap<Transaction, TransactionModel>().ReverseMap();
 
-            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, UserModel>().ReverseMap();
 
-            CreateMap<AccountBalancesTransaction, AccountBalancesTransactionDto>().ReverseMap();
+            CreateMap<AccountBalancesTransaction, AccountBalancesTransactionModel>().ReverseMap();
 
-            CreateMap<BranchOperationalMetric, BranchOperationalMetricDto>().ReverseMap();
+            CreateMap<BranchOperationalMetric, BranchOperationalMetricModel>().ReverseMap();
 
-            CreateMap<PersonDetail, PersonDetailDto>().ReverseMap();
+            CreateMap<PersonDetail, PersonDetailModel>().ReverseMap();
 
-            CreateMap<ClientDetail, ClientDetailDto>().ReverseMap();
+            CreateMap<ClientDetail, ClientDetailModel>().ReverseMap();
 
-            CreateMap<ClientsSummary, ClientsSummaryDto>().ReverseMap();
+            CreateMap<ClientsSummary, ClientsSummaryModel>().ReverseMap();
 
-            CreateMap<ClientsByType, ClientsByTypeDto>().ReverseMap();
+            CreateMap<ClientsByType, ClientsByTypeModel>().ReverseMap();
 
-            CreateMap<DebtsByStatus, DebtsByStatusDto>().ReverseMap();
+            CreateMap<DebtsByStatus, DebtsByStatusModel>().ReverseMap();
 
-            CreateMap<DebtsSummary, DebtsSummaryDto>().ReverseMap();
+            CreateMap<DebtsSummary, DebtsSummaryModel>().ReverseMap();
 
-            CreateMap<DiscountsApplied, DiscountsAppliedDto>().ReverseMap();
+            CreateMap<DiscountsApplied, DiscountsAppliedModel>().ReverseMap();
 
-            CreateMap<MonthlyFinancialSummary, MonthlyFinancialSummaryDto>().ReverseMap();
+            CreateMap<MonthlyFinancialSummary, MonthlyFinancialSummaryModel>().ReverseMap();
 
-            CreateMap<PaymentsSummary, PaymentsSummaryDto>().ReverseMap();
+            CreateMap<PaymentsSummary, PaymentsSummaryModel>().ReverseMap();
 
-            CreateMap<SalesSummary, SalesSummaryDto>().ReverseMap();
+            CreateMap<SalesSummary, SalesSummaryModel>().ReverseMap();
 
-            CreateMap<TransactionsByType, TransactionsByTypeDto>().ReverseMap();
+            CreateMap<TransactionsByType, TransactionsByTypeModel>().ReverseMap();
 
-            CreateMap<TransactionsSummary, TransactionsSummaryDto>().ReverseMap();
+            CreateMap<TransactionsSummary, TransactionsSummaryModel>().ReverseMap();
 
-            CreateMap<UserAccount, UserAccountDto>().ReverseMap();
+            CreateMap<UserAccount, UserAccountModel>().ReverseMap();
 
-            CreateMap<UserDetail, UserDetailDto>().ReverseMap();
+            CreateMap<UserDetail, UserDetailModel>().ReverseMap();
 
-            CreateMap<User, UserLoginDto>()
+            CreateMap<User, UserLoginModel>()
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(scr => scr.Person.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(scr => scr.Person.LastName))
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(scr => scr.Person.Gender))

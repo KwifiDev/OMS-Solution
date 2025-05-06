@@ -1,5 +1,5 @@
-﻿using OMS.BL.Dtos.StoredProcedureParams;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Models.StoredProcedureParams;
+using OMS.BL.Models.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
 using OMS.Common.Enums;
@@ -8,7 +8,7 @@ using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Tables
 {
-    public class ClientService : GenericService<Client, ClientDto>, IClientService
+    public class ClientService : GenericService<Client, ClientModel>, IClientService
     {
         private readonly IClientRepository _clientRepository;
 
@@ -19,7 +19,7 @@ namespace OMS.BL.Services.Tables
             _clientRepository = repository;
         }
 
-        public async Task<bool> PayAllDebtsById(PayDebtsDto dto)
+        public async Task<bool> PayAllDebtsById(PayDebtsModel dto)
         {
             dto.PayDebtStatus = await _clientRepository.PayAllDebtsByIdAsync
                 (
@@ -32,11 +32,11 @@ namespace OMS.BL.Services.Tables
         }
 
 
-        public async Task<ClientDto?> GetByPersonIdAsync(int personId)
+        public async Task<ClientModel?> GetByPersonIdAsync(int personId)
         {
             var client = await _clientRepository.GetByPersonIdAsync(personId);
 
-            return client != null ? _mapperService.Map<Client, ClientDto>(client) : null;
+            return client != null ? _mapperService.Map<Client, ClientModel>(client) : null;
         }
 
         public async Task<int> GetIdByPersonIdAsync(int personId)

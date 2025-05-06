@@ -1,4 +1,4 @@
-﻿using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Models.Views;
 using OMS.BL.IServices.Views;
 using OMS.BL.Mapping;
 using OMS.DA.IRepositories.IEntityRepos;
@@ -7,7 +7,7 @@ using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class ClientsSummaryService : GenericViewService<ClientsSummary, ClientsSummaryDto>, IClientsSummaryService
+    public class ClientsSummaryService : GenericViewService<ClientsSummary, ClientsSummaryModel>, IClientsSummaryService
     {
         private readonly IClientsSummaryRepository _branchClientsSummaryRepository;
 

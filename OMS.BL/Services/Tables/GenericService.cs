@@ -31,6 +31,8 @@ namespace OMS.BL.Services.Tables
 
         public virtual async Task<TDto?> GetByIdAsync(int id)
         {
+            if (id <= 0) return default(TDto);
+
             TEntity? entity = await _repository.GetByIdAsync(id);
 
             return entity == null ? default(TDto) : _mapperService.Map<TEntity, TDto>(entity);
@@ -51,6 +53,8 @@ namespace OMS.BL.Services.Tables
 
         public virtual async Task<bool> UpdateAsync(TDto dto)
         {
+            if (dto == null) return false;
+
             int primaryKey = GetPrimaryKey(dto);
 
             TEntity? existingEntity = await _repository.GetByIdAsync(primaryKey);
@@ -73,8 +77,6 @@ namespace OMS.BL.Services.Tables
         // Code encapsulation
         private int GetPrimaryKey(TDto dto)
         {
-            if (dto == null) return -1;
-
             PropertyInfo? keyProperty = typeof(TDto).GetProperties()
                 .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
 

@@ -1,4 +1,4 @@
-﻿using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Models.Views;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,13 +11,13 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all account balances transactions asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of account balances transactions.</returns>
-        Task<IEnumerable<AccountBalancesTransactionDto>> GetAllAsync();
+        Task<IEnumerable<AccountBalancesTransactionModel>> GetAllAsync();
 
         /// <summary>
         /// Retrieves an account balances transaction by its ID asynchronously.
         /// </summary>
         /// <param name="accountId">The ID of the account balances transaction to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the account balances transaction, or null if not found.</returns>
-        Task<AccountBalancesTransactionDto?> GetByIdAsync(int accountId);
+        Task<AccountBalancesTransactionModel?> GetByIdAsync(int accountId);
     }
 }

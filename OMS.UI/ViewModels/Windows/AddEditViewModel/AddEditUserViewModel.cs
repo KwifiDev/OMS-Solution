@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
-using OMS.BL.Dtos.Tables;
+using OMS.BL.Models.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
@@ -15,7 +15,7 @@ using static OMS.UI.ViewModels.UserControls.FindPersonViewModel;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
-    public partial class AddEditUserViewModel : AddEditBaseViewModel<UserModel, UserDto, IUserService>
+    public partial class AddEditUserViewModel : AddEditBaseViewModel<Models.UserModel, BL.Models.Tables.UserModel, IUserService>
     {
         private readonly IBranchService _branchService;
         private readonly IUserSessionService _userSessionService;
@@ -48,7 +48,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             await EnterEditModeAsync(userId);
         }
 
-        protected override async Task<UserDto?> GetByIdAsync(int id)
+        protected override async Task<BL.Models.Tables.UserModel?> GetByIdAsync(int id)
             => await _service.GetByIdAsync(id);
 
         protected override async Task<bool> EnterEditModeAsync(int? id)
@@ -70,12 +70,12 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         protected override string GetEntityName()
             => "موظف";
 
-        protected override async Task<bool> SaveDataAsync(bool isAdding, UserDto userDto)
+        protected override async Task<bool> SaveDataAsync(bool isAdding, BL.Models.Tables.UserModel userDto)
             => isAdding
                 ? await _service.AddAsync(userDto)
                 : await _service.UpdateAsync(userDto);
 
-        protected override void UpdateModelAfterSave(UserDto userDto)
+        protected override void UpdateModelAfterSave(BL.Models.Tables.UserModel userDto)
             => Model.UserId = userDto.UserId;
 
         protected override bool ValidateModel()

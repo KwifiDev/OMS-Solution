@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using OMS.BL.Dtos.Tables;
+using OMS.BL.Models.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.Common.Enums;
 using OMS.UI.Models;
@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
-    public partial class AddEditPersonViewModel : AddEditBaseViewModel<PersonModel, PersonDto, IPersonService>
+    public partial class AddEditPersonViewModel : AddEditBaseViewModel<Models.PersonModel, BL.Models.Tables.PersonModel, IPersonService>
     {
         private readonly IUserSessionService _userSessionService;
 
@@ -28,16 +28,16 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         public ObservableCollection<GenderOption> Genders { get; }
 
 
-        protected override async Task<PersonDto?> GetByIdAsync(int personId)
+        protected override async Task<BL.Models.Tables.PersonModel?> GetByIdAsync(int personId)
             => await _service.GetByIdAsync(personId);
 
         protected override string GetEntityName()
             => "شخص";
 
-        protected override async Task<bool> SaveDataAsync(bool isAdding, PersonDto personDto)
+        protected override async Task<bool> SaveDataAsync(bool isAdding, BL.Models.Tables.PersonModel personDto)
             => isAdding ? await _service.AddAsync(personDto) : await _service.UpdateAsync(personDto);
 
-        protected override void UpdateModelAfterSave(PersonDto personDto)
+        protected override void UpdateModelAfterSave(BL.Models.Tables.PersonModel personDto)
             => Model.PersonId = personDto.PersonId;
 
         protected override void SendMessage()

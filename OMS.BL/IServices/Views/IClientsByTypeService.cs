@@ -1,4 +1,4 @@
-﻿using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Models.Views;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,6 +11,6 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all clients grouped by type asynchronously.
         /// </summary>
         /// <returns>A collection of clients grouped by type.</returns>
-        Task<IEnumerable<ClientsByTypeDto>> GetAllAsync();
+        Task<IEnumerable<ClientsByTypeModel>> GetAllAsync();
     }
 }

@@ -1,4 +1,4 @@
-﻿using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Models.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -11,13 +11,13 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all transactions asynchronously.
         /// </summary>
         /// <returns>A collection of transaction models.</returns>
-        Task<IEnumerable<TransactionDto>> GetAllAsync();
+        Task<IEnumerable<TransactionModel>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a transaction by its ID asynchronously.
         /// </summary>
         /// <param name="transactionId">The ID of the transaction.</param>
         /// <returns>The transaction model if found, otherwise null.</returns>
-        Task<TransactionDto?> GetByIdAsync(int transactionId);
+        Task<TransactionModel?> GetByIdAsync(int transactionId);
     }
 }

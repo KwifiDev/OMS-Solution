@@ -1,4 +1,4 @@
-﻿using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Models.Views;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,13 +11,13 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all client Summary asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of client Summary models.</returns>
-        Task<IEnumerable<ClientsSummaryDto>> GetAllAsync();
+        Task<IEnumerable<ClientsSummaryModel>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a client Summary by ID asynchronously.
         /// </summary>
         /// <param name="clientId">The ID of the client.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the client Summary model, or null if not found.</returns>
-        Task<ClientsSummaryDto?> GetByIdAsync(int clientId);
+        Task<ClientsSummaryModel?> GetByIdAsync(int clientId);
     }
 }

@@ -1,5 +1,5 @@
-﻿using OMS.BL.Dtos.Hybrid;
-using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Models.Hybrid;
+using OMS.BL.Models.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,21 +12,21 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all users asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of user models.</returns>
-        Task<IEnumerable<UserDto>> GetAllAsync();
+        Task<IEnumerable<UserModel>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a user by their ID asynchronously.
         /// </summary>
         /// <param name="userId">The ID of the user to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the user dto, or null if not found.</returns>
-        Task<UserDto?> GetByIdAsync(int userId);
+        Task<UserModel?> GetByIdAsync(int userId);
 
         /// <summary>
         /// Retrieves a user by their person ID asynchronously.
         /// </summary>
         /// <param name="personId">The person ID of the user to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the user dto, or null if not found.</returns>
-        Task<UserDto?> GetByPersonIdAsync(int personId);
+        Task<UserModel?> GetByPersonIdAsync(int personId);
 
         /// <summary>
         /// Retrieves a user ID by their person ID asynchronously.
@@ -40,14 +40,14 @@ namespace OMS.BL.IServices.Tables
         /// </summary>
         /// <param name="dto">The user dto to add.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the user was added successfully.</returns>
-        Task<bool> AddAsync(UserDto dto);
+        Task<bool> AddAsync(UserModel dto);
 
         /// <summary>
         /// Updates an existing user asynchronously.
         /// </summary>
         /// <param name="dto">The user dto to update.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the user was updated successfully.</returns>
-        Task<bool> UpdateAsync(UserDto dto);
+        Task<bool> UpdateAsync(UserModel dto);
 
         /// <summary>
         /// Deletes a user by their ID asynchronously.
@@ -62,7 +62,7 @@ namespace OMS.BL.IServices.Tables
         /// <param name="username">The username of the user to retrieve.</param>
         /// <param name="password">The password of the user to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the user dto, or null if not found.</returns>
-        Task<UserLoginDto?> GetByUsernameAndPasswordAsync(string username, string password);
+        Task<UserLoginModel?> GetByUsernameAndPasswordAsync(string username, string password);
 
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace OMS.BL.IServices.Tables
         /// </summary>
         /// <param name="personId">The person Id of the user to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the user dto, or null if not found.</returns>
-        Task<UserLoginDto?> GetUserLoginByPersonIdAsync(int personId);
+        Task<UserLoginModel?> GetUserLoginByPersonIdAsync(int personId);
 
 
     }

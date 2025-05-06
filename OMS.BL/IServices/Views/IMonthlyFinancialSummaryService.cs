@@ -1,4 +1,4 @@
-﻿using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Models.Views;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,6 +11,6 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all monthly financial summaries asynchronously.
         /// </summary>
         /// <returns>A collection of MonthlyFinancialSummaryModel objects.</returns>
-        Task<IEnumerable<MonthlyFinancialSummaryDto>> GetAllAsync();
+        Task<IEnumerable<MonthlyFinancialSummaryModel>> GetAllAsync();
     }
 }

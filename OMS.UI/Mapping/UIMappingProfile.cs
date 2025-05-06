@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using OMS.BL.Dtos.Hybrid;
-using OMS.BL.Dtos.StoredProcedureParams;
-using OMS.BL.Dtos.Tables;
-using OMS.BL.Dtos.Views;
+using OMS.UI.APIServices.Dtos.Hybrid;
+using OMS.UI.APIServices.Dtos.StoredProcedureParams;
+using OMS.UI.APIServices.Dtos.Tables;
+using OMS.UI.APIServices.Dtos.Views;
 using OMS.UI.Models;
+
 
 namespace OMS.UI.Mapping
 {

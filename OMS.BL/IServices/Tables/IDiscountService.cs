@@ -1,4 +1,4 @@
-﻿using OMS.BL.Dtos.Tables;
+﻿using OMS.BL.Models.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,28 +12,28 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all discounts asynchronously.
         /// </summary>
         /// <returns>A collection of discount models.</returns>
-        Task<IEnumerable<DiscountDto>> GetAllAsync();
+        Task<IEnumerable<DiscountModel>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a discount by its ID asynchronously.
         /// </summary>
         /// <param name="discountId">The ID of the discount.</param>
         /// <returns>The discount dto if found, otherwise null.</returns>
-        Task<DiscountDto?> GetByIdAsync(int discountId);
+        Task<DiscountModel?> GetByIdAsync(int discountId);
 
         /// <summary>
         /// Adds a new discount asynchronously.
         /// </summary>
         /// <param name="dto">The discount dto to add.</param>
         /// <returns>True if the discount was added successfully, otherwise false.</returns>
-        Task<bool> AddAsync(DiscountDto dto);
+        Task<bool> AddAsync(DiscountModel dto);
 
         /// <summary>
         /// Updates an existing discount asynchronously.
         /// </summary>
         /// <param name="dto">The discount dto to update.</param>
         /// <returns>True if the discount was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAsync(DiscountDto dto);
+        Task<bool> UpdateAsync(DiscountModel dto);
 
         /// <summary>
         /// Deletes a discount by its ID asynchronously.

@@ -1,5 +1,5 @@
-﻿using OMS.BL.Dtos.Tables;
-using OMS.BL.Dtos.Views;
+﻿using OMS.BL.Models.Tables;
+using OMS.BL.Models.Views;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,28 +12,28 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all branches asynchronously.
         /// </summary>
         /// <returns>A collection of branch models.</returns>
-        Task<IEnumerable<BranchDto>> GetAllAsync();
+        Task<IEnumerable<BranchModel>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a branch by its ID asynchronously.
         /// </summary>
         /// <param name="branchId">The ID of the branch.</param>
         /// <returns>The branch dto if found, otherwise null.</returns>
-        Task<BranchDto?> GetByIdAsync(int branchId);
+        Task<BranchModel?> GetByIdAsync(int branchId);
 
         /// <summary>
         /// Adds a new branch asynchronously.
         /// </summary>
         /// <param name="dto">The branch dto to add.</param>
         /// <returns>True if the branch was added successfully, otherwise false.</returns>
-        Task<bool> AddAsync(BranchDto dto);
+        Task<bool> AddAsync(BranchModel dto);
 
         /// <summary>
         /// Updates an existing branch asynchronously.
         /// </summary>
         /// <param name="dto">The branch dto to update.</param>
         /// <returns>True if the branch was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAsync(BranchDto dto);
+        Task<bool> UpdateAsync(BranchModel dto);
 
         /// <summary>
         /// Deletes a branch by its ID asynchronously.
@@ -46,6 +46,6 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all branches Option asynchronously.
         /// </summary>
         /// <returns>A collection of branch option.</returns>
-        Task<IEnumerable<BranchOptionDto>?> GetAllBranchesOption();
+        Task<IEnumerable<BranchOptionModel>?> GetAllBranchesOption();
     }
 }
