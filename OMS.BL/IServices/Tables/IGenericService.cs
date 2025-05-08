@@ -20,6 +20,13 @@
         Task<TDto?> GetByIdAsync(int id);
 
         /// <summary>
+        /// Retrieves an boolean by its ID asynchronously.
+        /// </summary>
+        /// <param name="id">The ID of the dto.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task<bool> IsExistAsync(int id);
+
+        /// <summary>
         /// Adds a new dto asynchronously.
         /// </summary>
         /// <param name="dto">The dto to add.</param>

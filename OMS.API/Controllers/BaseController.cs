@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace OMS.API.Controllers
 {
     /// <summary>
     /// Abstract base controller that provides common CRUD operations for API controllers.
+    /// Important: Derived classes must add [ApiController] attribute.
     /// </summary>
     /// <typeparam name="TService">The service interface type used for business logic operations.</typeparam>
     /// <typeparam name="TDto">The Data Transfer Object (DTO) type used for API requests/responses.</typeparam>
@@ -38,68 +41,103 @@ namespace OMS.API.Controllers
         /// <summary>
         /// Retrieves all entities.
         /// </summary>
-        /// <returns>A list of all entities mapped to DTOs.</returns>
-        /// <response code="200">Returns the list of entities.</response>
-        /// <response code="500">If there was an internal server error.</response>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /api/entities
+        ///     
+        /// Returns all available entities in the system. Consider using filtering for large datasets.
+        /// </remarks>
+        /// <returns>List of all entities</returns>
+        /// <response code="200">Returns the complete list of entities</response>
+        /// <response code="204">If no entities exist (returns empty list)</response>
+        /// <response code="500">If there was an internal server error</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<TDto>>> GetAllAsync()
         {
             try
             {
                 var models = await GetListOfModelsAsync();
+
+                if (!models.Any()) return NoContent();
+
                 return Ok(_mapper.Map<IEnumerable<TDto>>(models));
             }
             catch (Exception ex)
             {
-                return Problem(detail: ex.Message, statusCode: StatusCodes.Status500InternalServerError);
+                return Problem(
+                    title: "Error retrieving entities",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
             }
         }
 
         /// <summary>
         /// Retrieves a specific entity by its ID.
         /// </summary>
-        /// <param name="id">The ID of the entity to retrieve.</param>
-        /// <returns>The requested entity mapped to DTO.</returns>
-        /// <response code="200">Returns the requested entity.</response>
-        /// <response code="400">If the ID is invalid (less than or equal to 0).</response>
-        /// <response code="404">If no entity was found with the specified ID.</response>
-        /// <response code="500">If there was an internal server error.</response>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /api/entities/1
+        /// </remarks>
+        /// <param name="id">The ID of the entity to retrieve (must be positive integer)</param>
+        /// <returns>The requested entity</returns>
+        /// <response code="200">Returns the requested entity</response>
+        /// <response code="400">If the ID is invalid</response>
+        /// <response code="404">If entity was not found</response>
+        /// <response code="500">If there was an internal server error</response>
         [HttpGet("{id:int}")]
         [ActionName("GetById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<TDto>> GetByIdAsync([FromRoute] int id)
         {
-            if (id <= 0) return BadRequest($"Invalid Id: [{id}]");
+            if (id <= 0)
+                return ValidationProblem(new ValidationProblemDetails
+                {
+                    Errors = { { "id", new[] { "ID must be a positive integer" } } }
+                });
 
             try
             {
                 var model = await GetModelByIdAsync(id);
-                return model != null
-                    ? Ok(_mapper.Map<TDto>(model))
-                    : NotFound($"No entity found with ID: [{id}]");
+                return model is null
+                    ? NotFound()
+                    : Ok(_mapper.Map<TDto>(model));
             }
             catch (Exception ex)
             {
-                return Problem(detail: ex.Message, statusCode: StatusCodes.Status500InternalServerError);
+                return Problem(
+                    title: "Error retrieving entity",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError);
             }
         }
+
 
         /// <summary>
         /// Creates a new entity.
         /// </summary>
-        /// <param name="dto">The DTO containing data for the new entity.</param>
-        /// <returns>The created entity mapped to DTO.</returns>
-        /// <response code="201">Returns the newly created entity.</response>
-        /// <response code="400">If the entity creation failed.</response>
-        /// <response code="500">If there was an internal server error.</response>
+        /// <remarks>
+        /// Sample request:
+        ///     POST /api/entities
+        ///     {
+        ///         "name": "New Entity",
+        ///         "description": "Entity description"
+        ///     }
+        /// </remarks>
+        /// <param name="dto">The DTO containing data for the new entity</param>
+        /// <returns>The created entity with generated ID</returns>
+        /// <response code="201">Returns the newly created entity</response>
+        /// <response code="400">If the request is invalid or validation fails</response>
+        /// <response code="500">If there was an internal server error</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<TDto>> AddAsync([FromBody] TDto dto)
         {
@@ -109,83 +147,210 @@ namespace OMS.API.Controllers
                 var isSuccess = await AddModelAsync(model);
 
                 if (!isSuccess)
-                    return BadRequest("Failed to save entity in the database.");
+                {
+                    return ValidationProblem(new ValidationProblemDetails
+                    {
+                        Title = "Validation Error",
+                        Detail = "Failed to save entity in the database",
+                        Errors = { { "General", new[] { "Failed to save entity in the database" } } }
+                    });
+                }
 
                 var id = GetModelId(model);
                 SetDtoId(dto, id);
 
-                return CreatedAtAction(actionName: "GetById", new { id }, dto);
+                return CreatedAtAction(
+                    actionName: "GetById",
+                    routeValues: new { id },
+                    value: dto);
             }
             catch (Exception ex)
             {
-                return Problem(detail: ex.Message, statusCode: StatusCodes.Status500InternalServerError);
+                return Problem(
+                    title: "Error creating entity",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
             }
         }
 
         /// <summary>
         /// Updates an existing entity.
         /// </summary>
-        /// <param name="id">The ID of the entity to update.</param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/entities/1
+        ///     {
+        ///         "id": 1,
+        ///         "name": "Updated Name",
+        ///         "description": "Updated Description"
+        ///     }
+        ///
+        /// Note: The ID in route must match the ID in request body.
+        /// </remarks>
+        /// <param name="id">The ID of the entity to update (must be positive integer and match ID in request body).</param>
         /// <param name="dto">The DTO containing updated data.</param>
-        /// <returns>A status message indicating the result of the operation.</returns>
-        /// <response code="200">If the entity was updated successfully.</response>
-        /// <response code="400">If the ID is invalid or doesn't match the DTO ID.</response>
-        /// <response code="500">If there was an internal server error.</response>
+        /// <returns>
+        /// - 200 OK with updated entity if successful
+        /// - 400 Bad Request if validation fails
+        /// - 404 Not Found if entity doesn't exist
+        /// - 500 Internal Server Error if unexpected error occurs
+        /// </returns>
+        /// <response code="200">Returns the updated entity</response>
+        /// <response code="400">If ID is invalid, doesn't match DTO ID, or validation fails</response>
+        /// <response code="404">If entity with specified ID doesn't exist</response>
+        /// <response code="500">If there was an internal server error</response>
         [HttpPut("{id:int}")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] TDto dto)
+        public async Task<ActionResult<TDto>> UpdateAsync([FromRoute] int id, [FromBody] TDto dto)
         {
-            if (!IsIdentifierIdentical(id, dto)) return BadRequest("Identifier mismatched");
-
             try
             {
-                var model = _mapper.Map<TModel>(dto);
-                var isSuccess = await UpdateModelAsync(model);
+                if (id <= 0)
+                    return ValidationProblem(new ValidationProblemDetails
+                    {
+                        Errors = { { "id", new[] { "ID must be a positive integer" } } }
+                    });
 
-                return isSuccess
-                    ? Ok($"Entity with ID: [{id}] successfully updated.")
-                    : BadRequest("Failed to update entity in the database.");
+                if (!IsIdentifierIdentical(id, dto))
+                    return ValidationProblem(new ValidationProblemDetails
+                    {
+                        Errors = { { "id", new[] { "Route ID must match body ID" } } }
+                    });
+
+                if (!await IsModelExistAsync(id)) return NotFound();
+
+                var model = _mapper.Map<TModel>(dto);
+                var isUpdated = await UpdateModelAsync(model);
+
+                if (!isUpdated)
+                    return Problem(
+                        title: "Update failed",
+                        detail: "Entity could not be updated",
+                        statusCode: StatusCodes.Status400BadRequest
+                    );
+
+                var updatedModel = await GetModelByIdAsync(id);
+                return Ok(_mapper.Map<TDto>(updatedModel));
             }
             catch (Exception ex)
             {
-                return Problem(detail: ex.Message, statusCode: StatusCodes.Status500InternalServerError);
+                return Problem(
+                    title: "Update operation failed",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1"
+                );
             }
         }
 
         /// <summary>
         /// Deletes an entity by its ID.
         /// </summary>
-        /// <param name="id">The ID of the entity to delete.</param>
-        /// <returns>A status message indicating the result of the operation.</returns>
-        /// <response code="200">If the entity was deleted successfully.</response>
-        /// <response code="400">If the ID is invalid or entity doesn't exist.</response>
-        /// <response code="500">If there was an internal server error or database restriction.</response>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /api/entities/1
+        ///
+        /// </remarks>
+        /// <param name="id">The ID of the entity to delete (must be positive integer).</param>
+        /// <returns>
+        /// - 200 OK with boolean result (true if deleted successfully)
+        /// - Appropriate error response for invalid requests
+        /// </returns>
+        /// <response code="200">Returns true if deletion was successful</response>
+        /// <response code="400">If ID is invalid</response>
+        /// <response code="404">If entity with specified ID doesn't exist</response>
+        /// <response code="409">If conflict occurs (e.g. foreign key constraint)</response>
+        /// <response code="500">If there was an internal server error</response>
         [HttpDelete("{id:int}")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
-            if (id <= 0) return BadRequest($"Invalid Id: [{id}]");
+            if (id <= 0)
+                return ValidationProblem(new ValidationProblemDetails
+                {
+                    Errors = { { "id", new[] { "ID must be a positive integer" } } }
+                });
 
             try
             {
-                var isSuccess = await DeleteModelAsync(id);
+                if (!await IsModelExistAsync(id))
+                    return NotFound();
 
-                return isSuccess
-                    ? Ok("Entity successfully deleted.")
-                    : BadRequest($"Deletion failed: Entity with ID: [{id}] does not exist.");
+                await DeleteModelAsync(id);
+                return NoContent();
+            }
+            catch (DbUpdateException ex) when (IsForeignKeyViolation(ex))
+            {
+                return Problem(
+                    detail: "Cannot delete entity due to existing relationships",
+                    statusCode: StatusCodes.Status409Conflict
+                );
             }
             catch (Exception ex)
             {
                 return Problem(
                     detail: ex.Message,
-                    statusCode: StatusCodes.Status500InternalServerError,
-                    title: "Deletion failed due to database restrictions."
+                    statusCode: StatusCodes.Status500InternalServerError
                 );
             }
+        }
+
+
+        /// <summary>
+        /// Checks if an entity exists by its ID without retrieving its content.
+        /// </summary>
+        /// <remarks>
+        /// This operation is more efficient than GET for existence checks as it doesn't return the entity body.
+        /// 
+        /// Example:
+        /// HEAD /api/entities/123
+        /// </remarks>
+        /// <param name="id">The ID of the entity to check (must be positive integer).</param>
+        /// <returns>
+        /// - 200 OK with empty body if entity exists
+        /// - 404 Not Found if entity doesn't exist
+        /// - Appropriate error response for invalid requests
+        /// </returns>
+        /// <response code="200">Entity exists (returns empty response with headers)</response>
+        /// <response code="400">If the ID is invalid (less than or equal to 0)</response>
+        /// <response code="404">If no entity exists with the specified ID</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpHead("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> HeadAsync([FromRoute] int id)
+        {
+            if (id <= 0) return BadRequest($"Invalid Id: [{id}]");
+
+            try
+            {
+                var isExist = await IsModelExistAsync(id);
+                return isExist ? Ok() : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError
+                );
+            }
+        }
+
+        private static bool IsForeignKeyViolation(DbUpdateException ex)
+        {
+            return ex.InnerException is SqlException sqlEx &&
+                   (sqlEx.Number == 547 || sqlEx.Number == 2601);
         }
 
         #region Common Abstract Methods
@@ -216,6 +381,13 @@ namespace OMS.API.Controllers
         /// <param name="id">The ID of the model to retrieve.</param>
         /// <returns>The requested model or null if not found.</returns>
         protected abstract Task<TModel?> GetModelByIdAsync(int id);
+
+        /// <summary>
+        /// Retrieves a boolean value by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the model.</param>
+        /// <returns>True if the model exist, otherwise false.</returns>
+        protected abstract Task<bool> IsModelExistAsync(int id);
 
         /// <summary>
         /// Adds a new model to the database.

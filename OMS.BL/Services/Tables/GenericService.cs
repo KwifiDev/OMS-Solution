@@ -38,6 +38,11 @@ namespace OMS.BL.Services.Tables
             return entity == null ? default(TDto) : _mapperService.Map<TEntity, TDto>(entity);
         }
 
+        public Task<bool> IsExistAsync(int id)
+        {
+            return _repository.IsExistAsync(id);
+        }
+
         public virtual async Task<bool> AddAsync(TDto dto)
         {
             if (dto == null) return false;

@@ -78,4 +78,11 @@ public class PeopleController : BaseController<IPersonService, PersonDto, Person
     /// <param name="dto">The PersonDto containing the person ID.</param>
     /// <returns>True if the IDs match, otherwise false.</returns>
     protected override bool IsIdentifierIdentical(int id, PersonDto dto) => id == dto.PersonId;
+
+    /// <summary>
+    /// Check a person from the database.
+    /// </summary>
+    /// <param name="id">The ID of the person to check if is exist.</param>
+    /// <returns>True if the person exist, otherwise false.</returns>
+    protected override async Task<bool> IsModelExistAsync(int id) => await _service.IsExistAsync(id);
 }

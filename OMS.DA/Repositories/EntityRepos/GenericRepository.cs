@@ -25,6 +25,18 @@ namespace OMS.DA.Repositories.EntityRepos
             return await _dbSet.FindAsync(id);
         }
 
+        public async Task<bool> IsExistAsync(int id)
+        {
+            var entityType = _context.Model.FindEntityType(typeof(T));
+            var primaryKey = entityType?.FindPrimaryKey();
+
+            if (primaryKey == null || !primaryKey.Properties.Any())
+                return false;
+
+            var primaryKeyName = primaryKey.Properties[0].Name;
+            return await _dbSet.AsNoTracking().AnyAsync(e => EF.Property<int>(e, primaryKeyName) == id);
+        }
+
         public async Task<bool> AddAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
@@ -51,5 +63,6 @@ namespace OMS.DA.Repositories.EntityRepos
             int result = await _context.SaveChangesAsync();
             return result > 0;
         }
+
     }
 }

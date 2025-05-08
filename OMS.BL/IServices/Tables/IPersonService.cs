@@ -21,6 +21,13 @@ namespace OMS.BL.IServices.Tables
         Task<PersonModel?> GetByIdAsync(int personId);
 
         /// <summary>
+        /// find a person by their ID asynchronously.
+        /// </summary>
+        /// <param name="personId">The ID of the person to find.</param>
+        /// <returns>True if the person was exist, otherwise false.</returns>
+        Task<bool> IsExistAsync(int personId);
+
+        /// <summary>
         /// Adds a new person asynchronously.
         /// </summary>
         /// <param name="dto">The person dto to add.</param>

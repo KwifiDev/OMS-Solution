@@ -20,6 +20,13 @@
         Task<T?> GetByIdAsync(int id);
 
         /// <summary>
+        /// Retrieves an boolean by its ID asynchronously.
+        /// </summary>
+        /// <param name="id">The ID of the entity.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the boolean value.</returns>
+        Task<bool> IsExistAsync(int id);
+
+        /// <summary>
         /// Adds a new entity asynchronously.
         /// </summary>
         /// <param name="entity">The entity to add.</param>

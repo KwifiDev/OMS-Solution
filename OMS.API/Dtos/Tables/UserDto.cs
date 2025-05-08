@@ -5,17 +5,25 @@ namespace OMS.API.Dtos.Tables;
 public partial class UserDto
 {
     [Key]
-    public int UserId { get; internal set; }
+    public int UserId { get; set; }
 
-    public required int PersonId { get; set; }
+    public int PersonId { get; set; }
 
-    public required int BranchId { get; set; }
+    [Required(ErrorMessage = "Branch ID is required")]
+    [Range(1, int.MaxValue, ErrorMessage = "Branch ID must be a positive number")]
+    public int BranchId { get; set; }
 
-    public required string Username { get; set; }
+    [Required(ErrorMessage = "Username is required")]
+    [StringLength(50, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 50 characters")]
+    [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username can only contain letters, numbers and underscores")]
+    public string Username { get; set; } = null!;
 
-    public required string Password { get; set; }
+    [Required(ErrorMessage = "Password is required")]
+    [StringLength(100, MinimumLength = 5, ErrorMessage = "Password must be at least 5 characters")]
+    [DataType(DataType.Password)]
+    public string Password { get; set; } = null!;
 
-    public required int Permissions { get; set; }
+    public int Permissions { get; set; }
 
     public bool IsActive { get; set; } = false;
 }

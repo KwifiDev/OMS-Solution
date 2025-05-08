@@ -22,6 +22,13 @@ namespace OMS.BL.IServices.Tables
         Task<UserModel?> GetByIdAsync(int userId);
 
         /// <summary>
+        /// find a user by their ID asynchronously.
+        /// </summary>
+        /// <param name="userId">The ID of the user to find.</param>
+        /// <returns>True if the user was exist, otherwise false.</returns>
+        Task<bool> IsExistAsync(int userId);
+
+        /// <summary>
         /// Retrieves a user by their person ID asynchronously.
         /// </summary>
         /// <param name="personId">The person ID of the user to retrieve.</param>
