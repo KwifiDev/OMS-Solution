@@ -49,20 +49,15 @@ namespace OMS.API.Controllers
         /// </remarks>
         /// <returns>List of all entities</returns>
         /// <response code="200">Returns the complete list of entities</response>
-        /// <response code="204">If no entities exist (returns empty list)</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<TDto>>> GetAllAsync()
         {
             try
             {
                 var models = await GetListOfModelsAsync();
-
-                if (!models.Any()) return NoContent();
-
                 return Ok(_mapper.Map<IEnumerable<TDto>>(models));
             }
             catch (Exception ex)
@@ -85,22 +80,16 @@ namespace OMS.API.Controllers
         /// <param name="id">The ID of the entity to retrieve (must be positive integer)</param>
         /// <returns>The requested entity</returns>
         /// <response code="200">Returns the requested entity</response>
-        /// <response code="400">If the ID is invalid</response>
         /// <response code="404">If entity was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("{id:int}")]
         [ActionName("GetById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<TDto>> GetByIdAsync([FromRoute] int id)
         {
-            if (id <= 0)
-                return ValidationProblem(new ValidationProblemDetails
-                {
-                    Errors = { { "id", new[] { "ID must be a positive integer" } } }
-                });
+            if (id <= 0) return NotFound();
 
             try
             {
@@ -197,25 +186,21 @@ namespace OMS.API.Controllers
         /// - 404 Not Found if entity doesn't exist
         /// - 500 Internal Server Error if unexpected error occurs
         /// </returns>
-        /// <response code="200">Returns the updated entity</response>
+        /// <response code="204">Returns no content when entity updated</response>
         /// <response code="400">If ID is invalid, doesn't match DTO ID, or validation fails</response>
         /// <response code="404">If entity with specified ID doesn't exist</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPut("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<TDto>> UpdateAsync([FromRoute] int id, [FromBody] TDto dto)
+        public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] TDto dto)
         {
+            if (id <= 0) return NotFound();
+
             try
             {
-                if (id <= 0)
-                    return ValidationProblem(new ValidationProblemDetails
-                    {
-                        Errors = { { "id", new[] { "ID must be a positive integer" } } }
-                    });
-
                 if (!IsIdentifierIdentical(id, dto))
                     return ValidationProblem(new ValidationProblemDetails
                     {
@@ -234,8 +219,7 @@ namespace OMS.API.Controllers
                         statusCode: StatusCodes.Status400BadRequest
                     );
 
-                var updatedModel = await GetModelByIdAsync(id);
-                return Ok(_mapper.Map<TDto>(updatedModel));
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -263,22 +247,16 @@ namespace OMS.API.Controllers
         /// - Appropriate error response for invalid requests
         /// </returns>
         /// <response code="200">Returns true if deletion was successful</response>
-        /// <response code="400">If ID is invalid</response>
         /// <response code="404">If entity with specified ID doesn't exist</response>
         /// <response code="409">If conflict occurs (e.g. foreign key constraint)</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
-            if (id <= 0)
-                return ValidationProblem(new ValidationProblemDetails
-                {
-                    Errors = { { "id", new[] { "ID must be a positive integer" } } }
-                });
+            if (id <= 0) return NotFound();
 
             try
             {
@@ -321,17 +299,15 @@ namespace OMS.API.Controllers
         /// - Appropriate error response for invalid requests
         /// </returns>
         /// <response code="200">Entity exists (returns empty response with headers)</response>
-        /// <response code="400">If the ID is invalid (less than or equal to 0)</response>
         /// <response code="404">If no entity exists with the specified ID</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpHead("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> HeadAsync([FromRoute] int id)
         {
-            if (id <= 0) return BadRequest($"Invalid Id: [{id}]");
+            if (id <= 0) return NotFound();
 
             try
             {
