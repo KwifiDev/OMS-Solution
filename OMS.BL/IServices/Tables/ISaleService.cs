@@ -23,16 +23,16 @@ namespace OMS.BL.IServices.Tables
         /// <summary>
         /// Adds a new sale asynchronously.
         /// </summary>
-        /// <param name="dto">The SaleModel object representing the sale to add.</param>
+        /// <param name="model">The SaleModel object representing the sale to add.</param>
         /// <returns>True if the sale was added successfully, otherwise false.</returns>
-        Task<bool> AddAsync(SaleModel dto);
+        Task<bool> AddAsync(SaleModel model);
 
         /// <summary>
         /// Updates an existing sale asynchronously.
         /// </summary>
-        /// <param name="dto">The SaleModel object representing the sale to update.</param>
+        /// <param name="model">The SaleModel object representing the sale to update.</param>
         /// <returns>True if the sale was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAsync(SaleModel dto);
+        Task<bool> UpdateAsync(SaleModel model);
 
         /// <summary>
         /// Deletes a sale by its ID asynchronously.

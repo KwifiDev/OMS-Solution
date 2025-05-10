@@ -19,16 +19,16 @@ namespace OMS.BL.Services.Tables
             _debtRepository = repository;
         }
 
-        public async Task<bool> PayDebtByIdAsync(PayDebtModel dto)
+        public async Task<bool> PayDebtByIdAsync(PayDebtModel model)
         {
-            dto.PayDebtStatus = await _debtRepository.PayDebtByIdAsync
+            model.PayDebtStatus = await _debtRepository.PayDebtByIdAsync
                 (
-                    debtId: dto.DebtId,
-                    notes: dto.Notes,
-                    createdByUserId: dto.CreatedByUserId
+                    debtId: model.DebtId,
+                    notes: model.Notes,
+                    createdByUserId: model.CreatedByUserId
                 );
 
-            return dto.PayDebtStatus == EnPayDebtStatus.Success;
+            return model.PayDebtStatus == EnPayDebtStatus.Success;
         }
 
       

@@ -18,9 +18,9 @@ namespace OMS.BL.Services.Tables
             _paymentRepository = repository;
         }
 
-        public override Task<bool> AddAsync(PaymentModel dto)
+        public override Task<bool> AddAsync(PaymentModel model)
             => throw new NotSupportedException("Add operation is not supported for PaymentService.");
-        public override Task<bool> UpdateAsync(PaymentModel dto)
+        public override Task<bool> UpdateAsync(PaymentModel model)
             => throw new NotSupportedException("Update operation is not supported for PaymentService.");
         public override Task<bool> DeleteAsync(int id)
             => throw new NotSupportedException("Delete operation is not supported for PaymentService.");

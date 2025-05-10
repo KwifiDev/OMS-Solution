@@ -17,9 +17,9 @@ namespace OMS.BL.Services.Tables
             _permissionsConfigRepository = repository;
         }
 
-        public override Task<bool> AddAsync(PermissionsConfigModel dto)
+        public override Task<bool> AddAsync(PermissionsConfigModel model)
            => throw new NotSupportedException("Add operation is not supported for PermissionsConfigService.");
-        public override Task<bool> UpdateAsync(PermissionsConfigModel dto)
+        public override Task<bool> UpdateAsync(PermissionsConfigModel model)
             => throw new NotSupportedException("Update operation is not supported for PermissionsConfigService.");
         public override Task<bool> DeleteAsync(int id)
             => throw new NotSupportedException("Delete operation is not supported for PermissionsConfigService.");

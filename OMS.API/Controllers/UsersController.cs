@@ -6,9 +6,12 @@ using OMS.BL.Models.Tables;
 
 namespace OMS.API.Controllers
 {
-    [Route("api/Users")]
+    /// <summary>
+    /// API controller for managing users data.
+    /// </summary>
+    [Route("api/users")]
     [ApiController]
-    public class UsersController : BaseController<IUserService, UserDto, UserModel>
+    public class UsersController : GenericController<IUserService, UserDto, UserModel>
     {
         public UsersController(IUserService service, IMapper mapper) : base(service, mapper)
         {

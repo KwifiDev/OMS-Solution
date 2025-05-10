@@ -17,9 +17,9 @@ namespace OMS.BL.Services.Tables
             _transactionRepository = repository;
         }
 
-        public override Task<bool> AddAsync(TransactionModel dto)
+        public override Task<bool> AddAsync(TransactionModel model)
            => throw new NotSupportedException("Add operation is not supported for TransactionService.");
-        public override Task<bool> UpdateAsync(TransactionModel dto)
+        public override Task<bool> UpdateAsync(TransactionModel model)
             => throw new NotSupportedException("Update operation is not supported for TransactionService.");
         public override Task<bool> DeleteAsync(int id)
             => throw new NotSupportedException("Delete operation is not supported for TransactionService.");

@@ -4,7 +4,7 @@ using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.BL.Services.Views
 {
-    public class GenericViewService<TEntity, TDto> : IGenericViewService<TDto> where TEntity : class
+    public class GenericViewService<TEntity, TModel> : IGenericViewService<TModel> where TEntity : class
     {
         private readonly IGenericViewRepository<TEntity> _repository;
         private readonly IMapperService _mapper;
@@ -15,23 +15,23 @@ namespace OMS.BL.Services.Views
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TDto>> GetAllAsync()
+        public async Task<IEnumerable<TModel>> GetAllAsync()
         {
             IEnumerable<TEntity> entities = await _repository.GetAllAsync();
 
             if (entities == null)
             {
-                return Enumerable.Empty<TDto>();
+                return Enumerable.Empty<TModel>();
             }
 
-            return _mapper.Map<TEntity, TDto>(entities);
+            return _mapper.Map<TEntity, TModel>(entities);
         }
 
-        public async Task<TDto?> GetByIdAsync(int id)
+        public async Task<TModel?> GetByIdAsync(int id)
         {
             TEntity? entity = await _repository.GetByIdAsync(id);
 
-            return entity == null ? default(TDto) : _mapper.Map<TEntity, TDto>(entity);
+            return entity == null ? default(TModel) : _mapper.Map<TEntity, TModel>(entity);
         }
     }
 }

@@ -12,99 +12,19 @@ namespace OMS.API.Controllers
     /// <typeparam name="TService">The service interface type used for business logic operations.</typeparam>
     /// <typeparam name="TDto">The Data Transfer Object (DTO) type used for API requests/responses.</typeparam>
     /// <typeparam name="TModel">The domain model type used for database operations.</typeparam>
-    public abstract class BaseController<TService, TDto, TModel> : ControllerBase
+    public abstract class GenericController<TService, TDto, TModel> : GenericViewController<TService, TDto, TModel>
         where TService : class
         where TDto : class
         where TModel : class
     {
-        /// <summary>
-        /// The service instance for handling business logic.
-        /// </summary>
-        protected readonly TService _service;
 
         /// <summary>
-        /// The AutoMapper instance for object-object mapping.
-        /// </summary>
-        protected readonly IMapper _mapper;
-
-        /// <summary>
-        /// Initializes a new instance of the BaseController class.
+        /// Initializes a new instance of the GenericController class.
         /// </summary>
         /// <param name="service">The service instance for business logic operations.</param>
         /// <param name="mapper">The AutoMapper instance for object mapping.</param>
-        public BaseController(TService service, IMapper mapper)
+        public GenericController(TService service, IMapper mapper) : base(service, mapper)
         {
-            _service = service;
-            _mapper = mapper;
-        }
-
-        /// <summary>
-        /// Retrieves all entities.
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///     GET /api/entities
-        ///     
-        /// Returns all available entities in the system. Consider using filtering for large datasets.
-        /// </remarks>
-        /// <returns>List of all entities</returns>
-        /// <response code="200">Returns the complete list of entities</response>
-        /// <response code="500">If there was an internal server error</response>
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<TDto>>> GetAllAsync()
-        {
-            try
-            {
-                var models = await GetListOfModelsAsync();
-                return Ok(_mapper.Map<IEnumerable<TDto>>(models));
-            }
-            catch (Exception ex)
-            {
-                return Problem(
-                    title: "Error retrieving entities",
-                    detail: ex.Message,
-                    statusCode: StatusCodes.Status500InternalServerError,
-                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
-            }
-        }
-
-        /// <summary>
-        /// Retrieves a specific entity by its ID.
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///     GET /api/entities/1
-        /// </remarks>
-        /// <param name="id">The ID of the entity to retrieve (must be positive integer)</param>
-        /// <returns>The requested entity</returns>
-        /// <response code="200">Returns the requested entity</response>
-        /// <response code="404">If entity was not found</response>
-        /// <response code="500">If there was an internal server error</response>
-        [HttpGet("{id:int}")]
-        [ActionName("GetById")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<TDto>> GetByIdAsync([FromRoute] int id)
-        {
-            if (id <= 0) return NotFound();
-
-            try
-            {
-                var model = await GetModelByIdAsync(id);
-                return model is null
-                    ? NotFound()
-                    : Ok(_mapper.Map<TDto>(model));
-            }
-            catch (Exception ex)
-            {
-                return Problem(
-                    title: "Error retrieving entity",
-                    detail: ex.Message,
-                    statusCode: StatusCodes.Status500InternalServerError);
-            }
         }
 
 
@@ -344,19 +264,6 @@ namespace OMS.API.Controllers
         /// <param name="dto">The DTO instance.</param>
         /// <param name="id">The identifier to set.</param>
         protected abstract void SetDtoId(TDto dto, int id);
-
-        /// <summary>
-        /// Retrieves all models from the service.
-        /// </summary>
-        /// <returns>A collection of domain models.</returns>
-        protected abstract Task<IEnumerable<TModel>> GetListOfModelsAsync();
-
-        /// <summary>
-        /// Retrieves a specific model by its ID.
-        /// </summary>
-        /// <param name="id">The ID of the model to retrieve.</param>
-        /// <returns>The requested model or null if not found.</returns>
-        protected abstract Task<TModel?> GetModelByIdAsync(int id);
 
         /// <summary>
         /// Retrieves a boolean value by its ID.

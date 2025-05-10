@@ -17,7 +17,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves a person by their ID asynchronously.
         /// </summary>
         /// <param name="personId">The ID of the person.</param>
-        /// <returns>The person dto if found, otherwise null.</returns>
+        /// <returns>The person model if found, otherwise null.</returns>
         Task<PersonModel?> GetByIdAsync(int personId);
 
         /// <summary>
@@ -30,16 +30,16 @@ namespace OMS.BL.IServices.Tables
         /// <summary>
         /// Adds a new person asynchronously.
         /// </summary>
-        /// <param name="dto">The person dto to add.</param>
+        /// <param name="model">The person model to add.</param>
         /// <returns>True if the person was added successfully, otherwise false.</returns>
-        Task<bool> AddAsync(PersonModel dto);
+        Task<bool> AddAsync(PersonModel model);
 
         /// <summary>
         /// Updates an existing person asynchronously.
         /// </summary>
-        /// <param name="dto">The updated person dto.</param>
+        /// <param name="model">The updated person model.</param>
         /// <returns>True if the person was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAsync(PersonModel dto);
+        Task<bool> UpdateAsync(PersonModel model);
 
         /// <summary>
         /// Deletes a person by their ID asynchronously.

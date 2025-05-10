@@ -24,16 +24,16 @@ namespace OMS.BL.IServices.Tables
         /// <summary>
         /// Adds a new debt asynchronously.
         /// </summary>
-        /// <param name="dto">The DebtModel object representing the new debt.</param>
+        /// <param name="model">The DebtModel object representing the new debt.</param>
         /// <returns>True if the debt was added successfully, otherwise false.</returns>
-        Task<bool> AddAsync(DebtModel dto);
+        Task<bool> AddAsync(DebtModel model);
 
         /// <summary>
         /// Updates an existing debt asynchronously.
         /// </summary>
-        /// <param name="dto">The DebtModel object representing the updated debt.</param>
+        /// <param name="model">The DebtModel object representing the updated debt.</param>
         /// <returns>True if the debt was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAsync(DebtModel dto);
+        Task<bool> UpdateAsync(DebtModel model);
 
         /// <summary>
         /// Deletes a debt by its ID asynchronously.
@@ -45,8 +45,8 @@ namespace OMS.BL.IServices.Tables
         /// <summary>
         /// Pays a debt by its ID asynchronously.
         /// </summary>
-        /// <param name="dto">The PayDebtModel object representing the payment details.</param>
+        /// <param name="model">The PayDebtModel object representing the payment details.</param>
         /// <returns>True if the debt was paid successfully, otherwise false.</returns>
-        Task<bool> PayDebtByIdAsync(PayDebtModel dto);
+        Task<bool> PayDebtByIdAsync(PayDebtModel model);
     }
 }

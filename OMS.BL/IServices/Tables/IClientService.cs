@@ -18,14 +18,21 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves a client by ID asynchronously.
         /// </summary>
         /// <param name="clientId">The ID of the client to retrieve.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the client dto, or null if not found.</returns>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the client model, or null if not found.</returns>
         Task<ClientModel?> GetByIdAsync(int clientId);
+
+        /// <summary>
+        /// find a client by their ID asynchronously.
+        /// </summary>
+        /// <param name="clientId">The ID of the client to find.</param>
+        /// <returns>True if the client was exist, otherwise false.</returns>
+        Task<bool> IsExistAsync(int clientId);
 
         /// <summary>
         /// Retrieves a client by person ID asynchronously.
         /// </summary>
         /// <param name="personId">The person id of the client to retrieve.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the client dto, or null if not found.</returns>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the client model, or null if not found.</returns>
         Task<ClientModel?> GetByPersonIdAsync(int personId);
 
         /// <summary>
@@ -38,16 +45,16 @@ namespace OMS.BL.IServices.Tables
         /// <summary>
         /// Adds a new client asynchronously.
         /// </summary>
-        /// <param name="dto">The client dto to add.</param>
+        /// <param name="model">The client model to add.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the client was added successfully.</returns>
-        Task<bool> AddAsync(ClientModel dto);
+        Task<bool> AddAsync(ClientModel model);
 
         /// <summary>
         /// Updates an existing client asynchronously.
         /// </summary>
-        /// <param name="dto">The client dto to update.</param>
+        /// <param name="model">The client model to update.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the client was updated successfully.</returns>
-        Task<bool> UpdateAsync(ClientModel dto);
+        Task<bool> UpdateAsync(ClientModel model);
 
         /// <summary>
         /// Deletes a client by ID asynchronously.
@@ -59,8 +66,8 @@ namespace OMS.BL.IServices.Tables
         /// <summary>
         /// Pays all debts for a client by ID asynchronously.
         /// </summary>
-        /// <param name="dto">The payment dto containing the client ID.</param>
+        /// <param name="model">The payment model containing the client ID.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the debts were paid successfully.</returns>
-        Task<bool> PayAllDebtsById(PayDebtsModel dto);
+        Task<bool> PayAllDebtsById(PayDebtsModel model);
     }
 }

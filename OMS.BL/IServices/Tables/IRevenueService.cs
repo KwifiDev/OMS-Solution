@@ -17,22 +17,22 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves a revenue by its ID asynchronously.
         /// </summary>
         /// <param name="revenueId">The ID of the revenue to retrieve.</param>
-        /// <returns>The revenue dto, or null if not found.</returns>
+        /// <returns>The revenue model, or null if not found.</returns>
         Task<RevenueModel?> GetByIdAsync(int revenueId);
 
         /// <summary>
         /// Adds a new revenue asynchronously.
         /// </summary>
-        /// <param name="dto">The revenue dto to add.</param>
+        /// <param name="model">The revenue model to add.</param>
         /// <returns>True if the revenue was added successfully, otherwise false.</returns>
-        Task<bool> AddAsync(RevenueModel dto);
+        Task<bool> AddAsync(RevenueModel model);
 
         /// <summary>
         /// Updates an existing revenue asynchronously.
         /// </summary>
-        /// <param name="dto">The revenue dto to update.</param>
+        /// <param name="model">The revenue model to update.</param>
         /// <returns>True if the revenue was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAsync(RevenueModel dto);
+        Task<bool> UpdateAsync(RevenueModel model);
 
         /// <summary>
         /// Deletes a revenue by its ID asynchronously.

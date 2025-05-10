@@ -18,22 +18,29 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves a branch by its ID asynchronously.
         /// </summary>
         /// <param name="branchId">The ID of the branch.</param>
-        /// <returns>The branch dto if found, otherwise null.</returns>
+        /// <returns>The branch model if found, otherwise null.</returns>
         Task<BranchModel?> GetByIdAsync(int branchId);
+
+        /// <summary>
+        /// find a branch by their ID asynchronously.
+        /// </summary>
+        /// <param name="branchId">The ID of the branch to find.</param>
+        /// <returns>True if the branch was exist, otherwise false.</returns>
+        Task<bool> IsExistAsync(int branchId);
 
         /// <summary>
         /// Adds a new branch asynchronously.
         /// </summary>
-        /// <param name="dto">The branch dto to add.</param>
+        /// <param name="model">The branch model to add.</param>
         /// <returns>True if the branch was added successfully, otherwise false.</returns>
-        Task<bool> AddAsync(BranchModel dto);
+        Task<bool> AddAsync(BranchModel model);
 
         /// <summary>
         /// Updates an existing branch asynchronously.
         /// </summary>
-        /// <param name="dto">The branch dto to update.</param>
+        /// <param name="model">The branch model to update.</param>
         /// <returns>True if the branch was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAsync(BranchModel dto);
+        Task<bool> UpdateAsync(BranchModel model);
 
         /// <summary>
         /// Deletes a branch by its ID asynchronously.

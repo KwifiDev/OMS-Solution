@@ -26,30 +26,30 @@ namespace OMS.BL.Services.Tables
             return account != null ? _mapperService.Map<Account, AccountModel>(account) : null;
         }
 
-        public async Task<bool> DepositIntoAccountAsync(AccountTransactionModel dto)
+        public async Task<bool> DepositIntoAccountAsync(AccountTransactionModel model)
         {
-            dto.TransactionStatus = await _accountRepository.DepositAccountAsync
+            model.TransactionStatus = await _accountRepository.DepositAccountAsync
                (
-                   accountId: dto.AccountId,
-                   amount: dto.Amount,
-                   notes: dto.Notes,
-                   createdByUserId: dto.CreatedByUserId
+                   accountId: model.AccountId,
+                   amount: model.Amount,
+                   notes: model.Notes,
+                   createdByUserId: model.CreatedByUserId
                );
 
-            return dto.TransactionStatus == EnAccountTransactionStatus.Success;
+            return model.TransactionStatus == EnAccountTransactionStatus.Success;
         }
 
-        public async Task<bool> WithdrawFromAccountAsync(AccountTransactionModel dto)
+        public async Task<bool> WithdrawFromAccountAsync(AccountTransactionModel model)
         {
-            dto.TransactionStatus = await _accountRepository.WithdrawAccountAsync
+            model.TransactionStatus = await _accountRepository.WithdrawAccountAsync
                 (
-                    accountId: dto.AccountId,
-                    amount: dto.Amount,
-                    notes: dto.Notes,
-                    createdByUserId: dto.CreatedByUserId
+                    accountId: model.AccountId,
+                    amount: model.Amount,
+                    notes: model.Notes,
+                    createdByUserId: model.CreatedByUserId
                 );
 
-            return dto.TransactionStatus == EnAccountTransactionStatus.Success;
+            return model.TransactionStatus == EnAccountTransactionStatus.Success;
         }
 
     }

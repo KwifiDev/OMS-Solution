@@ -17,22 +17,22 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves a service by its ID asynchronously.
         /// </summary>
         /// <param name="serviceId">The ID of the service to retrieve.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the service dto, or null if not found.</returns>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the service model, or null if not found.</returns>
         Task<ServiceModel?> GetByIdAsync(int serviceId);
 
         /// <summary>
         /// Adds a new service asynchronously.
         /// </summary>
-        /// <param name="dto">The service dto to add.</param>
+        /// <param name="model">The service model to add.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the service was added successfully.</returns>
-        Task<bool> AddAsync(ServiceModel dto);
+        Task<bool> AddAsync(ServiceModel model);
 
         /// <summary>
         /// Updates an existing service asynchronously.
         /// </summary>
-        /// <param name="dto">The service dto to update.</param>
+        /// <param name="model">The service model to update.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the service was updated successfully.</returns>
-        Task<bool> UpdateAsync(ServiceModel dto);
+        Task<bool> UpdateAsync(ServiceModel model);
 
         /// <summary>
         /// Deletes a service by its ID asynchronously.

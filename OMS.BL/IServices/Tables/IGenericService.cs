@@ -3,47 +3,47 @@
     /// <summary>
     /// Represents a generic service interface for CRUD operations on entities.
     /// </summary>
-    /// <typeparam name="TDto">The type of Dto.</typeparam>
-    public interface IGenericService<TDto>
+    /// <typeparam name="TModel">The type of model.</typeparam>
+    public interface IGenericService<TModel>
     {
         /// <summary>
         /// Retrieves all entities asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of entities.</returns>
-        Task<IEnumerable<TDto>> GetAllAsync();
+        Task<IEnumerable<TModel>> GetAllAsync();
 
         /// <summary>
-        /// Retrieves an dto by its ID asynchronously.
+        /// Retrieves an model by its ID asynchronously.
         /// </summary>
-        /// <param name="id">The ID of the dto.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the dto.</returns>
-        Task<TDto?> GetByIdAsync(int id);
+        /// <param name="id">The ID of the model.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the model.</returns>
+        Task<TModel?> GetByIdAsync(int id);
 
         /// <summary>
         /// Retrieves an boolean by its ID asynchronously.
         /// </summary>
-        /// <param name="id">The ID of the dto.</param>
+        /// <param name="id">The ID of the model.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         Task<bool> IsExistAsync(int id);
 
         /// <summary>
-        /// Adds a new dto asynchronously.
+        /// Adds a new model asynchronously.
         /// </summary>
-        /// <param name="dto">The dto to add.</param>
+        /// <param name="model">The model to add.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task<bool> AddAsync(TDto dto);
+        Task<bool> AddAsync(TModel model);
 
         /// <summary>
-        /// Updates an existing dto asynchronously.
+        /// Updates an existing model asynchronously.
         /// </summary>
-        /// <param name="dto">The dto to update.</param>
+        /// <param name="model">The model to update.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task<bool> UpdateAsync(TDto dto);
+        Task<bool> UpdateAsync(TModel model);
 
         /// <summary>
-        /// Deletes an dto by its ID asynchronously.
+        /// Deletes an model by its ID asynchronously.
         /// </summary>
-        /// <param name="id">The ID of the dto to delete.</param>
+        /// <param name="id">The ID of the model to delete.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         Task<bool> DeleteAsync(int id);
     }

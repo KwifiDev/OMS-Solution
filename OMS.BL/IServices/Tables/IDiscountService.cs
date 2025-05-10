@@ -18,22 +18,22 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves a discount by its ID asynchronously.
         /// </summary>
         /// <param name="discountId">The ID of the discount.</param>
-        /// <returns>The discount dto if found, otherwise null.</returns>
+        /// <returns>The discount model if found, otherwise null.</returns>
         Task<DiscountModel?> GetByIdAsync(int discountId);
 
         /// <summary>
         /// Adds a new discount asynchronously.
         /// </summary>
-        /// <param name="dto">The discount dto to add.</param>
+        /// <param name="model">The discount model to add.</param>
         /// <returns>True if the discount was added successfully, otherwise false.</returns>
-        Task<bool> AddAsync(DiscountModel dto);
+        Task<bool> AddAsync(DiscountModel model);
 
         /// <summary>
         /// Updates an existing discount asynchronously.
         /// </summary>
-        /// <param name="dto">The discount dto to update.</param>
+        /// <param name="model">The discount model to update.</param>
         /// <returns>True if the discount was updated successfully, otherwise false.</returns>
-        Task<bool> UpdateAsync(DiscountModel dto);
+        Task<bool> UpdateAsync(DiscountModel model);
 
         /// <summary>
         /// Deletes a discount by its ID asynchronously.
