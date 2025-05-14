@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using OMS.UI.Resources.Strings;
@@ -19,7 +18,7 @@ namespace OMS.UI.ViewModels.Pages
 
         protected readonly TService _service;
         protected readonly TDisplayService _displayService;
-        protected readonly IMapper _mapper;
+        //protected readonly IMapper _mapper;
         protected readonly IDialogService _dialogService;
         protected readonly IMessageService _messageService;
 
@@ -29,11 +28,11 @@ namespace OMS.UI.ViewModels.Pages
 
         private TModel? _selectedItem;
 
-        public BasePageViewModel(TService service, TDisplayService displayService, IMapper mapper, IDialogService dialogService, IMessageService messageService)
+        public BasePageViewModel(TService service, TDisplayService displayService, IDialogService dialogService, IMessageService messageService)
         {
             _service = service;
             _displayService = displayService;
-            _mapper = mapper;
+            //_mapper = mapper;
             _dialogService = dialogService;
             _messageService = messageService;
 

@@ -11,7 +11,7 @@ namespace OMS.UI.Models
         private int _createdByUserId;
         private EnAccountTransactionStatus _transactionStatus = EnAccountTransactionStatus.Empty;
 
-
+        [Key]
         public int AccountId
         {
             get => _accountId;

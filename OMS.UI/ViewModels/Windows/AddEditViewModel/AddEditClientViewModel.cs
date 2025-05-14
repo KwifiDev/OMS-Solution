@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
-using OMS.BL.Models.Tables;
-using OMS.BL.IServices.Tables;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OMS.Common.Enums;
+using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.ShowMassage;
@@ -15,7 +13,7 @@ using static OMS.UI.ViewModels.UserControls.FindPersonViewModel;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
-    public partial class AddEditClientViewModel : AddEditBaseViewModel<Models.ClientModel, BL.Models.Tables.ClientModel, IClientService>
+    public partial class AddEditClientViewModel : AddEditBaseViewModel<ClientModel, IClientService>
     {
         private readonly IAccountService _accountService;
 
@@ -29,11 +27,11 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private bool _hasCreateUserAccount;
 
         [ObservableProperty]
-        private Models.AccountModel _clientAccount = new();
+        private AccountModel _clientAccount = new();
 
-        public AddEditClientViewModel(IClientService clientService, IAccountService accountService, IMapper mapper, IMessageService messageService,
+        public AddEditClientViewModel(IClientService clientService, IAccountService accountService, IMessageService messageService,
                                       IFindPersonViewModel findPersonViewModel, IWindowService windowService, IStatusService statusService)
-                                      : base(clientService, mapper, messageService, windowService, statusService)
+                                      : base(clientService, messageService, windowService, statusService)
         {
             _accountService = accountService;
             _findPersonViewModel = findPersonViewModel;
@@ -55,7 +53,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             await LoadAssociatedAccount();
         }
 
-        protected override async Task<BL.Models.Tables.ClientModel?> GetByIdAsync(int id)
+        protected override async Task<ClientModel?> GetByIdAsync(int id)
             => await _service.GetByIdAsync(id);
 
         protected override async Task<bool> EnterEditModeAsync(int? id)
@@ -78,20 +76,20 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             await base.Save(parameter);
         }
 
-        protected override string GetEntityName() 
+        protected override string GetEntityName()
             => "عميل";
 
-        protected override async Task<bool> SaveDataAsync(bool isAdding, BL.Models.Tables.ClientModel clientDto)
+        protected override async Task<bool> SaveDataAsync(bool isAdding, ClientModel clientModel)
         {
-            var clientSaved = await SaveClient(clientDto, isAdding);
+            var clientSaved = await SaveClient(clientModel, isAdding);
             if (!clientSaved) return false;
 
-            await HandleAccountOperations(clientDto.ClientId);
+            await HandleAccountOperations(clientModel.ClientId);
             return true;
         }
 
-        protected override void UpdateModelAfterSave(BL.Models.Tables.ClientModel clientDto)
-            => Model.ClientId = clientDto.ClientId;
+        //protected override void UpdateModelAfterSave(BL.Models.Tables.ClientModel clientModel)
+        //    => Model.ClientId = clientModel.ClientId;
 
         protected override bool ValidateModel()
         {
@@ -114,10 +112,10 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         private async Task LoadAssociatedAccount()
         {
-            var accountDto = await _accountService.GetByClientIdAsync(Model.ClientId);
-            if (accountDto == null) return;
+            var accountModel = await _accountService.GetByClientIdAsync(Model.ClientId);
+            if (accountModel == null) return;
 
-            ClientAccount = _mapper.Map<Models.AccountModel>(accountDto);
+            ClientAccount = accountModel;
             HasCreateUserAccount = true;
         }
 
@@ -147,10 +145,10 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private void SetPersonReference()
             => Model.PersonId = FindPersonViewModel.Person!.PersonId;
 
-        private async Task<bool> SaveClient(BL.Models.Tables.ClientModel clientDto, bool isAdding)
+        private async Task<bool> SaveClient(ClientModel clientModel, bool isAdding)
             => isAdding
-                ? await _service.AddAsync(clientDto)
-                : await _service.UpdateAsync(clientDto);
+                ? await _service.AddAsync(clientModel)
+                : await _service.UpdateAsync(clientModel.ClientId, clientModel);
 
         private async Task HandleAccountOperations(int clientId)
         {
@@ -167,11 +165,11 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private async Task SaveOrUpdateAccount(int clientId)
         {
             ClientAccount.ClientId = clientId;
-            var accountDto = _mapper.Map<BL.Models.Tables.AccountModel>(ClientAccount);
+            //var accountModel = _mapper.Map<AccountModel>(ClientAccount);
 
             var success = ClientAccount.AccountId == 0
-                ? await _accountService.AddAsync(accountDto)
-                : await _accountService.UpdateAsync(accountDto);
+                ? await _accountService.AddAsync(ClientAccount)
+                : await _accountService.UpdateAsync(ClientAccount.ClientId, ClientAccount);
 
             if (!success) ShowAccountOperationError();
         }

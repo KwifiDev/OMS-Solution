@@ -1,7 +1,6 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.Input;
-using OMS.BL.IServices.Tables;
-using OMS.BL.IServices.Views;
+﻿using CommunityToolkit.Mvvm.Input;
+using OMS.UI.APIs.Services.Interfaces.Tables;
+using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Models.Records;
 using OMS.UI.Services.Dialog;
@@ -14,8 +13,8 @@ namespace OMS.UI.ViewModels.Pages
     public partial class ClientsPageViewModel : BasePageViewModel<IClientService, IClientsSummaryService, ClientsSummaryModel, ClientModel>
     {
         public ClientsPageViewModel(IClientService clientService, IClientsSummaryService clientsSummaryService,
-                                    IMapper mapper, IDialogService dialogService, IMessageService messageService)
-                                    : base(clientService, clientsSummaryService, mapper, dialogService, messageService)
+                                    IDialogService dialogService, IMessageService messageService)
+                                    : base(clientService, clientsSummaryService, dialogService, messageService)
         {
             SelectedItemChanged += NotifyCanExecuteChanged;
         }
@@ -31,7 +30,7 @@ namespace OMS.UI.ViewModels.Pages
         protected override async Task LoadData()
         {
             var clientItems = await _displayService.GetAllAsync();
-            Items = new(_mapper.Map<IEnumerable<ClientsSummaryModel>>(clientItems));
+            Items = new(clientItems);
         }
 
         protected override Task ShowDetailsWindow(int itemId)
@@ -45,8 +44,7 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override async Task<ClientsSummaryModel> ConvertToModel(ClientModel messageModel)
         {
-            var clientDto = await _displayService.GetByIdAsync(messageModel.ClientId);
-            return _mapper.Map<ClientsSummaryModel>(clientDto);
+            return (await _displayService.GetByIdAsync(messageModel.ClientId))!;
         }
 
         private void NotifyCanExecuteChanged(object? obj, EventArgs e)

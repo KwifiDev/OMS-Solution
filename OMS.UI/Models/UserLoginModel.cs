@@ -1,9 +1,11 @@
 ﻿using OMS.Common.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models
 {
     public class UserLoginModel
     {
+        [Key]
         public int UserId { get; internal set; }
 
         public int PersonId { get; set; }
@@ -15,7 +17,6 @@ namespace OMS.UI.Models
         public int Permissions { get; set; }
 
         public bool IsActive { get; set; } = false;
-
 
         public string FirstName { get; set; } = null!;
 

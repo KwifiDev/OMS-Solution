@@ -6,20 +6,20 @@ namespace OMS.API.Dtos.Tables;
 public partial class TransactionDto
 {
     [Key]
-    public int TransactionId { get; internal set; }
+    public int TransactionId { get; set; }
 
-    public int AccountId { get; internal set; }
+    public int AccountId { get; set; }
 
     /// <summary>
     /// 0 = Deposit | 1 = Withdraw | 2 = Transfer
     /// </summary>
-    public EnTransactionType TransactionType { get; internal set; }
+    public EnTransactionType TransactionType { get; set; }
 
-    public decimal Amount { get; internal set; }
+    public decimal Amount { get; set; }
 
-    public string? Notes { get; internal set; }
+    public string? Notes { get; set; }
 
-    public DateOnly CreatedAt { get; internal set; }
+    public DateOnly CreatedAt { get; set; }
 
-    public int CreatedByUserId { get; internal set; }
+    public int CreatedByUserId { get; set; }
 }

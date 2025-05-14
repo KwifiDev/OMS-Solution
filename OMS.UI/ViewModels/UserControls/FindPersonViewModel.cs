@@ -1,7 +1,6 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using OMS.BL.IServices.Tables;
+using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.ShowMassage;
@@ -26,7 +25,7 @@ namespace OMS.UI.ViewModels.UserControls
         public event EventHandler<PersonFoundEventArgs>? PersonFound;
 
         private readonly IPersonService _personService;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
         private readonly IMessageService _messageService;
 
         private string? _personId;
@@ -37,11 +36,10 @@ namespace OMS.UI.ViewModels.UserControls
         [ObservableProperty]
         private SearchStatus _status;
 
-        public FindPersonViewModel(IPersonService personService, IMapper mapper, IMessageService messageService,
-                                   IStatusService statusService)
+        public FindPersonViewModel(IPersonService personService, IMessageService messageService, IStatusService statusService)
         {
             _personService = personService;
-            _mapper = mapper;
+            //_mapper = mapper;
             _messageService = messageService;
 
             Status = statusService.CreateSearchStatus();
@@ -68,15 +66,15 @@ namespace OMS.UI.ViewModels.UserControls
                 return;
             }
 
-            var personDto = await _personService.GetByIdAsync(id);
+            var personModel = await _personService.GetByIdAsync(id);
 
-            if (personDto == null)
+            if (personModel == null)
             {
                 _messageService.ShowErrorMessage("خطأ بحث", MessageTemplates.SearchErrorMessage);
                 return;
             }
 
-            Person = _mapper.Map<PersonModel>(personDto);
+            Person = personModel;
             Status.IsModifiable = false;
             OnPersonFound();
         }

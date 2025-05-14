@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using OMS.BL.Models.Tables;
-using OMS.BL.IServices.Tables;
-using OMS.Common.Enums;
+﻿using OMS.Common.Enums;
+using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement.Service;
@@ -11,14 +9,14 @@ using System.Collections.ObjectModel;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
-    public partial class AddEditPersonViewModel : AddEditBaseViewModel<Models.PersonModel, BL.Models.Tables.PersonModel, IPersonService>
+    public partial class AddEditPersonViewModel : AddEditBaseViewModel<PersonModel, IPersonService>
     {
         private readonly IUserSessionService _userSessionService;
 
 
-        public AddEditPersonViewModel(IPersonService personService, IMapper mapper, IMessageService messageService,
+        public AddEditPersonViewModel(IPersonService personService, IMessageService messageService,
                                       IWindowService windowService, IStatusService statusService, IUserSessionService userSessionService)
-                                      : base(personService, mapper, messageService, windowService, statusService)
+                                      : base(personService, messageService, windowService, statusService)
         {
             Genders = [new("ذكر", EnGender.Male), new("انثى", EnGender.Female)];
             _userSessionService = userSessionService;
@@ -28,17 +26,17 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         public ObservableCollection<GenderOption> Genders { get; }
 
 
-        protected override async Task<BL.Models.Tables.PersonModel?> GetByIdAsync(int personId)
+        protected override async Task<PersonModel?> GetByIdAsync(int personId)
             => await _service.GetByIdAsync(personId);
 
         protected override string GetEntityName()
             => "شخص";
 
-        protected override async Task<bool> SaveDataAsync(bool isAdding, BL.Models.Tables.PersonModel personDto)
-            => isAdding ? await _service.AddAsync(personDto) : await _service.UpdateAsync(personDto);
+        protected override async Task<bool> SaveDataAsync(bool isAdding, PersonModel personModel)
+            => isAdding ? await _service.AddAsync(personModel) : await _service.UpdateAsync(personModel.PersonId, personModel);
 
-        protected override void UpdateModelAfterSave(BL.Models.Tables.PersonModel personDto)
-            => Model.PersonId = personDto.PersonId;
+        //protected override void UpdateModelAfterSave(BL.Models.Tables.PersonModel personModel)
+        //    => Model.PersonId = personModel.PersonId;
 
         protected override void SendMessage()
         {

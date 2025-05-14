@@ -1,8 +1,7 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using OMS.BL.IServices.Tables;
+using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
@@ -21,7 +20,7 @@ namespace OMS.UI.ViewModels.Windows
         private readonly INavigationService _navigationService;
         private readonly IWindowService _windowService;
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
         private readonly IUserSessionService _userSessionService;
         private readonly IDialogService _dialogService;
         private readonly IMessageService _messageService;
@@ -29,20 +28,20 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private UserLoginModel? _currentUser;
 
-        public MainWindowViewModel(INavigationService navigationService, IWindowService windowService, IUserService userService, IMapper mapper,
+        public MainWindowViewModel(INavigationService navigationService, IWindowService windowService, IUserService userService,
                                    IUserSessionService userSessionService, IDialogService dialogService, IMessageService messageService)
         {
             _navigationService = navigationService;
             _windowService = windowService;
             _userService = userService;
-            _mapper = mapper;
+            //_mapper = mapper;
             _userSessionService = userSessionService;
             _dialogService = dialogService;
             _messageService = messageService;
 
             CurrentUser = _userSessionService.CurrentUser;
 
-            WeakReferenceMessenger.Default.Register<UserLoginModel>(this, (r, user) => CurrentUser = user );
+            WeakReferenceMessenger.Default.Register<UserLoginModel>(this, (r, user) => CurrentUser = user);
         }
 
         [RelayCommand]

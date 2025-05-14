@@ -23,6 +23,87 @@ namespace OMS.API.Controllers
         {
         }
 
+
+
+        /// <summary>
+        /// Retrieves a specific entity by its ID.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /api/clients/personid/123
+        /// </remarks>
+        /// <param name="personId">The person ID of the entity to retrieve (must be positive integer)</param>
+        /// <returns>The requested client Dto</returns>
+        /// <response code="200">Returns the requested entity</response>
+        /// <response code="404">If entity was not found</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpGet("personid/{personId:int}")]
+        [ActionName("GetByPersonId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ClientDto>> GetByPersonIdAsync([FromRoute] int personId)
+        {
+            if (personId <= 0) return NotFound();
+
+            try
+            {
+                var model = await _service.GetByPersonIdAsync(personId);
+                return model is null
+                    ? NotFound()
+                    : Ok(_mapper.Map<ClientDto>(model));
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error retrieving client",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+        /// <summary>
+        /// Retrieves a specific entity by its ID.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /api/clients/personid/123
+        /// </remarks>
+        /// <param name="personId">The person ID of the entity to retrieve (must be positive integer)</param>
+        /// <returns>The requested client Id</returns>
+        /// <response code="200">Returns the requested entity</response>
+        /// <response code="404">If entity was not found</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpGet("getid/personid/{personId:int}")]
+        [ActionName("GetIdByPersonId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> GetIdByPersonIdAsync([FromRoute] int personId)
+        {
+            if (personId <= 0) return NotFound();
+
+            try
+            {
+                int clientId = await _service.GetIdByPersonIdAsync(personId);
+                return clientId is -1 ? NotFound() : Ok(clientId);
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error retrieving clientId",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+
+
+
+
+
         /// <summary>
         /// Gets the unique identifier from the ClientModel.
         /// </summary>

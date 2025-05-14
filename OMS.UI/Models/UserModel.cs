@@ -14,7 +14,7 @@ namespace OMS.UI.Models
         private bool _isActive;
 
 
-
+        [Key]
         public int UserId
         {
             get => _userId;

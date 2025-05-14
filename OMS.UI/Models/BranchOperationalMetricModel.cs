@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models
 {
@@ -9,7 +10,7 @@ namespace OMS.UI.Models
         private string _address = null!;
         private int? _totalEmployees;
 
-
+        [Key]
         public int BranchId
         {
             get => _branchId;

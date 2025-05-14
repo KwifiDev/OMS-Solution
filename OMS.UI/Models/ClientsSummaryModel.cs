@@ -1,7 +1,10 @@
-﻿namespace OMS.UI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OMS.UI.Models
 {
     public class ClientsSummaryModel
     {
+        [Key]
         public int ClientId { get; set; }
 
         public int? AccountId { get; set; }

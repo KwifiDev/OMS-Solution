@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Tables;
+using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
 
@@ -22,6 +23,45 @@ namespace OMS.API.Controllers
             : base(branchService, mapper)
         {
         }
+
+
+
+        /// <summary>
+        /// Retrieves all branches option.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /api/branches/option
+        ///     
+        /// Returns all available branches option in the system.
+        /// </remarks>
+        /// <returns>List of all branches option</returns>
+        /// <response code="200">Returns the complete list of branches option</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpGet("option")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<BranchOptionDto>>> GetAllBranchesOptionAsync()
+        {
+            try
+            {
+                var models = await _service.GetAllBranchesOption();
+                return Ok(_mapper.Map<IEnumerable<BranchOptionDto>>(models));
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error retrieving branches option",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
+            }
+        }
+
+
+
+
+
 
         /// <summary>
         /// Gets the unique identifier from the BranchModel.

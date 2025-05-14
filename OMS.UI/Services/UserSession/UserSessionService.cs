@@ -1,7 +1,6 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
-using OMS.BL.IServices.Tables;
+using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models;
 
 namespace OMS.UI.Services.UserSession
@@ -9,7 +8,7 @@ namespace OMS.UI.Services.UserSession
     public partial class UserSessionService : ObservableObject, IUserSessionService
     {
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
 
         [ObservableProperty]
         private bool _isLoggedIn;
@@ -18,10 +17,10 @@ namespace OMS.UI.Services.UserSession
         private UserLoginModel? _currentUser;
 
 
-        public UserSessionService(IUserService userService, IMapper mapper)
+        public UserSessionService(IUserService userService)
         {
             _userService = userService;
-            _mapper = mapper;
+            //_mapper = mapper;
         }
 
         public void Login(UserLoginModel user)
@@ -38,9 +37,9 @@ namespace OMS.UI.Services.UserSession
 
         public async Task UpdateModel()
         {
-            var userLoginDto = await _userService.GetUserLoginByPersonIdAsync(CurrentUser!.PersonId);
+            var userLoginModel = await _userService.GetUserLoginByPersonIdAsync(CurrentUser!.PersonId);
 
-            var userLoginModel = _mapper.Map<UserLoginModel>(userLoginDto);
+            //var userLoginModel = _mapper.Map<UserLoginModel>(userLoginModel);
 
             CurrentUser = userLoginModel ?? CurrentUser;
 

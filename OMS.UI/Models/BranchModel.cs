@@ -8,6 +8,7 @@ namespace OMS.UI.Models
         private string _name = null!;
         private string _address = null!;
 
+        [Key]
         public int BranchId
         {
             get => _branchId;

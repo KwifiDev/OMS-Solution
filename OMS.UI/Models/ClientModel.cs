@@ -1,4 +1,5 @@
 ﻿using OMS.Common.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models
 {
@@ -9,6 +10,7 @@ namespace OMS.UI.Models
         private int _personId;
         private EnClientType _clientType;
 
+        [Key]
         public int ClientId
         {
             get => _clientId;

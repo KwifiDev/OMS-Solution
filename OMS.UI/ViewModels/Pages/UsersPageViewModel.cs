@@ -1,6 +1,5 @@
-﻿using AutoMapper;
-using OMS.BL.IServices.Tables;
-using OMS.BL.IServices.Views;
+﻿using OMS.UI.APIs.Services.Interfaces.Tables;
+using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
@@ -14,8 +13,9 @@ namespace OMS.UI.ViewModels.Pages
     {
         private readonly IUserSessionService _userSessionService;
 
-        public UsersPageViewModel(IUserService userService, IUserDetailService userDetailService, IMapper mapper,
-                                  IDialogService dialogService, IMessageService messageService, IUserSessionService userSessionService) : base(userService, userDetailService, mapper, dialogService, messageService)
+        public UsersPageViewModel(IUserService userService, IUserDetailService userDetailService, IDialogService dialogService,
+                                  IMessageService messageService, IUserSessionService userSessionService) :
+                                  base(userService, userDetailService, dialogService, messageService)
         {
             _userSessionService = userSessionService;
         }
@@ -29,7 +29,7 @@ namespace OMS.UI.ViewModels.Pages
         protected override async Task LoadData()
         {
             var usersData = await _displayService.GetAllAsync();
-            Items = new(_mapper.Map<IEnumerable<UserDetailModel>>(usersData));
+            Items = new(usersData);
         }
 
         protected override Task ShowDetailsWindow(int itemId)
@@ -43,8 +43,7 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override async Task<UserDetailModel> ConvertToModel(UserModel messageModel)
         {
-            var userDto = await _displayService.GetByIdAsync(messageModel.UserId);
-            return _mapper.Map<UserDetailModel>(userDto);
+            return (await _displayService.GetByIdAsync(messageModel.UserId))!;
         }
 
         protected override async Task DeleteItem()

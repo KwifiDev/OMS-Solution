@@ -1,4 +1,6 @@
-﻿namespace OMS.UI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OMS.UI.Models
 {
     public class AccountModel : BaseModel
     {
@@ -8,6 +10,7 @@
         private decimal _balance;
 
 
+        [Key]
         public int AccountId
         {
             get => _accountId;

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using OMS.UI.Models.Validations;
@@ -13,13 +12,13 @@ using OMS.UI.Services.Windows;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
-    public abstract partial class AddEditBaseViewModel<TModel, TDto, TService> : ObservableObject, IDialogInitializer<int?>
+    public abstract partial class AddEditBaseViewModel<TModel, TService> : ObservableObject, IDialogInitializer<int?>
         where TModel : class, new()
-        where TDto : class
+        //where TDto : class
         where TService : class
     {
         protected readonly TService _service;
-        protected readonly IMapper _mapper;
+        //protected readonly IMapper _mapper;
         protected readonly IMessageService _messageService;
         protected readonly IWindowService _windowService;
 
@@ -29,11 +28,11 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         [ObservableProperty]
         protected AddEditStatus _status;
 
-        public AddEditBaseViewModel(TService service, IMapper mapper, IMessageService messageService,
+        public AddEditBaseViewModel(TService service, IMessageService messageService,
                                     IWindowService windowService, IStatusService statusService)
         {
             _service = service;
-            _mapper = mapper;
+            //_mapper = mapper;
             _messageService = messageService;
             _windowService = windowService;
 
@@ -67,14 +66,14 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
                 return false;
             }
 
-            var dto = await GetByIdAsync((int)id);
-            if (dto == null)
+            var model = await GetByIdAsync((int)id);
+            if (model == null)
             {
                 ShowSearchError();
                 return false;
             }
 
-            SetEditMode(dto);
+            SetEditMode(model);
 
             return true;
         }
@@ -85,10 +84,10 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             Model = new TModel();
         }
 
-        protected virtual void SetEditMode(TDto dto)
+        protected virtual void SetEditMode(TModel model)
         {
             Status.SelectMode = AddEditStatus.EnMode.Edit;
-            Model = _mapper.Map<TModel>(dto);
+            Model = model;
         }
 
 
@@ -97,10 +96,10 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         {
             if (!ValidateModel()) return;
 
-            var dto = MapToDto();
+            //var model = MapToDto();
             var isAdding = Status.SelectMode == AddEditStatus.EnMode.Add;
 
-            bool isSuccess = await SaveDataAsync(isAdding, dto);
+            bool isSuccess = await SaveDataAsync(isAdding, Model);
 
             if (!isSuccess)
             {
@@ -108,7 +107,8 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
                 return;
             }
 
-            UpdateModelAfterSave(dto);
+
+            //UpdateModelAfterSave(Model);
             UpdateStatusAndNotify(isAdding);
         }
 
@@ -122,8 +122,8 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             return true;
         }
 
-        protected virtual TDto MapToDto() =>
-            _mapper.Map<TDto>(Model);
+        //protected virtual TDto MapToDto() =>
+        //    _mapper.Map<TDto>(Model);
 
         protected virtual void UpdateStatusAndNotify(bool isAdding)
         {
@@ -155,9 +155,9 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         #region Common Abstract Methods
         // This Methods will be implemented in Derived class
-        protected abstract Task<TDto?> GetByIdAsync(int id);
-        protected abstract Task<bool> SaveDataAsync(bool isAdding, TDto dto);
-        protected abstract void UpdateModelAfterSave(TDto dto);
+        protected abstract Task<TModel?> GetByIdAsync(int id);
+        protected abstract Task<bool> SaveDataAsync(bool isAdding, TModel model);
+        //protected abstract void UpdateModelAfterSave(TModel model);
         protected abstract string GetEntityName();
         #endregion
 

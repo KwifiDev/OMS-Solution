@@ -1,6 +1,5 @@
-﻿using AutoMapper;
-using OMS.BL.IServices.Tables;
-using OMS.BL.IServices.Views;
+﻿using OMS.UI.APIs.Services.Interfaces.Tables;
+using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ShowMassage;
@@ -10,8 +9,8 @@ namespace OMS.UI.ViewModels.Pages
 {
     public partial class PeoplePageViewModel : BasePageViewModel<IPersonService, IPersonDetailService, PersonDetailModel, PersonModel>
     {
-        public PeoplePageViewModel(IPersonService personService, IPersonDetailService personDetailService, IMapper mapper, IDialogService dialogService,
-                                   IMessageService messageService) : base(personService, personDetailService, mapper, dialogService, messageService)
+        public PeoplePageViewModel(IPersonService personService, IPersonDetailService personDetailService, IDialogService dialogService,
+                                   IMessageService messageService) : base(personService, personDetailService, dialogService, messageService)
         {
         }
 
@@ -24,7 +23,7 @@ namespace OMS.UI.ViewModels.Pages
         protected override async Task LoadData()
         {
             var peopleData = await _displayService.GetAllAsync();
-            Items = new(_mapper.Map<IEnumerable<PersonDetailModel>>(peopleData));
+            Items = new(peopleData);
         }
 
         protected override async Task ShowDetailsWindow(int itemId)
@@ -35,8 +34,7 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override async Task<PersonDetailModel> ConvertToModel(PersonModel messageModel)
         {
-            var personDto = await _displayService.GetByIdAsync(messageModel.PersonId);
-            return _mapper.Map<PersonDetailModel>(personDto);
+            return (await _displayService.GetByIdAsync(messageModel.PersonId))!;
         }
     }
 }

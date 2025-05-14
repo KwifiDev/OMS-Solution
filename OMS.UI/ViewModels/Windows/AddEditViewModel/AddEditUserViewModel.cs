@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
-using OMS.BL.Models.Tables;
-using OMS.BL.IServices.Tables;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.ShowMassage;
@@ -15,7 +13,7 @@ using static OMS.UI.ViewModels.UserControls.FindPersonViewModel;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
-    public partial class AddEditUserViewModel : AddEditBaseViewModel<Models.UserModel, BL.Models.Tables.UserModel, IUserService>
+    public partial class AddEditUserViewModel : AddEditBaseViewModel<UserModel, IUserService>
     {
         private readonly IBranchService _branchService;
         private readonly IUserSessionService _userSessionService;
@@ -26,9 +24,9 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         [ObservableProperty]
         private ObservableCollection<BranchOption> _branches = null!;
 
-        public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMapper mapper, IMessageService messageService,
+        public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMessageService messageService,
                                     IFindPersonViewModel findPersonViewModel, IWindowService windowService, IStatusService statusService,
-                                    IUserSessionService userSessionService) : base(userService, mapper, messageService, windowService, statusService)
+                                    IUserSessionService userSessionService) : base(userService, messageService, windowService, statusService)
         {
             _branchService = branchService;
             _userSessionService = userSessionService;
@@ -48,7 +46,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             await EnterEditModeAsync(userId);
         }
 
-        protected override async Task<BL.Models.Tables.UserModel?> GetByIdAsync(int id)
+        protected override async Task<UserModel?> GetByIdAsync(int id)
             => await _service.GetByIdAsync(id);
 
         protected override async Task<bool> EnterEditModeAsync(int? id)
@@ -70,13 +68,13 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         protected override string GetEntityName()
             => "موظف";
 
-        protected override async Task<bool> SaveDataAsync(bool isAdding, BL.Models.Tables.UserModel userDto)
+        protected override async Task<bool> SaveDataAsync(bool isAdding, UserModel userModel)
             => isAdding
-                ? await _service.AddAsync(userDto)
-                : await _service.UpdateAsync(userDto);
+                ? await _service.AddAsync(userModel)
+                : await _service.UpdateAsync(userModel.UserId, userModel);
 
-        protected override void UpdateModelAfterSave(BL.Models.Tables.UserModel userDto)
-            => Model.UserId = userDto.UserId;
+        //protected override void UpdateModelAfterSave(UserModel userModel)
+        //    => Model.UserId = userModel.UserId;
 
         protected override bool ValidateModel()
         {
@@ -95,9 +93,8 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         private async void InitializeBranches()
         {
-            var branchOptionDto = await _branchService.GetAllBranchesOption();
-            var branchOption = _mapper.Map<IEnumerable<BranchOption>>(branchOptionDto);
-            Branches = new ObservableCollection<BranchOption>(branchOption);
+            var branchOption = await _branchService.GetAllBranchesOption();
+            Branches = new ObservableCollection<BranchOption>(branchOption!);
         }
 
         private void LoadAssociatedPerson()

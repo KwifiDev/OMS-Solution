@@ -5,15 +5,15 @@ namespace OMS.API.Dtos.Tables;
 public partial class PaymentDto
 {
     [Key]
-    public int PaymentId { get; internal set; }
+    public int PaymentId { get; set; }
 
-    public int AccountId { get; internal set; }
+    public int AccountId { get; set; }
 
-    public decimal Amount { get; internal set; }
+    public decimal Amount { get; set; }
 
-    public string? Notes { get; internal set; }
+    public string? Notes { get; set; }
 
-    public DateOnly CreatedAt { get; internal set; }
+    public DateOnly CreatedAt { get; set; }
 
-    public int CreatedByUserId { get; internal set; }
+    public int CreatedByUserId { get; set; }
 }

@@ -5,7 +5,7 @@ namespace OMS.API.Dtos.Tables;
 public partial class RevenueDto
 {
     [Key]
-    public int RevenueId { get; internal set; }
+    public int RevenueId { get; set; }
 
     public required decimal Amount { get; set; }
 

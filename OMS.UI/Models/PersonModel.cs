@@ -11,6 +11,7 @@ namespace OMS.UI.Models
         private EnGender _gender;
         private string? _phone;
 
+        [Key]
         public int PersonId
         {
             get => _personId;

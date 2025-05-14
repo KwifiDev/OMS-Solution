@@ -1,4 +1,6 @@
-﻿namespace OMS.UI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OMS.UI.Models
 {
     public class UserAccountModel : BaseModel
     {
@@ -9,6 +11,7 @@
         private string _clientType = null!;
         private string _clientBalance = null!;
 
+        [Key]
         public int AccountId
         {
             get => _accountId;

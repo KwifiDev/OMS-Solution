@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OMS.Common.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models
 {
@@ -10,6 +11,7 @@ namespace OMS.UI.Models
         private string _phone = null!;
         private EnGender _gender;
 
+        [Key]
         public int PersonId
         {
             get => _personId;

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using OMS.API.Dtos.Hybrid;
+using OMS.API.Dtos.StoredProcedureParams;
 using OMS.API.Dtos.Tables;
 using OMS.API.Dtos.Views;
 using OMS.BL.Models.Hybrid;
+using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
 using OMS.BL.Models.Views;
 
@@ -13,6 +15,8 @@ namespace OMS.API.Mapping
         public APIMappingProfile()
         {
             CreateMap<AccountModel, AccountDto>().ReverseMap();
+
+            CreateMap<AccountTransactionDto, AccountTransactionModel>().ReverseMap();
 
             CreateMap<BranchModel, BranchDto>().ReverseMap();
 
@@ -72,7 +76,7 @@ namespace OMS.API.Mapping
 
             CreateMap<UserDetailModel, UserDetailDto>().ReverseMap();
 
-            CreateMap<UserLoginModel, UserLoginDto>().ReverseMap();
+            CreateMap<UserLoginModel, ResponseLoginDto>().ReverseMap();
 
         }
     }

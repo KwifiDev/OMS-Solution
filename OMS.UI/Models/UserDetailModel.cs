@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models
 {
@@ -11,6 +12,7 @@ namespace OMS.UI.Models
         private string? _isActive;
         private string _workingBranch = null!;
 
+        [Key]
         public int UserId
         {
             get => _userId;

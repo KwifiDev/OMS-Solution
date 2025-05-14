@@ -38,9 +38,9 @@ namespace OMS.BL.Services.Tables
             return entity == null ? default(TModel) : _mapperService.Map<TEntity, TModel>(entity);
         }
 
-        public Task<bool> IsExistAsync(int id)
+        public virtual async Task<bool> IsExistAsync(int id)
         {
-            return _repository.IsExistAsync(id);
+            return await _repository.IsExistAsync(id);
         }
 
         public virtual async Task<bool> AddAsync(TModel model)

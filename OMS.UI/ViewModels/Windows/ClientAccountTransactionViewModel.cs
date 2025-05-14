@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using OMS.BL.Models.StoredProcedureParams;
-using OMS.BL.IServices.Tables;
-using OMS.BL.IServices.Views;
+using OMS.UI.APIs.Services.Interfaces.Tables;
+using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Models.Records;
 using OMS.UI.Resources.Strings;
@@ -21,7 +19,7 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IAccountService _accountService;
         private readonly IUserAccountService _userAccountService;
         private readonly IUserSessionService _userSessionService;
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
         private readonly IMessageService _messageService;
         private readonly IWindowService _windowService;
 
@@ -35,13 +33,13 @@ namespace OMS.UI.ViewModels.Windows
         private TransactionStatus _transactionStatus;
 
         public ClientAccountTransactionViewModel(IAccountService accountService, IUserAccountService userAccountService,
-                                                 IUserSessionService userSessionService, IMapper mapper, IMessageService messageService,
+                                                 IUserSessionService userSessionService, IMessageService messageService,
                                                  IWindowService windowService, IStatusService statusService)
         {
             _accountService = accountService;
             _userAccountService = userAccountService;
             _userSessionService = userSessionService;
-            _mapper = mapper;
+            //_mapper = mapper;
             _messageService = messageService;
             _windowService = windowService;
 
@@ -88,14 +86,14 @@ namespace OMS.UI.ViewModels.Windows
                 return false;
             }
 
-            var userAccountDto = await _userAccountService.GetByIdAsync((int)accountId);
-            if (userAccountDto == null)
+            var userAccountModel = await _userAccountService.GetByIdAsync((int)accountId);
+            if (userAccountModel == null)
             {
                 ShowSearchError();
                 return false;
             }
 
-            UserAccount = _mapper.Map<UserAccountModel>(userAccountDto);
+            UserAccount = userAccountModel;
 
             return true;
         }
@@ -110,9 +108,9 @@ namespace OMS.UI.ViewModels.Windows
 
             if (!ValidateModel()) return;
 
-            var dto = _mapper.Map<BL.Models.StoredProcedureParams.AccountTransactionModel>(AccountTransaction);
+            //var model = _mapper.Map<AccountTransactionModel>(AccountTransaction);
 
-            bool isSuccess = await SaveDataAsync(dto);
+            bool isSuccess = await SaveDataAsync(AccountTransaction);
 
             if (!isSuccess)
             {
@@ -122,7 +120,7 @@ namespace OMS.UI.ViewModels.Windows
 
             UpdateStatusAndNotify();
 
-            await LoadClientAccountAsync(dto.AccountId);
+            await LoadClientAccountAsync(AccountTransaction.AccountId);
         }
 
         private bool ValidateModel()
@@ -166,20 +164,20 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private void Close() => _windowService.Close();
 
-        private async Task<bool> SaveDataAsync(BL.Models.StoredProcedureParams.AccountTransactionModel dto)
+        private async Task<bool> SaveDataAsync(AccountTransactionModel model)
         {
             bool isSuccess = false;
             switch (TransactionStatus.SelectMode)
             {
 
                 case TransactionStatus.EnMode.Deposit:
-                    isSuccess = await _accountService.DepositIntoAccountAsync(dto);
-                    AccountTransaction.TransactionStatus = dto.TransactionStatus;
+                    isSuccess = await _accountService.DepositIntoAccountAsync(model);
+                    AccountTransaction.TransactionStatus = model.TransactionStatus;
                     break;
 
                 case TransactionStatus.EnMode.Withdraw:
-                    isSuccess = await _accountService.WithdrawFromAccountAsync(dto);
-                    AccountTransaction.TransactionStatus = dto.TransactionStatus;
+                    isSuccess = await _accountService.WithdrawFromAccountAsync(model);
+                    AccountTransaction.TransactionStatus = model.TransactionStatus;
                     break;
 
                 case TransactionStatus.EnMode.Transfer:
@@ -201,6 +199,7 @@ namespace OMS.UI.ViewModels.Windows
 
             _messageService.ShowInfoMessage($"إجراء {(isDeposit ? "إيداع" : "سحب")} {"حساب العميل"}", messageType);
         }
+
         private void ShowInitializationError(Exception ex) =>
             _messageService.ShowErrorMessage("خطأ في التهيئة", ex.Message);
 

@@ -6,7 +6,7 @@ namespace OMS.API.Dtos.Tables;
 public partial class DebtDto
 {
     [Key]
-    public int DebtId { get; internal set; }
+    public int DebtId { get; set; }
 
     public required int ClientId { get; set; }
 
@@ -26,7 +26,7 @@ public partial class DebtDto
 
     public string? Notes { get; set; }
 
-    public DateOnly CreatedAt { get; internal set; }
+    public DateOnly CreatedAt { get; set; }
 
     /// <summary>
     /// 0 = NotPaid | 1 = Paid | 2 = Canceled

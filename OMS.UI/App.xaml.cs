@@ -1,19 +1,13 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OMS.BL.IServices.Tables;
-using OMS.BL.IServices.Views;
-using OMS.BL.Mapping;
-using OMS.BL.Services.Tables;
-using OMS.BL.Services.Views;
-using OMS.DA.Context;
-using OMS.DA.IRepositories.IEntityRepos;
-using OMS.DA.IRepositories.IViewRepos;
-using OMS.DA.Repositories.EntityRepos;
-using OMS.DA.Repositories.ViewRepos;
+using OMS.UI.APIs.Services.Generices;
+using OMS.UI.APIs.Services.Interfaces.Tables;
+using OMS.UI.APIs.Services.Interfaces.Views;
+using OMS.UI.APIs.Services.Tables;
+using OMS.UI.APIs.Services.Views;
 using OMS.UI.Mapping;
 using OMS.UI.Services.Authentication;
 using OMS.UI.Services.Dialog;
@@ -54,7 +48,8 @@ namespace OMS.UI
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    RegisterDbContext(services, context.Configuration);
+                    RegisterApiServices(services);
+                    //RegisterDbContext(services, context.Configuration);
                     RegisterServices(services);
                     RegisterMapper(services);
                     RegisterViewModels(services);
@@ -65,45 +60,56 @@ namespace OMS.UI
                     Ioc.Default.ConfigureServices(services.BuildServiceProvider());
                 });
 
-        private static void RegisterDbContext(IServiceCollection services, IConfiguration configuration)
+        private static void RegisterApiServices(IServiceCollection services)
         {
-            string? connectionString = configuration.GetConnectionString("DbConnection");
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
+            services.AddHttpClient("ApiClient", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7012/");
+            });
+            services.AddTransient(typeof(IGenericViewApiService<,>), typeof(GenericViewApiService<,>));
+            services.AddTransient(typeof(IGenericApiService<,>), typeof(GenericApiService<,>));
         }
+
+
+        //private static void RegisterDbContext(IServiceCollection services, IConfiguration configuration)
+        //{
+        //    string? connectionString = configuration.GetConnectionString("DbConnection");
+        //    services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
+        //}
 
         private static void RegisterServices(IServiceCollection services)
         {
-            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddTransient(typeof(IGenericViewRepository<>), typeof(GenericViewRepository<>));
+            //services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            //services.AddTransient(typeof(IGenericViewRepository<>), typeof(GenericViewRepository<>));
 
-            services.AddTransient<IPersonRepository, PersonRepository>();
+            //services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IPersonService, PersonService>();
 
-            services.AddTransient<IBranchRepository, BranchRepository>();
+            //services.AddTransient<IBranchRepository, BranchRepository>();
             services.AddTransient<IBranchService, BranchService>();
 
-            services.AddTransient<IUserRepository, UserRepository>();
+            //services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
 
-            services.AddTransient<IUserDetailRepository, UserDetailRepository>();
+            //services.AddTransient<IUserDetailRepository, UserDetailRepository>();
             services.AddTransient<IUserDetailService, UserDetailService>();
 
-            services.AddTransient<IPersonDetailRepository, PersonDetailRepository>();
+            //services.AddTransient<IPersonDetailRepository, PersonDetailRepository>();
             services.AddTransient<IPersonDetailService, PersonDetailService>();
 
-            services.AddTransient<IBranchOperationalMetricRepository, BranchOperationalMetricRepository>();
+            //services.AddTransient<IBranchOperationalMetricRepository, BranchOperationalMetricRepository>();
             services.AddTransient<IBranchOperationalMetricService, BranchOperationalMetricService>();
 
-            services.AddTransient<IClientRepository, ClientRepository>();
+            //services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IClientService, ClientService>();
 
-            services.AddTransient<IClientsSummaryRepository, ClientsSummaryRepository>();
+            //services.AddTransient<IClientsSummaryRepository, ClientsSummaryRepository>();
             services.AddTransient<IClientsSummaryService, ClientsSummaryService>();
 
-            services.AddTransient<IAccountRepository, AccountRepository>();
+            //services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IAccountService, AccountService>();
 
-            services.AddTransient<IUserAccountRepository, UserAccountRepository>();
+            //services.AddTransient<IUserAccountRepository, UserAccountRepository>();
             services.AddTransient<IUserAccountService, UserAccountService>();
 
         }
@@ -112,12 +118,12 @@ namespace OMS.UI
         {
             var mapperConfig = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new BLMappingProfile());
+                //mc.AddProfile(new BLMappingProfile());
                 mc.AddProfile(new UIMappingProfile());
             });
             var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-            services.AddSingleton<IMapperService, MapperService>();
+            //services.AddSingleton<IMapperService, MapperService>();
         }
 
         private static void RegisterViewModels(IServiceCollection services)
@@ -214,29 +220,30 @@ namespace OMS.UI
             services.AddTransient<IAuthenticationService, AuthenticationService>();
         }
 
-        private async Task TryConnectToDBAsync()
-        {
-            try
-            {
-                using var scope = Ioc.Default.CreateScope();
-                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                if (!await dbContext.Database.CanConnectAsync())
-                {
-                    MessageBox.Show("Failed to connect to the database.", "Database Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    Shutdown();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred while trying to connect to the database: {ex.Message}", "Database Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Shutdown();
-            }
-        }
+
+        //private async Task TryConnectToDBAsync()
+        //{
+        //    try
+        //    {
+        //        using var scope = Ioc.Default.CreateScope();
+        //        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        //        if (!await dbContext.Database.CanConnectAsync())
+        //        {
+        //            MessageBox.Show("Failed to connect to the database.", "Database Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //            Shutdown();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"An error occurred while trying to connect to the database: {ex.Message}", "Database Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        Shutdown();
+        //    }
+        //}
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             await _host.StartAsync();
-            await TryConnectToDBAsync();
+            //await TryConnectToDBAsync();
 
             var loginWindow = Ioc.Default.GetRequiredService<LoginWindow>();
             loginWindow.Show();
