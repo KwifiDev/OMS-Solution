@@ -23,18 +23,10 @@ namespace OMS.API.Controllers
         {
         }
 
-        /// <summary>
-        /// Retrieves all BranchesOperationalMetric from the service.
-        /// </summary>
-        /// <returns>A collection of BranchOperationalMetric Model instances.</returns>
+        #region override abstract Methods
         protected override async Task<IEnumerable<BranchOperationalMetricModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
-
-        /// <summary>
-        /// Retrieves a specific BranchOperationalMetric by their ID.
-        /// </summary>
-        /// <param name="id">The ID of the BranchOperationalMetric to retrieve.</param>
-        /// <returns>The requested BranchOperationalMetric Model or null if not found.</returns>
         protected override async Task<BranchOperationalMetricModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
+        #endregion
     }
 }
 

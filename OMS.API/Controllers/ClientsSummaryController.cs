@@ -23,18 +23,10 @@ namespace OMS.API.Controllers
         {
         }
 
-        /// <summary>
-        /// Retrieves all clients summary from the service.
-        /// </summary>
-        /// <returns>A collection of ClientsSummaryModel instances.</returns>
+        #region override abstract Methods
         protected override async Task<IEnumerable<ClientsSummaryModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
-
-        /// <summary>
-        /// Retrieves a specific clients summary by their ID.
-        /// </summary>
-        /// <param name="id">The ID of the clients summary to retrieve.</param>
-        /// <returns>The requested ClientsSummaryModel or null if not found.</returns>
         protected override async Task<ClientsSummaryModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
+        #endregion
     }
 }
 

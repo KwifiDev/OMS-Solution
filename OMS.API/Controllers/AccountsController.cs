@@ -5,11 +5,12 @@ using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
+using OMS.Common.Enums;
 
 namespace OMS.API.Controllers
 {
     /// <summary>
-    /// API controller for managing people data.
+    /// API controller for managing accounts.
     /// </summary>
     [Route("api/accounts")]
     [ApiController]
@@ -20,39 +21,44 @@ namespace OMS.API.Controllers
         /// </summary>
         /// <param name="accountService">The account service for business logic operations.</param>
         /// <param name="mapper">The AutoMapper instance for object mapping.</param>
-        public AccountsController(IAccountService accountService, IMapper mapper)
-            : base(accountService, mapper)
+        public AccountsController(IAccountService accountService, IMapper mapper) : base(accountService, mapper)
         {
         }
 
-
         /// <summary>
-        /// Retrieves a specific Account by client ID.
+        /// Retrieves an account using the provided client ID.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/account/clientid/123
+        /// **Sample request:**
+        /// ```
+        /// GET /api/accounts/by-client/123
+        /// ```
         /// </remarks>
-        /// <param name="id">The Client Id of the account to retrieve</param>
-        /// <returns>The requested account</returns>
-        /// <response code="200">Returns the requested account</response>
-        /// <response code="404">If account was not found</response>
-        /// <response code="500">If there was an internal server error</response>
-        [HttpGet("clientid/{clientId:int}")]
-        [ActionName("GetByClientId")]
+        /// <param name="clientId">The ID of the client whose account information is requested.</param>
+        /// <returns>Returns account details if found, otherwise an error message.</returns>
+        /// <response code="200">Returns the requested account details.</response>
+        /// <response code="400">If the client ID provided is invalid.</response>
+        /// <response code="404">If no account is found with the given client ID.</response>
+        /// <response code="500">If an internal server error occurs.</response>
+        [HttpGet("by-client/{clientId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<AccountDto>> GetByClientIdAsync([FromRoute] int clientId)
         {
-            if (clientId <= 0) return NotFound();
+            if (clientId <= 0)
+                return BadRequest(new ProblemDetails
+                {
+                    Title = "Invalid Client ID",
+                    Detail = "Client ID must be a positive integer.",
+                    Status = StatusCodes.Status400BadRequest
+                });
 
             try
             {
                 var model = await _service.GetByClientIdAsync(clientId);
-                return model is null
-                    ? NotFound()
-                    : Ok(_mapper.Map<AccountDto>(model));
+                return model is null ? NotFound() : Ok(_mapper.Map<AccountDto>(model));
             }
             catch (Exception ex)
             {
@@ -64,164 +70,88 @@ namespace OMS.API.Controllers
         }
 
         /// <summary>
-        /// make a deposit transaction to an account.
+        /// Executes a transaction (Deposit, Withdraw, Transfer) on an account.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     POST /api/accounts/deposit
+        /// **Sample request:**
+        /// ```
+        /// POST /api/accounts/transactions
+        /// Content-Type: application/json
+        ///
+        /// {
+        ///   "accountId": 98765,
+        ///   "amount": 150.75,
+        ///   "transactionType": "Deposit"
+        /// }
+        /// ```
         /// </remarks>
-        /// <param name="dto">The DTO containing data for the transaction</param>
-        /// <returns>The created entity with generated ID</returns>
-        /// <response code="201">Returns the transaction status for the account</response>
-        /// <response code="400">If the request is invalid or validation fails</response>
-        /// <response code="500">If there was an internal server error</response>
-        [HttpPost("deposit")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        /// <param name="dto">The data transfer object containing transaction details.</param>
+        /// <returns>Returns the status of the transaction.</returns>
+        /// <response code="200">Returns the transaction result if successful.</response>
+        /// <response code="400">If the request is invalid (missing account ID, invalid amount, etc.).</response>
+        /// <response code="500">If an internal server error occurs.</response>
+        [HttpPost("transactions")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<AccountTransactionDto>> DepositIntoAccountAsync([FromBody] AccountTransactionDto dto)
+        public async Task<ActionResult<AccountTransactionDto>> StartTransactionAsync([FromBody] AccountTransactionDto dto)
         {
+
+            if (dto.AccountId <= 0 || dto.Amount <= 0)
+                return BadRequest(new ProblemDetails
+                {
+                    Title = "Invalid Data",
+                    Detail = "Account ID & Amount & transaction Type must be greater than zero.",
+                    Status = StatusCodes.Status400BadRequest
+                });
+
+            if (dto.TransactionType == EnTransactionType.Empty)
+                return BadRequest(new ProblemDetails
+                {
+                    Title = "Invalid Transaction Type",
+                    Detail = $"Transaction type '{dto.TransactionType}' is not valid. Use 'Deposit', 'Withdraw' or 'Transfer'.",
+                    Status = StatusCodes.Status400BadRequest
+                });
+
             try
             {
                 var model = _mapper.Map<AccountTransactionModel>(dto);
-                var isSuccess = await _service.DepositIntoAccountAsync(model);
 
-                if (!isSuccess)
+                bool isSuccess = await _service.StartTransactionAsync(model);
+
+                if (isSuccess)
                 {
-                    return ValidationProblem(new ValidationProblemDetails
-                    {
-                        Title = "Validation Error",
-                        Detail = "Failed to make a transaction in the database",
-                        Errors = { { "General", new[] { "Failed to make a transaction to account in the database" } } }
-                    });
+                    dto.TransactionStatus = model.TransactionStatus;
+                    return Ok(dto);
                 }
 
-                dto.TransactionStatus = model.TransactionStatus;
-
-                return Ok(dto);
+                return BadRequest(new ProblemDetails
+                {
+                    Title = "Transaction Failed",
+                    Detail = "Unable to process the transaction.",
+                    Status = StatusCodes.Status400BadRequest
+                });
             }
             catch (Exception ex)
             {
                 return Problem(
-                    title: "Error Deposit Into Account",
+                    title: "Server Error",
                     detail: ex.Message,
-                    statusCode: StatusCodes.Status500InternalServerError,
-                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
+                    statusCode: StatusCodes.Status500InternalServerError);
             }
         }
 
 
-
-        /// <summary>
-        /// make a withdraw transaction to an account.
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///     POST /api/accounts/withdraw
-        /// </remarks>
-        /// <param name="dto">The DTO containing data for the transaction</param>
-        /// <returns>The created entity with generated ID</returns>
-        /// <response code="201">Returns the transaction status for the account</response>
-        /// <response code="400">If the request is invalid or validation fails</response>
-        /// <response code="500">If there was an internal server error</response>
-        [HttpPost("withdraw")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<AccountTransactionDto>> WithdrawIntoAccountAsync([FromBody] AccountTransactionDto dto)
-        {
-            try
-            {
-                var model = _mapper.Map<AccountTransactionModel>(dto);
-                var isSuccess = await _service.WithdrawFromAccountAsync(model);
-
-                if (!isSuccess)
-                {
-                    return ValidationProblem(new ValidationProblemDetails
-                    {
-                        Title = "Validation Error",
-                        Detail = "Failed to make a transaction in the database",
-                        Errors = { { "General", new[] { "Failed to make a transaction to account in the database" } } }
-                    });
-                }
-
-                dto.TransactionStatus = model.TransactionStatus;
-
-                return Ok(dto);
-            }
-            catch (Exception ex)
-            {
-                return Problem(
-                    title: "Error Withdraw From Account",
-                    detail: ex.Message,
-                    statusCode: StatusCodes.Status500InternalServerError,
-                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
-            }
-        }
-
-
-        /// <summary>
-        /// Gets the unique identifier from the AccountModel.
-        /// </summary>
-        /// <param name="model">The AccountModel instance.</param>
-        /// <returns>The account's identifier.</returns>
+        #region override abstract Methods
         protected override int GetModelId(AccountModel model) => model.AccountId;
-
-        /// <summary>
-        /// Sets the identifier in the AccountDto.
-        /// </summary>
-        /// <param name="dto">The AccountDto instance.</param>
-        /// <param name="id">The identifier to set.</param>
         protected override void SetDtoId(AccountDto dto, int id) => dto.AccountId = id;
-
-        /// <summary>
-        /// Retrieves all people from the service.
-        /// </summary>
-        /// <returns>A collection of AccountModel instances.</returns>
         protected override async Task<IEnumerable<AccountModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
-
-        /// <summary>
-        /// Retrieves a specific account by their ID.
-        /// </summary>
-        /// <param name="id">The ID of the account to retrieve.</param>
-        /// <returns>The requested AccountModel or null if not found.</returns>
         protected override async Task<AccountModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
-
-        /// <summary>
-        /// Adds a new account to the database.
-        /// </summary>
-        /// <param name="model">The AccountModel to add.</param>
-        /// <returns>True if the operation succeeded, otherwise false.</returns>
         protected override async Task<bool> AddModelAsync(AccountModel model) => await _service.AddAsync(model);
-
-        /// <summary>
-        /// Updates an existing account in the database.
-        /// </summary>
-        /// <param name="model">The AccountModel with updated data.</param>
-        /// <returns>True if the operation succeeded, otherwise false.</returns>
         protected override async Task<bool> UpdateModelAsync(AccountModel model) => await _service.UpdateAsync(model);
-
-        /// <summary>
-        /// Deletes a account from the database.
-        /// </summary>
-        /// <param name="id">The ID of the account to delete.</param>
-        /// <returns>True if the operation succeeded, otherwise false.</returns>
         protected override async Task<bool> DeleteModelAsync(int id) => await _service.DeleteAsync(id);
-
-        /// <summary>
-        /// Verifies that the ID matches the account ID in the DTO.
-        /// </summary>
-        /// <param name="id">The ID to verify.</param>
-        /// <param name="dto">The AccountDto containing the account ID.</param>
-        /// <returns>True if the IDs match, otherwise false.</returns>
         protected override bool IsIdentifierIdentical(int id, AccountDto dto) => id == dto.AccountId;
-
-        /// <summary>
-        /// Check a account from the database.
-        /// </summary>
-        /// <param name="id">The ID of the account to check if is exist.</param>
-        /// <returns>True if the account exist, otherwise false.</returns>
         protected override async Task<bool> IsModelExistAsync(int id) => await _service.IsExistAsync(id);
+        #endregion
     }
 }
-

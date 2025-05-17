@@ -9,6 +9,7 @@ namespace OMS.UI.Models
         private decimal _amount;
         private string? _notes;
         private int _createdByUserId;
+        private EnTransactionType _transactionType;
         private EnAccountTransactionStatus _transactionStatus = EnAccountTransactionStatus.Empty;
 
         [Key]
@@ -34,6 +35,11 @@ namespace OMS.UI.Models
         {
             get => _createdByUserId;
             set => SetProperty(ref _createdByUserId, value);
+        }
+        public EnTransactionType TransactionType
+        {
+            get => _transactionType;
+            set => SetProperty(ref _transactionType, value);
         }
         public EnAccountTransactionStatus TransactionStatus
         {

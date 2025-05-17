@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OMS.Common.Enums;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
@@ -19,12 +20,11 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IAccountService _accountService;
         private readonly IUserAccountService _userAccountService;
         private readonly IUserSessionService _userSessionService;
-        //private readonly IMapper _mapper;
         private readonly IMessageService _messageService;
         private readonly IWindowService _windowService;
 
         [ObservableProperty]
-        private Models.AccountTransactionModel _accountTransaction = null!;
+        private AccountTransactionModel _accountTransaction = null!;
 
         [ObservableProperty]
         private UserAccountModel _userAccount = null!;
@@ -39,7 +39,6 @@ namespace OMS.UI.ViewModels.Windows
             _accountService = accountService;
             _userAccountService = userAccountService;
             _userSessionService = userSessionService;
-            //_mapper = mapper;
             _messageService = messageService;
             _windowService = windowService;
 
@@ -61,10 +60,11 @@ namespace OMS.UI.ViewModels.Windows
                 {
                     if (isSuccess)
                     {
-                        AccountTransaction = new Models.AccountTransactionModel
+                        AccountTransaction = new AccountTransactionModel
                         {
                             AccountId = (int)transaction.AccountId,
-                            CreatedByUserId = _userSessionService.CurrentUser!.UserId
+                            CreatedByUserId = _userSessionService.CurrentUser!.UserId,
+                            TransactionType = (EnTransactionType)transaction.Mode
                         };
                     }
                 }
@@ -166,27 +166,7 @@ namespace OMS.UI.ViewModels.Windows
 
         private async Task<bool> SaveDataAsync(AccountTransactionModel model)
         {
-            bool isSuccess = false;
-            switch (TransactionStatus.SelectMode)
-            {
-
-                case TransactionStatus.EnMode.Deposit:
-                    isSuccess = await _accountService.DepositIntoAccountAsync(model);
-                    AccountTransaction.TransactionStatus = model.TransactionStatus;
-                    break;
-
-                case TransactionStatus.EnMode.Withdraw:
-                    isSuccess = await _accountService.WithdrawFromAccountAsync(model);
-                    AccountTransaction.TransactionStatus = model.TransactionStatus;
-                    break;
-
-                case TransactionStatus.EnMode.Transfer:
-                    // not Implimented Yet
-                    break;
-
-            }
-
-            return isSuccess;
+            return await _accountService.StartTransactionAsync(model);
         }
 
 

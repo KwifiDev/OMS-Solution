@@ -20,7 +20,7 @@ namespace OMS.UI.APIs.Services.Tables
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_endpoint}/option");
+                var response = await _httpClient.GetAsync($"{_endpoint}/options");
 
                 if (!response.IsSuccessStatusCode)
                 {

@@ -23,18 +23,10 @@ namespace OMS.API.Controllers
         {
         }
 
-        /// <summary>
-        /// Retrieves all transactions from the service.
-        /// </summary>
-        /// <returns>A collection of TransactionModel instances.</returns>
+        #region override abstract Methods
         protected override async Task<IEnumerable<TransactionModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
-
-        /// <summary>
-        /// Retrieves a specific transaction by their ID.
-        /// </summary>
-        /// <param name="id">The ID of the transaction to retrieve.</param>
-        /// <returns>The requested TransactionModel or null if not found.</returns>
         protected override async Task<TransactionModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
+        #endregion
     }
 }
 

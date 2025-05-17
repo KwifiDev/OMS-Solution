@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OMS.BL\OMS.BL.csproj" />
+    <ProjectReference Include="..\OMS.Common\OMS.Common.csproj" />
   </ItemGroup>
 
 </Project>

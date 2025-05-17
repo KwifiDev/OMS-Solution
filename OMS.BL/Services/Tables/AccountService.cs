@@ -1,7 +1,7 @@
-﻿using OMS.BL.Models.StoredProcedureParams;
-using OMS.BL.Models.Tables;
-using OMS.BL.IServices.Tables;
+﻿using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
+using OMS.BL.Models.StoredProcedureParams;
+using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
@@ -26,7 +26,19 @@ namespace OMS.BL.Services.Tables
             return account != null ? _mapperService.Map<Account, AccountModel>(account) : null;
         }
 
-        public async Task<bool> DepositIntoAccountAsync(AccountTransactionModel model)
+
+        public async Task<bool> StartTransactionAsync(AccountTransactionModel model)
+        {
+            return model.TransactionType switch
+            {
+                EnTransactionType.Deposit => await DepositIntoAccountAsync(model),
+                EnTransactionType.Withdraw => await WithdrawFromAccountAsync(model),
+                EnTransactionType.Transfer => false,
+                _ => false,
+            };
+        }
+
+        private async Task<bool> DepositIntoAccountAsync(AccountTransactionModel model)
         {
             model.TransactionStatus = await _accountRepository.DepositAccountAsync
                (
@@ -39,7 +51,7 @@ namespace OMS.BL.Services.Tables
             return model.TransactionStatus == EnAccountTransactionStatus.Success;
         }
 
-        public async Task<bool> WithdrawFromAccountAsync(AccountTransactionModel model)
+        private async Task<bool> WithdrawFromAccountAsync(AccountTransactionModel model)
         {
             model.TransactionStatus = await _accountRepository.WithdrawAccountAsync
                 (

@@ -88,9 +88,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             return true;
         }
 
-        //protected override void UpdateModelAfterSave(BL.Models.Tables.ClientModel clientModel)
-        //    => Model.ClientId = clientModel.ClientId;
-
         protected override bool ValidateModel()
         {
             if (!base.ValidateModel()) return false;
@@ -165,11 +162,10 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private async Task SaveOrUpdateAccount(int clientId)
         {
             ClientAccount.ClientId = clientId;
-            //var accountModel = _mapper.Map<AccountModel>(ClientAccount);
 
             var success = ClientAccount.AccountId == 0
                 ? await _accountService.AddAsync(ClientAccount)
-                : await _accountService.UpdateAsync(ClientAccount.ClientId, ClientAccount);
+                : await _accountService.UpdateAsync(ClientAccount.AccountId, ClientAccount);
 
             if (!success) ShowAccountOperationError();
         }

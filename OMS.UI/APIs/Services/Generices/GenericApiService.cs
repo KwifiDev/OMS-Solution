@@ -98,7 +98,6 @@ namespace OMS.UI.APIs.Services.Generices
             }
         }
 
-
         private void SetNewPrimaryKey(TDto dto, TModel model)
         {
             try
@@ -121,9 +120,6 @@ namespace OMS.UI.APIs.Services.Generices
                 LogError(ex);
             }
         }
-
-        //protected abstract void SetNewPrimaryKey(TDto dto, TModel model);
-
 
     }
 }

@@ -57,17 +57,10 @@ namespace OMS.BL.IServices.Tables
         Task<bool> DeleteAsync(int accountId);
 
         /// <summary>
-        /// Deposits an amount into an account asynchronously.
+        /// make transaction to an account asynchronously.
         /// </summary>
         /// <param name="model">The account transaction model.</param>
-        /// <returns>True if the deposit was successful, otherwise false.</returns>
-        Task<bool> DepositIntoAccountAsync(AccountTransactionModel model);
-
-        /// <summary>
-        /// Withdraws an amount from an account asynchronously.
-        /// </summary>
-        /// <param name="model">The account transaction model.</param>
-        /// <returns>True if the withdrawal was successful, otherwise false.</returns>
-        Task<bool> WithdrawFromAccountAsync(AccountTransactionModel model);
+        /// <returns>True if the transaction was successful, otherwise false.</returns>
+        Task<bool> StartTransactionAsync(AccountTransactionModel model);
     }
 }

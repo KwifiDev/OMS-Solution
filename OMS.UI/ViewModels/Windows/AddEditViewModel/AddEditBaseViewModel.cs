@@ -14,11 +14,9 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
     public abstract partial class AddEditBaseViewModel<TModel, TService> : ObservableObject, IDialogInitializer<int?>
         where TModel : class, new()
-        //where TDto : class
         where TService : class
     {
         protected readonly TService _service;
-        //protected readonly IMapper _mapper;
         protected readonly IMessageService _messageService;
         protected readonly IWindowService _windowService;
 
@@ -32,7 +30,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
                                     IWindowService windowService, IStatusService statusService)
         {
             _service = service;
-            //_mapper = mapper;
             _messageService = messageService;
             _windowService = windowService;
 
@@ -121,9 +118,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             }
             return true;
         }
-
-        //protected virtual TDto MapToDto() =>
-        //    _mapper.Map<TDto>(Model);
 
         protected virtual void UpdateStatusAndNotify(bool isAdding)
         {

@@ -13,8 +13,6 @@ namespace OMS.UI.APIs.Services.Tables
 {
     public class AccountService : GenericApiService<AccountDto, AccountModel>, IAccountService
     {
-
-
         public AccountService(IHttpClientFactory httpClientFactory, IMapper mapper)
             : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Accounts)
         {
@@ -24,11 +22,11 @@ namespace OMS.UI.APIs.Services.Tables
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_endpoint}/clientid/{clientId}");
+                var response = await _httpClient.GetAsync($"{_endpoint}/by-client/{clientId}");
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    LogError(new Exception($"خطأ في جلب البيانات من الخادم للمعرف: {clientId}.\nStatus Code: {response.StatusCode}"));
+                    //LogError(new Exception($"خطأ في جلب البيانات من الخادم للمعرف: {clientId}.\nStatus Code: {response.StatusCode}"));
                     return null;
                 }
 
@@ -42,37 +40,12 @@ namespace OMS.UI.APIs.Services.Tables
             }
         }
 
-        public async Task<bool> DepositIntoAccountAsync(AccountTransactionModel model)
+        public async Task<bool> StartTransactionAsync(AccountTransactionModel model)
         {
             try
             {
                 var dto = _mapper.Map<AccountTransactionDto>(model);
-                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/deposit", dto);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}"));
-                    return false;
-                }
-
-                var accountTransactionDto = await response.Content.ReadFromJsonAsync<AccountTransactionDto>();
-                
-                return accountTransactionDto?.TransactionStatus == Common.Enums.EnAccountTransactionStatus.Success;
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                return false;
-            }
-
-        }
-
-        public async Task<bool> WithdrawFromAccountAsync(AccountTransactionModel model)
-        {
-            try
-            {
-                var dto = _mapper.Map<AccountTransactionDto>(model);
-                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/withdraw", dto);
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/transactions", dto);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -89,6 +62,7 @@ namespace OMS.UI.APIs.Services.Tables
                 LogError(ex);
                 return false;
             }
+
         }
 
     }

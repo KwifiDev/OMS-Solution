@@ -28,7 +28,7 @@ namespace OMS.UI.APIs.Services.Tables
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_endpoint}/personid/{personId}");
+                var response = await _httpClient.GetAsync($"{_endpoint}/by-person/{personId}");
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -53,7 +53,7 @@ namespace OMS.UI.APIs.Services.Tables
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_endpoint}/getid/personid/{personId}");
+                var response = await _httpClient.GetAsync($"{_endpoint}/{personId}/id");
 
                 if (!response.IsSuccessStatusCode)
                 {

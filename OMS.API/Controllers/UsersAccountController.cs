@@ -23,18 +23,10 @@ namespace OMS.API.Controllers
         {
         }
 
-        /// <summary>
-        /// Retrieves all UsersAccounts from the service.
-        /// </summary>
-        /// <returns>A collection of UserAccountModel instances.</returns>
+        #region override abstract Methods
         protected override async Task<IEnumerable<UserAccountModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
-
-        /// <summary>
-        /// Retrieves a specific UsersAccount by their ID.
-        /// </summary>
-        /// <param name="id">The ID of the UsersAccount to retrieve.</param>
-        /// <returns>The requested UserAccountModel or null if not found.</returns>
         protected override async Task<UserAccountModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
+        #endregion
     }
 }
 

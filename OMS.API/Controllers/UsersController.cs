@@ -63,19 +63,19 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Retrieves a specific entity by its ID.
+        /// Retrieves a specific login entity by person ID.
         /// </summary>
         /// <remarks>
         /// Sample request:
-        ///     GET /api/users/login/personid/123
+        ///     GET /api/users/123/login
+        ///     123 is the person ID
         /// </remarks>
-        /// <param name="personId">The ID of the entity to retrieve (must be positive integer)</param>
+        /// <param name="personId">The person ID of the entity to retrieve login info (must be positive integer)</param>
         /// <returns>The requested LoginDto</returns>
-        /// <response code="200">Returns the requested entity</response>
+        /// <response code="200">Returns the requested login info</response>
         /// <response code="404">If entity was not found</response>
         /// <response code="500">If there was an internal server error</response>
-        [HttpGet("login/personid/{personId:int}")]
-        [ActionName("GetUserLoginByPersonId")]
+        [HttpGet("{personId:int}/login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -101,19 +101,18 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Retrieves a specific entity by its ID.
+        /// Retrieves a specific User by person ID.
         /// </summary>
         /// <remarks>
         /// Sample request:
-        ///     GET /api/users/personid/123
+        ///     GET /api/users/123
         /// </remarks>
-        /// <param name="personId">The person ID of the entity to retrieve (must be positive integer)</param>
+        /// <param name="personId">The person ID of the entity to retrieve user dto (must be positive integer)</param>
         /// <returns>The requested userDto</returns>
-        /// <response code="200">Returns the requested entity</response>
+        /// <response code="200">Returns the requested user</response>
         /// <response code="404">If entity was not found</response>
         /// <response code="500">If there was an internal server error</response>
-        [HttpGet("personid/{personId:int}")]
-        [ActionName("GetByPersonId")]
+        [HttpGet("{personId:int}/personid")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -140,19 +139,18 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Retrieves a specific entity by its ID.
+        /// Retrieves a specific user ID by person ID.
         /// </summary>
         /// <remarks>
         /// Sample request:
-        ///     GET /api/users/personid/123
+        ///     GET /api/users/123/id
         /// </remarks>
-        /// <param name="personId">The person ID of the entity to retrieve (must be positive integer)</param>
+        /// <param name="personId">The person ID of the entity to retrieve user ID (must be positive integer)</param>
         /// <returns>The requested userId</returns>
-        /// <response code="200">Returns the requested entity</response>
+        /// <response code="200">Returns the requested user id</response>
         /// <response code="404">If entity was not found</response>
         /// <response code="500">If there was an internal server error</response>
-        [HttpGet("getid/personid/{personId:int}")]
-        [ActionName("GetIdByPersonId")]
+        [HttpGet("{personId:int}/id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -175,67 +173,16 @@ namespace OMS.API.Controllers
         }
 
 
-        /// <summary>
-        /// Gets the unique identifier from the UserModel.
-        /// </summary>
-        /// <param name="model">The UserModel instance.</param>
-        /// <returns>The user's identifier.</returns>
+        #region override abstract Methods
         protected override int GetModelId(UserModel model) => model.UserId;
-
-        /// <summary>
-        /// Sets the identifier in the UserDto.
-        /// </summary>
-        /// <param name="dto">The UserDto instance.</param>
-        /// <param name="id">The identifier to set.</param>
         protected override void SetDtoId(UserDto dto, int id) => dto.UserId = id;
-
-        /// <summary>
-        /// Retrieves all users from the service.
-        /// </summary>
-        /// <returns>A collection of UserModel instances.</returns>
         protected override async Task<IEnumerable<UserModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
-
-        /// <summary>
-        /// Retrieves a specific user by their ID.
-        /// </summary>
-        /// <param name="id">The ID of the user to retrieve.</param>
-        /// <returns>The requested UserModel or null if not found.</returns>
         protected override async Task<UserModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
-
-        /// <summary>
-        /// Adds a new user to the database.
-        /// </summary>
-        /// <param name="model">The UserModel to add.</param>
-        /// <returns>True if the operation succeeded, otherwise false.</returns>
         protected override async Task<bool> AddModelAsync(UserModel model) => await _service.AddAsync(model);
-
-        /// <summary>
-        /// Updates an existing user in the database.
-        /// </summary>
-        /// <param name="model">The UserModel with updated data.</param>
-        /// <returns>True if the operation succeeded, otherwise false.</returns>
         protected override async Task<bool> UpdateModelAsync(UserModel model) => await _service.UpdateAsync(model);
-
-        /// <summary>
-        /// Deletes a user from the database.
-        /// </summary>
-        /// <param name="id">The ID of the user to delete.</param>
-        /// <returns>True if the operation succeeded, otherwise false.</returns>
         protected override async Task<bool> DeleteModelAsync(int id) => await _service.DeleteAsync(id);
-
-        /// <summary>
-        /// Verifies that the ID matches the user ID in the DTO.
-        /// </summary>
-        /// <param name="id">The ID to verify.</param>
-        /// <param name="dto">The UserDto containing the user ID.</param>
-        /// <returns>True if the IDs match, otherwise false.</returns>
         protected override bool IsIdentifierIdentical(int id, UserDto dto) => id == dto.UserId;
-
-        /// <summary>
-        /// Check a user from the database.
-        /// </summary>
-        /// <param name="id">The ID of the user to check if is exist.</param>
-        /// <returns>True if the user exist, otherwise false.</returns>
         protected override async Task<bool> IsModelExistAsync(int id) => await _service.IsExistAsync(id);
+        #endregion
     }
 }

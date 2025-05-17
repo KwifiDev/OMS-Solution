@@ -23,18 +23,10 @@ namespace OMS.API.Controllers
         {
         }
 
-        /// <summary>
-        /// Retrieves all user details from the service.
-        /// </summary>
-        /// <returns>A collection of UserDetailModel instances.</returns>
+        #region override abstract Methods
         protected override async Task<IEnumerable<UserDetailModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
-
-        /// <summary>
-        /// Retrieves a specific user detail by their ID.
-        /// </summary>
-        /// <param name="id">The ID of the user detail to retrieve.</param>
-        /// <returns>The requested UserDetailModel or null if not found.</returns>
         protected override async Task<UserDetailModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
+        #endregion
     }
 }
 
