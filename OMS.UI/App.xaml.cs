@@ -24,6 +24,7 @@ using OMS.UI.ViewModels.Windows.AddEditViewModel;
 using OMS.UI.Views;
 using OMS.UI.Views.Pages;
 using OMS.UI.Views.Windows;
+using System.Net.Http;
 using System.Windows;
 
 namespace OMS.UI
@@ -49,7 +50,7 @@ namespace OMS.UI
                 .ConfigureServices((context, services) =>
                 {
                     RegisterApiServices(services);
-                    //RegisterDbContext(services, context.Configuration);
+                    RegisterDatabaseConnection(services, context.Configuration);
                     RegisterServices(services);
                     RegisterMapper(services);
                     RegisterViewModels(services);
@@ -70,48 +71,33 @@ namespace OMS.UI
             services.AddTransient(typeof(IGenericApiService<,>), typeof(GenericApiService<,>));
         }
 
-
-        //private static void RegisterDbContext(IServiceCollection services, IConfiguration configuration)
-        //{
-        //    string? connectionString = configuration.GetConnectionString("DbConnection");
-        //    services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
-        //}
+        private static void RegisterDatabaseConnection(IServiceCollection services, IConfiguration configuration)
+        {
+            string? connectionString = configuration.GetConnectionString("DbConnection");
+            // Here we will Send Database Con to ServerSide and Using (Multi-Tenant Database Design) and (Dynamic Connection Strings)
+        }
 
         private static void RegisterServices(IServiceCollection services)
         {
-            //services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            //services.AddTransient(typeof(IGenericViewRepository<>), typeof(GenericViewRepository<>));
-
-            //services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IPersonService, PersonService>();
 
-            //services.AddTransient<IBranchRepository, BranchRepository>();
             services.AddTransient<IBranchService, BranchService>();
 
-            //services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
 
-            //services.AddTransient<IUserDetailRepository, UserDetailRepository>();
             services.AddTransient<IUserDetailService, UserDetailService>();
 
-            //services.AddTransient<IPersonDetailRepository, PersonDetailRepository>();
             services.AddTransient<IPersonDetailService, PersonDetailService>();
 
-            //services.AddTransient<IBranchOperationalMetricRepository, BranchOperationalMetricRepository>();
             services.AddTransient<IBranchOperationalMetricService, BranchOperationalMetricService>();
 
-            //services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IClientService, ClientService>();
 
-            //services.AddTransient<IClientsSummaryRepository, ClientsSummaryRepository>();
             services.AddTransient<IClientsSummaryService, ClientsSummaryService>();
 
-            //services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IAccountService, AccountService>();
 
-            //services.AddTransient<IUserAccountRepository, UserAccountRepository>();
             services.AddTransient<IUserAccountService, UserAccountService>();
-
         }
 
         private static void RegisterMapper(IServiceCollection services)
@@ -220,30 +206,40 @@ namespace OMS.UI
             services.AddTransient<IAuthenticationService, AuthenticationService>();
         }
 
+        private async Task TryConnectToServerAsync()
+        {
+            try
+            {
+                var httpClientFactory = Ioc.Default.GetRequiredService<IHttpClientFactory>();
+                var httpClient = httpClientFactory.CreateClient("ApiClient");
 
-        //private async Task TryConnectToDBAsync()
-        //{
-        //    try
-        //    {
-        //        using var scope = Ioc.Default.CreateScope();
-        //        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        //        if (!await dbContext.Database.CanConnectAsync())
-        //        {
-        //            MessageBox.Show("Failed to connect to the database.", "Database Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //            Shutdown();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"An error occurred while trying to connect to the database: {ex.Message}", "Database Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        Shutdown();
-        //    }
-        //}
+                var response = await httpClient.GetAsync("api/healthcheck/status");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show($"Failed to connect to the server & database.\nStatus Code: {response.StatusCode}\nContent: {await response.Content.ReadAsStringAsync()}",
+                                    "Server & DB Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Shutdown();
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                MessageBox.Show($"Network error while connecting to the server: {httpEx.Message}",
+                                "Server Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unexpected error occurred: {ex.Message}",
+                                "Server Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown();
+            }
+        }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             await _host.StartAsync();
-            //await TryConnectToDBAsync();
+            await TryConnectToServerAsync();
 
             var loginWindow = Ioc.Default.GetRequiredService<LoginWindow>();
             loginWindow.Show();
