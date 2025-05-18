@@ -113,6 +113,7 @@ namespace OMS.UI.ViewModels.Windows
             if (!isSuccess)
             {
                 ShowTransactionError();
+                AccountTransaction.TransactionStatus = EnAccountTransactionStatus.Empty;
                 return;
             }
 

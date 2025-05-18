@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OMS.API.Dtos.StoredProcedureParams;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
-using OMS.Common.Enums;
 
 namespace OMS.API.Controllers
 {
@@ -92,27 +92,10 @@ namespace OMS.API.Controllers
         /// <response code="500">If an internal server error occurs.</response>
         [HttpPost("transactions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<AccountTransactionDto>> StartTransactionAsync([FromBody] AccountTransactionDto dto)
         {
-
-            if (dto.AccountId <= 0 || dto.Amount <= 0 || dto.Amount.ToString().Length > 6)
-                return BadRequest(new ProblemDetails
-                {
-                    Title = "Invalid Data",
-                    Detail = "Account ID & Amount & transaction Type must be greater than zero and Allow Amount Must Be Less than 7 Digits",
-                    Status = StatusCodes.Status400BadRequest
-                });
-
-            if (dto.TransactionType == EnTransactionType.Empty)
-                return BadRequest(new ProblemDetails
-                {
-                    Title = "Invalid Transaction Type",
-                    Detail = $"Transaction type '{dto.TransactionType}' is not valid. Use 'Deposit', 'Withdraw' or 'Transfer'.",
-                    Status = StatusCodes.Status400BadRequest
-                });
-
             try
             {
                 var model = _mapper.Map<AccountTransactionModel>(dto);

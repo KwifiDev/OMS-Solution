@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OMS.API.Dtos.Hybrid;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
@@ -37,16 +38,15 @@ namespace OMS.API.Controllers
         /// <response code="500">On internal server error</response>
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ResponseLoginDto>> GetByUsernameAndPasswordAsync([FromBody] RequestLoginDto loginDto)
         {
-            if (string.IsNullOrEmpty(loginDto.Username) || string.IsNullOrEmpty(loginDto.Password)) return NotFound();
-            
             try
             {
                 var model = await _service.GetByUsernameAndPasswordAsync(loginDto.Username, loginDto.Password);
-                
+
                 return model is null
                     ? NotFound()
                     : Ok(_mapper.Map<ResponseLoginDto>(model));
@@ -161,7 +161,7 @@ namespace OMS.API.Controllers
             try
             {
                 int userId = await _service.GetIdByPersonIdAsync(personId);
-                return userId is -1? NotFound() : Ok(userId);
+                return userId is -1 ? NotFound() : Ok(userId);
             }
             catch (Exception ex)
             {
