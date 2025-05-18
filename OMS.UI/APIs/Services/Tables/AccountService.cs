@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OMS.Common.Enums;
 using OMS.UI.APIs.Dtos.StoredProcedureParams;
 using OMS.UI.APIs.Dtos.Tables;
 using OMS.UI.APIs.EndPoints;
@@ -24,11 +25,8 @@ namespace OMS.UI.APIs.Services.Tables
             {
                 var response = await _httpClient.GetAsync($"{_endpoint}/by-client/{clientId}");
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    //LogError(new Exception($"خطأ في جلب البيانات من الخادم للمعرف: {clientId}.\nStatus Code: {response.StatusCode}"));
-                    return null;
-                }
+                if (!response.IsSuccessStatusCode) return null;
+
 
                 var dto = await response.Content.ReadFromJsonAsync<AccountDto>();
                 return dto != null ? _mapper.Map<AccountModel>(dto) : null;
@@ -47,15 +45,14 @@ namespace OMS.UI.APIs.Services.Tables
                 var dto = _mapper.Map<AccountTransactionDto>(model);
                 var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/transactions", dto);
 
-                if (!response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
-                    LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}"));
-                    return false;
+                    var accountTransactionDto = await response.Content.ReadFromJsonAsync<AccountTransactionDto>();
+                    return (model.TransactionStatus = accountTransactionDto!.TransactionStatus) == EnAccountTransactionStatus.Success;
                 }
 
-                var accountTransactionDto = await response.Content.ReadFromJsonAsync<AccountTransactionDto>();
-
-                return accountTransactionDto?.TransactionStatus == Common.Enums.EnAccountTransactionStatus.Success;
+                LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                return false;
             }
             catch (Exception ex)
             {

@@ -10,7 +10,6 @@ namespace OMS.UI.ViewModels.Windows
     public partial class PersonDetailsViewModel : ObservableObject, IDialogInitializer<int?>
     {
         private readonly IPersonService _personService;
-        //private readonly IMapper _mapper;
         private readonly IWindowService _windowService;
         [ObservableProperty]
         private PersonModel _person;
@@ -18,7 +17,6 @@ namespace OMS.UI.ViewModels.Windows
         public PersonDetailsViewModel(IPersonService personService, IWindowService windowService)
         {
             _personService = personService;
-            //_mapper = mapper;
             _windowService = windowService;
             _person = new PersonModel();
         }

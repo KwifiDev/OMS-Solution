@@ -74,7 +74,7 @@ namespace OMS.UI.APIs.Services.Generices
 
         protected void LogError(Exception ex)
         {
-            MessageBox.Show($"Error: {ex.Message}\nStackTrace: {ex.StackTrace}");
+            MessageBox.Show($"Error: {ex.Message}\nStackTrace: {ex.StackTrace}","Response Server", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

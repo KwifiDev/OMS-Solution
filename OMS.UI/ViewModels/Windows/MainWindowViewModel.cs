@@ -20,7 +20,6 @@ namespace OMS.UI.ViewModels.Windows
         private readonly INavigationService _navigationService;
         private readonly IWindowService _windowService;
         private readonly IUserService _userService;
-        //private readonly IMapper _mapper;
         private readonly IUserSessionService _userSessionService;
         private readonly IDialogService _dialogService;
         private readonly IMessageService _messageService;
@@ -34,7 +33,6 @@ namespace OMS.UI.ViewModels.Windows
             _navigationService = navigationService;
             _windowService = windowService;
             _userService = userService;
-            //_mapper = mapper;
             _userSessionService = userSessionService;
             _dialogService = dialogService;
             _messageService = messageService;

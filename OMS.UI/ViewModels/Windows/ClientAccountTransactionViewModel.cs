@@ -108,8 +108,6 @@ namespace OMS.UI.ViewModels.Windows
 
             if (!ValidateModel()) return;
 
-            //var model = _mapper.Map<AccountTransactionModel>(AccountTransaction);
-
             bool isSuccess = await SaveDataAsync(AccountTransaction);
 
             if (!isSuccess)
@@ -196,7 +194,7 @@ namespace OMS.UI.ViewModels.Windows
         {
             switch (AccountTransaction.TransactionStatus)
             {
-                case Common.Enums.EnAccountTransactionStatus.Failed:
+                case EnAccountTransactionStatus.Failed:
 
                     if (TransactionStatus.SelectMode == TransactionStatus.EnMode.Deposit)
                         _messageService.ShowErrorMessage("خطأ في عملية المناقلة",
@@ -204,7 +202,7 @@ namespace OMS.UI.ViewModels.Windows
                                                          MessageTemplates.DepositErrorMessage : MessageTemplates.WithdrawalErrorMessage);
                     break;
 
-                case Common.Enums.EnAccountTransactionStatus.InsufficientBalance:
+                case EnAccountTransactionStatus.InsufficientBalance:
 
                     _messageService.ShowErrorMessage("خطأ في عملية المناقلة", MessageTemplates.InsufficientBalanceErrorMessage);
 

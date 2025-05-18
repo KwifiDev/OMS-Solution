@@ -18,7 +18,6 @@ namespace OMS.UI.ViewModels.Pages
 
         protected readonly TService _service;
         protected readonly TDisplayService _displayService;
-        //protected readonly IMapper _mapper;
         protected readonly IDialogService _dialogService;
         protected readonly IMessageService _messageService;
 
@@ -32,7 +31,6 @@ namespace OMS.UI.ViewModels.Pages
         {
             _service = service;
             _displayService = displayService;
-            //_mapper = mapper;
             _dialogService = dialogService;
             _messageService = messageService;
 

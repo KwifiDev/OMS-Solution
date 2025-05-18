@@ -10,7 +10,6 @@ namespace OMS.UI.ViewModels.Windows
     public partial class ClientAccountDetailsViewModel : ObservableObject, IDialogInitializer<int?>
     {
         private readonly IUserAccountService _userAccountService;
-        //private readonly IMapper _mapper;
         private readonly IWindowService _windowService;
 
         [ObservableProperty]
@@ -19,7 +18,6 @@ namespace OMS.UI.ViewModels.Windows
         public ClientAccountDetailsViewModel(IUserAccountService userAccountService, IWindowService windowService)
         {
             _userAccountService = userAccountService;
-            //_mapper = mapper;
             _windowService = windowService;
             _userAccount = new UserAccountModel();
         }

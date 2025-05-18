@@ -25,7 +25,6 @@ namespace OMS.UI.ViewModels.UserControls
         public event EventHandler<PersonFoundEventArgs>? PersonFound;
 
         private readonly IPersonService _personService;
-        //private readonly IMapper _mapper;
         private readonly IMessageService _messageService;
 
         private string? _personId;
@@ -39,7 +38,6 @@ namespace OMS.UI.ViewModels.UserControls
         public FindPersonViewModel(IPersonService personService, IMessageService messageService, IStatusService statusService)
         {
             _personService = personService;
-            //_mapper = mapper;
             _messageService = messageService;
 
             Status = statusService.CreateSearchStatus();

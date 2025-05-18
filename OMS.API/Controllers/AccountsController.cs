@@ -97,11 +97,11 @@ namespace OMS.API.Controllers
         public async Task<ActionResult<AccountTransactionDto>> StartTransactionAsync([FromBody] AccountTransactionDto dto)
         {
 
-            if (dto.AccountId <= 0 || dto.Amount <= 0)
+            if (dto.AccountId <= 0 || dto.Amount <= 0 || dto.Amount.ToString().Length > 6)
                 return BadRequest(new ProblemDetails
                 {
                     Title = "Invalid Data",
-                    Detail = "Account ID & Amount & transaction Type must be greater than zero.",
+                    Detail = "Account ID & Amount & transaction Type must be greater than zero and Allow Amount Must Be Less than 7 Digits",
                     Status = StatusCodes.Status400BadRequest
                 });
 
@@ -118,19 +118,8 @@ namespace OMS.API.Controllers
                 var model = _mapper.Map<AccountTransactionModel>(dto);
 
                 bool isSuccess = await _service.StartTransactionAsync(model);
-
-                if (isSuccess)
-                {
-                    dto.TransactionStatus = model.TransactionStatus;
-                    return Ok(dto);
-                }
-
-                return BadRequest(new ProblemDetails
-                {
-                    Title = "Transaction Failed",
-                    Detail = "Unable to process the transaction.",
-                    Status = StatusCodes.Status400BadRequest
-                });
+                dto.TransactionStatus = model.TransactionStatus;
+                return Ok(dto);
             }
             catch (Exception ex)
             {
