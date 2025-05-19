@@ -4,7 +4,7 @@ public partial class TransactionsSummaryModel
 {
     public int TransactionId { get; set; }
 
-    public string UserAccount { get; set; } = null!;
+    public int AccountId { get; set; }
 
     public string TransactionType { get; set; } = null!;
 

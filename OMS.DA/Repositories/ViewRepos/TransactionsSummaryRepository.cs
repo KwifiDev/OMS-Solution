@@ -14,14 +14,22 @@ namespace OMS.DA.IRepositories.IViewRepos
             _transactionsSummaries = context.Set<TransactionsSummary>();
         }
 
-        /*
-                 public async Task<TransactionsSummary?> GetTransactionSummaryByIdAsync(int transactionId)
+
+        public async Task<IEnumerable<TransactionsSummary>> GetTransactionsByAccountIdAsync(int accountId)
         {
             return await _transactionsSummaries
                          .AsNoTracking()
-                         .Where(m => m.TransactionId == transactionId)
-                         .SingleOrDefaultAsync();
+                         .Where(e => e.AccountId == accountId)
+                         .Select(e => new TransactionsSummary
+                         {
+                             TransactionId = e.TransactionId,
+                             TransactionType = e.TransactionType,
+                             Amount = e.Amount,
+                             CreatedAt = e.CreatedAt,
+                             Notes = e.Notes
+                         }).OrderByDescending(e => e.CreatedAt)
+                         .ToListAsync();
         }
-         */
+
     }
 }

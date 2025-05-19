@@ -70,7 +70,8 @@ namespace OMS.API.Mapping
 
             CreateMap<TransactionsByTypeModel, TransactionsByTypeDto>().ReverseMap();
 
-            CreateMap<TransactionsSummaryModel, TransactionsSummaryDto>().ReverseMap();
+            CreateMap<TransactionsSummaryModel, TransactionsSummaryDto>()
+                .ForSourceMember(src => src.AccountId, opt => opt.DoNotValidate()).ReverseMap();
 
             CreateMap<UserAccountModel, UserAccountDto>().ReverseMap();
 

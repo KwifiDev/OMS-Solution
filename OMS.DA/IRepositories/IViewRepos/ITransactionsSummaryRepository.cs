@@ -16,5 +16,12 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// <param name="transactionId">The ID of the transaction.</param>
         /// <returns>The TransactionsSummary if found; otherwise, null.</returns>
         Task<TransactionsSummary?> GetByIdAsync(int transactionId);
+
+        /// <summary>
+        /// Retrieves all TransactionsSummary by Account Id.
+        /// </summary>
+        /// <param name="accountId">The ID of the account.</param>
+        /// <returns>The task result contains the collection of TransactionsSummary by Account Id.</returns>
+        Task<IEnumerable<TransactionsSummary>> GetTransactionsByAccountIdAsync(int accountId);
     }
 }

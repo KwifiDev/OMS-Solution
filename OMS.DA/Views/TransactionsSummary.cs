@@ -10,8 +10,7 @@ public partial class TransactionsSummary
     [Id]
     public int TransactionId { get; set; }
 
-    [StringLength(20)]
-    public string UserAccount { get; set; } = null!;
+    public int AccountId { get; set; }
 
     [StringLength(8)]
     [Unicode(false)]

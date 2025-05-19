@@ -7,7 +7,7 @@ namespace OMS.BL.Services.Views
     public class GenericViewService<TEntity, TModel> : IGenericViewService<TModel> where TEntity : class
     {
         private readonly IGenericViewRepository<TEntity> _repository;
-        private readonly IMapperService _mapper;
+        protected readonly IMapperService _mapper;
 
         public GenericViewService(IGenericViewRepository<TEntity> repository, IMapperService mapper)
         {
