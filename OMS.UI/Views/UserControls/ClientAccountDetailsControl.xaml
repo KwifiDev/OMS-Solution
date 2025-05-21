@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:OMS.UI.Views.UserControls"
+             xmlns:local="clr-namespace:OMS.UI.Views.UserControls" 
+             xmlns:usercontrols="clr-namespace:OMS.UI.ViewModels.UserControls" 
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="600"
+             d:DesignHeight="300" d:DesignWidth="600"
              FlowDirection="RightToLeft"
              FontFamily="LBC">
 
@@ -100,6 +101,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
 
             </Grid.RowDefinitions>
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -157,6 +159,18 @@
 
 
             </StackPanel>
+
+            <Button Grid.Row="4"
+                    Background="SteelBlue"
+                    BorderThickness="1"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Margin="10,0,10,0"
+                    BorderBrush="Black"
+                    Command="{Binding ShowAccountTransactionsCommand}"
+                    CommandParameter="{Binding UserAccount.AccountId}"
+                    Content="عرض سجل المناقلات"/>
+
         </Grid>
     </Grid>
 

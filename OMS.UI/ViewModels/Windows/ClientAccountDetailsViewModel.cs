@@ -4,6 +4,7 @@ using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Windows;
+using OMS.UI.Views.Windows;
 
 namespace OMS.UI.ViewModels.Windows
 {
@@ -11,14 +12,16 @@ namespace OMS.UI.ViewModels.Windows
     {
         private readonly IUserAccountService _userAccountService;
         private readonly IWindowService _windowService;
+        private readonly IDialogService _dialogService;
 
         [ObservableProperty]
         private UserAccountModel _userAccount;
 
-        public ClientAccountDetailsViewModel(IUserAccountService userAccountService, IWindowService windowService)
+        public ClientAccountDetailsViewModel(IUserAccountService userAccountService, IWindowService windowService, IDialogService dialogService)
         {
             _userAccountService = userAccountService;
             _windowService = windowService;
+            _dialogService = dialogService;
             _userAccount = new UserAccountModel();
         }
 
@@ -32,6 +35,13 @@ namespace OMS.UI.ViewModels.Windows
 
             UserAccount = userAccountModel;
             return true;
+        }
+
+
+        [RelayCommand]
+        private async Task ShowAccountTransactions(int accountId)
+        {
+            await _dialogService.ShowDialog<AccountTransactionsWindow, int>(accountId);
         }
 
         [RelayCommand]

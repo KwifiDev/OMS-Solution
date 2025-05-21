@@ -23,6 +23,7 @@ using OMS.UI.ViewModels.Windows;
 using OMS.UI.ViewModels.Windows.AddEditViewModel;
 using OMS.UI.Views;
 using OMS.UI.Views.Pages;
+using OMS.UI.Views.UserControls;
 using OMS.UI.Views.Windows;
 using System.Net.Http;
 using System.Windows;
@@ -98,6 +99,8 @@ namespace OMS.UI
             services.AddTransient<IAccountService, AccountService>();
 
             services.AddTransient<IUserAccountService, UserAccountService>();
+
+            services.AddTransient<ITransactionsSummaryService, TransactionsSummaryService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)
@@ -141,6 +144,8 @@ namespace OMS.UI
             services.AddTransient<ClientAccountDetailsViewModel>();
 
             services.AddTransient<ClientAccountTransactionViewModel>();
+
+            services.AddTransient<AccountTransactionsViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -186,6 +191,10 @@ namespace OMS.UI
 
             services.AddTransient(provider =>
                 new ClientAccountTransactionWindow { DataContext = provider.GetRequiredService<ClientAccountTransactionViewModel>() });
+
+            services.AddTransient(provider =>
+                new AccountTransactionsWindow { DataContext = provider.GetRequiredService<AccountTransactionsViewModel>() });
+
 
         }
 

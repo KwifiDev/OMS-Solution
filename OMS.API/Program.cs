@@ -68,6 +68,9 @@ builder.Services.AddScoped<IUserAccountService, UserAccountService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 
+builder.Services.AddScoped<ITransactionsSummaryRepository, TransactionsSummaryRepository>();
+builder.Services.AddScoped<ITransactionsSummaryService, TransactionsSummaryService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

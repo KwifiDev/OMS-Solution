@@ -10,6 +10,7 @@
         public const string People = "api/people";
         public const string PeopleDetail = "api/peopledetail";
         public const string Transactions = "api/transactions";
+        public const string TransactionsSummary = "api/transactionssummary";
         public const string UsersAccount = "api/usersaccount";
         public const string Users = "api/users";
         public const string UsersDetail = "api/usersdetail";

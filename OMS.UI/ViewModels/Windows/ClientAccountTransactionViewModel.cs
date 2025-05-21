@@ -12,6 +12,7 @@ using OMS.UI.Services.StatusManagement;
 using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
+using OMS.UI.Views.Windows;
 
 namespace OMS.UI.ViewModels.Windows
 {
@@ -22,6 +23,8 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IUserSessionService _userSessionService;
         private readonly IMessageService _messageService;
         private readonly IWindowService _windowService;
+        private readonly IDialogService _dialogService;
+
 
         [ObservableProperty]
         private AccountTransactionModel _accountTransaction = null!;
@@ -34,13 +37,14 @@ namespace OMS.UI.ViewModels.Windows
 
         public ClientAccountTransactionViewModel(IAccountService accountService, IUserAccountService userAccountService,
                                                  IUserSessionService userSessionService, IMessageService messageService,
-                                                 IWindowService windowService, IStatusService statusService)
+                                                 IWindowService windowService, IStatusService statusService, IDialogService dialogService)
         {
             _accountService = accountService;
             _userAccountService = userAccountService;
             _userSessionService = userSessionService;
             _messageService = messageService;
             _windowService = windowService;
+            _dialogService = dialogService;
 
             TransactionStatus = statusService.CreateTransactionStatus();
         }
@@ -159,6 +163,13 @@ namespace OMS.UI.ViewModels.Windows
 
         private void SaveModelOnStatus() =>
             TransactionStatus.ModelObject = AccountTransaction;
+
+
+        [RelayCommand]
+        private async Task ShowAccountTransactions(int accountId)
+        {
+            await _dialogService.ShowDialog<AccountTransactionsWindow, int>(accountId);
+        }
 
         [RelayCommand]
         private void Close() => _windowService.Close();
