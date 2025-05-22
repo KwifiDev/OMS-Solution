@@ -23,6 +23,8 @@ namespace OMS.UI.Models
             set => SetProperty(ref _clientId, value);
         }
 
+        [Required(ErrorMessage = "حساب العميل مطلوب")]
+        [MinLength(3, ErrorMessage = "حساب العميل على الاقل مكون من 3 احرف")]
         public string UserAccount
         {
             get => _userAccount;

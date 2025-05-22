@@ -11,7 +11,7 @@
         xmlns:windowBehaviors="clr-namespace:OMS.UI.Behaviors.Windows" 
         d:DataContext="{d:DesignInstance Type=windows:ClientAccountDetailsViewModel}"
         mc:Ignorable="d"
-        Height="400" 
+        Height="430" 
         Width="600"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource MaterialDesignWindow}"

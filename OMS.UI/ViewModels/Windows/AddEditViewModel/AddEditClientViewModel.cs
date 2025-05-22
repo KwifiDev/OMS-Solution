@@ -69,6 +69,8 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         {
             if (!ValidatePersonSelection()) return;
 
+            if (HasCreateUserAccount && !ClientAccount.ArePropertiesValid()) return;
+
             var confirmation = ConfirmAccountDeletionIfNeeded();
             if (!confirmation) return;
 
