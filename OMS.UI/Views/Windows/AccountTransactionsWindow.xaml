@@ -112,17 +112,6 @@
                     <Setter Property="HorizontalAlignment" Value="Center" />
                     <Setter Property="VerticalAlignment" Value="Center" />
                     <Setter Property="Padding" Value="0" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="DataGridCell">
-                                <Grid>
-                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
                 </Style>
             </DataGrid.CellStyle>
 
@@ -135,10 +124,8 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="DataGridRow">
                                 <Border x:Name="DGR_Border"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                SnapsToDevicePixels="True">
+                                        Background="{TemplateBinding Background}"
+                                        SnapsToDevicePixels="True">
                                     <SelectiveScrollingGrid>
                                         <SelectiveScrollingGrid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
@@ -160,10 +147,15 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
+                    <Setter Property="IsHitTestVisible" Value="False"/>
+                    <Setter Property="Focusable" Value="False"/>
+                    <!-- إزالة تنسيق التحديد -->
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+                    </Style.Resources>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#2196F3"/>
-                            <Setter Property="BorderBrush" Value="#2196F3"/>
                             <Setter Property="Foreground" Value="SteelBlue"/>
                         </Trigger>
                     </Style.Triggers>
