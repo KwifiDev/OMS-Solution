@@ -13,15 +13,5 @@ namespace OMS.DA.Repositories.ViewRepos
         {
             _accountBalancesTransactions = context.Set<AccountBalancesTransaction>();
         }
-
-        /*
-                 public async Task<AccountBalancesTransaction?> GetAccountBalancesTransactionByIdAsync(int accountId)
-        {
-            return await _accountBalancesTransactions
-                        .AsNoTracking()
-                        .Where(m => m.AccountId == accountId)
-                        .SingleOrDefaultAsync();
-        }
-         */
     }
 }

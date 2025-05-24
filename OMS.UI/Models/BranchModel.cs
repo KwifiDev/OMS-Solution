@@ -28,7 +28,7 @@ namespace OMS.UI.Models
         }
 
         [Required(ErrorMessage = "عنوان الفرع مطلوب")]
-        [MinLength(10, ErrorMessage = "العناون على الاقل مكون من عشر احرف")]
+        [MinLength(15, ErrorMessage = "العناون على الاقل مكون من 15 حرف")]
         public string Address
         {
             get => _address;

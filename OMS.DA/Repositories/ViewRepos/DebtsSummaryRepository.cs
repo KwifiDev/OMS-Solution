@@ -14,16 +14,5 @@ namespace OMS.DA.IRepositories.IViewRepos
             _debtsSummaries = context.Set<DebtsSummary>();
         }
 
-
-
-        /*
-                 public async Task<DebtsSummary?> GetDebtSummaryByIdAsync(int debtId)
-        {
-            return await _debtsSummaries
-                        .AsNoTracking()
-                        .Where(m => m.DebtId == debtId)
-                        .SingleOrDefaultAsync();
-        }
-         */
     }
 }

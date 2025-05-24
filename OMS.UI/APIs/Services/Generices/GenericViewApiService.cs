@@ -30,7 +30,7 @@ namespace OMS.UI.APIs.Services.Generices
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    LogError(new Exception($"خطأ في جلب البيانات من الخادم.\nStatus Code: {response.StatusCode}"));
+                    LogError(new Exception($"خطأ في جلب البيانات من الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
                     return Enumerable.Empty<TModel>();
                 }
 
@@ -57,7 +57,7 @@ namespace OMS.UI.APIs.Services.Generices
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    LogError(new Exception($"خطأ في جلب البيانات من الخادم للمعرف: {id}.\nStatus Code: {response.StatusCode}"));
+                    LogError(new Exception($"خطأ في جلب البيانات من الخادم للمعرف: {id}.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
                     return null;
                 }
 

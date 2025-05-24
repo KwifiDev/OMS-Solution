@@ -14,14 +14,5 @@ namespace OMS.DA.IRepositories.IViewRepos
             _userDetails = context.Set<UserDetail>();
         }
 
-        /*
-                 public async Task<UserDetail?> GetUserDetailByIdAsync(int userId)
-        {
-            return await _userDetails
-                        .AsNoTracking()
-                        .Where(m => m.UserId == userId)
-                        .SingleOrDefaultAsync();
-        }
-         */
     }
 }

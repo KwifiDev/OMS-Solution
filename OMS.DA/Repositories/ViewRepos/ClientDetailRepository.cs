@@ -14,16 +14,5 @@ namespace OMS.DA.IRepositories.IViewRepos
             _clientDetails = context.Set<ClientDetail>();
         }
 
-
-        /*
-         
-        public async Task<ClientDetail?> GetClientDetailByIdAsync(int clientId)
-        {
-            return await _clientDetails
-                        .AsNoTracking()
-                        .Where(m => m.ClientId == clientId)
-                        .SingleOrDefaultAsync();
-        }
-         */
     }
 }

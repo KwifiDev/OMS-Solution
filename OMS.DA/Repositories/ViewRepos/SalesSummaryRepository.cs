@@ -14,15 +14,5 @@ namespace OMS.DA.IRepositories.IViewRepos
             _salesSummaries = context.Set<SalesSummary>();
         }
 
-
-        /*
-                 public async Task<SalesSummary?> GetSaleSummaryByIdAsync(int saleId)
-        {
-            return await _salesSummaries
-                        .AsNoTracking()
-                        .Where(m => m.SaleId == saleId)
-                        .SingleOrDefaultAsync();
-        }
-         */
     }
 }

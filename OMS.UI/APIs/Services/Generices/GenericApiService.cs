@@ -25,7 +25,7 @@ namespace OMS.UI.APIs.Services.Generices
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    LogError(new Exception($"خطأ في اضافة البيانات الى الخادم.\nStatus Code: {response.StatusCode}"));
+                    LogError(new Exception($"خطأ في اضافة البيانات الى الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
                     return false;
                 }
 
@@ -48,7 +48,7 @@ namespace OMS.UI.APIs.Services.Generices
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    LogError(new Exception($"خطأ في تحديث البيانات في الخادم.\nStatus Code: {response.StatusCode}"));
+                    LogError(new Exception($"خطأ في تحديث البيانات في الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
                     return false;
                 }
 
@@ -69,7 +69,7 @@ namespace OMS.UI.APIs.Services.Generices
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    LogError(new Exception($"Failed to delete item with ID {id}. Status Code: {response.StatusCode}"));
+                    LogError(new Exception($"Failed to delete item with ID {id}. Status Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
                     return false;
                 }
 

@@ -14,16 +14,5 @@ namespace OMS.DA.IRepositories.IViewRepos
             _discountsApplieds = context.Set<DiscountsApplied>();
         }
 
-
-
-        /*
-                 public async Task<DiscountsApplied?> GetDiscountAppliedByIdAsync(int discountId)
-        {
-            return await _discountsApplieds
-                        .AsNoTracking()
-                        .Where(m => m.DiscountId == discountId)
-                        .SingleOrDefaultAsync();
-        }
-         */
     }
 }

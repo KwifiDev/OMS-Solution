@@ -13,17 +13,5 @@ namespace OMS.DA.IRepositories.IViewRepos
         {
             _branchOperationalMetric = context.Set<BranchOperationalMetric>();
         }
-
-
-
-        /*
-                 public async Task<BranchOperationalMetric?> GetBranchOperationalMetricByIdAsync(int branchId)
-        {
-            return await _branchOperationalMetric
-                        .AsNoTracking()
-                        .Where(m => m.BranchId == branchId)
-                        .SingleOrDefaultAsync();
-        }
-         */
     }
 }

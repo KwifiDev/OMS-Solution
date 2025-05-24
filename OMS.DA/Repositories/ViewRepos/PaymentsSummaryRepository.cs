@@ -14,15 +14,5 @@ namespace OMS.DA.IRepositories.IViewRepos
             _paymentsSummaries = context.Set<PaymentsSummary>();
         }
 
-        /*
-         
-        public async Task<PaymentsSummary?> GetPaymentSummaryByIdAsync(int paymentId)
-        {
-            return await _paymentsSummaries
-                         .AsNoTracking()
-                        .Where(m => m.PaymentId == paymentId)
-                        .SingleOrDefaultAsync();
-        }
-         */
     }
 }
