@@ -3,6 +3,7 @@ using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Models.Records;
+using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
@@ -35,7 +36,7 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override Task ShowDetailsWindow(int itemId)
         {
-            _messageService.ShowInfoMessage("لم يتم اجراء", "لم يتم انشاء هذه الأضافة بعد");
+            _messageService.ShowInfoMessage("معلومات", MessageTemplates.NotImplementedMessage);
             return Task.CompletedTask;
         }
 

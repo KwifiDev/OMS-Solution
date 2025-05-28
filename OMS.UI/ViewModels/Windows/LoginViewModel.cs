@@ -18,6 +18,7 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IWindowService _windowService;
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserSessionService _userSessionService;
+        private bool _isLoading;
 
 
         [ObservableProperty]
@@ -33,6 +34,8 @@ namespace OMS.UI.ViewModels.Windows
         [NotifyDataErrorInfo]
         private string _password = string.Empty;
 
+        [ObservableProperty]
+        private string _loginButtonContent = "تسجيل الدخول";
 
         public LoginViewModel(IMessageService messageService, IWindowService windowService,
                               IAuthenticationService authenticationService, IUserSessionService userSessionService)
@@ -43,6 +46,17 @@ namespace OMS.UI.ViewModels.Windows
             _userSessionService = userSessionService;
         }
 
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                SetProperty(ref _isLoading, value);
+                LoginButtonContent = _isLoading ? "جاري التحقق..." : "تسجيل الدخول";
+            }
+        }
+
+
         [RelayCommand]
         private async Task Login()
         {
@@ -52,14 +66,18 @@ namespace OMS.UI.ViewModels.Windows
                 return;
             }
 
+            IsLoading = true;
+
             var user = await _authenticationService.AuthenticateAsync(Username, Password);
 
-            if (!ValidateUserAccount(user)) return;
+            if (!ValidateUserAccount(user)) { IsLoading = false; return; }
 
             _userSessionService.Login(user);
 
             _windowService.Hide();
             _windowService.Open<MainWindow>();
+
+            IsLoading = false;
         }
 
 

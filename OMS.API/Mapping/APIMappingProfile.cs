@@ -40,6 +40,8 @@ namespace OMS.API.Mapping
 
             CreateMap<ServiceModel, ServiceDto>().ReverseMap();
 
+            CreateMap<ServicesSummaryModel, ServicesSummaryDto>().ReverseMap();
+
             CreateMap<TransactionModel, TransactionDto>().ReverseMap();
 
             CreateMap<UserModel, UserDto>().ReverseMap();

@@ -63,6 +63,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Service> Services { get; set; }
 
+    public virtual DbSet<ServicesSummary> ServicesSummaries { get; set; }
+
     public virtual DbSet<Transaction> Transactions { get; set; }
 
     public virtual DbSet<TransactionsByType> TransactionsByTypes { get; set; }
@@ -81,7 +83,7 @@ public partial class AppDbContext : DbContext
         {
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=OMS;Trusted_Connection=True;");
         }
-    } 
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -132,6 +134,8 @@ public partial class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new SalesSummaryConfig());
 
         modelBuilder.ApplyConfiguration(new ServiceConfig());
+
+        modelBuilder.ApplyConfiguration(new ServicesSummaryConfig());
 
         modelBuilder.ApplyConfiguration(new TransactionConfig());
 

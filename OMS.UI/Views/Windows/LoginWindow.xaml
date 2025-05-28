@@ -10,6 +10,7 @@
         xmlns:behaviors="clr-namespace:OMS.UI.Behaviors.Windows"
         xmlns:controlsBehaviors="clr-namespace:OMS.UI.Behaviors.Controls"
         xmlns:inputBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
+        xmlns:converters="clr-namespace:OMS.UI.Converters"
         d:DataContext="{d:DesignInstance Type=ViewModels:LoginViewModel}"
         mc:Ignorable="d"
         Height="450" 
@@ -31,6 +32,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/LoginWindowStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <converters:InverseBooleanConverter x:Key="InverseBoolean"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -153,13 +155,14 @@
 
 
                     <Button Name="LoginButton" 
-                           Content="تسجيل الدخول" 
-                           Style="{StaticResource ModernButton}"
-                           Margin="0 15 0 10"
-                           FontWeight="SemiBold"
-                           IsDefault="True"
-                           TabIndex="3"
-                           Command="{Binding LoginCommand}"/>
+                            Content="{Binding LoginButtonContent, FallbackValue='تسجيل الدخول'}" 
+                            Style="{StaticResource ModernButton}"
+                            Margin="0 15 0 10"
+                            FontWeight="SemiBold"
+                            IsDefault="True"
+                            TabIndex="3"
+                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolean}}"
+                            Command="{Binding LoginCommand}"/>
 
 
 

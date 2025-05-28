@@ -2,6 +2,9 @@
 {
     public static class MessageTemplates
     {
+        // Not Implemented Message
+        public static string NotImplementedMessage => "لم يتم انشاء هذه الاضافة";
+
         // Success Messages
         public static string SuccessMessage => "تم تنفيذ الاجراء بنجاح";
         public static string DeletionSuccessMessage => "تمت عملية الحذف بنجاح";

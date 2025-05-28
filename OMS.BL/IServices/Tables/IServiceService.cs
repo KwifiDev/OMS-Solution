@@ -21,6 +21,13 @@ namespace OMS.BL.IServices.Tables
         Task<ServiceModel?> GetByIdAsync(int serviceId);
 
         /// <summary>
+        /// find a service by their ID asynchronously.
+        /// </summary>
+        /// <param name="serviceId">The ID of the service to find.</param>
+        /// <returns>True if the service was exist, otherwise false.</returns>
+        Task<bool> IsExistAsync(int serviceId);
+
+        /// <summary>
         /// Adds a new service asynchronously.
         /// </summary>
         /// <param name="model">The service model to add.</param>

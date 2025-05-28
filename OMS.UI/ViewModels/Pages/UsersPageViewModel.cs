@@ -34,7 +34,7 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override Task ShowDetailsWindow(int itemId)
         {
-            _messageService.ShowInfoMessage("لم يتم اجراء", "لم يتم انشاء هذه الأضافة بعد");
+            _messageService.ShowInfoMessage("معلومات", MessageTemplates.NotImplementedMessage);
             return Task.CompletedTask;
         }
 

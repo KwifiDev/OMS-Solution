@@ -35,6 +35,8 @@ namespace OMS.BL.Mapping
 
             CreateMap<Service, ServiceModel>().ReverseMap();
 
+            CreateMap<ServicesSummary, ServicesSummaryModel>().ReverseMap();
+
             CreateMap<Transaction, TransactionModel>().ReverseMap();
 
             CreateMap<User, UserModel>().ReverseMap();

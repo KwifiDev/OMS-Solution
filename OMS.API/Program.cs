@@ -71,6 +71,13 @@ builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ITransactionsSummaryRepository, TransactionsSummaryRepository>();
 builder.Services.AddScoped<ITransactionsSummaryService, TransactionsSummaryService>();
 
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
+
+builder.Services.AddScoped<IServicesSummaryRepository, ServicesSummaryRepository>();
+builder.Services.AddScoped<IServicesSummaryService, ServicesSummaryService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

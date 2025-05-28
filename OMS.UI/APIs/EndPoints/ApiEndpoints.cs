@@ -14,5 +14,8 @@
         public const string UsersAccount = "api/usersaccount";
         public const string Users = "api/users";
         public const string UsersDetail = "api/usersdetail";
+        public const string Services = "api/services";
+        public const string ServicesSummary = "api/servicessummary";
+
     }
 }

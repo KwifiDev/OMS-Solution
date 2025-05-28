@@ -1,6 +1,7 @@
 ﻿using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
+using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Views.Windows;
@@ -29,7 +30,8 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override Task ShowDetailsWindow(int itemId)
         {
-            throw new NotImplementedException();
+            _messageService.ShowInfoMessage("معلومات", MessageTemplates.NotImplementedMessage);
+            return Task.CompletedTask;
         }
 
         protected override async Task ShowEditorWindow(int? itemId = null)

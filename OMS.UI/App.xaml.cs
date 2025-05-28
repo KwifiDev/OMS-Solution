@@ -23,7 +23,6 @@ using OMS.UI.ViewModels.Windows;
 using OMS.UI.ViewModels.Windows.AddEditViewModel;
 using OMS.UI.Views;
 using OMS.UI.Views.Pages;
-using OMS.UI.Views.UserControls;
 using OMS.UI.Views.Windows;
 using System.Net.Http;
 using System.Windows;
@@ -101,18 +100,21 @@ namespace OMS.UI
             services.AddTransient<IUserAccountService, UserAccountService>();
 
             services.AddTransient<ITransactionsSummaryService, TransactionsSummaryService>();
+
+            services.AddTransient<IServiceService, ServiceService>();
+
+            services.AddTransient<IServicesSummaryService, ServicesSummaryService>();
+
         }
 
         private static void RegisterMapper(IServiceCollection services)
         {
             var mapperConfig = new MapperConfiguration(mc =>
             {
-                //mc.AddProfile(new BLMappingProfile());
                 mc.AddProfile(new UIMappingProfile());
             });
             var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-            //services.AddSingleton<IMapperService, MapperService>();
         }
 
         private static void RegisterViewModels(IServiceCollection services)
@@ -146,6 +148,10 @@ namespace OMS.UI
             services.AddTransient<ClientAccountTransactionViewModel>();
 
             services.AddTransient<AccountTransactionsViewModel>();
+
+            services.AddTransient<ServicesPageViewModel>();
+
+            services.AddTransient<AddEditServiceViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -195,6 +201,11 @@ namespace OMS.UI
             services.AddTransient(provider =>
                 new AccountTransactionsWindow { DataContext = provider.GetRequiredService<AccountTransactionsViewModel>() });
 
+            services.AddTransient(provider =>
+                new ServicesPage { DataContext = provider.GetRequiredService<ServicesPageViewModel>() });
+
+            services.AddTransient(provider =>
+                new AddEditServiceWindow { DataContext = provider.GetRequiredService<AddEditServiceViewModel>() });
 
         }
 
