@@ -14,11 +14,6 @@ namespace OMS.API.Controllers
         {
         }
 
-        protected override async Task<IEnumerable<TransactionsSummaryModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
-
-        protected override async Task<TransactionsSummaryModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
-
-
         /// <summary>
         /// Retrieves all TransactionsSummary by Account Id.
         /// </summary>
@@ -50,6 +45,11 @@ namespace OMS.API.Controllers
                     type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
             }
         }
+
+        #region override abstract Methods 
+        protected override async Task<IEnumerable<TransactionsSummaryModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<TransactionsSummaryModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
+        #endregion
 
     }
 }

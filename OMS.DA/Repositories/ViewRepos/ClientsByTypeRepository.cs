@@ -1,8 +1,8 @@
 ﻿using OMS.DA.Context;
-using OMS.DA.Repositories.ViewRepos;
+using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
-namespace OMS.DA.IRepositories.IViewRepos
+namespace OMS.DA.Repositories.ViewRepos
 {
     public class ClientsByTypeRepository : GenericViewRepository<ClientsByType>, IClientsByTypeRepository
     {

@@ -62,7 +62,9 @@ namespace OMS.API.Mapping
 
             CreateMap<DebtsSummaryModel, DebtsSummaryDto>().ReverseMap();
 
-            CreateMap<DiscountsAppliedModel, DiscountsAppliedDto>().ReverseMap();
+            CreateMap<DiscountsAppliedModel, DiscountsAppliedDto>()
+                .ForSourceMember(src => src.ServiceId, opt => opt.DoNotValidate())
+                .ReverseMap();
 
             CreateMap<MonthlyFinancialSummaryModel, MonthlyFinancialSummaryDto>().ReverseMap();
 
@@ -73,7 +75,8 @@ namespace OMS.API.Mapping
             CreateMap<TransactionsByTypeModel, TransactionsByTypeDto>().ReverseMap();
 
             CreateMap<TransactionsSummaryModel, TransactionsSummaryDto>()
-                .ForSourceMember(src => src.AccountId, opt => opt.DoNotValidate()).ReverseMap();
+                .ForSourceMember(src => src.AccountId, opt => opt.DoNotValidate())
+                .ReverseMap();
 
             CreateMap<UserAccountModel, UserAccountDto>().ReverseMap();
 

@@ -4,6 +4,8 @@ public partial class DiscountsAppliedModel
 {
     public int DiscountId { get; set; }
 
+    public int? ServiceId { get; set; }
+
     public string ServiceName { get; set; } = null!;
 
     public decimal ServicePrice { get; set; }

@@ -11,6 +11,8 @@ public partial class DiscountsApplied
     [Id]
     public int DiscountId { get; set; }
 
+    public int? ServiceId { get; set; }
+
     [StringLength(25)]
     public string ServiceName { get; set; } = null!;
 

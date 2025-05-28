@@ -14,8 +14,11 @@ namespace OMS.API.Controllers
         {
         }
 
-        protected override async Task<IEnumerable<ServicesSummaryModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
 
+
+        #region override abstract Methods
+        protected override async Task<IEnumerable<ServicesSummaryModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
         protected override async Task<ServicesSummaryModel?> GetModelByIdAsync(int serviceId) => await _service.GetByIdAsync(serviceId);
+        #endregion
     }
 }
