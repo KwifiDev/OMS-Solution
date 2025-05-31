@@ -103,8 +103,8 @@
                         Command="{Binding DataContext.ShowDetailsCommand, RelativeSource={RelativeSource AncestorType=Page}}"
                         CommandParameter="{Binding}"
                         Padding="3"
-                        ToolTip="عرض التفاصيل">
-                        <materialDesign:PackIcon Kind="SmokeDetector" Width="20" Height="20"/>
+                        ToolTip="عرض التفاصيل الخصومات">
+                        <materialDesign:PackIcon Kind="DiscountBox" Width="20" Height="20"/>
                     </Button>
 
                     <Button 

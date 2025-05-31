@@ -72,10 +72,10 @@
             <ListView.ContextMenu>
                 <ContextMenu Style="{StaticResource MaterialDesignContextMenu}">
 
-                    <MenuItem Header="عرض التفاصيل" 
+                    <MenuItem Header="عرض تفاصيل الخصومات" 
                     Command="{Binding ShowDetailsCommand}"
                     CommandParameter="{Binding SelectedItem}"
-                    Icon="{materialDesign:PackIcon Kind=AccountDetails}"/>
+                    Icon="{materialDesign:PackIcon Kind=DiscountBox}"/>
 
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 

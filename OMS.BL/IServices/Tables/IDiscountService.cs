@@ -22,6 +22,13 @@ namespace OMS.BL.IServices.Tables
         Task<DiscountModel?> GetByIdAsync(int discountId);
 
         /// <summary>
+        /// find a discount by their ID asynchronously.
+        /// </summary>
+        /// <param name="discountId">The ID of the discount to find.</param>
+        /// <returns>True if the discount was exist, otherwise false.</returns>
+        Task<bool> IsExistAsync(int discountId);
+
+        /// <summary>
         /// Adds a new discount asynchronously.
         /// </summary>
         /// <param name="model">The discount model to add.</param>

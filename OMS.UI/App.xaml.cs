@@ -105,6 +105,10 @@ namespace OMS.UI
 
             services.AddTransient<IServicesSummaryService, ServicesSummaryService>();
 
+            services.AddTransient<IDiscountService, DiscountService>();
+
+            services.AddTransient<IDiscountsAppliedService, DiscountsAppliedService>();
+
         }
 
         private static void RegisterMapper(IServiceCollection services)
@@ -152,6 +156,10 @@ namespace OMS.UI
             services.AddTransient<ServicesPageViewModel>();
 
             services.AddTransient<AddEditServiceViewModel>();
+
+            services.AddTransient<AddEditDiscountViewModel>();
+
+            services.AddTransient<DiscountsAppliedViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -207,6 +215,11 @@ namespace OMS.UI
             services.AddTransient(provider =>
                 new AddEditServiceWindow { DataContext = provider.GetRequiredService<AddEditServiceViewModel>() });
 
+            services.AddTransient(provider =>
+                new AddEditDiscountWindow { DataContext = provider.GetRequiredService<AddEditDiscountViewModel>() });
+
+            services.AddTransient(provider =>
+                new DiscountsAppliedWindow { DataContext = provider.GetRequiredService<DiscountsAppliedViewModel>() });
         }
 
         private static void RegisterMVVMServices(IServiceCollection services)

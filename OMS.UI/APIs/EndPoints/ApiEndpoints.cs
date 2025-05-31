@@ -16,6 +16,8 @@
         public const string UsersDetail = "api/usersdetail";
         public const string Services = "api/services";
         public const string ServicesSummary = "api/servicessummary";
+        public const string Discounts = "api/discounts";
+        public const string DiscountsApplied = "api/discountsapplied";
 
     }
 }

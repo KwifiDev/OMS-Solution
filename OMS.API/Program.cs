@@ -77,6 +77,9 @@ builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IServicesSummaryRepository, ServicesSummaryRepository>();
 builder.Services.AddScoped<IServicesSummaryService, ServicesSummaryService>();
 
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+builder.Services.AddScoped<IDiscountService, DiscountService>();
+
 builder.Services.AddScoped<IDiscountsAppliedRepository, DiscountsAppliedRepository>();
 builder.Services.AddScoped<IDiscountsAppliedService, DiscountsAppliedService>();
 

@@ -31,6 +31,8 @@ namespace OMS.UI.Mapping
             CreateMap<TransactionsSummaryDto, TransactionsSummaryModel>().ReverseMap();
             CreateMap<ServiceDto, ServiceModel>().ReverseMap();
             CreateMap<ServicesSummaryDto, ServicesSummaryModel>().ReverseMap();
+            CreateMap<DiscountDto, DiscountModel>().ReverseMap();
+            CreateMap<DiscountsAppliedDto, DiscountsAppliedModel>().ReverseMap();
         }
     }
 }

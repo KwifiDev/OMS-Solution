@@ -156,13 +156,25 @@
 
                     <Button Name="LoginButton" 
                             Content="{Binding LoginButtonContent, FallbackValue='تسجيل الدخول'}" 
-                            Style="{StaticResource ModernButton}"
                             Margin="0 15 0 10"
                             FontWeight="SemiBold"
                             IsDefault="True"
                             TabIndex="3"
                             IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolean}}"
-                            Command="{Binding LoginCommand}"/>
+                            Command="{Binding LoginCommand}">
+
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource ModernButton}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Background" Value="BlueViolet"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                    </Button>
+
 
 
 
