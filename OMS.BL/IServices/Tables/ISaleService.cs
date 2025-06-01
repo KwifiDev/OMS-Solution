@@ -21,6 +21,13 @@ namespace OMS.BL.IServices.Tables
         Task<SaleModel?> GetByIdAsync(int saleId);
 
         /// <summary>
+        /// find a sale by their ID asynchronously.
+        /// </summary>
+        /// <param name="saleId">The ID of the sale to find.</param>
+        /// <returns>True if the sale was exist, otherwise false.</returns>
+        Task<bool> IsExistAsync(int saleId);
+
+        /// <summary>
         /// Adds a new sale asynchronously.
         /// </summary>
         /// <param name="model">The SaleModel object representing the sale to add.</param>

@@ -4,7 +4,7 @@ public partial class SalesSummaryModel
 {
     public int SaleId { get; set; }
 
-    public string ClientName { get; set; } = null!;
+    public int? ClientId { get; set; }
 
     public string ServiceName { get; set; } = null!;
 

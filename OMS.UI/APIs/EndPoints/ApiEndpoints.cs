@@ -18,6 +18,9 @@
         public const string ServicesSummary = "api/servicessummary";
         public const string Discounts = "api/discounts";
         public const string DiscountsApplied = "api/discountsapplied";
+        public const string Sales = "api/sales";
+        public const string SalesSummary = "api/salessummary";
+
 
     }
 }

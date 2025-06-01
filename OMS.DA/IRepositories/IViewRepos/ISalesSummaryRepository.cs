@@ -11,6 +11,13 @@ namespace OMS.DA.IRepositories.IViewRepos
         Task<IEnumerable<SalesSummary>> GetAllAsync();
 
         /// <summary>
+        /// Retrieves an SalesSummary by clientId.
+        /// </summary>
+        /// <param name="clientId">The ID of the client.</param>
+        /// <returns>The SalesSummary if found; otherwise, null.</returns>
+        Task<IEnumerable<SalesSummary>> GetByClientIdAsync(int clientId);
+
+        /// <summary>
         /// Retrieves an SalesSummary by SaleId.
         /// </summary>
         /// <param name="saleId">The ID of the Sale.</param>

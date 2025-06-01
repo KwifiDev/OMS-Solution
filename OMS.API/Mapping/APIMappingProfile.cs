@@ -70,7 +70,9 @@ namespace OMS.API.Mapping
 
             CreateMap<PaymentsSummaryModel, PaymentsSummaryDto>().ReverseMap();
 
-            CreateMap<SalesSummaryModel, SalesSummaryDto>().ReverseMap();
+            CreateMap<SalesSummaryModel, SalesSummaryDto>()
+                .ForSourceMember(src => src.ClientId, opt => opt.DoNotValidate())
+                .ReverseMap();
 
             CreateMap<TransactionsByTypeModel, TransactionsByTypeDto>().ReverseMap();
 

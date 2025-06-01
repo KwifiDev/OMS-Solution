@@ -95,6 +95,14 @@
                               Icon="{materialDesign:PackIcon Kind=AccountConvert}"/>
 
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
+
+
+                    <MenuItem Header="عرض المبيعات" 
+                              Command="{Binding ShowSalesSummaryCommand}"
+                              Icon="{materialDesign:PackIcon Kind=Salesforce}"/>
+
+
+                    <Separator Style="{StaticResource MaterialDesignSeparator}"/>
                     
                     <MenuItem Header="اضافة عميل" 
                      Command="{Binding AddItemCommand}"

@@ -18,5 +18,12 @@ namespace OMS.BL.Services.Views
             _salesSummaryRepository = repository;
         }
 
+        public async Task<IEnumerable<SalesSummaryModel>> GetByClientIdAsync(int clientId)
+        {
+            var salesSummary = await _salesSummaryRepository.GetByClientIdAsync(clientId);
+
+            return _mapper.Map<IEnumerable<SalesSummary>, IEnumerable<SalesSummaryModel>>(salesSummary);
+        }
+
     }
 }

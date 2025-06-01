@@ -14,6 +14,13 @@ namespace OMS.BL.IServices.Views
         Task<IEnumerable<SalesSummaryModel>> GetAllAsync();
 
         /// <summary>
+        /// Retrieves an SalesSummary Model by clientId.
+        /// </summary>
+        /// <param name="clientId">The ID of the client.</param>
+        /// <returns>The SalesSummary Model if found; otherwise, null.</returns>
+        Task<IEnumerable<SalesSummaryModel>> GetByClientIdAsync(int clientId);
+
+        /// <summary>
         /// Retrieves a sales summary by its ID asynchronously.
         /// </summary>
         /// <param name="saleId">The ID of the sales summary to retrieve.</param>

@@ -8,13 +8,13 @@ public partial class SaleDto
     [Key]
     public int SaleId { get; set; }
 
-    public required int ClientId { get; set; }
+    public int ClientId { get; set; }
 
-    public required int ServiceId { get; set; }
+    public int ServiceId { get; set; }
 
     public decimal Cost { get; set; }
 
-    public required short Quantity { get; set; }
+    public short Quantity { get; set; }
 
     public decimal? DiscountPercentage { get; set; }
 
@@ -33,5 +33,5 @@ public partial class SaleDto
     /// </summary>
     public EnSaleStatus Status { get; set; }
 
-    public required int CreatedByUserId { get; set; }
+    public int CreatedByUserId { get; set; }
 }

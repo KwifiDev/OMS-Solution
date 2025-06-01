@@ -10,8 +10,7 @@ public partial class SalesSummary
     [Id]
     public int SaleId { get; set; }
 
-    [StringLength(41)]
-    public string ClientName { get; set; } = null!;
+    public int? ClientId { get; set; }
 
     [StringLength(25)]
     public string ServiceName { get; set; } = null!;

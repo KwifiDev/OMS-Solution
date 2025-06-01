@@ -82,6 +82,12 @@ namespace OMS.UI.ViewModels.Pages
             _messageService.ShowInfoMessage("لم يتم اجراء", "لم يتم انشاء هذه الأضافة بعد");
         }
 
+        [RelayCommand]
+        private void ShowSalesSummary()
+        {
+            _dialogService.ShowDialog<SalesSummaryWindow, int?>(SelectedItem?.ClientId);
+        }
+
         private bool CanOpenAccountServices()
         {
             return SelectedItem?.AccountId != null;
