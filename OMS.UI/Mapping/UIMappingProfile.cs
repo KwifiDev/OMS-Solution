@@ -16,7 +16,7 @@ namespace OMS.UI.Mapping
             CreateMap<BranchDto, BranchModel>().ReverseMap();
             CreateMap<UserDto, UserModel>().ReverseMap();
             CreateMap<UserDetailDto, UserDetailModel>().ReverseMap();
-            CreateMap<BranchOptionDto, BranchOption>().ReverseMap();
+            CreateMap<BranchOptionDto, BranchOptionModel>().ReverseMap();
             CreateMap<PersonDetailDto, PersonDetailModel>().ReverseMap();
             CreateMap<BranchOperationalMetricDto, BranchOperationalMetricModel>().ReverseMap();
             CreateMap<ResponseLoginDto, UserLoginModel>().ReverseMap();
@@ -33,6 +33,10 @@ namespace OMS.UI.Mapping
             CreateMap<ServicesSummaryDto, ServicesSummaryModel>().ReverseMap();
             CreateMap<DiscountDto, DiscountModel>().ReverseMap();
             CreateMap<DiscountsAppliedDto, DiscountsAppliedModel>().ReverseMap();
+            CreateMap<ServiceOptionDto, ServiceOptionModel>().ReverseMap();
+            CreateMap<SalesSummaryDto, SalesSummaryModel>().ReverseMap();
+            CreateMap<SaleDto, SaleModel>().ReverseMap();
+            CreateMap<CreateSaleDto, CreateSaleModel>().ReverseMap();
         }
     }
 }

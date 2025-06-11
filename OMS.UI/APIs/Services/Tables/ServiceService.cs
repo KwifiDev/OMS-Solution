@@ -5,6 +5,8 @@ using AutoMapper;
 using OMS.UI.APIs.EndPoints;
 using System.Net.Http;
 using OMS.UI.Models;
+using OMS.UI.APIs.Dtos.Views;
+using System.Net.Http.Json;
 
 namespace OMS.UI.APIs.Services.Tables
 {
@@ -13,6 +15,33 @@ namespace OMS.UI.APIs.Services.Tables
         public ServiceService(IHttpClientFactory httpClientFactory, IMapper mapper)
                               : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Services)
         {
+        }
+
+        public async Task<IEnumerable<ServiceOptionModel>> GetAllServicesOption()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_endpoint}/options");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في جلب البيانات من الخادم.\nStatus Code: {response.StatusCode}"));
+                    return Enumerable.Empty<ServiceOptionModel>();
+                }
+
+                var dto = await response.Content.ReadFromJsonAsync<IEnumerable<ServiceOptionDto>>();
+                return dto != null ? _mapper.Map<IEnumerable<ServiceOptionModel>>(dto) : Enumerable.Empty<ServiceOptionModel>();
+            }
+            catch (HttpRequestException httpEx)
+            {
+                LogError(httpEx);
+                return Enumerable.Empty<ServiceOptionModel>();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
         }
 
     }

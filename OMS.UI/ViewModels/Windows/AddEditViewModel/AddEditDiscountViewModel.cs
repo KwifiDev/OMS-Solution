@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
-    public partial class AddEditDiscountViewModel : AddEditBaseViewModel<DiscountModel, IDiscountService>, IDialogInitializer<(int? ItemId, int ServiceId)>
+    public partial class AddEditDiscountViewModel : AddEditBaseViewModel<DiscountModel, IDiscountService>, IDialogInitializer<(int? DiscountId, int ServiceId)>
     {
 
         [ObservableProperty]
@@ -24,9 +24,9 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         public record ClientType(string DisplayMember, EnClientType Value);
 
-        public async Task<bool> OnOpeningDialog((int? ItemId, int ServiceId) parameters)
+        public async Task<bool> OnOpeningDialog((int? DiscountId, int ServiceId) parameters)
         {
-            var isSuccess = await base.OnOpeningDialog(parameters.ItemId);
+            var isSuccess = await base.OnOpeningDialog(parameters.DiscountId);
             Model.ServiceId = parameters.ServiceId;
             return isSuccess;
         }

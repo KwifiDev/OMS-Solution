@@ -1,6 +1,7 @@
-﻿using OMS.BL.Models.Tables;
-using OMS.BL.IServices.Tables;
+﻿using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
+using OMS.BL.Models.Tables;
+using OMS.BL.Models.Views;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -17,5 +18,11 @@ namespace OMS.BL.Services.Tables
             _serviceRepository = repository;
         }
 
+        public async Task<IEnumerable<ServiceOptionModel>?> GetAllServicesOption()
+        {
+            var services = await _serviceRepository.GetAllServicesOption();
+
+            return services == null ? null : _mapperService.Map<Service, ServiceOptionModel>(services);
+        }
     }
 }

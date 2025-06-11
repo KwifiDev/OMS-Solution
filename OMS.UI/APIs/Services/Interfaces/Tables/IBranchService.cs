@@ -56,6 +56,6 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// Retrieves all branches Option asynchronously.
         /// </summary>
         /// <returns>A collection of branch option.</returns>
-        Task<IEnumerable<BranchOption>> GetAllBranchesOption();
+        Task<IEnumerable<BranchOptionModel>> GetAllBranchesOption();
     }
 }

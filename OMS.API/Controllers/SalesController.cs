@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using OMS.API.Dtos.StoredProcedureParams;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
+using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
 
 namespace OMS.API.Controllers
@@ -14,6 +16,40 @@ namespace OMS.API.Controllers
         {
         }
 
+
+        /// <summary>
+        /// create a new sale.
+        /// </summary>
+        /// <remarks>
+        /// POST /api/sales/add
+        /// </remarks>
+        /// <param name="dto">The data transfer object containing sale args for creating new sale.</param>
+        /// <returns>Returns the new saleId inside dto object of the sale.</returns>
+        /// <response code="200">Returns the dto result if successful.</response>
+        /// <response code="400">If the request is invalid (invalid clientID, serviceID, UserID, invalid amount, etc.).</response>
+        /// <response code="500">If an internal server error occurs.</response>
+        [HttpPost("add")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<CreateSaleDto>> CreateNewSaleAsync([FromBody] CreateSaleDto dto)
+        {
+            try
+            {
+                var model = _mapper.Map<CreateSaleModel>(dto);
+
+                bool isSuccess = await _service.CreateNewSaleAsync(model);
+                dto.SaleId = model.SaleId;
+                return Ok(dto);
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Server Error",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
 
 
         #region override abstract Methods

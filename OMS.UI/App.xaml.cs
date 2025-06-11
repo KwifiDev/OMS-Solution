@@ -166,6 +166,8 @@ namespace OMS.UI
             services.AddTransient<DiscountsAppliedViewModel>();
 
             services.AddTransient<SalesSummaryViewModel>();
+
+            services.AddTransient<AddEditSaleViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -229,6 +231,9 @@ namespace OMS.UI
 
             services.AddTransient(provider =>
                 new SalesSummaryWindow { DataContext = provider.GetRequiredService<SalesSummaryViewModel>() });
+
+            services.AddTransient(provider =>
+                new AddEditSaleWindow { DataContext = provider.GetRequiredService<AddEditSaleViewModel>() });
         }
 
         private static void RegisterMVVMServices(IServiceCollection services)

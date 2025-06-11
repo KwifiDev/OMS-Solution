@@ -9,7 +9,7 @@ namespace OMS.UI.Models
         private int _clientId;
         private int _serviceId;
         private decimal _cost;
-        private short _quantity;
+        private short _quantity = 1;
         private decimal? _discountPercentage;
         private decimal? _amountDeducted;
         private decimal? _total;
@@ -24,7 +24,11 @@ namespace OMS.UI.Models
         public int SaleId
         {
             get => _saleId;
-            set => SetProperty(ref _saleId, value);
+            set
+            {
+                SetProperty(ref _saleId, value);
+                OnPropertyChanged(nameof(SaleIdDisplay));
+            }
         }
 
         public int ClientId
@@ -69,15 +73,17 @@ namespace OMS.UI.Models
             set => SetProperty(ref _total, value);
         }
 
+        [MinLength(5, ErrorMessage = "الوصف على الاقل مكون من 5 احرف")]
         public string? Description
         {
-            get => _description;
+            get => string.IsNullOrWhiteSpace(_description) ? null : _description;
             set => SetProperty(ref _description, value);
         }
 
+        [MinLength(5, ErrorMessage = "الملاحظات على الاقل مكونة من 5 احرف")]
         public string? Notes
         {
-            get => _notes;
+            get => string.IsNullOrWhiteSpace(_notes) ? null : _notes;
             set => SetProperty(ref _notes, value);
         }
 
@@ -98,5 +104,7 @@ namespace OMS.UI.Models
             get => _createdByUserId;
             set => SetProperty(ref _createdByUserId, value);
         }
+
+        public string SaleIdDisplay => _saleId > 0 ? _saleId.ToString() : "لا يوجد";
     }
 }

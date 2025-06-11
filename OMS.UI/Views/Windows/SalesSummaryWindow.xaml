@@ -12,8 +12,8 @@
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
         d:DataContext="{d:DesignInstance Type=windows:SalesSummaryViewModel}"
         mc:Ignorable="d"
-        Height="400" 
-        Width="800"
+        Height="500" 
+        Width="1000"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource MaterialDesignWindow}"
         FlowDirection="RightToLeft"
@@ -115,11 +115,11 @@
 
             <!-- الأعمدة -->
             <DataGrid.Columns>
-                <DataGridTextColumn Header="رقم المبيعة" Binding="{Binding SaleId}" />
+                <DataGridTextColumn Header="رقم" Binding="{Binding SaleId}" Width="55" />
                 <DataGridTextColumn Header="اسم الخدمة" Binding="{Binding ServiceName}" />
-                <DataGridTextColumn Header="وصف الخدمة" Binding="{Binding Description}" />
+                <DataGridTextColumn Header="وصف الخدمة" Binding="{Binding Description}" Width="2*"  />
                 <DataGridTextColumn Header="الكلفة" Binding="{Binding TotalSales}" />
-                <DataGridTextColumn Header="حالة المبيعة" Binding="{Binding Status}" />
+                <DataGridTextColumn Header="الحالة" Binding="{Binding Status}" Width="0.5*" />
             </DataGrid.Columns>
 
             <!-- القائمة السياقية -->

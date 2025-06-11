@@ -22,7 +22,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private IFindPersonViewModel _findPersonViewModel;
 
         [ObservableProperty]
-        private ObservableCollection<BranchOption> _branches = null!;
+        private ObservableCollection<BranchOptionModel> _branches = null!;
 
         public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMessageService messageService,
                                     IFindPersonViewModel findPersonViewModel, IWindowService windowService, IStatusService statusService,
@@ -73,9 +73,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
                 ? await _service.AddAsync(userModel)
                 : await _service.UpdateAsync(userModel.UserId, userModel);
 
-        //protected override void UpdateModelAfterSave(UserModel userModel)
-        //    => Model.UserId = userModel.UserId;
-
         protected override bool ValidateModel()
         {
             if (!base.ValidateModel()) return false;
@@ -94,7 +91,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private async void InitializeBranches()
         {
             var branchOption = await _branchService.GetAllBranchesOption();
-            Branches = new ObservableCollection<BranchOption>(branchOption!);
+            Branches = new ObservableCollection<BranchOptionModel>(branchOption!);
         }
 
         private void LoadAssociatedPerson()

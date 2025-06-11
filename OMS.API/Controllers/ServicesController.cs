@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Tables;
+using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
 
@@ -14,6 +15,38 @@ namespace OMS.API.Controllers
         {
         }
 
+
+        /// <summary>
+        /// Retrieves all Services option.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /api/services/option
+        ///     
+        /// Returns all available Services option in the system.
+        /// </remarks>
+        /// <returns>List of all Services option</returns>
+        /// <response code="200">Returns the complete list of Services option</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpGet("options")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<ServiceOptionDto>>> GetAllServicesOptionAsync()
+        {
+            try
+            {
+                var models = await _service.GetAllServicesOption();
+                return Ok(_mapper.Map<IEnumerable<ServiceOptionDto>>(models));
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error retrieving Services option",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
+            }
+        }
 
         #region override abstract Methods
         protected override async Task<IEnumerable<ServiceModel>> GetListOfModelsAsync() => await _service.GetAllAsync();

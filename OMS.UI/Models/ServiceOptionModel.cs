@@ -2,10 +2,10 @@
 
 namespace OMS.UI.Models
 {
-    public class BranchOptionModel
+    public class ServiceOptionModel
     {
         [Key]
-        public int BranchId { get; set; }
+        public int ServiceId { get; set; }
 
         public string Name { get; set; } = null!;
     }

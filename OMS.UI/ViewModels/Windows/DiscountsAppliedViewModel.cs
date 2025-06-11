@@ -45,8 +45,8 @@ namespace OMS.UI.ViewModels.Windows
             Items = new(discountsAppliedItems);
         }
 
-        protected override Task ShowEditorWindow(int? itemId = null)
-            => _dialogService.ShowDialog<AddEditDiscountWindow, (int? ItemId, int ServiceId)>((itemId, _serviceId));
+        protected override async Task ShowEditorWindow(int? itemId = null)
+            => await _dialogService.ShowDialog<AddEditDiscountWindow, (int? DiscountId, int ServiceId)>((itemId, _serviceId));
 
         [RelayCommand]
         private void Close() => _windowService.Close();

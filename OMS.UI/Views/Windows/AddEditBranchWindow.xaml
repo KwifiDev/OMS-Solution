@@ -118,7 +118,7 @@
                  materialDesign:HintAssist.Hint="عنوان الفرع"
                  IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
-                <inputBehaviors:ArabicOnlyInputBehavior/>
+                <inputBehaviors:ArabicAndNumbersInputBehavior/>
             </i:Interaction.Behaviors>
         </TextBox>
 

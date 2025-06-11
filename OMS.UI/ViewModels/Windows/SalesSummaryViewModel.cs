@@ -6,6 +6,7 @@ using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
+using OMS.UI.Views.Windows;
 
 namespace OMS.UI.ViewModels.Windows
 {
@@ -48,10 +49,8 @@ namespace OMS.UI.ViewModels.Windows
             throw new NotImplementedException();
         }
 
-        protected override Task ShowEditorWindow(int? itemId = null)
-        {
-            throw new NotImplementedException();
-        }
+        protected override async Task ShowEditorWindow(int? itemId = null)
+            => await _dialogService.ShowDialog<AddEditSaleWindow, (int? SaleId, int ClientId)>((itemId, _clientId));
 
         [RelayCommand]
         private void Close() => _windowService.Close();

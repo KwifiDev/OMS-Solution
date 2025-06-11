@@ -16,7 +16,7 @@ namespace OMS.UI.APIs.Services.Tables
             : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Branches)
         {
         }
-        public async Task<IEnumerable<BranchOption>> GetAllBranchesOption()
+        public async Task<IEnumerable<BranchOptionModel>> GetAllBranchesOption()
         {
             try
             {
@@ -25,16 +25,16 @@ namespace OMS.UI.APIs.Services.Tables
                 if (!response.IsSuccessStatusCode)
                 {
                     LogError(new Exception($"خطأ في جلب البيانات من الخادم.\nStatus Code: {response.StatusCode}"));
-                    return Enumerable.Empty<BranchOption>();
+                    return Enumerable.Empty<BranchOptionModel>();
                 }
 
                 var dto = await response.Content.ReadFromJsonAsync<IEnumerable<BranchOptionDto>>();
-                return dto != null ? _mapper.Map<IEnumerable<BranchOption>>(dto) : Enumerable.Empty<BranchOption>();
+                return dto != null ? _mapper.Map<IEnumerable<BranchOptionModel>>(dto) : Enumerable.Empty<BranchOptionModel>();
             }
             catch (HttpRequestException httpEx)
             {
                 LogError(httpEx);
-                return Enumerable.Empty<BranchOption>();
+                return Enumerable.Empty<BranchOptionModel>();
             }
             catch (Exception ex)
             {

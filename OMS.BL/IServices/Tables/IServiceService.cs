@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Tables;
+using OMS.BL.Models.Views;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -47,5 +48,11 @@ namespace OMS.BL.IServices.Tables
         /// <param name="serviceId">The ID of the service to delete.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the service was deleted successfully.</returns>
         Task<bool> DeleteAsync(int serviceId);
+
+        /// <summary>
+        /// Retrieves all Services Option asynchronously.
+        /// </summary>
+        /// <returns>A collection of Service option.</returns>
+        Task<IEnumerable<ServiceOptionModel>?> GetAllServicesOption();
     }
 }

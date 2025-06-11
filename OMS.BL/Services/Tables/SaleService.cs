@@ -3,6 +3,7 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
+using OMS.BL.Models.StoredProcedureParams;
 
 namespace OMS.BL.Services.Tables
 {
@@ -17,5 +18,20 @@ namespace OMS.BL.Services.Tables
             _saleRepository = repository;
         }
 
+        public async Task<bool> CreateNewSaleAsync(CreateSaleModel model)
+        {
+            model.SaleId = await _saleRepository.CreateNewSaleAsync
+                (
+                    clientId: model.ClientId,
+                    serviceId: model.ServiceId,
+                    quantity: model.Quantity,
+                    description: model.Description,
+                    notes: model.Notes,
+                    status: model.Status,
+                    createdByUserId: model.CreatedByUserId
+                );
+
+            return model.SaleId > 0;
+        }
     }
 }
