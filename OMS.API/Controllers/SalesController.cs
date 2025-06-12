@@ -28,11 +28,11 @@ namespace OMS.API.Controllers
         /// <response code="200">Returns the dto result if successful.</response>
         /// <response code="400">If the request is invalid (invalid clientID, serviceID, UserID, invalid amount, etc.).</response>
         /// <response code="500">If an internal server error occurs.</response>
-        [HttpPost("add")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<CreateSaleDto>> CreateNewSaleAsync([FromBody] CreateSaleDto dto)
+        public async Task<ActionResult<CreateSaleDto>> AddSaleAsync([FromBody] CreateSaleDto dto)
         {
             try
             {
@@ -51,6 +51,9 @@ namespace OMS.API.Controllers
             }
         }
 
+        [NonAction] // This EndPoint Insted Of (AddSaleAsync) Method
+        public override Task<ActionResult<SaleDto>> AddAsync([FromBody] SaleDto dto) 
+            => Task.FromResult<ActionResult<SaleDto>>(NotFound("This endpoint is disabled."));
 
         #region override abstract Methods
         protected override async Task<bool> AddModelAsync(SaleModel model) => await _service.AddAsync(model);

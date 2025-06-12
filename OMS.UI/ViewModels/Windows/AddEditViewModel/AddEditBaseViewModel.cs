@@ -63,6 +63,8 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
                 return false;
             }
 
+            SetEditMode();
+
             var model = await GetByIdAsync((int)id);
             if (model == null)
             {
@@ -70,7 +72,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
                 return false;
             }
 
-            SetEditMode(model);
+            Model = model;
 
             return true;
         }
@@ -81,10 +83,9 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             Model = new TModel();
         }
 
-        protected virtual void SetEditMode(TModel model)
+        protected virtual void SetEditMode()
         {
             Status.SelectMode = AddEditStatus.EnMode.Edit;
-            Model = model;
         }
 
 

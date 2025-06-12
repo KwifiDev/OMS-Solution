@@ -51,7 +51,7 @@ namespace OMS.API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<TDto>>> GetAllAsync()
+        public virtual async Task<ActionResult<IEnumerable<TDto>>> GetAllAsync()
         {
             try
             {
@@ -85,7 +85,7 @@ namespace OMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<TDto>> GetByIdAsync([FromRoute] int id)
+        public virtual async Task<ActionResult<TDto>> GetByIdAsync([FromRoute] int id)
         {
             if (id <= 0) return NotFound();
 

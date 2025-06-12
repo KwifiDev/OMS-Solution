@@ -29,6 +29,7 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolean"/>
             <converters:ShortToStringConverter x:Key="ShortToString"/>
+            <converters:BooleanAndConverter x:Key="BooleanAnd"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -107,8 +108,14 @@
           Margin="10,5,10,5"
           materialDesign:HintAssist.Hint="الكمية"
           Grid.Row="3" Grid.Column="1"
-          MaxLength="3"
-          IsEnabled="{Binding Status.IsModifiable}">
+          MaxLength="3">
+            
+            <TextBox.IsEnabled>
+                <MultiBinding Converter="{StaticResource BooleanAnd}">
+                    <Binding Path="Status.IsModifiable"/>
+                    <Binding Path="Status.SelectMode"/>
+                </MultiBinding>
+            </TextBox.IsEnabled>
 
             <i:Interaction.Behaviors>
                 <inputBehaviors:NumericInputBehavior/>
@@ -152,8 +159,13 @@
           Margin="10,0,10,0"
           Padding="15 0"
           Grid.Row="3" Grid.Column="0"
-          materialDesign:HintAssist.Hint="الخدمة"
-          IsEnabled="{Binding Status.IsModifiable}">
+          materialDesign:HintAssist.Hint="الخدمة">
+            <ComboBox.IsEnabled>
+                <MultiBinding Converter="{StaticResource BooleanAnd}">
+                    <Binding Path="Status.IsModifiable"/>
+                    <Binding Path="Status.SelectMode"/>
+                </MultiBinding>
+            </ComboBox.IsEnabled>
         </ComboBox>
 
         <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"

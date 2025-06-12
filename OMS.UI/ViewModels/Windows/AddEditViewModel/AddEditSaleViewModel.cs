@@ -77,7 +77,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
                     CreatedByUserId = model.CreatedByUserId
                 };
 
-                bool isSuccess = await _service.CreateNewSaleAsync(createSaleModel);
+                bool isSuccess = await _service.AddSaleAsync(createSaleModel);
 
                 if (!isSuccess) return false;
 

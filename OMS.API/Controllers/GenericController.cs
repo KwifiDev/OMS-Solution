@@ -48,7 +48,7 @@ namespace OMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<TDto>> AddAsync([FromBody] TDto dto)
+        public virtual async Task<ActionResult<TDto>> AddAsync([FromBody] TDto dto)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace OMS.API.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] TDto dto)
+        public virtual async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] TDto dto)
         {
             if (id <= 0) return NotFound();
 
@@ -174,7 +174,7 @@ namespace OMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+        public virtual async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
             if (id <= 0) return NotFound();
 
@@ -225,7 +225,7 @@ namespace OMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> HeadAsync([FromRoute] int id)
+        public virtual async Task<IActionResult> HeadAsync([FromRoute] int id)
         {
             if (id <= 0) return NotFound();
 

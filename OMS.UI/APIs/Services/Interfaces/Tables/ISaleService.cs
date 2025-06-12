@@ -48,6 +48,6 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// </summary>
         /// <param name="model">The Create Sale Model object representing the args of SP on SQLSERVER to create new sale</param>
         /// <returns>True if the sale was created successfully, otherwise false.</returns>
-        Task<bool> CreateNewSaleAsync(CreateSaleModel model);
+        Task<bool> AddSaleAsync(CreateSaleModel model);
     }
 }

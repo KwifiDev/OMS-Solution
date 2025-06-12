@@ -18,12 +18,12 @@ namespace OMS.UI.APIs.Services.Tables
 
         }
 
-        public async Task<bool> CreateNewSaleAsync(CreateSaleModel model)
+        public async Task<bool> AddSaleAsync(CreateSaleModel model)
         {
             try
             {
                 var dto = _mapper.Map<CreateSaleDto>(model);
-                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/add", dto);
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}", dto);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -40,5 +40,8 @@ namespace OMS.UI.APIs.Services.Tables
                 return false;
             }
         }
+
+        public override Task<bool> AddAsync(SaleModel model)
+            => throw new NotImplementedException("AddAsync is disabled for SaleService.");
     }
 }
