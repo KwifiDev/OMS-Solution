@@ -2,6 +2,7 @@
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
+using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.Windows;
@@ -18,7 +19,15 @@ namespace OMS.UI.ViewModels.Windows
         public SalesSummaryViewModel(ISaleService service, ISalesSummaryService displayService, IDialogService dialogService,
                                      IMessageService messageService, IWindowService windowService) : base(service, displayService, dialogService, messageService)
         {
+            SelectedItemChanged += NotifyCanExecuteChanged;
+            CommandConditions[nameof(EditItemCommand)] += CanChangeSale;
+            CommandConditions[nameof(DeleteItemCommand)] += CanChangeSale;
             _windowService = windowService;
+        }
+
+        private void NotifyCanExecuteChanged(object? obj, EventArgs e)
+        {
+            CancelSaleCommand.NotifyCanExecuteChanged();
         }
 
         public async Task<bool> OnOpeningDialog(int? clientId)
@@ -46,13 +55,25 @@ namespace OMS.UI.ViewModels.Windows
 
         protected override Task ShowDetailsWindow(int itemId)
         {
-            throw new NotImplementedException();
+            _messageService.ShowInfoMessage("معلومات", MessageTemplates.NotImplementedMessage);
+            return Task.CompletedTask;
         }
 
         protected override async Task ShowEditorWindow(int? itemId = null)
             => await _dialogService.ShowDialog<AddEditSaleWindow, (int? SaleId, int ClientId)>((itemId, _clientId));
 
+        [RelayCommand(CanExecute = nameof(CanChangeSale))]
+        private void CancelSale()
+        {
+
+        }
+
         [RelayCommand]
         private void Close() => _windowService.Close();
+
+        private bool CanChangeSale()
+        {
+            return SelectedItem?.Status == "غير مكتملة";
+        }
     }
 }

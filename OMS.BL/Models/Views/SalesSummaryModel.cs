@@ -10,6 +10,8 @@ public partial class SalesSummaryModel
 
     public string Description { get; set; } = null!;
 
+    public string Notes { get; set; } = null!;
+
     public string? TotalSales { get; set; }
 
     public string Status { get; set; } = null!;

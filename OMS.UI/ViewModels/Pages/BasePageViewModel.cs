@@ -14,8 +14,7 @@ namespace OMS.UI.ViewModels.Pages
         where TModel : class
         where TMessageModel : class
     {
-        protected event EventHandler? SelectedItemChanged;
-
+        protected readonly Dictionary<string, Func<bool>> CommandConditions = new();
         protected readonly TService _service;
         protected readonly TDisplayService _displayService;
         protected readonly IDialogService _dialogService;
@@ -24,17 +23,27 @@ namespace OMS.UI.ViewModels.Pages
         [ObservableProperty]
         private ObservableCollection<TModel> _items = new();
 
-
         private TModel? _selectedItem;
+        protected event EventHandler? SelectedItemChanged;
 
-        public BasePageViewModel(TService service, TDisplayService displayService, IDialogService dialogService, IMessageService messageService)
+        public BasePageViewModel(TService service, TDisplayService displayService,
+                                 IDialogService dialogService, IMessageService messageService)
         {
             _service = service;
             _displayService = displayService;
             _dialogService = dialogService;
             _messageService = messageService;
 
+            SetDefaultCommandConditions();
+
             WeakReferenceMessenger.Default.Register<IMessage<TMessageModel>>(this, OnMessageReceived);
+        }
+
+        private void SetDefaultCommandConditions()
+        {
+            CommandConditions[nameof(EditItemCommand)] = () => SelectedItem != null;
+            CommandConditions[nameof(DeleteItemCommand)] = () => SelectedItem != null;
+            CommandConditions[nameof(ShowDetailsCommand)] = () => SelectedItem != null;
         }
 
         public TModel? SelectedItem
@@ -42,8 +51,20 @@ namespace OMS.UI.ViewModels.Pages
             get => _selectedItem;
             set
             {
-                if (SetProperty(ref _selectedItem, value)) OnSelectedItemChanged();
+                if (SetProperty(ref _selectedItem, value))
+                {
+                    OnSelectedItemChanged();
+                    RefreshCommandStates();
+                }
             }
+        }
+
+        protected void RefreshCommandStates()
+        {
+            EditItemCommand.NotifyCanExecuteChanged();
+            DeleteItemCommand.NotifyCanExecuteChanged();
+            ShowDetailsCommand.NotifyCanExecuteChanged();
+            AddItemCommand.NotifyCanExecuteChanged();
         }
 
         protected virtual async void OnMessageReceived(object recipient, IMessage<TMessageModel> message)
@@ -70,26 +91,33 @@ namespace OMS.UI.ViewModels.Pages
             if (index >= 0) Items[index] = await ConvertToModel(model);
         }
 
-
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanShowDetails))]
         protected virtual async Task ShowDetails()
         {
             if (SelectedItem == null) return;
             await ShowDetailsWindow(GetItemId(SelectedItem));
         }
 
-        [RelayCommand]
-        protected virtual async Task AddItem()
-            => await ShowEditorWindow();
+        private bool CanShowDetails() =>
+            CommandConditions.TryGetValue(nameof(ShowDetailsCommand), out var condition) ? condition() : true;
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanAddItem))]
+        protected virtual async Task AddItem() => await ShowEditorWindow();
+
+        private bool CanAddItem() =>
+            CommandConditions.TryGetValue(nameof(AddItemCommand), out var condition) ? condition() : true;
+
+        [RelayCommand(CanExecute = nameof(CanEditItem))]
         protected virtual async Task EditItem()
         {
             if (SelectedItem == null) return;
             await ShowEditorWindow(GetItemId(SelectedItem));
         }
 
-        [RelayCommand]
+        private bool CanEditItem() =>
+            CommandConditions.TryGetValue(nameof(EditItemCommand), out var condition) ? condition() : true;
+
+        [RelayCommand(CanExecute = nameof(CanDeleteItem))]
         protected virtual async Task DeleteItem()
         {
             if (SelectedItem == null) return;
@@ -102,20 +130,20 @@ namespace OMS.UI.ViewModels.Pages
             if (success) Items.Remove(SelectedItem);
 
             _messageService.ShowInfoMessage(success ? "تم الحذف" : "خطأ",
-                                            success ? MessageTemplates.DeletionSuccessMessage : MessageTemplates.DeletionErrorMessage);
+                success ? MessageTemplates.DeletionSuccessMessage : MessageTemplates.DeletionErrorMessage);
         }
 
-        private void OnSelectedItemChanged()
+        private bool CanDeleteItem() =>
+            CommandConditions.TryGetValue(nameof(DeleteItemCommand), out var condition) ? condition() : true;
+
+        protected void OnSelectedItemChanged()
         {
             SelectedItemChanged?.Invoke(this, EventArgs.Empty);
         }
 
         #region Common Abstract Methods
-        // This Methods will be implemented in Derived class
-
         [RelayCommand]
         protected abstract Task LoadData();
-
         protected abstract Task<TModel> ConvertToModel(TMessageModel messageModel);
         protected abstract int GetItemId(TModel item);
         protected abstract Task<bool> ExecuteDelete(int itemId);
@@ -124,4 +152,3 @@ namespace OMS.UI.ViewModels.Pages
         #endregion
     }
 }
-

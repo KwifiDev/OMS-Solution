@@ -7,6 +7,7 @@ namespace OMS.UI.Models
         private int _saleId;
         private string _serviceName = null!;
         private string _description = null!;
+        private string _notes = null!;
         private string? _totalSales;
         private string _status = null!;
 
@@ -27,6 +28,12 @@ namespace OMS.UI.Models
         {
             get => _description;
             set => SetProperty(ref _description, value);
+        }
+
+        public string Notes
+        {
+            get => _notes;
+            set => SetProperty(ref _notes, value);
         }
 
         public string? TotalSales

@@ -18,6 +18,9 @@ public partial class SalesSummary
     [StringLength(100)]
     public string Description { get; set; } = null!;
 
+    [StringLength(100)]
+    public string Notes { get; set; } = null!;
+
     [StringLength(19)]
     [Unicode(false)]
     public string? TotalSales { get; set; }

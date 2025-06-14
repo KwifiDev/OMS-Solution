@@ -24,6 +24,7 @@ namespace OMS.DA.Repositories.ViewRepos
                              SaleId = e.SaleId,
                              ServiceName = e.ServiceName,
                              Description = e.Description,
+                             Notes = e.Notes,
                              TotalSales = e.TotalSales,
                              Status = e.Status
                          })
