@@ -17,7 +17,7 @@ namespace OMS.DA.Repositories.EntityRepos
             _context = context;
         }
 
-        public async Task<int> CreateNewSaleAsync(int clientId, int serviceId, short quantity, string? description, string? notes, EnSaleStatus status, int createdByUserId)
+        public async Task<int> AddSaleAsync(int clientId, int serviceId, short quantity, string? description, string? notes, EnSaleStatus status, int createdByUserId)
         {
             SqlParameter newSaleId = new()
             {

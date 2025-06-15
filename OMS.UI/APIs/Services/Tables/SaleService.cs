@@ -41,6 +41,22 @@ namespace OMS.UI.APIs.Services.Tables
             }
         }
 
+
+        public async Task<bool> CancelSaleAsync(int saleId)
+        {
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync($"{_endpoint}/cancel/{saleId}", new { });
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
+
         public override Task<bool> AddAsync(SaleModel model)
             => throw new NotImplementedException("AddAsync is disabled for SaleService.");
     }

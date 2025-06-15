@@ -102,5 +102,12 @@
         public static string InvalidTransactionAmountMessage => "المبلغ المدخل غير صالح. الرجاء إدخال قيمة موجبة";
         public static string InvalidRecipientAccountMessage => "رقم حساب المستلم غير صحيح. الرجاء التحقق والمحاولة مرة أخرى";
 
+        // Cancel Messages
+
+        public static string CancellationSaleConfirmation => "هل انت متأكد من إجراء هذه العملية؟\nسيتم الغاء المبيعة ولن تستطيع التعديل عليها.";
+        public static string CancelSaleSuccessMessage => "تم عملية الغاء المبيعة بنجاح";
+        public static string CancelSaleErrorMessage => "حدث خطأ اثناء عملية الغاء المبيعة";
+
+
     }
 }

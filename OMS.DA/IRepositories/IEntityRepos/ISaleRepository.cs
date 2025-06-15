@@ -15,6 +15,6 @@ namespace OMS.DA.IRepositories.IEntityRepos
         /// <param name="status">Sale Status for the sale.</param>
         /// <param name="createdByUserId">The ID of the user who created the sale.</param>
         /// <returns>The new sale id of the sale or -1 if an error or 0 if (clientId,serviceId,userId) not correct.</returns>
-        Task<int> CreateNewSaleAsync(int clientId, int serviceId, short quantity, string? description, string? notes, EnSaleStatus status, int createdByUserId);
+        Task<int> AddSaleAsync(int clientId, int serviceId, short quantity, string? description, string? notes, EnSaleStatus status, int createdByUserId);
     }
 }

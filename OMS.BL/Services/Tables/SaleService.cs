@@ -4,6 +4,7 @@ using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 using OMS.BL.Models.StoredProcedureParams;
+using OMS.Common.Enums;
 
 namespace OMS.BL.Services.Tables
 {
@@ -18,9 +19,9 @@ namespace OMS.BL.Services.Tables
             _saleRepository = repository;
         }
 
-        public async Task<bool> CreateNewSaleAsync(CreateSaleModel model)
+        public async Task<bool> AddSaleAsync(CreateSaleModel model)
         {
-            model.SaleId = await _saleRepository.CreateNewSaleAsync
+            model.SaleId = await _saleRepository.AddSaleAsync
                 (
                     clientId: model.ClientId,
                     serviceId: model.ServiceId,
@@ -32,6 +33,19 @@ namespace OMS.BL.Services.Tables
                 );
 
             return model.SaleId > 0;
+        }
+
+        public async Task<bool> CancelSaleAsync(int saleId)
+        {
+            var saleModel = await GetByIdAsync(saleId);
+
+            if (saleModel == null) return false;
+
+            if (saleModel.Status == EnSaleStatus.Completed || saleModel.Status == EnSaleStatus.Canceled) return false;
+
+            saleModel.Status = EnSaleStatus.Canceled;
+
+            return await UpdateAsync(saleModel);
         }
     }
 }

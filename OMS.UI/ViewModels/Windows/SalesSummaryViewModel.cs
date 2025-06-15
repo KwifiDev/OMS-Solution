@@ -63,9 +63,23 @@ namespace OMS.UI.ViewModels.Windows
             => await _dialogService.ShowDialog<AddEditSaleWindow, (int? SaleId, int ClientId)>((itemId, _clientId));
 
         [RelayCommand(CanExecute = nameof(CanChangeSale))]
-        private void CancelSale()
+        private async Task CancelSale()
         {
+            if (SelectedItem is null) return;
 
+            if (!_messageService.ShowQuestionMessage("تحذير", MessageTemplates.CancellationSaleConfirmation))
+                return;
+
+            var isSuccess = await _service.CancelSaleAsync(SelectedItem.SaleId);
+
+            if (!isSuccess)
+            {
+                _messageService.ShowErrorMessage("عملية الالغاء", MessageTemplates.CancelSaleErrorMessage);
+                return;
+            }
+
+            SelectedItem.Status = "ملغات";
+            _messageService.ShowInfoMessage("عملية الالغاء", MessageTemplates.CancelSaleSuccessMessage);
         }
 
         [RelayCommand]

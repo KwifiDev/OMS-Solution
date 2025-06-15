@@ -38,7 +38,7 @@ namespace OMS.API.Controllers
             {
                 var model = _mapper.Map<CreateSaleModel>(dto);
 
-                bool isSuccess = await _service.CreateNewSaleAsync(model);
+                bool isSuccess = await _service.AddSaleAsync(model);
                 dto.SaleId = model.SaleId;
                 return Ok(dto);
             }
@@ -50,6 +50,42 @@ namespace OMS.API.Controllers
                     statusCode: StatusCodes.Status500InternalServerError);
             }
         }
+
+
+
+        /// <summary>
+        /// cancel a uncomplted sale.
+        /// </summary>
+        /// <remarks>
+        /// POST /api/sales/cancel/123
+        /// </remarks>
+        /// <param name="saleId">The sale ID containing sale canceling uncompleted sale.</param>
+        /// <returns>Returns true if the sale was canceled other wise return false.</returns>
+        /// <response code="200">Returns the boolean result.</response>
+        /// <response code="400">If the request is invalid (invalid sale ID).</response>
+        /// <response code="500">If an internal server error occurs.</response>
+        [HttpPut("cancel/{saleId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<bool>> CancelSaleAsync([FromRoute] int saleId)
+        {
+            try
+            {
+                bool isSuccess = await _service.CancelSaleAsync(saleId);
+                return Ok(isSuccess);
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Server Error",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+
 
         [NonAction] // This EndPoint Insted Of (AddSaleAsync) Method
         public override Task<ActionResult<SaleDto>> AddAsync([FromBody] SaleDto dto) 

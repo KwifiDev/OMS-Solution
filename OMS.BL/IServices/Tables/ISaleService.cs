@@ -54,6 +54,13 @@ namespace OMS.BL.IServices.Tables
         /// </summary>
         /// <param name="model">The Create Sale Model object representing the args of SP on SQLSERVER to create new sale</param>
         /// <returns>True if the sale was created successfully, otherwise false.</returns>
-        Task<bool> CreateNewSaleAsync(CreateSaleModel model);
+        Task<bool> AddSaleAsync(CreateSaleModel model);
+
+        /// <summary>
+        /// Updates a sale to became canceled asynchronously.
+        /// </summary>
+        /// <param name="saleId">The sale Id representing the sale to cancel.</param>
+        /// <returns>True if the sale was canceled successfully, otherwise false.</returns>
+        Task<bool> CancelSaleAsync(int saleId);
     }
 }
