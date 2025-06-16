@@ -1,8 +1,8 @@
 ﻿using OMS.Common.Enums;
 
-namespace OMS.UI.APIs.Dtos.StoredProcedureParams
+namespace OMS.API.Dtos.StoredProcedureParams
 {
-    public class CreateSaleDto
+    public class SaleCreationDto
     {
         public int SaleId { get; set; }
 

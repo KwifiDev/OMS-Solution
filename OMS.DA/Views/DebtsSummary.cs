@@ -10,6 +10,8 @@ public partial class DebtsSummary
     [Id]
     public int DebtId { get; set; }
 
+    public int? ClientId { get; set; }
+
     [StringLength(41)]
     public string ClientName { get; set; } = null!;
 
@@ -18,6 +20,9 @@ public partial class DebtsSummary
 
     [StringLength(100)]
     public string Description { get; set; } = null!;
+
+    [StringLength(100)]
+    public string Notes { get; set; } = null!;
 
     [StringLength(19)]
     [Unicode(false)]

@@ -22,12 +22,12 @@ namespace OMS.UI.APIs.Services.Tables
         {
             try
             {
-                var dto = _mapper.Map<CreateSaleDto>(model);
+                var dto = _mapper.Map<SaleCreationDto>(model);
                 var response = await _httpClient.PostAsJsonAsync($"{_endpoint}", dto);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var createdSaleDto = await response.Content.ReadFromJsonAsync<CreateSaleDto>();
+                    var createdSaleDto = await response.Content.ReadFromJsonAsync<SaleCreationDto>();
                     return (model.SaleId = createdSaleDto!.SaleId) > 0;
                 }
 

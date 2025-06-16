@@ -32,7 +32,7 @@ namespace OMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<CreateSaleDto>> AddSaleAsync([FromBody] CreateSaleDto dto)
+        public async Task<ActionResult<SaleCreationDto>> AddSaleAsync([FromBody] SaleCreationDto dto)
         {
             try
             {
