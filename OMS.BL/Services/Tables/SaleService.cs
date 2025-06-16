@@ -35,11 +35,11 @@ namespace OMS.BL.Services.Tables
             return model.SaleId > 0;
         }
 
-        public async Task<bool> CancelSaleAsync(int saleId)
+        public async Task<bool?> CancelSaleAsync(int saleId)
         {
             var saleModel = await GetByIdAsync(saleId);
 
-            if (saleModel == null) return false;
+            if (saleModel == null) return null;
 
             if (saleModel.Status == EnSaleStatus.Completed || saleModel.Status == EnSaleStatus.Canceled) return false;
 

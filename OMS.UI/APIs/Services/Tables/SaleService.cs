@@ -46,7 +46,7 @@ namespace OMS.UI.APIs.Services.Tables
         {
             try
             {
-                var response = await _httpClient.PutAsJsonAsync($"{_endpoint}/cancel/{saleId}", new { });
+                var response = await _httpClient.PatchAsync($"{_endpoint}/{saleId}/cancel", null);
 
                 return response.IsSuccessStatusCode;
             }

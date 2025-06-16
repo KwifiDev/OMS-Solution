@@ -54,26 +54,38 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// cancel a uncomplted sale.
+        /// Cancel an uncompleted sale.
         /// </summary>
         /// <remarks>
-        /// POST /api/sales/cancel/123
+        /// Example request:
+        /// Patch /api/sales/123/cancel
         /// </remarks>
-        /// <param name="saleId">The sale ID containing sale canceling uncompleted sale.</param>
-        /// <returns>Returns true if the sale was canceled other wise return false.</returns>
-        /// <response code="200">Returns the boolean result.</response>
-        /// <response code="400">If the request is invalid (invalid sale ID).</response>
-        /// <response code="500">If an internal server error occurs.</response>
-        [HttpPut("cancel/{saleId:int}")]
+        /// <param name="saleId">The ID of the sale to be canceled.</param>
+        /// <returns>Returns operation result.</returns>
+        /// <response code="200">Sale canceled successfully.</response>
+        /// <response code="400">Invalid request.</response>
+        /// <response code="404">Sale not found.</response>
+        /// <response code="409">Sale cannot be canceled in its current state.</response>
+        /// <response code="500">Internal server error.</response>
+        [HttpPatch("{saleId:int}/cancel")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status409Conflict)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<bool>> CancelSaleAsync([FromRoute] int saleId)
+        public async Task<IActionResult> CancelSaleAsync([FromRoute] int saleId)
         {
+            if (saleId <= 0) return BadRequest("Invalid sale ID");
+
             try
             {
-                bool isSuccess = await _service.CancelSaleAsync(saleId);
-                return Ok(isSuccess);
+                var isSuccess = await _service.CancelSaleAsync(saleId);
+
+                if (isSuccess is null) return NotFound();
+
+                if (isSuccess == false) return Conflict("Sale Status may be already completed or canceled");
+                
+                return Ok();
             }
             catch (Exception ex)
             {

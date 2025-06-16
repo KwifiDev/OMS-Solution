@@ -61,6 +61,6 @@ namespace OMS.BL.IServices.Tables
         /// </summary>
         /// <param name="saleId">The sale Id representing the sale to cancel.</param>
         /// <returns>True if the sale was canceled successfully, otherwise false.</returns>
-        Task<bool> CancelSaleAsync(int saleId);
+        Task<bool?> CancelSaleAsync(int saleId);
     }
 }
