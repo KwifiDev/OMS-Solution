@@ -1,34 +1,85 @@
-﻿using OMS.UI.APIs.Services.Interfaces.Tables;
-using OMS.Common.Enums;
-using OMS.UI.APIs.Services.Generices;
-using OMS.UI.APIs.Dtos.Tables;
-using AutoMapper;
-using OMS.UI.APIs.EndPoints;
-using System.Net.Http;
+﻿using AutoMapper;
 using OMS.UI.APIs.Dtos.StoredProcedureParams;
+using OMS.UI.APIs.Dtos.Tables;
+using OMS.UI.APIs.EndPoints;
+using OMS.UI.APIs.Services.Generices;
+using OMS.UI.APIs.Services.Interfaces.Tables;
+using OMS.UI.Models;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace OMS.UI.APIs.Services.Tables
 {
-    //public class DebtService : GenericApiService<DebtDto, DebtModel>, IDebtService
-    //{
+    public class DebtService : GenericApiService<DebtDto, DebtModel>, IDebtService
+    {
 
-    //    public DebtService(HttpClient httpClient, IMapper mapper) : base(httpClient, mapper, ApiEndpoints.Accounts)
-    //    {
-    //    }
+        public DebtService(IHttpClientFactory httpClientFactory, IMapper mapper)
+            : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Debts)
+        {
+        }
 
-    //    public Task<bool> PayDebtByIdAsync(PayDebtDto dto)
-    //    {
-    //        //model.PayDebtStatus = await _debtRepository.PayDebtByIdAsync
-    //        //    (
-    //        //        debtId: model.DebtId,
-    //        //        notes: model.Notes,
-    //        //        createdByUserId: model.CreatedByUserId
-    //        //    );
+        public async Task<bool> AddDebtAsync(DebtCreationModel model)
+        {
+            try
+            {
+                var dto = _mapper.Map<DebtCreationDto>(model);
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}", dto);
 
-    //        //return model.PayDebtStatus == EnPayDebtStatus.Success;
-    //        throw new NotImplementedException();
-    //    }
+                if (response.IsSuccessStatusCode)
+                {
+                    var createdDebtDto = await response.Content.ReadFromJsonAsync<DebtCreationDto>();
+                    return (model.DebtId = createdDebtDto!.DebtId) > 0;
+                }
 
-      
-    //}
+                LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                return false;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
+
+
+        public async Task<bool> CancelDebtAsync(int debtId)
+        {
+            try
+            {
+                var response = await _httpClient.PatchAsync($"{_endpoint}/{debtId}/cancel", null);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
+
+        public override Task<bool> AddAsync(DebtModel model)
+            => throw new NotImplementedException("AddAsync is disabled for DebtService.");
+
+
+        public Task<bool> PayDebtByIdAsync(PayDebtModel dto)
+        {
+            //model.PayDebtStatus = await _debtRepository.PayDebtByIdAsync
+            //    (
+            //        debtId: model.DebtId,
+            //        notes: model.Notes,
+            //        createdByUserId: model.CreatedByUserId
+            //    );
+
+            //return model.PayDebtStatus == EnPayDebtStatus.Success;
+            throw new NotImplementedException();
+        }
+
+
+    }
 }

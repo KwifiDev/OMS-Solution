@@ -14,6 +14,13 @@ namespace OMS.BL.IServices.Views
         Task<IEnumerable<DebtsSummaryModel>> GetAllAsync();
 
         /// <summary>
+        /// Retrieves an DebtsSummary Model by clientId.
+        /// </summary>
+        /// <param name="clientId">The ID of the client.</param>
+        /// <returns>The DebtsSummary Model if found; otherwise, null.</returns>
+        Task<IEnumerable<DebtsSummaryModel>> GetByClientIdAsync(int clientId);
+
+        /// <summary>
         /// Retrieves a debt summary by its ID asynchronously.
         /// </summary>
         /// <param name="debtId">The ID of the debt summary to retrieve.</param>

@@ -14,5 +14,21 @@ namespace OMS.DA.Repositories.ViewRepos
             _debtsSummaries = context.Set<DebtsSummary>();
         }
 
+        public async Task<IEnumerable<DebtsSummary>> GetByClientIdAsync(int clientId)
+        {
+            return await _debtsSummaries
+                         .AsNoTracking()
+                         .Where(e => e.ClientId == clientId)
+                         .Select(e => new DebtsSummary
+                         {
+                             DebtId = e.DebtId,
+                             ServiceName = e.ServiceName,
+                             Description = e.Description,
+                             Notes = e.Notes,
+                             TotalDebts = e.TotalDebts,
+                             Status = e.Status
+                         })
+                         .ToListAsync();
+        }
     }
 }

@@ -47,6 +47,12 @@
     <Compile Update="Views\Windows\AddEditBranchWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Windows\AddEditDebtWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Windows\DebtsSummaryWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +60,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Windows\AddEditBranchWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Windows\AddEditDebtWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

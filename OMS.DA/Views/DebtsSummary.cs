@@ -12,9 +12,6 @@ public partial class DebtsSummary
 
     public int? ClientId { get; set; }
 
-    [StringLength(41)]
-    public string ClientName { get; set; } = null!;
-
     [StringLength(25)]
     public string ServiceName { get; set; } = null!;
 

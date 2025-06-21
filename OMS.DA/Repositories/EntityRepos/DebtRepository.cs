@@ -33,5 +33,20 @@ namespace OMS.DA.Repositories.EntityRepos
 
         }
 
+        public async Task<int> AddDebtAsync(int clientId, int serviceId, short quantity, string? description, string? notes, int createdByUserId)
+        {
+            SqlParameter newDebtId = new()
+            {
+                ParameterName = "@newDebtId",
+                SqlDbType = SqlDbType.Int,
+                Direction = ParameterDirection.Output
+            };
+
+            await _context.Database.ExecuteSqlInterpolatedAsync
+                ($"EXEC dbo.SP_AddDebt {clientId}, {serviceId}, {quantity}, {description}, {notes}, {createdByUserId}, {newDebtId} OUTPUT");
+
+            return ((int)newDebtId.Value);
+        }
+
     }
 }

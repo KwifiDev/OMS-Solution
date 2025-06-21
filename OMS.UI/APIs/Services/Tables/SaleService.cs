@@ -18,7 +18,7 @@ namespace OMS.UI.APIs.Services.Tables
 
         }
 
-        public async Task<bool> AddSaleAsync(CreateSaleModel model)
+        public async Task<bool> AddSaleAsync(SaleCreationModel model)
         {
             try
             {
@@ -48,7 +48,13 @@ namespace OMS.UI.APIs.Services.Tables
             {
                 var response = await _httpClient.PatchAsync($"{_endpoint}/{saleId}/cancel", null);
 
-                return response.IsSuccessStatusCode;
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return false;
+                }
+
+                return true;
             }
             catch (Exception ex)
             {

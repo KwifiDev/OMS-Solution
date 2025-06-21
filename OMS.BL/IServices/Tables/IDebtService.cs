@@ -22,6 +22,13 @@ namespace OMS.BL.IServices.Tables
         Task<DebtModel?> GetByIdAsync(int debtId);
 
         /// <summary>
+        /// find a debt by their ID asynchronously.
+        /// </summary>
+        /// <param name="debtId">The ID of the debt to find.</param>
+        /// <returns>True if the debt was exist, otherwise false.</returns>
+        Task<bool> IsExistAsync(int debtId);
+
+        /// <summary>
         /// Adds a new debt asynchronously.
         /// </summary>
         /// <param name="model">The DebtModel object representing the new debt.</param>
@@ -48,5 +55,19 @@ namespace OMS.BL.IServices.Tables
         /// <param name="model">The PayDebtModel object representing the payment details.</param>
         /// <returns>True if the debt was paid successfully, otherwise false.</returns>
         Task<bool> PayDebtByIdAsync(PayDebtModel model);
+
+        /// <summary>
+        /// Create a debt record with fully computed columns then insert it into debts table.
+        /// </summary>
+        /// <param name="model">The Create debt Model object representing the args of SP on SQLSERVER to create new debt</param>
+        /// <returns>True if the debt was created successfully, otherwise false.</returns>
+        Task<bool> AddDebtAsync(DebtCreationModel model);
+
+        /// <summary>
+        /// Updates a debt to became canceled asynchronously.
+        /// </summary>
+        /// <param name="debtId">The debt Id representing the debt to cancel.</param>
+        /// <returns>True if the debt was canceled successfully, otherwise false.</returns>
+        Task<bool?> CancelDebtAsync(int debtId);
     }
 }

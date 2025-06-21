@@ -4,11 +4,13 @@ public partial class DebtsSummaryModel
 {
     public int DebtId { get; set; }
 
-    public string ClientName { get; set; } = null!;
+    public int? ClientId { get; set; }
 
     public string ServiceName { get; set; } = null!;
 
     public string Description { get; set; } = null!;
+
+    public string Notes { get; set; } = null!;
 
     public string? TotalDebts { get; set; }
 

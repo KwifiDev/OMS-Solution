@@ -89,6 +89,12 @@ builder.Services.AddScoped<ISaleService, SaleService>();
 builder.Services.AddScoped<ISalesSummaryRepository, SalesSummaryRepository>();
 builder.Services.AddScoped<ISalesSummaryService, SalesSummaryService>();
 
+builder.Services.AddScoped<IDebtRepository, DebtRepository>();
+builder.Services.AddScoped<IDebtService, DebtService>();
+
+builder.Services.AddScoped<IDebtsSummaryRepository, DebtsSummaryRepository>();
+builder.Services.AddScoped<IDebtsSummaryService, DebtsSummaryService>();
+
 
 var app = builder.Build();
 

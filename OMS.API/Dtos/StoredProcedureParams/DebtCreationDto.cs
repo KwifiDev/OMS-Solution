@@ -1,15 +1,8 @@
-﻿using OMS.Common.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OMS.UI.Models
+﻿namespace OMS.API.Dtos.StoredProcedureParams
 {
-    public class CreateSaleModel
+    public class DebtCreationDto
     {
-        public int SaleId { get; set; }
+        public int DebtId { get; set; }
 
         public int ClientId { get; set; }
 
@@ -20,8 +13,6 @@ namespace OMS.UI.Models
         public string? Description { get; set; }
 
         public string? Notes { get; set; }
-
-        public EnSaleStatus Status { get; set; }
 
         public int CreatedByUserId { get; set; }
     }

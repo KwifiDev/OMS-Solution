@@ -113,6 +113,9 @@ namespace OMS.UI
 
             services.AddTransient<ISalesSummaryService, SalesSummaryService>();
 
+            services.AddTransient<IDebtService, DebtService>();
+
+            services.AddTransient<IDebtsSummaryService, DebtsSummaryService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)
@@ -168,6 +171,10 @@ namespace OMS.UI
             services.AddTransient<SalesSummaryViewModel>();
 
             services.AddTransient<AddEditSaleViewModel>();
+
+            services.AddTransient<DebtsSummaryViewModel>();
+
+            services.AddTransient<AddEditDebtViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -234,6 +241,13 @@ namespace OMS.UI
 
             services.AddTransient(provider =>
                 new AddEditSaleWindow { DataContext = provider.GetRequiredService<AddEditSaleViewModel>() });
+
+            services.AddTransient(provider =>
+                new DebtsSummaryWindow { DataContext = provider.GetRequiredService<DebtsSummaryViewModel>() });
+
+            services.AddTransient(provider =>
+                new AddEditDebtWindow { DataContext = provider.GetRequiredService<AddEditDebtViewModel>() });
+
         }
 
         private static void RegisterMVVMServices(IServiceCollection services)

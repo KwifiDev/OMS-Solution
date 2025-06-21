@@ -101,6 +101,10 @@
                               Command="{Binding ShowSalesSummaryCommand}"
                               Icon="{materialDesign:PackIcon Kind=Salesforce}"/>
 
+                    <MenuItem Header="عرض الديون" 
+                              Command="{Binding ShowDebtsSummaryCommand}"
+                              Icon="{materialDesign:PackIcon Kind=DivideBox}"/>
+
 
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
                     

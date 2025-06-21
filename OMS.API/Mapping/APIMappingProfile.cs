@@ -38,7 +38,7 @@ namespace OMS.API.Mapping
 
             CreateMap<SaleModel, SaleDto>().ReverseMap();
 
-            CreateMap<CreateSaleModel, SaleCreationDto>().ReverseMap();
+            CreateMap<SaleCreationModel, SaleCreationDto>().ReverseMap();
 
             CreateMap<ServiceModel, ServiceDto>().ReverseMap();
 
@@ -65,6 +65,8 @@ namespace OMS.API.Mapping
             CreateMap<DebtsByStatusModel, DebtsByStatusDto>().ReverseMap();
 
             CreateMap<DebtsSummaryModel, DebtsSummaryDto>().ReverseMap();
+
+            CreateMap<DebtCreationModel, DebtCreationDto>().ReverseMap();
 
             CreateMap<DiscountsAppliedModel, DiscountsAppliedDto>()
                 .ForSourceMember(src => src.ServiceId, opt => opt.DoNotValidate())

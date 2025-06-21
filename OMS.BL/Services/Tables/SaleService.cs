@@ -19,7 +19,7 @@ namespace OMS.BL.Services.Tables
             _saleRepository = repository;
         }
 
-        public async Task<bool> AddSaleAsync(CreateSaleModel model)
+        public async Task<bool> AddSaleAsync(SaleCreationModel model)
         {
             model.SaleId = await _saleRepository.AddSaleAsync
                 (

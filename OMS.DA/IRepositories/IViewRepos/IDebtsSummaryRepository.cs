@@ -11,6 +11,13 @@ namespace OMS.DA.IRepositories.IViewRepos
         Task<IEnumerable<DebtsSummary>> GetAllAsync();
 
         /// <summary>
+        /// Retrieves an DebtsSummary by clientId.
+        /// </summary>
+        /// <param name="clientId">The ID of the client.</param>
+        /// <returns>The DebtsSummary if found; otherwise, null.</returns>
+        Task<IEnumerable<DebtsSummary>> GetByClientIdAsync(int clientId);
+
+        /// <summary>
         /// Retrieves an DebtsSummary by debtId.
         /// </summary>
         /// <param name="debtId">The ID of the debt.</param>

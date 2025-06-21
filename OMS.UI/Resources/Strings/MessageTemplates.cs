@@ -108,6 +108,10 @@
         public static string CancelSaleSuccessMessage => "تم عملية الغاء المبيعة بنجاح";
         public static string CancelSaleErrorMessage => "حدث خطأ اثناء عملية الغاء المبيعة";
 
+        public static string CancellationDebtConfirmation => "هل انت متأكد من إجراء هذه العملية؟\nسيتم الغاء الدين ولن تستطيع التعديل عليه.";
+        public static string CancelDebtSuccessMessage => "تم عملية الغاء الدين بنجاح";
+        public static string CancelDebtErrorMessage => "حدث خطأ اثناء عملية الغاء الدين";
+
 
     }
 }

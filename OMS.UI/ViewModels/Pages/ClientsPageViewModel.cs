@@ -54,6 +54,7 @@ namespace OMS.UI.ViewModels.Pages
             ShowClientAccountDepositCommand.NotifyCanExecuteChanged();
             ShowClientAccountWithdrawCommand.NotifyCanExecuteChanged();
             ShowClientAccountTransferCommand.NotifyCanExecuteChanged();
+            ShowDebtsSummaryCommand.NotifyCanExecuteChanged();
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenAccountServices))]
@@ -86,6 +87,12 @@ namespace OMS.UI.ViewModels.Pages
         private void ShowSalesSummary()
         {
             _dialogService.ShowDialog<SalesSummaryWindow, int?>(SelectedItem?.ClientId);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanOpenAccountServices))]
+        private void ShowDebtsSummary()
+        {
+            _dialogService.ShowDialog<DebtsSummaryWindow, int?>(SelectedItem?.ClientId);
         }
 
         private bool CanOpenAccountServices()

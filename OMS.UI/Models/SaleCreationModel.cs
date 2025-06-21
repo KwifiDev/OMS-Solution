@@ -1,8 +1,8 @@
 ﻿using OMS.Common.Enums;
 
-namespace OMS.BL.Models.StoredProcedureParams
+namespace OMS.UI.Models
 {
-    public class CreateSaleModel
+    public class SaleCreationModel
     {
         public int SaleId { get; set; }
 

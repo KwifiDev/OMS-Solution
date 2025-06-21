@@ -1,7 +1,7 @@
-﻿using OMS.BL.Models.StoredProcedureParams;
-using OMS.BL.Models.Tables;
-using OMS.BL.IServices.Tables;
+﻿using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
+using OMS.BL.Models.StoredProcedureParams;
+using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
@@ -31,6 +31,33 @@ namespace OMS.BL.Services.Tables
             return model.PayDebtStatus == EnPayDebtStatus.Success;
         }
 
-      
+        public async Task<bool> AddDebtAsync(DebtCreationModel model)
+        {
+            model.DebtId = await _debtRepository.AddDebtAsync
+                (
+                    clientId: model.ClientId,
+                    serviceId: model.ServiceId,
+                    quantity: model.Quantity,
+                    description: model.Description,
+                    notes: model.Notes,
+                    createdByUserId: model.CreatedByUserId
+                );
+
+            return model.DebtId > 0;
+        }
+
+        public async Task<bool?> CancelDebtAsync(int debtId)
+        {
+            var debtModel = await GetByIdAsync(debtId);
+
+            if (debtModel == null) return null;
+
+            if (debtModel.Status == EnDebtStatus.Paid || debtModel.Status == EnDebtStatus.Canceled) return false;
+
+            debtModel.Status = EnDebtStatus.Canceled;
+
+            return await UpdateAsync(debtModel);
+        }
+
     }
 }
