@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using OMS.Common.Enums;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
@@ -20,14 +22,24 @@ namespace OMS.UI.ViewModels.Windows
                                      IMessageService messageService, IWindowService windowService) : base(service, displayService, dialogService, messageService)
         {
             SelectedItemChanged += NotifyCanExecuteChanged;
-            CommandConditions[nameof(EditItemCommand)] += CanChangeSale;
-            CommandConditions[nameof(DeleteItemCommand)] += CanChangeSale;
+            CommandConditions[nameof(EditItemCommand)] += CanChangeDebt;
+            CommandConditions[nameof(DeleteItemCommand)] += CanChangeDebt;
             _windowService = windowService;
+
+            WeakReferenceMessenger.Default.Register<PayDebtModel>(this, (obj, payDebtModel) =>
+            {
+                if (payDebtModel.PayDebtStatus == EnPayDebtStatus.Success) 
+                {
+                    SelectedItem!.Status = "مدفوع";
+                    SelectedItem!.Notes = payDebtModel.Notes is not null ? payDebtModel.Notes : "لا يوجد ملاحظات";
+                }
+            });
         }
 
         private void NotifyCanExecuteChanged(object? obj, EventArgs e)
         {
             CancelSaleCommand.NotifyCanExecuteChanged();
+            ShowPayDebtCommand.NotifyCanExecuteChanged();
         }
 
         public async Task<bool> OnOpeningDialog(int? clientId)
@@ -62,7 +74,7 @@ namespace OMS.UI.ViewModels.Windows
         protected override async Task ShowEditorWindow(int? itemId = null)
             => await _dialogService.ShowDialog<AddEditDebtWindow, (int? DebtId, int ClientId)>((itemId, _clientId));
 
-        [RelayCommand(CanExecute = nameof(CanChangeSale))]
+        [RelayCommand(CanExecute = nameof(CanChangeDebt))]
         private async Task CancelSale()
         {
             if (SelectedItem is null) return;
@@ -85,7 +97,14 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private void Close() => _windowService.Close();
 
-        private bool CanChangeSale()
+
+        [RelayCommand(CanExecute = nameof(CanChangeDebt))]
+        private async Task ShowPayDebt()
+        {
+            await _dialogService.ShowDialog<PayDebtWindow, int?>(SelectedItem?.DebtId);
+        }
+
+        private bool CanChangeDebt()
         {
             return SelectedItem?.Status == "غير مدفوع";
         }

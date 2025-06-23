@@ -1,12 +1,19 @@
 ﻿using OMS.Common.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.API.Dtos.StoredProcedureParams
 {
     public class PayDebtDto
     {
-        public required int DebtId { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Debt ID must be a positive number")]
+        public int DebtId { get; set; }
+
         public string? Notes { get; set; }
-        public required int CreatedByUserId { get; set; }
+
+        [Required(ErrorMessage = "User Id required")]
+        [Range(1, int.MaxValue, ErrorMessage = "User ID must be a positive number")]
+        public int CreatedByUserId { get; set; }
+
         public EnPayDebtStatus PayDebtStatus { get; set; } = EnPayDebtStatus.Empty;
 
     }

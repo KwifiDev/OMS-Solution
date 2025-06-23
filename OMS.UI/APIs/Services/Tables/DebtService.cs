@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OMS.Common.Enums;
 using OMS.UI.APIs.Dtos.StoredProcedureParams;
 using OMS.UI.APIs.Dtos.Tables;
 using OMS.UI.APIs.EndPoints;
@@ -67,17 +68,24 @@ namespace OMS.UI.APIs.Services.Tables
             => throw new NotImplementedException("AddAsync is disabled for DebtService.");
 
 
-        public Task<bool> PayDebtByIdAsync(PayDebtModel dto)
+        public async Task<EnPayDebtStatus> PayDebtAsync(PayDebtModel dto)
         {
-            //model.PayDebtStatus = await _debtRepository.PayDebtByIdAsync
-            //    (
-            //        debtId: model.DebtId,
-            //        notes: model.Notes,
-            //        createdByUserId: model.CreatedByUserId
-            //    );
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/pay", dto);
 
-            //return model.PayDebtStatus == EnPayDebtStatus.Success;
-            throw new NotImplementedException();
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                }
+
+                return (EnPayDebtStatus)(await response.Content.ReadFromJsonAsync<int>());
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return default;
+            }
         }
 
 

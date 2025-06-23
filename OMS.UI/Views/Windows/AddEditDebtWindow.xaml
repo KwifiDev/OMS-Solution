@@ -50,7 +50,6 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Label x:Name="lblTitle"
@@ -135,19 +134,7 @@
             </i:Interaction.Behaviors>
         </TextBox>
 
-        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-         Text="{Binding Model.Notes}"
-         FontSize="16"
-         Margin="10,5,10,5"
-         materialDesign:HintAssist.Hint="ملاحظات"
-         Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"
-         IsEnabled="{Binding Status.IsModifiable}">
-
-            <i:Interaction.Behaviors>
-                <inputBehaviors:ArabicAndNumbersInputBehavior/>
-            </i:Interaction.Behaviors>
-        </TextBox>
-
+      
 
         <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
           ItemsSource="{Binding Services}"

@@ -94,7 +94,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         {
             if (!ValidateModel()) return;
 
-            //var model = MapToDto();
             var isAdding = Status.SelectMode == AddEditStatus.EnMode.Add;
 
             bool isSuccess = await SaveDataAsync(isAdding, Model);
@@ -106,7 +105,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             }
 
 
-            //UpdateModelAfterSave(Model);
             UpdateStatusAndNotify(isAdding);
         }
 

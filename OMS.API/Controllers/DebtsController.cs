@@ -5,6 +5,7 @@ using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
+using OMS.Common.Enums;
 
 namespace OMS.API.Controllers
 {
@@ -86,6 +87,47 @@ namespace OMS.API.Controllers
                 if (isSuccess == false) return Conflict("Debt Status may be already paid or canceled");
 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Server Error",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+        /// <summary>
+        /// Pay a Debt.
+        /// </summary>
+        /// <remarks>
+        /// Example request:
+        /// Patch /api/Debts/123/pay
+        /// </remarks>
+        /// <param name="PayDebtDto">The data transfare object.</param>
+        /// <returns>Returns operation result.</returns>
+        /// <response code="200">Debt paid successfully.</response>
+        /// <response code="400">Invalid request.</response>
+        /// <response code="404">Debt not found.</response>
+        /// <response code="409">Debt cannot be paid in its current state.</response>
+        /// <response code="500">Internal server error.</response>
+        [HttpPost("pay")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> PayDebtAsync([FromBody] PayDebtDto PayDebtDto)
+        {
+            try
+            {
+                var isExist = await _service.IsExistAsync(PayDebtDto.DebtId);
+                if (!isExist) return NotFound();
+
+                var payDebtModel = _mapper.Map<PayDebtModel>(PayDebtDto);
+
+                await _service.PayDebtByIdAsync(payDebtModel);
+
+                return Ok((int)payDebtModel.PayDebtStatus);
             }
             catch (Exception ex)
             {

@@ -133,6 +133,11 @@
 
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
+                    <MenuItem Header="دفع" 
+                              Command="{Binding ShowPayDebtCommand}"
+                              Icon="{materialDesign:PackIcon Kind=RecurringPayment}"/>
+
+                    <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
                     <MenuItem Header="إضافة دين" 
                               Command="{Binding AddItemCommand}"

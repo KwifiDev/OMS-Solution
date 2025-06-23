@@ -1,5 +1,6 @@
 ﻿
 
+using OMS.Common.Enums;
 using OMS.UI.Models;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables
@@ -21,6 +22,13 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// <param name="debtId">The ID of the debt.</param>
         /// <returns>The DebtModel object if found, otherwise null.</returns>
         Task<DebtModel?> GetByIdAsync(int debtId);
+
+        /// <summary>
+        /// find a debt by their ID asynchronously.
+        /// </summary>
+        /// <param name="debtId">The ID of the debt to find.</param>
+        /// <returns>True if the debt was exist, otherwise false.</returns>
+        Task<bool> IsExistAsync(int debtId);
 
         /// <summary>
         /// Adds a new debt asynchronously.
@@ -49,7 +57,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// </summary>
         /// <param name="model">The PayDebtModel object representing the payment details.</param>
         /// <returns>True if the debt was paid successfully, otherwise false.</returns>
-        Task<bool> PayDebtByIdAsync(PayDebtModel model);
+        Task<EnPayDebtStatus> PayDebtAsync(PayDebtModel model);
 
         /// <summary>
         /// Create a Debt record with fully computed columns then insert it into Debts table.
