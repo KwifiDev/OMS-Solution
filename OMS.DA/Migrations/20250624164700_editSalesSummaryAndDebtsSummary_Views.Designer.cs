@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OMS.DA.Context;
 
 #nullable disable
 
-namespace OMS.DA.Migrations
+namespace OMS1.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250624164700_editSalesSummaryAndDebtsSummary_Views")]
+    partial class editSalesSummaryAndDebtsSummary_Views
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -681,8 +684,10 @@ namespace OMS.DA.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(9)");
 
-                    b.Property<decimal?>("TotalDebts")
-                        .HasColumnType("decimal(14, 2)");
+                    b.Property<string>("TotalDebts")
+                        .HasMaxLength(19)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(19)");
 
                     b.ToTable((string)null);
 
@@ -818,8 +823,10 @@ namespace OMS.DA.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(9)");
 
-                    b.Property<decimal?>("TotalSales")
-                        .HasColumnType("decimal(14, 2)");
+                    b.Property<string>("TotalSales")
+                        .HasMaxLength(19)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(19)");
 
                     b.ToTable((string)null);
 
@@ -834,7 +841,7 @@ namespace OMS.DA.Migrations
                         .HasColumnType("nvarchar(25)");
 
                     b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(14, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
@@ -905,8 +912,10 @@ namespace OMS.DA.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("ClientBalance")
-                        .HasColumnType("decimal(8, 2)");
+                    b.Property<string>("ClientBalance")
+                        .HasMaxLength(19)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(19)");
 
                     b.Property<string>("ClientName")
                         .IsRequired()

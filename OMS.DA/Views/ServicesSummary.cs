@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.CustomAttributes;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Views
 {
@@ -13,6 +14,7 @@ namespace OMS.DA.Views
         [StringLength(25)]
         public string Name { get; set; } = null!;
 
+        [Column(TypeName = "decimal(14, 2)")]
         public decimal? Price { get; set; }
 
         public int? TotalConsumed { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.CustomAttributes;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Views;
 
@@ -21,9 +22,8 @@ public partial class SalesSummary
     [StringLength(100)]
     public string Notes { get; set; } = null!;
 
-    [StringLength(19)]
-    [Unicode(false)]
-    public string? TotalSales { get; set; }
+    [Column(TypeName = "decimal(14, 2)")]
+    public decimal? TotalSales { get; set; }
 
     [StringLength(9)]
     [Unicode(false)]

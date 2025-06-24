@@ -5,5 +5,6 @@
         AddEditStatus CreateAddEditStatus();
         SearchStatus CreateSearchStatus();
         TransactionStatus CreateTransactionStatus();
+        DebtStatus CreateDebtStatus();
     }
 }

@@ -64,16 +64,16 @@ namespace OMS.UI.ViewModels.Pages
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenAccountServices))]
-        private void ShowClientAccountDeposit()
+        private async Task ShowClientAccountDeposit()
         {
-            _dialogService.ShowDialog<ClientAccountTransactionWindow, TransactionParams>
+            await _dialogService.ShowDialog<ClientAccountTransactionWindow, TransactionParams>
                 (new TransactionParams(SelectedItem?.AccountId, TransactionStatus.EnMode.Deposit));
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenAccountServices))]
-        private void ShowClientAccountWithdraw()
+        private async Task ShowClientAccountWithdraw()
         {
-            _dialogService.ShowDialog<ClientAccountTransactionWindow, TransactionParams>
+            await _dialogService.ShowDialog<ClientAccountTransactionWindow, TransactionParams>
                 (new TransactionParams(SelectedItem?.AccountId, TransactionStatus.EnMode.Withdraw));
         }
 
@@ -84,15 +84,15 @@ namespace OMS.UI.ViewModels.Pages
         }
 
         [RelayCommand]
-        private void ShowSalesSummary()
+        private async Task ShowSalesSummary()
         {
-            _dialogService.ShowDialog<SalesSummaryWindow, int?>(SelectedItem?.ClientId);
+            await _dialogService.ShowDialog<SalesSummaryWindow, int?>(SelectedItem?.ClientId);
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenAccountServices))]
-        private void ShowDebtsSummary()
+        private async Task ShowDebtsSummary()
         {
-            _dialogService.ShowDialog<DebtsSummaryWindow, int?>(SelectedItem?.ClientId);
+            await _dialogService.ShowDialog<DebtsSummaryWindow, (int ClientId, int AccountId)>((SelectedItem!.ClientId, (int)SelectedItem.AccountId!));
         }
 
         private bool CanOpenAccountServices()

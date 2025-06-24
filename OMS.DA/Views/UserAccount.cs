@@ -22,7 +22,6 @@ public partial class UserAccount
     [Unicode(false)]
     public string ClientType { get; set; } = null!;
 
-    [StringLength(19)]
-    [Unicode(false)]
-    public string? ClientBalance { get; set; }
+    [Column(TypeName = "decimal(8, 2)")]
+    public decimal ClientBalance { get; set; }
 }

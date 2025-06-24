@@ -68,10 +68,11 @@ namespace OMS.UI.APIs.Services.Tables
             => throw new NotImplementedException("AddAsync is disabled for DebtService.");
 
 
-        public async Task<EnPayDebtStatus> PayDebtAsync(PayDebtModel dto)
+        public async Task<EnPayDebtStatus> PayDebtAsync(PayDebtModel model)
         {
             try
             {
+                var dto = _mapper.Map<PayDebtDto>(model);
                 var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/pay", dto);
 
                 if (!response.IsSuccessStatusCode)

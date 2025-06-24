@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using OMS.API.Dtos.StoredProcedureParams;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
+using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
 
 namespace OMS.API.Controllers
@@ -97,6 +99,45 @@ namespace OMS.API.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Pay all Debts by Client Id.
+        /// </summary>
+        /// <remarks>
+        /// Example request:
+        /// Patch /api/clients/pay
+        /// </remarks>
+        /// <param name="PayDebtsDto">The data transfare object.</param>
+        /// <returns>Returns operation result.</returns>
+        /// <response code="200">Debt paid successfully.</response>
+        /// <response code="400">Invalid request.</response>
+        /// <response code="404">Client not found.</response>
+        /// <response code="500">Internal server error.</response>
+        [HttpPost("pay")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<int>> PayDebtAsync([FromBody] PayDebtsDto PayDebtsDto)
+        {
+            try
+            {
+                var isExist = await _service.IsExistAsync(PayDebtsDto.ClientId);
+                if (!isExist) return NotFound();
+
+                var payDebtsModel = _mapper.Map<PayDebtsModel>(PayDebtsDto);
+
+                await _service.PayAllDebtsById(payDebtsModel);
+
+                return Ok((int)payDebtsModel.PayDebtStatus);
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Server Error",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
 
         #region override abstract Methods
         protected override int GetModelId(ClientModel model) => model.ClientId;

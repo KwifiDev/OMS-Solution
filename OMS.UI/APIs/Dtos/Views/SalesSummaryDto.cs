@@ -10,7 +10,7 @@ public partial class SalesSummaryDto
 
     public string Notes { get; set; } = null!;
 
-    public string? TotalSales { get; set; }
+    public decimal? TotalSales { get; set; }
 
     public string Status { get; set; } = null!;
 }

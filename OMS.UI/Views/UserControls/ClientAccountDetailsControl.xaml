@@ -83,12 +83,17 @@
                                                  VerticalAlignment="Center"
                                                  Foreground="{DynamicResource PrimaryHueMidBrush}"/>
 
+                        
+                        
                         <TextBlock Text="{Binding UserAccount.ClientBalance, FallbackValue='1000000 L.S'}"
                                    FontSize="16"
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource MaterialDesignBody}"/>
 
                     </StackPanel>
+                    <Separator Margin="20 0 20 0"/>
+
+                    <TextBlock HorizontalAlignment="Center" Text="الرصيد"/>
 
                 </StackPanel>
             </Grid>

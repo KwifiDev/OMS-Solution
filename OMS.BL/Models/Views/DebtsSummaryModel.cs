@@ -12,7 +12,7 @@ public partial class DebtsSummaryModel
 
     public string Notes { get; set; } = null!;
 
-    public string? TotalDebts { get; set; }
+    public decimal? TotalDebts { get; set; }
 
     public string Status { get; set; } = null!;
 }

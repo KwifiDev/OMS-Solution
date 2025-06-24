@@ -93,6 +93,9 @@ namespace OMS.API.Mapping
             CreateMap<UserLoginModel, ResponseLoginDto>().ReverseMap();
 
             CreateMap<PayDebtModel, PayDebtDto>().ReverseMap();
+
+            CreateMap<PayDebtsModel, PayDebtsDto>().ReverseMap();
+
         }
     }
 }

@@ -9,7 +9,7 @@ namespace OMS.UI.Models
         private string _userAccount1 = null!;
         private string _clientName = null!;
         private string _clientType = null!;
-        private string _clientBalance = null!;
+        private decimal _clientBalance;
 
         [Key]
         public int AccountId
@@ -36,10 +36,10 @@ namespace OMS.UI.Models
             set => SetProperty(ref _clientType, value);
         }
 
-        public string? ClientBalance
+        public decimal ClientBalance
         {
             get => _clientBalance;
-            set => SetProperty(ref _clientBalance!, value);
+            set => SetProperty(ref _clientBalance, value);
         }
     }
 }

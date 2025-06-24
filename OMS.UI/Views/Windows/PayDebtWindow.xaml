@@ -47,7 +47,7 @@
                                   Background="{StaticResource PageHeaderGradient}">
 
 
-                <TextBlock Text="{Binding TransactionStatus.Title, FallbackValue='نمط العملية'}"
+                <TextBlock Text="{Binding DebtStatus.Title, FallbackValue='نمط العملية'}"
                            FontSize="20"
                            Margin="0 6"
                            HorizontalAlignment="Center"
@@ -74,7 +74,7 @@
                     Width="120"
                     Content="دفع"
                     Command="{Binding PayDebtCommand}"
-                    IsEnabled="{Binding IsModifiable}">
+                    IsEnabled="{Binding DebtStatus.IsModifiable}">
                 </Button>
 
                 <Button
@@ -93,11 +93,11 @@
                      FontSize="16"
                      Margin="10,5,10,5"
                      Grid.ColumnSpan="3"
-                     VerticalContentAlignment="Top"
+                     VerticalContentAlignment="Center"
                      AcceptsReturn="True"
                      TextWrapping="Wrap"
                      materialDesign:HintAssist.Hint="ملاحظات"
-                     IsEnabled="{Binding IsModifiable}">
+                     IsEnabled="{Binding DebtStatus.IsModifiable}">
                     <i:Interaction.Behaviors>
                         <inputBehaviors:ArabicOnlyInputBehavior/>
                     </i:Interaction.Behaviors>

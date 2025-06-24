@@ -103,14 +103,13 @@ namespace OMS.API.Controllers
         /// </summary>
         /// <remarks>
         /// Example request:
-        /// Patch /api/Debts/123/pay
+        /// Patch /api/debts/pay
         /// </remarks>
         /// <param name="PayDebtDto">The data transfare object.</param>
         /// <returns>Returns operation result.</returns>
         /// <response code="200">Debt paid successfully.</response>
         /// <response code="400">Invalid request.</response>
         /// <response code="404">Debt not found.</response>
-        /// <response code="409">Debt cannot be paid in its current state.</response>
         /// <response code="500">Internal server error.</response>
         [HttpPost("pay")]
         [ProducesResponseType(StatusCodes.Status200OK)]

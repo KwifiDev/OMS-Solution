@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OMS.Common.Enums;
 using OMS.UI.APIs.Dtos.StoredProcedureParams;
 using OMS.UI.APIs.Dtos.Tables;
 using OMS.UI.APIs.EndPoints;
@@ -18,9 +19,25 @@ namespace OMS.UI.APIs.Services.Tables
         {
         }
 
-        public Task<bool> PayAllDebtsById(PayDebtsDto dto)
+        public async Task<EnPayDebtStatus> PayAllDebtsById(PayDebtsModel model)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var dto = _mapper.Map<PayDebtsDto>(model);
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/pay", dto);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                }
+
+                return (EnPayDebtStatus)(await response.Content.ReadFromJsonAsync<int>());
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return default;
+            }
         }
 
 

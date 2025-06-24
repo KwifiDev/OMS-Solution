@@ -10,5 +10,5 @@ public partial class UserAccountModel
 
     public string ClientType { get; set; } = null!;
 
-    public string? ClientBalance { get; set; }
+    public decimal ClientBalance { get; set; }
 }

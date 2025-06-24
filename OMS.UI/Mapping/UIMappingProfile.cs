@@ -40,6 +40,8 @@ namespace OMS.UI.Mapping
             CreateMap<DebtsSummaryDto, DebtsSummaryModel>().ReverseMap();
             CreateMap<DebtDto, DebtModel>().ReverseMap();
             CreateMap<DebtCreationDto, DebtCreationModel>().ReverseMap();
+            CreateMap<PayDebtDto, PayDebtModel>().ReverseMap();
+            CreateMap<PayDebtsDto, PayDebtsModel>().ReverseMap();
         }
     }
 }

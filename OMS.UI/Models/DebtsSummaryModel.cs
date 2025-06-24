@@ -8,7 +8,7 @@ namespace OMS.UI.Models
         private string _serviceName = null!;
         private string _description = null!;
         private string _notes = null!;
-        private string? _totalDebts;
+        private decimal? _totalDebts;
         private string _status = null!;
 
 
@@ -36,7 +36,7 @@ namespace OMS.UI.Models
             set => SetProperty(ref _notes, value);
         }
 
-        public string? TotalDebts
+        public decimal? TotalDebts
         {
             get => _totalDebts;
             set => SetProperty(ref _totalDebts, value);
