@@ -45,7 +45,7 @@
                      HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"
                      FontSize="24"
-                     Content="نمط العملية"
+                     Content="{Binding Status.Title, FallbackValue='نمط العملية'}"
                      Background="{StaticResource PageHeaderGradient}"
                      Grid.ColumnSpan="5"
                      Foreground="White">

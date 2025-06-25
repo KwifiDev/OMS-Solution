@@ -22,6 +22,7 @@
         public const string SalesSummary = "api/salessummary";
         public const string Debts = "api/debts";
         public const string DebtsSummary = "api/debtssummary";
+        public const string PaymentsSummary = "api/paymentssummary";
 
 
     }

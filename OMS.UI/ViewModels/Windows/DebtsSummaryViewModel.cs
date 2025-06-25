@@ -163,7 +163,7 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private async Task OpenClientPaymentsDialog()
         {
-
+            await _dialogService.ShowDialog<AccountPaymentsWindow, int>(_accountId);
         }
 
         [RelayCommand]

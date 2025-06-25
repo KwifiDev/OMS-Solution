@@ -116,6 +116,8 @@ namespace OMS.UI
             services.AddTransient<IDebtService, DebtService>();
 
             services.AddTransient<IDebtsSummaryService, DebtsSummaryService>();
+
+            services.AddTransient<IPaymentsSummaryService, PaymentsSummaryService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)
@@ -177,6 +179,8 @@ namespace OMS.UI
             services.AddTransient<AddEditDebtViewModel>();
 
             services.AddTransient<PayDebtViewModel>();
+
+            services.AddTransient<AccountPaymentsViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -252,6 +256,9 @@ namespace OMS.UI
 
             services.AddTransient(provider =>
                 new PayDebtWindow { DataContext = provider.GetRequiredService<PayDebtViewModel>() });
+
+            services.AddTransient(provider =>
+                new AccountPaymentsWindow { DataContext = provider.GetRequiredService<AccountPaymentsViewModel>() });
 
         }
 

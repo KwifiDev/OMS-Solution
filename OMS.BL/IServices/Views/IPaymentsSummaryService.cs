@@ -19,5 +19,12 @@ namespace OMS.BL.IServices.Views
         /// <param name="paymentId">The ID of the payment summary to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a PaymentsSummaryModel object, or null if no payment summary is found with the specified ID.</returns>
         Task<PaymentsSummaryModel?> GetByIdAsync(int paymentId);
+
+        /// <summary>
+        /// Retrieves all PaymentsSummary by Account Id.
+        /// </summary>
+        /// <param name="accountId">The ID of the account.</param>
+        /// <returns>The task result contains the collection of PaymentsSummary by Account Id.</returns>
+        Task<IEnumerable<PaymentsSummaryModel>> GetPaymentsByAccountIdAsync(int accountId);
     }
 }

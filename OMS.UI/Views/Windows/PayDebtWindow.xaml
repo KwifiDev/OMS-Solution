@@ -89,7 +89,7 @@
 
                 <TextBox Name="txtBranchAddress"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding PayDebtModel.Notes, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                     Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                      FontSize="16"
                      Margin="10,5,10,5"
                      Grid.ColumnSpan="3"

@@ -95,6 +95,8 @@ builder.Services.AddScoped<IDebtService, DebtService>();
 builder.Services.AddScoped<IDebtsSummaryRepository, DebtsSummaryRepository>();
 builder.Services.AddScoped<IDebtsSummaryService, DebtsSummaryService>();
 
+builder.Services.AddScoped<IPaymentsSummaryRepository, PaymentsSummaryRepository>();
+builder.Services.AddScoped<IPaymentsSummaryService, PaymentsSummaryService>();
 
 var app = builder.Build();
 

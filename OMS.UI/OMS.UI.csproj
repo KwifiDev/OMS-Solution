@@ -44,6 +44,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Windows\AccountPaymentsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Windows\AddEditBranchWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

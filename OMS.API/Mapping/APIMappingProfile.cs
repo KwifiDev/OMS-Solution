@@ -96,6 +96,10 @@ namespace OMS.API.Mapping
 
             CreateMap<PayDebtsModel, PayDebtsDto>().ReverseMap();
 
+            CreateMap<PaymentsSummaryModel, PaymentsSummaryDto>()
+                .ForSourceMember(src => src.AccountId, opt => opt.DoNotValidate())
+                .ReverseMap();
+
         }
     }
 }
