@@ -73,7 +73,7 @@
 
                     <TextBlock 
                         Style="{StaticResource MaterialDesignBody1TextBlock}"
-                        Text="{Binding Price}"
+                        Text="{Binding Price, StringFormat={}{0:0}}"
                         Foreground="Black"/>
                 </StackPanel>
 

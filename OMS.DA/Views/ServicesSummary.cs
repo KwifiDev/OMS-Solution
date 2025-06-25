@@ -14,8 +14,8 @@ namespace OMS.DA.Views
         [StringLength(25)]
         public string Name { get; set; } = null!;
 
-        [Column(TypeName = "decimal(14, 2)")]
-        public decimal? Price { get; set; }
+        [Column(TypeName = "decimal(8, 2)")]
+        public decimal Price { get; set; }
 
         public int? TotalConsumed { get; set; }
     }

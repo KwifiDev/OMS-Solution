@@ -33,40 +33,31 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private string? _notes;
 
-        public PayDebtViewModel(IClientService clientService, IDebtService debtService, IUserSessionService userSessionService, IStatusService statusService,
-                                IMessageService messageService, IWindowService windowService)
+        public PayDebtViewModel(IClientService clientService, IDebtService debtService, IUserSessionService userSessionService,
+                                IStatusService statusService, IMessageService messageService, IWindowService windowService)
         {
             _clientService = clientService;
             _debtService = debtService;
             _userSessionService = userSessionService;
             _messageService = messageService;
             _windowService = windowService;
+
             DebtStatus = statusService.CreateDebtStatus();
         }
 
-        public async Task<bool> OnOpeningDialog((int Id, DebtStatus.EnMode DebtOperation) parameters)
-        {
-            switch (parameters.DebtOperation)
+        public async Task<bool> OnOpeningDialog((int Id, DebtStatus.EnMode DebtOperation) parameters) =>
+            parameters.DebtOperation switch
             {
-                case DebtStatus.EnMode.PaySpecifiecDebt:
-                    return await SetPaySpecifiecDebtMode(parameters.Id);
+                DebtStatus.EnMode.PaySpecifiecDebt => await SetSpecificDebtMode(parameters.Id),
+                DebtStatus.EnMode.PayAllDebtsByClientId => await SetPayAllDebtsMode(parameters.Id),
+                _ => false
+            };
 
-                case DebtStatus.EnMode.PayAllDebtsByClientId:
-                    return await SetPayAllDebtsByClientIdMode(parameters.Id);
-
-                default: return false;
-            }
-        }
-
-        private async Task<bool> SetPaySpecifiecDebtMode(int debtId)
+        private async Task<bool> SetSpecificDebtMode(int debtId)
         {
-            if (debtId <= 0) return false;
-
-            bool isExist = await _debtService.IsExistAsync(debtId);
-            if (!isExist) return false;
+            if (debtId <= 0 || !await _debtService.IsExistAsync(debtId)) return false;
 
             DebtStatus.SelectMode = DebtStatus.EnMode.PaySpecifiecDebt;
-
             PayDebtModel = new PayDebtModel
             {
                 DebtId = debtId,
@@ -76,15 +67,11 @@ namespace OMS.UI.ViewModels.Windows
             return true;
         }
 
-        private async Task<bool> SetPayAllDebtsByClientIdMode(int clientId)
+        private async Task<bool> SetPayAllDebtsMode(int clientId)
         {
-            if (clientId <= 0) return false;
-
-            bool isExist1 = await _clientService.IsExistAsync(clientId);
-            if (!isExist1) return false;
+            if (clientId <= 0 || !await _clientService.IsExistAsync(clientId)) return false;
 
             DebtStatus.SelectMode = DebtStatus.EnMode.PayAllDebtsByClientId;
-
             PayDebtsModel = new PayDebtsModel
             {
                 ClientId = clientId,
@@ -94,36 +81,47 @@ namespace OMS.UI.ViewModels.Windows
             return true;
         }
 
-
         [RelayCommand]
         private async Task PayDebt()
         {
             switch (DebtStatus.SelectMode)
             {
                 case DebtStatus.EnMode.PaySpecifiecDebt:
-                    PayDebtModel!.Notes = Notes;
-                    PayDebtModel.PayDebtStatus = await _debtService.PayDebtAsync(PayDebtModel);
-
-                    UpdateAndNotifyStatus(PayDebtModel.PayDebtStatus);
+                    await HandleSingleDebtPayment();
                     break;
 
                 case DebtStatus.EnMode.PayAllDebtsByClientId:
-                    PayDebtsModel!.Notes = Notes;
-                    PayDebtsModel.PayDebtStatus = await _clientService.PayAllDebtsById(PayDebtsModel);
-
-                    UpdateAndNotifyStatus(PayDebtsModel.PayDebtStatus);
+                    await HandleAllDebtsPayment();
                     break;
             }
         }
 
-        private void UpdateAndNotifyStatus(EnPayDebtStatus payDebtStatus)
+        private async Task HandleSingleDebtPayment()
         {
-            switch (payDebtStatus)
+            if (PayDebtModel is null) return;
+
+            PayDebtModel.Notes = Notes;
+            PayDebtModel.PayDebtStatus = await _debtService.PayDebtAsync(PayDebtModel);
+            NotifyUserOfResult(PayDebtModel.PayDebtStatus);
+        }
+
+        private async Task HandleAllDebtsPayment()
+        {
+            if (PayDebtsModel is null) return;
+
+            PayDebtsModel.Notes = Notes;
+            PayDebtsModel.PayDebtStatus = await _clientService.PayAllDebtsById(PayDebtsModel);
+            NotifyUserOfResult(PayDebtsModel.PayDebtStatus);
+        }
+
+        private void NotifyUserOfResult(EnPayDebtStatus status)
+        {
+            switch (status)
             {
                 case EnPayDebtStatus.Success:
-                    SendMessage();
                     _messageService.ShowInfoMessage("اجراء دفع", "تم الدفع بنجاح");
                     DebtStatus.Operation = DebtStatus.EnExecuteOperation.FullPaid;
+                    SendMessage();
                     break;
 
                 case EnPayDebtStatus.InsufficientBalance:
@@ -134,18 +132,15 @@ namespace OMS.UI.ViewModels.Windows
                     _messageService.ShowErrorMessage("اجراء دفع", "حدث خطأ اثناء الدفع");
                     break;
             }
+        }
 
+        private void SendMessage()
+        {
+            if (DebtStatus.SelectMode == DebtStatus.EnMode.PaySpecifiecDebt && PayDebtModel is not null)
+                WeakReferenceMessenger.Default.Send(PayDebtModel);
         }
 
         [RelayCommand]
         private void Close() => _windowService.Close();
-
-        private void SendMessage()
-        {
-            if (DebtStatus.SelectMode == DebtStatus.EnMode.PaySpecifiecDebt)
-                WeakReferenceMessenger.Default.Send(PayDebtModel!);
-        }
-
-
     }
 }

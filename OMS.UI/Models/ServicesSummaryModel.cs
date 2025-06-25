@@ -6,7 +6,7 @@ namespace OMS.UI.Models
     {
         private int _serviceId;
         private string _name = null!;
-        private decimal? _price;
+        private decimal _price;
         private int? _totalconsumed;
 
         [Key]
@@ -22,7 +22,7 @@ namespace OMS.UI.Models
             set => SetProperty(ref _name, value);
         }
 
-        public decimal? Price
+        public decimal Price
         {
             get => _price;
             set => SetProperty(ref _price, value);

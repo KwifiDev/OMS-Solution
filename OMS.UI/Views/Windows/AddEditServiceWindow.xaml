@@ -110,7 +110,7 @@
         </TextBox>
 
         <TextBox Name="txtServicePrice" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 Text="{Binding Model.Price, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Converter={StaticResource DecimalToString}}"
+                 Text="{Binding Model.Price, StringFormat={}{0:0}, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True, Converter={StaticResource DecimalToString}}"
                  FontSize="16"
                  Margin="10,5,10,5"
                  Grid.Column="2" Grid.Row="3"

@@ -118,7 +118,7 @@
                 <DataGridTextColumn Header="رقم" Binding="{Binding SaleId}" Width="55"/>
                 <DataGridTextColumn Header="اسم الخدمة" Binding="{Binding ServiceName}" Width="0.7*"/>
                 <DataGridTextColumn Header="وصف الخدمة" Binding="{Binding Description}" Width="2*"/>
-                <DataGridTextColumn Header="الكلفة" Binding="{Binding TotalSales}" Width="120"/>
+                <DataGridTextColumn Header="الكلفة" Binding="{Binding TotalSales, StringFormat={}{0:0}}" Width="120"/>
                 <DataGridTextColumn Header="ملاحظات" Binding="{Binding Notes}"/>
                 <DataGridTextColumn Header="الحالة" Binding="{Binding Status}" Width="0.5*"/>
             </DataGrid.Columns>

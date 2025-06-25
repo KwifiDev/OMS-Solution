@@ -28,59 +28,50 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private decimal? _totalDebts = 0;
 
-        public DebtsSummaryViewModel(IUserAccountService userAccountService, IDebtService service, IDebtsSummaryService displayService, IDialogService dialogService,
-                                     IMessageService messageService, IWindowService windowService) : base(service, displayService, dialogService, messageService)
+        public DebtsSummaryViewModel(IUserAccountService userAccountService, IDebtService service, IDebtsSummaryService displayService,
+                                     IDialogService dialogService, IMessageService messageService, IWindowService windowService)
+                                     : base(service, displayService, dialogService, messageService)
         {
             _userAccountService = userAccountService;
-            SelectedItemChanged += OnSelectedItemChanged;
-            CommandConditions[nameof(EditItemCommand)] += CanChangeDebt;
-            CommandConditions[nameof(DeleteItemCommand)] += CanChangeDebt;
             _windowService = windowService;
 
-            WeakReferenceMessenger.Default.Register<PayDebtModel>(this, (obj, payDebtModel) =>
-            {
-                if (payDebtModel.PayDebtStatus == EnPayDebtStatus.Success)
-                {
-                    if (SelectedItem is not null)
-                    {
-                        SelectedItem.Status = "مدفوع";
-                        SelectedItem.Notes = payDebtModel.Notes is not null ? payDebtModel.Notes : "لا يوجد ملاحظات";
-                    }
-                }
-            });
+            SelectedItemChanged += OnSelectedItemChanged;
+
+            CommandConditions[nameof(EditItemCommand)] += CanChangeDebt;
+            CommandConditions[nameof(DeleteItemCommand)] += CanChangeDebt;
+
+            WeakReferenceMessenger.Default.Register<PayDebtModel>(this, OnPayDebtReceived);
         }
 
-        private void OnSelectedItemChanged(object? obj, EventArgs e)
+        private void OnPayDebtReceived(object recipient, PayDebtModel payDebtModel)
         {
-            CancelSaleCommand.NotifyCanExecuteChanged();
-            ShowPayDebtCommand.NotifyCanExecuteChanged();
+            if (payDebtModel.PayDebtStatus != EnPayDebtStatus.Success || SelectedItem is null) return;
+
+            SelectedItem.Status = "مدفوع";
+            SelectedItem.Notes = string.IsNullOrWhiteSpace(payDebtModel.Notes) ? "لا يوجد ملاحظات" : payDebtModel.Notes;
+        }
+
+        private void OnSelectedItemChanged(object? sender, EventArgs e)
+        {
+            CancelDebtCommand.NotifyCanExecuteChanged();
+            OpenPayDebtDialogCommand.NotifyCanExecuteChanged();
         }
 
         public async Task<bool> OnOpeningDialog((int ClientId, int AccountId) parameters)
         {
-            if (parameters.ClientId <= 0 || parameters.AccountId <= 0) return false;
+            if (parameters.ClientId <= 0 || parameters.AccountId <= 0)
+                return false;
 
             _clientId = parameters.ClientId;
             _accountId = parameters.AccountId;
 
-            bool isLoaded = await LoadData();
-
-            return isLoaded;
+            return await LoadData();
         }
-
-        protected override async Task<DebtsSummaryModel> ConvertToModel(DebtModel messageModel)
-            => (await _displayService.GetByIdAsync(messageModel.DebtId))!;
-
-        protected override async Task<bool> ExecuteDelete(int itemId) => await _service.DeleteAsync(itemId);
-
-        protected override int GetItemId(DebtsSummaryModel item) => item.DebtId;
 
         protected override async Task<bool> LoadData()
         {
             if (!await LoadDebtsData()) return false;
-
             if (!await LoadUserAccount()) return false;
-
             return true;
         }
 
@@ -90,8 +81,7 @@ namespace OMS.UI.ViewModels.Windows
             if (userAccount is null) return false;
 
             UserAccount = userAccount;
-
-            PayAllDebtsCommand.NotifyCanExecuteChanged();
+            PayAllClientDebtsCommand.NotifyCanExecuteChanged();
 
             return true;
         }
@@ -102,7 +92,6 @@ namespace OMS.UI.ViewModels.Windows
             if (debtsData is null) return false;
 
             Items = new(debtsData);
-
             CalcTotalDebts();
 
             return true;
@@ -110,21 +99,19 @@ namespace OMS.UI.ViewModels.Windows
 
         private void CalcTotalDebts()
         {
-            TotalDebts = Items.Where(debt => debt.Status == "غير مدفوع").Select(debt => debt.TotalDebts).Sum();
-            PayAllDebtsCommand.NotifyCanExecuteChanged();
+            TotalDebts = Items
+                .Where(debt => debt.Status == "غير مدفوع")
+                .Sum(debt => debt.TotalDebts);
+
+            PayAllClientDebtsCommand.NotifyCanExecuteChanged();
         }
 
-        protected override Task ShowDetailsWindow(int itemId)
-        {
-            _messageService.ShowInfoMessage("معلومات", MessageTemplates.NotImplementedMessage);
-            return Task.CompletedTask;
-        }
-
-        protected override async Task ShowEditorWindow(int? itemId = null)
-            => await _dialogService.ShowDialog<AddEditDebtWindow, (int? DebtId, int ClientId)>((itemId, _clientId));
+        private bool CanChangeDebt() =>
+           SelectedItem?.Status == "غير مدفوع" &&
+           SelectedItem.TotalDebts <= UserAccount?.ClientBalance;
 
         [RelayCommand(CanExecute = nameof(CanChangeDebt))]
-        private async Task CancelSale()
+        private async Task CancelDebt()
         {
             if (SelectedItem is null) return;
 
@@ -135,57 +122,74 @@ namespace OMS.UI.ViewModels.Windows
 
             if (!isSuccess)
             {
-                _messageService.ShowErrorMessage("عملية الالغاء", MessageTemplates.CancelDebtErrorMessage);
+                _messageService.ShowErrorMessage("عملية الإلغاء", MessageTemplates.CancelDebtErrorMessage);
                 return;
             }
 
             SelectedItem.Status = "ملغات";
-            _messageService.ShowInfoMessage("عملية الالغاء", MessageTemplates.CancelDebtSuccessMessage);
+            _messageService.ShowInfoMessage("عملية الإلغاء", MessageTemplates.CancelDebtSuccessMessage);
             CalcTotalDebts();
         }
 
         [RelayCommand]
         private void Close() => _windowService.Close();
 
-
         [RelayCommand(CanExecute = nameof(CanChangeDebt))]
-        private async Task ShowPayDebt()
+        private async Task OpenPayDebtDialog()
         {
-            bool isOpend = await _dialogService.ShowDialog<PayDebtWindow, (int Id, DebtStatus.EnMode DebtOperation)>
-                ((SelectedItem!.DebtId, DebtStatus.EnMode.PaySpecifiecDebt));
+            bool isOpened = await _dialogService.ShowDialog<PayDebtWindow, (int Id, DebtStatus.EnMode)>(
+                (SelectedItem!.DebtId, DebtStatus.EnMode.PaySpecifiecDebt));
 
-            if (isOpend)
+            if (isOpened)
             {
                 CalcTotalDebts();
                 await LoadUserAccount();
             }
         }
 
-        private bool CanChangeDebt()
-        {
-            return SelectedItem?.Status == "غير مدفوع" && SelectedItem?.TotalDebts <= UserAccount?.ClientBalance;
-        }
-
-        private bool CanPayAllDebts()
-        {
-            return TotalDebts <= UserAccount?.ClientBalance && TotalDebts != 0;
-        }
-
+        private bool CanPayAllDebts() =>
+            TotalDebts <= UserAccount?.ClientBalance && TotalDebts != 0;
 
         [RelayCommand(CanExecute = nameof(CanPayAllDebts))]
-        private async Task PayAllDebts()
+        private async Task PayAllClientDebts()
         {
-            bool isOpend = await _dialogService.ShowDialog<PayDebtWindow, (int Id, DebtStatus.EnMode DebtOperation)>
-                ((_clientId, DebtStatus.EnMode.PayAllDebtsByClientId));
+            bool isOpened = await _dialogService.ShowDialog<PayDebtWindow, (int Id, DebtStatus.EnMode)>(
+                (_clientId, DebtStatus.EnMode.PayAllDebtsByClientId));
 
-            if (isOpend) await LoadData();
+            if (isOpened)
+                await LoadData();
         }
 
+        [RelayCommand]
+        private async Task OpenClientPaymentsDialog()
+        {
+
+        }
 
         [RelayCommand]
         private async Task ShowAccountTransactions(int accountId)
         {
             await _dialogService.ShowDialog<AccountTransactionsWindow, int>(accountId);
+        }
+
+        protected override async Task<DebtsSummaryModel> ConvertToModel(DebtModel messageModel)
+            => (await _displayService.GetByIdAsync(messageModel.DebtId))!;
+
+        protected override async Task<bool> ExecuteDelete(int itemId)
+            => await _service.DeleteAsync(itemId);
+
+        protected override int GetItemId(DebtsSummaryModel item)
+            => item.DebtId;
+
+        protected override Task ShowDetailsWindow(int itemId)
+        {
+            _messageService.ShowInfoMessage("معلومات", MessageTemplates.NotImplementedMessage);
+            return Task.CompletedTask;
+        }
+
+        protected override async Task ShowEditorWindow(int? itemId = null)
+        {
+            await _dialogService.ShowDialog<AddEditDebtWindow, (int? DebtId, int ClientId)>((itemId, _clientId));
         }
 
         protected override async Task AddItem()

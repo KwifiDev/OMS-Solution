@@ -83,9 +83,9 @@
                                                  VerticalAlignment="Center"
                                                  Foreground="{DynamicResource PrimaryHueMidBrush}"/>
 
-                        
-                        
-                        <TextBlock Text="{Binding UserAccount.ClientBalance, FallbackValue='1000000 L.S'}"
+
+
+                        <TextBlock Text="{Binding UserAccount.ClientBalance, StringFormat={}{0:0}, FallbackValue='1000000 L.S'}"
                                    FontSize="16"
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource MaterialDesignBody}"/>

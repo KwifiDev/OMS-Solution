@@ -78,29 +78,29 @@
                            FontSize="18"
                            Width="200" />
 
-                        <Label Content="{Binding TotalDebts, FallbackValue='0 L.S'}"
-                               Style="{StaticResource MaterialDesignLabel}"
-                               HorizontalContentAlignment="Center"
+                    <TextBlock Text="{Binding TotalDebts, StringFormat={}{0:0}, FallbackValue=0}"
+                               TextAlignment="Center"
                                FontSize="18"
                                Width="200" DockPanel.Dock="Top" />
-                        <TextBlock HorizontalAlignment="Center" Text="ليرة سورية"/>
+                    <TextBlock HorizontalAlignment="Center" Text="ليرة سورية"/>
 
                 </StackPanel>
                
             </Border>
-            
-          
 
-            <Button
-                    Margin="0 20 0 0"
+            
+            <Button Margin="0 20 0 0"
                     Style="{StaticResource MaterialDesignOutlinedDarkButton}"
                     Width="200"
                     Content="دفع جميع الديون"
-                    Command="{Binding PayAllDebtsCommand}"/>
+                    Command="{Binding PayAllClientDebtsCommand}"/>
 
-            
+            <Button Margin="0 20 0 0"
+                    Style="{StaticResource MaterialDesignOutlinedDarkButton}"
+                    Width="200"
+                    Content="عرض الدفعات"
+                    Command="{Binding OpenClientPaymentsDialogCommand}"/>
 
-           
 
             <Button Margin="0 20 0 0"
                     Style="{StaticResource MaterialDesignOutlinedDarkButton}"
@@ -180,7 +180,7 @@
                 <DataGridTextColumn Header="رقم" Binding="{Binding DebtId}" Width="55"/>
                 <DataGridTextColumn Header="اسم الخدمة" Binding="{Binding ServiceName}" Width="0.7*"/>
                 <DataGridTextColumn Header="وصف الخدمة" Binding="{Binding Description}" Width="2*"/>
-                <DataGridTextColumn Header="الكلفة" Binding="{Binding TotalDebts}" Width="120"/>
+                <DataGridTextColumn Header="الكلفة" Binding="{Binding TotalDebts, StringFormat={}{0:0}}" Width="120"/>
                 <DataGridTextColumn Header="ملاحظات" Binding="{Binding Notes}"/>
                 <DataGridTextColumn Header="الحالة" Binding="{Binding Status}" Width="0.5*"/>
             </DataGrid.Columns>
@@ -196,7 +196,7 @@
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
                     <MenuItem Header="دفع" 
-                              Command="{Binding ShowPayDebtCommand}"
+                              Command="{Binding OpenPayDebtDialogCommand}"
                               Icon="{materialDesign:PackIcon Kind=RecurringPayment}"/>
 
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
@@ -219,7 +219,7 @@
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
                     <MenuItem Header="الغاء عملية الدين" 
-                              Command="{Binding CancelSaleCommand}" 
+                              Command="{Binding CancelDebtCommand}" 
                               CommandParameter="{Binding SelectedItem}"
                               Icon="{materialDesign:PackIcon Kind=CancelBox}"/>
 
