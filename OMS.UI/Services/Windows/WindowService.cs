@@ -1,55 +1,87 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using OMS.UI.Views.Windows;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace OMS.UI.Services.Windows
 {
     public class WindowService : IWindowService
     {
+        private readonly Dispatcher _dispatcher;
+
+        public WindowService()
+        {
+            _dispatcher = Application.Current.Dispatcher;
+        }
+
         public void Maximize()
         {
-            var activeWindow = Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
-            if (activeWindow != null)
+            _dispatcher.Invoke(() =>
             {
-                if (activeWindow.WindowState == WindowState.Normal)
+                var activeWindow = GetActiveWindow();
+                if (activeWindow != null)
                 {
-                    activeWindow.WindowState = WindowState.Maximized;
+                    activeWindow.WindowState = activeWindow.WindowState == WindowState.Normal
+                        ? WindowState.Maximized
+                        : WindowState.Normal;
                 }
-                else if (activeWindow.WindowState == WindowState.Maximized)
-                {
-                    activeWindow.WindowState = WindowState.Normal;
-                }
-            }
+            });
         }
 
         public void Minimize()
         {
-            var activeWindow = Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
-            if (activeWindow != null)
+            _dispatcher.Invoke(() =>
             {
-                activeWindow.WindowState = WindowState.Minimized;
-            }
+                var activeWindow = GetActiveWindow();
+                if (activeWindow != null)
+                    activeWindow.WindowState = WindowState.Minimized;
+            });
         }
 
         public void Open<TWindow>() where TWindow : Window
         {
-            Ioc.Default.GetRequiredService<TWindow>().Show();
+            _dispatcher.Invoke(() =>
+            {
+                var window = Ioc.Default.GetRequiredService<TWindow>();
+                window.Show();
+            });
         }
 
         public void Close()
         {
-            Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive)?.Close();
+            _dispatcher.Invoke(() =>
+            {
+                var activeWindow = GetActiveWindow();
+                activeWindow?.Close();
+            });
         }
 
         public void Exit()
         {
-            Application.Current.Shutdown();
+            _dispatcher.Invoke(() =>
+            {
+                Application.Current.Shutdown();
+            });
         }
 
         public void Hide()
         {
-            Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive)?.Hide();
+            _dispatcher.Invoke(() =>
+            {
+                var activeWindow = GetActiveWindow();
+                activeWindow?.Hide();
+            });
         }
 
+        public void HideLoginWindow()
+        {
+            _dispatcher.Invoke(() =>
+            {
+                var loginWindow = Application.Current.Windows.OfType<LoginWindow>().FirstOrDefault();
+                loginWindow?.Hide();
+            });
+        }
 
+        private Window? GetActiveWindow() => Application.Current.Windows.OfType<Window>().FirstOrDefault(x => x.IsActive);
     }
 }

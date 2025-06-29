@@ -20,7 +20,8 @@
         FlowDirection="RightToLeft"
         FontFamily="LBC"
         WindowStyle="None"
-        AllowsTransparency="True">
+        AllowsTransparency="True"
+        Name="LoginWin">
 
     <i:Interaction.Behaviors>
         <behaviors:DragWindowBehavior/>

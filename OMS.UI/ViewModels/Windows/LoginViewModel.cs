@@ -74,7 +74,7 @@ namespace OMS.UI.ViewModels.Windows
 
             _userSessionService.Login(user);
 
-            _windowService.Hide();
+            _windowService.HideLoginWindow();
             _windowService.Open<MainWindow>();
 
             IsLoading = false;
