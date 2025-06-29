@@ -44,7 +44,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Pages\RevenuesPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Windows\AccountPaymentsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Windows\AddEditRevenueWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Windows\AddEditBranchWindow.xaml.cs">

@@ -23,6 +23,8 @@
         public const string Debts = "api/debts";
         public const string DebtsSummary = "api/debtssummary";
         public const string PaymentsSummary = "api/paymentssummary";
+        public const string Revenues = "api/revenues";
+
 
 
     }

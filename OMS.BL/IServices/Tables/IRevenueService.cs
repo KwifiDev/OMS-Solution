@@ -21,6 +21,13 @@ namespace OMS.BL.IServices.Tables
         Task<RevenueModel?> GetByIdAsync(int revenueId);
 
         /// <summary>
+        /// find a revenue by their ID asynchronously.
+        /// </summary>
+        /// <param name="revenueId">The ID of the revenue to find.</param>
+        /// <returns>True if the revenue was exist, otherwise false.</returns>
+        Task<bool> IsExistAsync(int revenueId);
+
+        /// <summary>
         /// Adds a new revenue asynchronously.
         /// </summary>
         /// <param name="model">The revenue model to add.</param>

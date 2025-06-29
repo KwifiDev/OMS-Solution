@@ -79,6 +79,18 @@ namespace OMS.UI.ViewModels.Windows
             return CanOpenPage<DashboardPageViewModel>();
         }
 
+        [RelayCommand(CanExecute = nameof(CanOpenRevenues))]
+        private async Task OpenRevenues()
+        {
+            await _navigationService.NavigateToPageAsync<RevenuesPage>();
+            NotifyCommandsCanExecuteChanged();
+        }
+
+        private bool CanOpenRevenues()
+        {
+            return CanOpenPage<RevenuesPageViewModel>();
+        }
+
 
         [RelayCommand(CanExecute = nameof(CanOpenPeople))]
         private async Task OpenPeople()
@@ -159,6 +171,7 @@ namespace OMS.UI.ViewModels.Windows
         private void NotifyCommandsCanExecuteChanged()
         {
             OpenDashboardCommand.NotifyCanExecuteChanged();
+            OpenRevenuesCommand.NotifyCanExecuteChanged();
             OpenPeopleCommand.NotifyCanExecuteChanged();
             OpenUsersCommand.NotifyCanExecuteChanged();
             OpenBranchesCommand.NotifyCanExecuteChanged();

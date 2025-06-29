@@ -150,6 +150,20 @@
                     </Button>
 
                     <Button Style="{StaticResource MenuButtonStyle}"
+                            Command="{Binding OpenRevenuesCommand}">
+                        <StackPanel Orientation="Horizontal" 
+                                    HorizontalAlignment="Left" 
+                                    Width="180">
+                            <materialDesign:PackIcon Kind="ReportTree" 
+                                                     Width="28" 
+                                                     Height="28" 
+                                                     Margin="10"/>
+                            <TextBlock Text="العائدات" 
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MenuButtonStyle}"
                           Command="{Binding OpenPeopleCommand}">
                         <StackPanel Orientation="Horizontal" 
                                   HorizontalAlignment="Right"  
