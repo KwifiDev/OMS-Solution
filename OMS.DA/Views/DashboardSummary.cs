@@ -41,8 +41,5 @@ namespace OMS.DA.Views
 
         [Column(TypeName = "decimal(38, 2)")]
         public decimal? TotalIncome { get; set; }
-
-        [Column(TypeName = "decimal(38, 2)")]
-        public decimal? OutstandingDebts { get; set; }
     }
 }
