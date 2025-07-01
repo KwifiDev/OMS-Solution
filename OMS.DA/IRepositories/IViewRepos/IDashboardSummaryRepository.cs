@@ -8,6 +8,6 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// Retrieves all Dashboard Summary
         /// </summary>
         /// <returns>The task result contains the collection of DashboardSummary.</returns>
-        Task<IEnumerable<DashboardSummary>> GetAllAsync();
+        Task<DashboardSummary?> GetData();
     }
 }

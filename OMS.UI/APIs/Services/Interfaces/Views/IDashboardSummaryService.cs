@@ -11,6 +11,6 @@ namespace OMS.UI.APIs.Services.Interfaces.Views
         /// Retrieves one Dashboard records asynchronously.
         /// </summary>
         /// <returns>A  Dashboard Summary model.</returns>
-        Task<IEnumerable<DashboardSummaryModel>> GetAllAsync();
+        Task<DashboardSummaryModel?> GetData();
     }
 }

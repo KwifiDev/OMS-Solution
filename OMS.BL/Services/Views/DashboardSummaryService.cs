@@ -1,16 +1,26 @@
 ﻿using OMS.BL.IServices.Views;
 using OMS.BL.Mapping;
 using OMS.BL.Models.Views;
-using OMS.DA.IRepositories.IEntityRepos;
+using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.BL.Services.Views
 {
-    public class DashboardSummaryService : GenericViewService<DashboardSummary, DashboardSummaryModel>, IDashboardSummaryService
+    public class DashboardSummaryService : IDashboardSummaryService
     {
-        public DashboardSummaryService(IGenericViewRepository<DashboardSummary> genericRepo,
-                                       IMapperService mapper) : base(genericRepo, mapper)
+        private readonly IDashboardSummaryRepository _dashboardSummaryRepository;
+        private readonly IMapperService _mapper;
+
+        public DashboardSummaryService(IDashboardSummaryRepository dashboardSummaryRepository, IMapperService mapper)
         {
+            _dashboardSummaryRepository = dashboardSummaryRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<DashboardSummaryModel?> GetData()
+        {
+            var dashboardSummary = await _dashboardSummaryRepository.GetData();
+            return dashboardSummary != null ? _mapper.Map<DashboardSummary, DashboardSummaryModel>(dashboardSummary) : default;
         }
     }
 }

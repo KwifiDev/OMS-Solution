@@ -11,6 +11,6 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all Dashboard Summary asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of Dashboard Summary models.</returns>
-        Task<IEnumerable<DashboardSummaryModel>> GetAllAsync();
+        Task<DashboardSummaryModel?> GetData();
     }
 }

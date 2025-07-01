@@ -10,19 +10,21 @@
              FontFamily="LBC">
 
     <materialDesign:Card Margin="5" Height="150" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
-                         Background="{Binding Color, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                         Background="{Binding Color, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                         BorderThickness="0 3 0 0"
+                         BorderBrush="Black">
         <StackPanel Margin="15">
             <materialDesign:PackIcon
                 Kind="{Binding Image, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 Foreground="{DynamicResource SecondaryHueMidBrush}"
                 Width="40"
                 Height="40"/>
-
+            
             <TextBlock
                 Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue='.....................'}"
                 Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                 Margin="0 10 0 0"/>
-
+            <Separator Background="Black"/>
             <TextBlock
                 HorizontalAlignment="Right"
                 Padding="10"
