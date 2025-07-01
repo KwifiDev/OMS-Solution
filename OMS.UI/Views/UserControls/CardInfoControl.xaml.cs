@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace OMS.UI.Views.UserControls
 {
@@ -10,6 +11,9 @@ namespace OMS.UI.Views.UserControls
     public partial class CardInfoControl : UserControl
     {
 
+        public static readonly DependencyProperty ColorProperty =
+            DependencyProperty.Register("Color", typeof(Brush), typeof(CardInfoControl));
+
         public static readonly DependencyProperty ImageProperty =
           DependencyProperty.Register("Image", typeof(PackIconKind), typeof(CardInfoControl));
 
@@ -18,6 +22,12 @@ namespace OMS.UI.Views.UserControls
 
         public static readonly DependencyProperty DescriptionProperty =
             DependencyProperty.Register("Description", typeof(string), typeof(CardInfoControl));
+
+        public Brush Color
+        {
+            get => (Brush)GetValue(ColorProperty);
+            set => SetValue(ColorProperty, value);
+        }
 
         public PackIconKind Image
         {

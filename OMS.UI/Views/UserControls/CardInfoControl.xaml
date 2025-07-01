@@ -9,7 +9,8 @@
              FlowDirection="RightToLeft"
              FontFamily="LBC">
 
-    <materialDesign:Card Margin="5" Height="150" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+    <materialDesign:Card Margin="5" Height="150" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" 
+                         Background="{Binding Color, RelativeSource={RelativeSource AncestorType=UserControl}}">
         <StackPanel Margin="15">
             <materialDesign:PackIcon
                 Kind="{Binding Image, RelativeSource={RelativeSource AncestorType=UserControl}}"
@@ -23,6 +24,8 @@
                 Margin="0 10 0 0"/>
 
             <TextBlock
+                HorizontalAlignment="Right"
+                Padding="10"
                 Text="{Binding Description, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue='................................'}"
                 Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                 Foreground="{DynamicResource PrimaryHueMidBrush}"/>

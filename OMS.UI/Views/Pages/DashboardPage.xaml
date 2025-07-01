@@ -26,8 +26,13 @@
         </ResourceDictionary>
     </Page.Resources>
 
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadDataCommand}" />
+            <i:ControlStoryboardAction Storyboard="{StaticResource PageLoadAnimation}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
-  
 
     <Grid>
         <Grid.RowDefinitions>
@@ -82,9 +87,10 @@
                             Height="150"
                             Width="{Binding ItemWidth, 
                             RelativeSource={RelativeSource AncestorType=WrapPanel}}"
+                            Color="{Binding Color}"
                             Image="{Binding Icon}"
                             Title="{Binding Title}"
-                            Description="{Binding Value}"/>
+                            Description="{Binding Value, StringFormat={}{0:0}}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

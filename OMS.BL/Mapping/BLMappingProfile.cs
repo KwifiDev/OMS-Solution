@@ -81,6 +81,7 @@ namespace OMS.BL.Mapping
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(scr => scr.Person.Gender))
                 .ReverseMap();
 
+            CreateMap<DashboardSummary, DashboardSummaryModel>().ReverseMap();
         }
     }
 }

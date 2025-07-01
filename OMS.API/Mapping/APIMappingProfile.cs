@@ -100,6 +100,8 @@ namespace OMS.API.Mapping
                 .ForSourceMember(src => src.AccountId, opt => opt.DoNotValidate())
                 .ReverseMap();
 
+            CreateMap<DashboardSummaryModel, DashboardSummaryDto>().ReverseMap();
+
         }
     }
 }

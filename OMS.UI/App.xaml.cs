@@ -121,7 +121,7 @@ namespace OMS.UI
 
             services.AddTransient<IRevenueService, RevenueService>();
 
-
+            services.AddTransient<IDashboardSummaryService, DashboardSummaryService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)

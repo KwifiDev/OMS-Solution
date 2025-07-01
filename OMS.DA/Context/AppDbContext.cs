@@ -77,6 +77,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<UserDetail> UserDetails { get; set; }
 
+    public virtual DbSet<DashboardSummary> DashboardSummaries { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -148,6 +150,8 @@ public partial class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new UserAccountConfig());
 
         modelBuilder.ApplyConfiguration(new UserDetailConfig());
+
+        modelBuilder.ApplyConfiguration(new DashboardSummaryConfig());
 
         OnModelCreatingPartial(modelBuilder);
     }

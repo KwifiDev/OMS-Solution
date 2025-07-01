@@ -101,6 +101,9 @@ builder.Services.AddScoped<IPaymentsSummaryService, PaymentsSummaryService>();
 builder.Services.AddScoped<IRevenueRepository, RevenueRepository>();
 builder.Services.AddScoped<IRevenueService, RevenueService>();
 
+builder.Services.AddScoped<IDashboardSummaryRepository, DashboardSummaryRepository>();
+builder.Services.AddScoped<IDashboardSummaryService, DashboardSummaryService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
