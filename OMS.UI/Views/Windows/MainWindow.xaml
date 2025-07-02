@@ -240,7 +240,9 @@
                         </StackPanel>
                     </Button>
 
-                    <Button Style="{StaticResource MenuButtonStyle}">
+                    <Button Style="{StaticResource MenuButtonStyle}"
+                            Command="{Binding OpenSettingsCommand}">
+                            
                         <StackPanel Orientation="Horizontal" 
                                   HorizontalAlignment="Right"  
                                   Width="180">

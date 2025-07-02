@@ -10,8 +10,10 @@ using OMS.UI.APIs.Services.Tables;
 using OMS.UI.APIs.Services.Views;
 using OMS.UI.Mapping;
 using OMS.UI.Services.Authentication;
+using OMS.UI.Services.Registry;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Navigation;
+using OMS.UI.Services.Settings;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.UserSession;
@@ -189,6 +191,8 @@ namespace OMS.UI
             services.AddTransient<RevenuesPageViewModel>();
 
             services.AddTransient<AddEditRevenueViewModel>();
+
+            services.AddSingleton<SettingsPageViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -274,6 +278,9 @@ namespace OMS.UI
             services.AddTransient(provider =>
                 new AddEditRevenueWindow { DataContext = provider.GetRequiredService<AddEditRevenueViewModel>() });
 
+            services.AddSingleton(provider =>
+                new SettingsPage { DataContext = provider.GetRequiredService<SettingsPageViewModel>() });
+
         }
 
         private static void RegisterMVVMServices(IServiceCollection services)
@@ -291,6 +298,10 @@ namespace OMS.UI
             services.AddSingleton<IUserSessionService, UserSessionService>();
 
             services.AddTransient<IAuthenticationService, AuthenticationService>();
+
+            services.AddTransient<ISettingsService, SettingsService>();
+
+            services.AddTransient<IRegistryService, RegistryService>();
         }
 
         private async Task TryConnectToServerAsync()
