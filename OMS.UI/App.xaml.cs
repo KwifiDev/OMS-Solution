@@ -9,10 +9,12 @@ using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.APIs.Services.Tables;
 using OMS.UI.APIs.Services.Views;
 using OMS.UI.Mapping;
+using OMS.UI.Models;
 using OMS.UI.Services.Authentication;
-using OMS.UI.Services.Registry;
 using OMS.UI.Services.Dialog;
+using OMS.UI.Services.Hash;
 using OMS.UI.Services.Navigation;
+using OMS.UI.Services.Registry;
 using OMS.UI.Services.Settings;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement.Service;
@@ -28,6 +30,7 @@ using OMS.UI.Views.Pages;
 using OMS.UI.Views.Windows;
 using System.Net.Http;
 using System.Windows;
+using static OMS.UI.Services.Authentication.AuthenticationService;
 
 namespace OMS.UI
 {
@@ -302,9 +305,19 @@ namespace OMS.UI
             services.AddTransient<ISettingsService, SettingsService>();
 
             services.AddTransient<IRegistryService, RegistryService>();
+
+            services.AddSingleton<IHashService, HashService>();
         }
 
-        private async Task TryConnectToServerAsync()
+
+
+        private async Task InitializeApplicationAsync()
+        {
+            await _host.StartAsync();
+            await VerifyServerConnectionAsync();
+        }
+
+        private async Task VerifyServerConnectionAsync()
         {
             try
             {
@@ -334,16 +347,96 @@ namespace OMS.UI
             }
         }
 
-        protected override async void OnStartup(StartupEventArgs e)
+        private (bool hasCredentials, string? username, string? password) CheckForSavedCredentials()
         {
-            await _host.StartAsync();
-            await TryConnectToServerAsync();
+            var regService = Ioc.Default.GetRequiredService<IRegistryService>();
+            regService.GetUserLoginConfig(out string? username, out string? password);
 
+            return (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password), username, password);
+        }
+
+        private async Task<(bool IsAuthenticated, UserLoginModel? User)> TryAuthenticateWithSavedCredentialsAsync(string username, string password)
+        {
+            try
+            {
+                var authenticationService = Ioc.Default.GetRequiredService<IAuthenticationService>();
+                var user = await authenticationService.AuthenticateAsync(username, password);
+                var validationStatus = authenticationService.ValidateUserAccount(user);
+
+                return (validationStatus == EnUserValidateStatus.FoundAndActive, user);
+            }
+            catch
+            {
+                return (false, null);
+            }
+        }
+
+        private async Task HandleUserAuthenticationAsync()
+        {
+            var (hasSavedCredentials, username, password) = CheckForSavedCredentials();
+
+            if (!hasSavedCredentials)
+            {
+                ShowLoginWindow();
+                return;
+            }
+
+            var authenticationResult = await TryAuthenticateWithSavedCredentialsAsync(username!, password!);
+
+            if (authenticationResult.IsAuthenticated)
+            {
+                ShowMainWindow(authenticationResult.User!);
+            }
+            else
+            {
+                ResetUserLoginConfig();
+                ShowLoginWindow();
+            }
+        }
+
+        private void ResetUserLoginConfig()
+        {
+            var regService = Ioc.Default.GetRequiredService<IRegistryService>();
+            regService.ResetUserLoginConfig();
+        }
+
+        private void ShowLoginWindow()
+        {
             var loginWindow = Ioc.Default.GetRequiredService<LoginWindow>();
             loginWindow.Show();
+        }
+
+        private void ShowMainWindow(UserLoginModel user)
+        {
+            var userSessionService = Ioc.Default.GetRequiredService<IUserSessionService>();
+            userSessionService.Login(user);
+
+            var mainWindow = Ioc.Default.GetRequiredService<MainWindow>();
+            mainWindow.Show();
+        }
+
+        private void HandleStartupError(Exception ex)
+        {
+            MessageBox.Show($"Application failed to start: {ex.Message}",
+                          "Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Shutdown();
+        }
+
+        protected override async void OnStartup(StartupEventArgs e)
+        {
+            try
+            {
+                await InitializeApplicationAsync();
+                await HandleUserAuthenticationAsync();
+            }
+            catch (Exception ex)
+            {
+                HandleStartupError(ex);
+            }
 
             base.OnStartup(e);
         }
+
 
         protected override async void OnExit(ExitEventArgs e)
         {

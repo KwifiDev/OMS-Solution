@@ -2,6 +2,7 @@
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
+using OMS.UI.Services.Hash;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
 using OMS.UI.Services.StatusManagement.Service;
@@ -17,6 +18,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
     {
         private readonly IBranchService _branchService;
         private readonly IUserSessionService _userSessionService;
+        private readonly IHashService _hashService;
 
         [ObservableProperty]
         private IFindPersonViewModel _findPersonViewModel;
@@ -26,11 +28,12 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMessageService messageService,
                                     IFindPersonViewModel findPersonViewModel, IWindowService windowService, IStatusService statusService,
-                                    IUserSessionService userSessionService) : base(userService, messageService, windowService, statusService)
+                                    IUserSessionService userSessionService, IHashService hashService) : base(userService, messageService, windowService, statusService)
         {
             _branchService = branchService;
             _userSessionService = userSessionService;
             _findPersonViewModel = findPersonViewModel;
+            _hashService = hashService;
 
             FindPersonViewModel.PersonFound += OnPersonFound;
             InitializeBranches();

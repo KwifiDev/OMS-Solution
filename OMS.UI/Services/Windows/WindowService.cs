@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
+using OMS.UI.Views;
 using OMS.UI.Views.Windows;
 using System.Windows;
 using System.Windows.Threading;
@@ -83,5 +84,14 @@ namespace OMS.UI.Services.Windows
         }
 
         private Window? GetActiveWindow() => Application.Current.Windows.OfType<Window>().FirstOrDefault(x => x.IsActive);
+
+        public void CloseMainWindow()
+        {
+            _dispatcher.Invoke(() =>
+            {
+                var mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                mainWindow?.Close();
+            });
+        }
     }
 }

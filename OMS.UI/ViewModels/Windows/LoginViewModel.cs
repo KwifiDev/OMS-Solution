@@ -1,14 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using OMS.UI.Models;
 using OMS.UI.Models.Validations;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Authentication;
+using OMS.UI.Services.Hash;
+using OMS.UI.Services.Registry;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.Views;
 using System.ComponentModel.DataAnnotations;
+using static OMS.UI.Services.Authentication.AuthenticationService;
 
 namespace OMS.UI.ViewModels.Windows
 {
@@ -16,8 +18,10 @@ namespace OMS.UI.ViewModels.Windows
     {
         private readonly IMessageService _messageService;
         private readonly IWindowService _windowService;
+        private readonly IHashService _hashService;
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserSessionService _userSessionService;
+        private readonly IRegistryService _registryService;
         private bool _isLoading;
 
 
@@ -34,16 +38,23 @@ namespace OMS.UI.ViewModels.Windows
         [NotifyDataErrorInfo]
         private string _password = string.Empty;
 
+        private string _hashPassword = null!;
+
         [ObservableProperty]
         private string _loginButtonContent = "تسجيل الدخول";
 
-        public LoginViewModel(IMessageService messageService, IWindowService windowService,
-                              IAuthenticationService authenticationService, IUserSessionService userSessionService)
+        [ObservableProperty]
+        private bool _isRememberUserLogin;
+
+        public LoginViewModel(IMessageService messageService, IWindowService windowService, IHashService hashService,
+                              IAuthenticationService authenticationService, IUserSessionService userSessionService, IRegistryService registryService)
         {
             _messageService = messageService;
             _windowService = windowService;
+            _hashService = hashService;
             _authenticationService = authenticationService;
             _userSessionService = userSessionService;
+            _registryService = registryService;
         }
 
         public bool IsLoading
@@ -68,9 +79,18 @@ namespace OMS.UI.ViewModels.Windows
 
             IsLoading = true;
 
-            var user = await _authenticationService.AuthenticateAsync(Username, Password);
+            _hashPassword = _hashService.HashPassword(Password);
 
-            if (!ValidateUserAccount(user)) { IsLoading = false; return; }
+            var user = await _authenticationService.AuthenticateAsync(Username, _hashPassword);
+
+            var validationStatus = _authenticationService.ValidateUserAccount(user);
+
+            if (!CheckUserAccountStatus(validationStatus)) { IsLoading = false; return; }
+
+            if (IsRememberUserLogin)
+                _registryService.SetUserLoginConfig(Username, _hashPassword);
+            else
+                _registryService.ResetUserLoginConfig();
 
             _userSessionService.Login(user);
 
@@ -93,18 +113,17 @@ namespace OMS.UI.ViewModels.Windows
         private void ShowValidationError(string? error) =>
             _messageService.ShowInfoMessage("تحقق", MessageTemplates.ValidationErrorMessage(error));
 
-        private bool ValidateUserAccount(UserLoginModel? user)
+        private bool CheckUserAccountStatus(EnUserValidateStatus validationStatus)
         {
-            if (user == null)
+            switch (validationStatus)
             {
-                _messageService.ShowErrorMessage("حساب غير صالح", MessageTemplates.InvalidCredentialsErrorMessage);
-                return false;
-            }
+                case EnUserValidateStatus.NotFound:
+                    _messageService.ShowErrorMessage("حساب غير صالح", MessageTemplates.InvalidCredentialsErrorMessage);
+                    return false;
 
-            if (!user.IsActive)
-            {
-                _messageService.ShowErrorMessage("حالة الحساب", MessageTemplates.AccountInActiveErrorMessage);
-                return false;
+                case EnUserValidateStatus.NotActive:
+                    _messageService.ShowErrorMessage("حالة الحساب", MessageTemplates.AccountInActiveErrorMessage);
+                    return false;
             }
 
             return true;

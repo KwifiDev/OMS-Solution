@@ -30,8 +30,9 @@ namespace OMS.UI.ViewModels.Pages
         [RelayCommand]
         private void LoadData()
         {
-            PersonalAppInfoModel.CompanyName = _registrySerivce.GetRegistryValue(nameof(PersonalAppInfoModel.CompanyName), RegistryService.SubRegistryPath.AppConfig);
-            PersonalAppInfoModel.Description = _registrySerivce.GetRegistryValue(nameof(PersonalAppInfoModel.Description), RegistryService.SubRegistryPath.AppConfig);
+            _registrySerivce.GetAppConfig(out string? companyName, out string? description);
+            PersonalAppInfoModel.CompanyName = companyName;
+            PersonalAppInfoModel.Description = description;
 
         }
 
@@ -40,8 +41,7 @@ namespace OMS.UI.ViewModels.Pages
         {
             if (!PersonalAppInfoModel.ArePropertiesValid()) return;
 
-            _registrySerivce.SetRegistryValue(nameof(PersonalAppInfoModel.CompanyName), PersonalAppInfoModel.CompanyName!, RegistryService.SubRegistryPath.AppConfig);
-            _registrySerivce.SetRegistryValue(nameof(PersonalAppInfoModel.Description), PersonalAppInfoModel.Description!, RegistryService.SubRegistryPath.AppConfig);
+            _registrySerivce.SetAppConfig(PersonalAppInfoModel.CompanyName!, PersonalAppInfoModel.Description!);
 
             _messageService.ShowInfoMessage("معلومات", MessageTemplates.SaveSuccessMessage);
         }

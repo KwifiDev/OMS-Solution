@@ -6,6 +6,7 @@ using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Navigation;
+using OMS.UI.Services.Registry;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
@@ -20,6 +21,7 @@ namespace OMS.UI.ViewModels.Windows
         private readonly INavigationService _navigationService;
         private readonly IWindowService _windowService;
         private readonly IUserService _userService;
+        private readonly IRegistryService _registryService;
         private readonly IUserSessionService _userSessionService;
         private readonly IDialogService _dialogService;
         private readonly IMessageService _messageService;
@@ -27,12 +29,13 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private UserLoginModel? _currentUser;
 
-        public MainWindowViewModel(INavigationService navigationService, IWindowService windowService, IUserService userService,
+        public MainWindowViewModel(INavigationService navigationService, IWindowService windowService, IUserService userService, IRegistryService registryService,
                                    IUserSessionService userSessionService, IDialogService dialogService, IMessageService messageService)
         {
             _navigationService = navigationService;
             _windowService = windowService;
             _userService = userService;
+            _registryService = registryService;
             _userSessionService = userSessionService;
             _dialogService = dialogService;
             _messageService = messageService;
@@ -64,7 +67,8 @@ namespace OMS.UI.ViewModels.Windows
             if (!ok) return;
 
             _userSessionService.Logout();
-            _windowService.Close();
+            _registryService.ResetUserLoginConfig();
+            _windowService.Hide();
             _windowService.Open<LoginWindow>();
         }
 

@@ -11,5 +11,6 @@ namespace OMS.UI.Services.Windows
         void Minimize();
         void Maximize();
         void HideLoginWindow();
+        void CloseMainWindow();
     }
 }

@@ -102,9 +102,11 @@
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Text="{Binding PersonalAppInfoModel.CompanyName, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
                      FontSize="16"
-                     Margin="10,5,10,5"
+                     Margin="10,10,10,10"
+                     Padding="10 15 10 0"
                      materialDesign:HintAssist.Hint="اسم المكتبة"
-                     Grid.ColumnSpan="2" Grid.Row="1">
+                     Grid.ColumnSpan="2" Grid.Row="1"
+                     HorizontalContentAlignment="Center" >
 
                 <i:Interaction.Behaviors>
                     <inputBehaviors:ArabicAndNumbersInputBehavior/>

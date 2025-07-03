@@ -151,7 +151,8 @@
                                  Style="{StaticResource MaterialDesignCheckBox}"
                                  FontSize="12"
                                  TabIndex="2"
-                                 HorizontalAlignment="Left"/>
+                                 HorizontalAlignment="Left"
+                                 IsChecked="{Binding IsRememberUserLogin}"/>
                     </Grid>
 
 
