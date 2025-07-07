@@ -45,6 +45,7 @@ namespace OMS.UI.Mapping
             CreateMap<PaymentsSummaryDto, PaymentsSummaryModel>().ReverseMap();
             CreateMap<RevenueDto, RevenueModel>().ReverseMap();
             CreateMap<DashboardSummaryDto, DashboardSummaryModel>().ReverseMap();
+            CreateMap<ChangePasswordDto, ChangePasswordModel>().ReverseMap();
         }
     }
 }

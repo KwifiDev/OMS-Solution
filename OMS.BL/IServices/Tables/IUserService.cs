@@ -111,5 +111,13 @@ namespace OMS.BL.IServices.Tables
         /// <returns>username if the user exist, otherwise null if not found.</returns>
         Task<string?> GetUsernameById(int userId);
 
+
+        /// <summary>
+        /// Change Password by userId asynchronously.
+        /// </summary>
+        /// <param name="model">The Change Password Model of the user to Change Password.</param>
+        /// <returns>true if the user Password Changed, otherwise false.</returns>
+        Task<bool> ChangePassword(ChangePasswordModel model);
+
     }
 }

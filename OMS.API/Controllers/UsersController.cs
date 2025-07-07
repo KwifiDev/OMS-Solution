@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OMS.API.Dtos.Hybrid;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
+using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.Tables;
 
 namespace OMS.API.Controllers
@@ -371,6 +372,53 @@ namespace OMS.API.Controllers
                 return Problem(
                     detail: ex.Message,
                     statusCode: StatusCodes.Status500InternalServerError
+                );
+            }
+        }
+
+
+        /// <summary>
+        /// Updates an user password.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/users/changepassword
+        ///
+        /// </remarks>
+        /// <param name="dto">The dto of the user password to update user password (must be positive integer of user Id).</param>
+        /// <returns>
+        /// - 200 OK with updated user activation if successful
+        /// - 404 Not Found if user doesn't exist
+        /// - 400 BadRequest dto not valid
+        /// - 500 Internal Server Error if unexpected error occurs
+        /// </returns>
+        /// <response code="204">Returns no content when user password changed</response>
+        /// <response code="404">If the password can,t changed</response>
+        /// <response code="400">If ChangePasswordDto not valid</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpPut("changepassword")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
+        {
+            try
+            {
+                var Model = _mapper.Map<ChangePasswordDto, ChangePasswordModel>(dto);
+
+                bool isChanged = await _service.ChangePassword(Model);
+
+                return (isChanged) ? Ok() : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Update operation failed",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1"
                 );
             }
         }

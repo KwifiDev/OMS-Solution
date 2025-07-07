@@ -97,6 +97,13 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// <returns>True if the username Available, otherwise false.</returns>
         Task<bool> CheckUsernameAvailable(UsernameAvailableDto dto);
 
+        /// <summary>
+        /// Change password of the user by its ID asynchronously.
+        /// </summary>
+        /// <param name="dto">The dto of userId and password to change.</param>
+        /// <returns>True if the user password changed, otherwise false.</returns>
+        Task<bool> ChangePasswordAsync(ChangePasswordDto dto);
+
 
     }
 }

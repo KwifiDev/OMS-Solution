@@ -168,5 +168,28 @@ namespace OMS.UI.APIs.Services.Tables
                 return false;
             }
         }
+
+        public async Task<bool> ChangePasswordAsync(ChangePasswordDto dto)
+        {
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync($"{_endpoint}/changepassword", dto);
+
+                if (!response.IsSuccessStatusCode)
+                {
+
+                    LogError(new Exception($"حدث خطأ اثناء تعيين كلمة المرور.\nStatus Code: {response.StatusCode}"));
+                    return false;
+                }
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
     }
 }

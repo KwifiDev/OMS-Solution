@@ -196,6 +196,8 @@ namespace OMS.UI
             services.AddTransient<AddEditRevenueViewModel>();
 
             services.AddSingleton<SettingsPageViewModel>();
+
+            services.AddTransient<ChangePasswordViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -283,6 +285,9 @@ namespace OMS.UI
 
             services.AddSingleton(provider =>
                 new SettingsPage { DataContext = provider.GetRequiredService<SettingsPageViewModel>() });
+
+            services.AddTransient(provider =>
+                new ChangePasswordWindow { DataContext = provider.GetRequiredService<ChangePasswordViewModel>() });
 
         }
 

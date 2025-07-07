@@ -23,5 +23,9 @@ namespace OMS.DA.IRepositories.IEntityRepos
         Task<bool> IsUsernameUsedAsync(int userId, string username);
 
         Task<string?> GetUsernamebyId(int userId);
+
+        Task<bool> UpdatePassword(int userId, string newPassword);
+
+        Task<string?> GetPasswordById(int userId);
     }
 }

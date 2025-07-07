@@ -132,5 +132,19 @@ namespace OMS.DA.Repositories.EntityRepos
                                .Select(u => u.Username)
                                .FirstOrDefaultAsync();
         }
+
+        public async Task<bool> UpdatePassword(int userId, string newPassword)
+        {
+            int rawAffected = await _users.Where(u => u.UserId == userId)
+                                          .ExecuteUpdateAsync(u => u.SetProperty(p => p.Password, newPassword));
+
+            return rawAffected > 0;
+        }
+
+        public async Task<string?> GetPasswordById(int userId)
+            => await _users.Where(u => u.UserId == userId)
+                           .Select(u => u.Password)
+                           .FirstOrDefaultAsync();
+        
     }
 }

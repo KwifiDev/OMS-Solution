@@ -66,12 +66,23 @@ namespace OMS.BL.Services.Tables
         public async Task<bool> UpdateUserActivationStatus(int userId, bool isActive)
             => await _userRepository.UpdateUserActivationStatus(userId, isActive);
 
-        public async Task<bool> IsUsernameUsedAsync(int userId,string username)
+        public async Task<bool> IsUsernameUsedAsync(int userId, string username)
             => await _userRepository.IsUsernameUsedAsync(userId, username);
 
 
         public async Task<string?> GetUsernameById(int userId)
             => await _userRepository.GetUsernamebyId(userId);
+
+        public async Task<bool> ChangePassword(ChangePasswordModel changePasswordModel)
+        {
+            var oldPassword = await _userRepository.GetPasswordById(changePasswordModel.UserId);
+
+            if (oldPassword == null || oldPassword.Trim() != changePasswordModel.OldPassword.Trim()) return false;
+
+            bool isChanged = await _userRepository.UpdatePassword(changePasswordModel.UserId, changePasswordModel.NewPassword);
+
+            return isChanged;
+        }
 
     }
 }

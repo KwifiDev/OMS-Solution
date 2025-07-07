@@ -84,6 +84,12 @@ namespace OMS.UI.ViewModels.Pages
             return SelectedItem?.IsActive == "فعّال";
         }
 
+        [RelayCommand]
+        private async Task OpenChangePassword()
+        {
+            await _dialogService.ShowDialog<ChangePasswordWindow, int?>(SelectedItem?.UserId);
+        }
+
         private async Task UpdateUserActivation(string userConfirmationMessage, bool isActiveUser, string isActiveTitle, string successTitle)
         {
             if (!_messageService.ShowQuestionMessage("تنويه", userConfirmationMessage))

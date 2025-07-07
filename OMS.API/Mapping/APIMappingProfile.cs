@@ -102,6 +102,8 @@ namespace OMS.API.Mapping
 
             CreateMap<DashboardSummaryModel, DashboardSummaryDto>().ReverseMap();
 
+            CreateMap<ChangePasswordModel, ChangePasswordDto>().ReverseMap();
+
         }
     }
 }

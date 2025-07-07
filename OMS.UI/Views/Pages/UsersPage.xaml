@@ -109,6 +109,12 @@
 
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
+                    <MenuItem Header="تغيير كلمة المرور" 
+                              Command="{Binding OpenChangePasswordCommand}"
+                              Icon="{materialDesign:PackIcon Kind=PasswordReset}"/>
+
+                    <Separator Style="{StaticResource MaterialDesignSeparator}"/>
+
                     <MenuItem Header="تحديث" 
                        Command="{Binding LoadDataCommand}"
                        Icon="{materialDesign:PackIcon Kind=Refresh}"/>
