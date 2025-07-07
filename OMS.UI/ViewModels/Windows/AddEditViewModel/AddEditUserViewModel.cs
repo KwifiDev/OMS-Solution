@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models;
+using OMS.UI.Models.Validations;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Hash;
 using OMS.UI.Services.ShowMassage;
@@ -10,6 +11,7 @@ using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.UserControls.Interfaces;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using static OMS.UI.ViewModels.UserControls.FindPersonViewModel;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel
@@ -63,6 +65,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         protected override async Task Save(object? parameter)
         {
             if (!ValidatePersonSelection()) return;
+            if (!await ValidateUsername()) return;
 
             SetPersonReference();
             await base.Save(parameter);
@@ -72,15 +75,40 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             => "موظف";
 
         protected override async Task<bool> SaveDataAsync(bool isAdding, UserModel userModel)
-            => isAdding
-                ? await _service.AddAsync(userModel)
-                : await _service.UpdateAsync(userModel.UserId, userModel);
+        {
+            if (isAdding)
+            {
+                userModel.Password = _hashService.HashPassword(userModel.Password);
+                return await _service.AddAsync(userModel);
+            }
+            else
+            {
+                return await _service.UpdateAsync(userModel.UserId, userModel);
+            }
+        }
 
         protected override bool ValidateModel()
         {
+            if (Status.SelectMode == AddEditStatus.EnMode.Edit)
+                Model.Password = _hashService.HashPassword("FakePassword");
+
             if (!base.ValidateModel()) return false;
             if (!ValidatePersonSelection()) return false;
             if (!ValidateBranchSelection()) return false;
+
+            return true;
+        }
+
+        private async Task<bool> ValidateUsername()
+        {
+            var usernameValidator = new UserValidation(_service);
+            var result = await usernameValidator.ValidateFullUsernameAsync(Model.UserId, Model.Username);
+
+            if (result != ValidationResult.Success)
+            {
+                ShowValidationError("التحقق من اسم المستخدم", result!.ErrorMessage!);
+                return false;
+            }
 
             return true;
         }

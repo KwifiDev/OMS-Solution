@@ -79,6 +79,19 @@
 
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
+                    <MenuItem Header="تفعيل" 
+                              Command="{Binding ActiveUserCommand}"
+                              CommandParameter="{Binding SelectedItem}"
+                              Icon="{materialDesign:PackIcon Kind=AccountDisability}"/>
+
+
+                    <MenuItem Header="تعطيل" 
+                              Command="{Binding InActiveUserCommand}"
+                              CommandParameter="{Binding SelectedItem}"
+                              Icon="{materialDesign:PackIcon Kind=AccountDisabilityOutline}"/>
+
+                    <Separator Style="{StaticResource MaterialDesignSeparator}"/>
+
                     <MenuItem Header="اضافة موظف" 
                        Command="{Binding AddItemCommand}"
                        Icon="{materialDesign:PackIcon Kind=AccountPlus}"/>

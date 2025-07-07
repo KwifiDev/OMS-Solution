@@ -19,7 +19,7 @@ public partial class UserDto
     public string Username { get; set; } = null!;
 
     [Required(ErrorMessage = "Password is required")]
-    [StringLength(100, MinimumLength = 5, ErrorMessage = "Password must be at least 5 characters")]
+    [RegularExpression(@"^[a-zA-Z0-9+/]{43}=$", ErrorMessage = "Password is not a valid SHA256 hash Base64.")]
     [DataType(DataType.Password)]
     public string Password { get; set; } = null!;
 

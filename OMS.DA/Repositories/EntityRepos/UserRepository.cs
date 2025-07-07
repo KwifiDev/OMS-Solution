@@ -14,6 +14,31 @@ namespace OMS.DA.Repositories.EntityRepos
             _users = context.Set<User>();
         }
 
+        public override async Task<User?> GetByIdAsync(int id)
+        {
+            return await _users.AsNoTracking()
+                  .Select(u => new User
+                  {
+                      UserId = u.UserId,
+                      BranchId = u.BranchId,
+                      PersonId = u.PersonId,
+                      Username = u.Username,
+                      Permissions = u.Permissions
+                  })
+                  .Where(u => u.UserId == id)
+                  .FirstOrDefaultAsync();
+        }
+
+        public override async Task<bool> UpdateAsync(User user)
+        {
+            int rawAffected = await _users.Where(u => u.UserId == user.UserId)
+                                          .ExecuteUpdateAsync(setters => setters
+                                          .SetProperty(u => u.Username, user.Username)
+                                          .SetProperty(u => u.BranchId, user.BranchId));
+
+            return rawAffected > 0;
+        }
+
         public async Task<User?> GetByUsernameAndPasswordAsync(string username, string password)
         {
             return await _users.AsNoTracking()
@@ -60,12 +85,52 @@ namespace OMS.DA.Repositories.EntityRepos
 
         public async Task<User?> GetByPersonIdAsync(int personId)
         {
-            return await _users.Where(u => u.PersonId == personId).FirstOrDefaultAsync();
+            return await _users.AsNoTracking()
+                .Select(u => new User
+                {
+                    UserId = u.UserId,
+                    BranchId = u.BranchId,
+                    PersonId = u.PersonId,
+                    Username = u.Username,
+                    Permissions = u.Permissions
+                })
+                .Where(u => u.PersonId == personId)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<int> GetIdByPersonIdAsync(int personId)
         {
             return await _users.Where(u => u.PersonId == personId).Select(u => u.UserId).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> IsUserActive(int userId)
+            => await _users.AsNoTracking()
+                           .Where(c => c.UserId == userId)
+                           .Select(u => u.IsActive)
+                           .FirstOrDefaultAsync();
+
+        public async Task<bool> UpdateUserActivationStatus(int userId, bool isActive)
+        {
+            var rowAffected = await _users.Where(u => u.UserId == userId)
+                                          .ExecuteUpdateAsync(u => u.SetProperty(c => c.IsActive, isActive));
+
+            return rowAffected > 0;
+        }
+
+        public async Task<bool> IsUsernameUsedAsync(int userId, string username)
+        {
+            return await _users.AsNoTracking()
+                               .Where(u => u.UserId != userId)
+                               .Select(u => u.Username)
+                               .AnyAsync(us => us == username);
+        }
+
+        public async Task<string?> GetUsernamebyId(int userId)
+        {
+            return await _users.AsNoTracking()
+                               .Where(u => u.UserId == userId)
+                               .Select(u => u.Username)
+                               .FirstOrDefaultAsync();
         }
     }
 }

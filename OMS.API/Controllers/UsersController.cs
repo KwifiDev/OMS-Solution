@@ -20,6 +20,82 @@ namespace OMS.API.Controllers
         }
 
 
+
+        /// <summary>
+        /// Updates an existing user.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/users/1
+        ///     
+        /// Note: The ID in route must match the ID in request body.
+        /// </remarks>
+        /// <param name="id">The ID of the user to update (must be positive integer and match ID in request body).</param>
+        /// <param name="dto">The DTO containing updated data.</param>
+        /// <returns>
+        /// - 200 OK with updated user if successful
+        /// - 400 Bad Request if validation fails
+        /// - 404 Not Found if user doesn't exist
+        /// - 409 already used oldUsername
+        /// - 500 Internal Server Error if unexpected error occurs
+        /// </returns>
+        /// <response code="204">Returns no content when user updated</response>
+        /// <response code="400">If ID is invalid, doesn't match DTO ID, or validation fails</response>
+        /// <response code="404">If user with specified ID doesn't exist</response>
+        /// <response code="409">If user with specified oldUsername exist</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public override async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UserDto dto)
+        {
+            if (id <= 0) return NotFound();
+
+            try
+            {
+                if (!IsIdentifierIdentical(id, dto))
+                    return ValidationProblem(new ValidationProblemDetails
+                    {
+                        Errors = { { "id", new[] { "Route ID must match body ID" } } }
+                    });
+
+                string? oldUsername = await _service.GetUsernameById(dto.UserId);
+
+                if (oldUsername == null) return NotFound();
+
+                if (oldUsername != dto.Username)
+                {
+                    if (await _service.IsUsernameUsedAsync(dto.UserId ,dto.Username)) return Conflict();
+                }
+
+                var model = _mapper.Map<UserModel>(dto);
+                var isUpdated = await UpdateModelAsync(model);
+
+                if (!isUpdated)
+                    return Problem(
+                        title: "Update failed",
+                        detail: "Entity could not be updated",
+                        statusCode: StatusCodes.Status400BadRequest
+                    );
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Update operation failed",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1"
+                );
+            }
+        }
+
+
         /// <summary>
         /// Handles user login authentication (without token for now).
         /// </summary>
@@ -27,14 +103,14 @@ namespace OMS.API.Controllers
         /// Sample request:
         ///     POST /api/users/login
         ///     {
-        ///         "username": "user123",
+        ///         "oldUsername": "user123",
         ///         "password": "password123"
         ///     }
         /// </remarks>
         /// <param name="loginDto">The login credentials</param>
         /// <returns>User data if authenticated</returns>
         /// <response code="200">Returns the authenticated user's data</response>
-        /// <response code="404">If username and password not Ok</response>
+        /// <response code="404">If oldUsername and password not Ok</response>
         /// <response code="500">On internal server error</response>
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -169,6 +245,133 @@ namespace OMS.API.Controllers
                     title: "Error retrieving UserId",
                     detail: ex.Message,
                     statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+        /// <summary>
+        /// Checks if an user exists and active by its ID without retrieving its content.
+        /// </summary>
+        /// <remarks>
+        /// This operation is more efficient than GET for existence checks as it doesn't return the user body.
+        /// 
+        /// Example:
+        /// HEAD /api/users/123/isactive
+        /// </remarks>
+        /// <param name="userId">The user ID of the user to check if is active (must be positive integer).</param>
+        /// <returns>
+        /// - 200 OK with empty body if user is active
+        /// - 404 Not Found if user doesn't exist or not Active
+        /// - Appropriate error response for invalid requests
+        /// </returns>
+        /// <response code="200">user exists and active (returns empty response with headers)</response>
+        /// <response code="404">If no user exists or not active user with the specified ID</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpHead("{userId:int}/isactive")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> IsUserActive([FromRoute] int userId)
+        {
+            if (userId <= 0) return NotFound();
+
+            try
+            {
+                var isExistAndActive = await _service.IsUserActive(userId);
+
+                return (isExistAndActive) ? Ok() : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError
+                );
+            }
+        }
+
+
+        /// <summary>
+        /// Updates an existing users.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/users/1
+        ///
+        /// </remarks>
+        /// <param name="dto">The dto of the user Activation to update user activate (must be positive integer of user Id).</param>
+        /// <returns>
+        /// - 200 OK with updated user activation if successful
+        /// - 404 Not Found if user doesn't exist
+        /// - 500 Internal Server Error if unexpected error occurs
+        /// </returns>
+        /// <response code="204">Returns no content when user updated</response>
+        /// <response code="404">If user with specified ID doesn't exist</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpPut("updateactivation")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateUserActivationAsync([FromBody] UserActivationDto userActivationDto)
+        {
+            if (userActivationDto.UserId <= 0) return NotFound();
+
+            try
+            {
+                bool isSuccess = await _service.UpdateUserActivationStatus(userActivationDto.UserId, userActivationDto.IsActive);
+
+                return (isSuccess) ? Ok() : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Update operation failed",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1"
+                );
+            }
+        }
+
+
+        /// <summary>
+        /// Checks if an username available.
+        /// </summary>
+        /// <remarks>
+        /// This operation is more efficient than GET for existence checks as it doesn't return the user body.
+        /// 
+        /// Example:
+        /// HEAD /api/users/username/checkusernameavailable
+        /// </remarks>
+        /// <param name="username">The username of the user to check if is used.</param>
+        /// <returns>
+        /// - 200 OK with empty body if username available
+        /// - Appropriate error response for invalid requests
+        /// </returns>
+        /// <response code="200">username available (returns empty response with headers)</response>
+        /// <response code="404">If username not valied</response>
+        /// <response code="409">If username used</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpPost("checkusernameavailable")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CheckUsernameAvailable([FromBody] UsernameAvailableDto dto)
+        {
+            try
+            {
+                var isUsernameUsed = await _service.IsUsernameUsedAsync(dto.UserId, dto.Username);
+
+                return (!isUsernameUsed) ? Ok() : Conflict();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError
+                );
             }
         }
 

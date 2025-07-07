@@ -80,5 +80,36 @@ namespace OMS.BL.IServices.Tables
         Task<UserLoginModel?> GetUserLoginByPersonIdAsync(int personId);
 
 
+        /// <summary>
+        /// Is User Active by their ID asynchronously.
+        /// </summary>
+        /// <param name="userId">The ID of the user to find if active.</param>
+        /// <returns>True if the user was active, false if user not active, otherwise false if not found.</returns>
+        Task<bool> IsUserActive(int userId);
+
+
+        /// <summary>
+        /// Updates an existing user activation asynchronously.
+        /// </summary>
+        /// <param name="userId">The user id to update activation.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the user activation was updated successfully.</returns>
+        Task<bool> UpdateUserActivationStatus(int userId, bool isActive);
+
+
+        /// <summary>
+        /// Is Username used asynchronously.
+        /// </summary>
+        /// <param name="userId">The user id to not check the selected user.</param>
+        /// <param name="username">The username of the user to find if used.</param>
+        /// <returns>True if the username used, otherwise false if not found.</returns>
+        Task<bool> IsUsernameUsedAsync(int userId, string username);
+
+        /// <summary>
+        /// get the Username asynchronously.
+        /// </summary>
+        /// <param name="userId">The Id of the user to find if username.</param>
+        /// <returns>username if the user exist, otherwise null if not found.</returns>
+        Task<string?> GetUsernameById(int userId);
+
     }
 }

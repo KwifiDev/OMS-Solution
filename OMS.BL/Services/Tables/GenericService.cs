@@ -8,7 +8,7 @@ namespace OMS.BL.Services.Tables
 {
     public class GenericService<TEntity, TModel> : IGenericService<TModel> where TEntity : class
     {
-        private readonly IGenericRepository<TEntity> _repository;
+        protected readonly IGenericRepository<TEntity> _repository;
         protected readonly IMapperService _mapperService;
 
         public GenericService(IGenericRepository<TEntity> repository, IMapperService mapper)
@@ -80,7 +80,7 @@ namespace OMS.BL.Services.Tables
 
 
         // Code encapsulation
-        private int GetPrimaryKey(TModel model)
+        protected int GetPrimaryKey(TModel model)
         {
             PropertyInfo? keyProperty = typeof(TModel).GetProperties()
                 .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
@@ -92,7 +92,7 @@ namespace OMS.BL.Services.Tables
             return primaryKey == null ? -1 : Convert.ToInt32(primaryKey);
         }
 
-        private void SetNewPrimaryKey(TModel model, TEntity entity)
+        protected void SetNewPrimaryKey(TModel model, TEntity entity)
         {
             PropertyInfo? modelKeyProperty = typeof(TModel).GetProperties()
                 .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));

@@ -28,6 +28,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/PageStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:VisiblilityUIConverter x:Key="VisiblilityUI"/>
+            <converters:VisiblilityUIAddEditModeConverter x:Key="VisiblilityUIMode"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -88,23 +89,16 @@
                 </i:Interaction.Behaviors>
             </TextBox>
 
-            <PasswordBox x:Name="txtPassword"
+            <PasswordBox
                          Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                          materialDesign:PasswordBoxAssist.Password="{Binding Model.Password, ValidatesOnNotifyDataErrors=True}"
                          FontSize="16"
                          Margin="10,5,10,5"
                          Grid.Row="1" Grid.Column="0"
                          materialDesign:HintAssist.Hint="كلمة السر"
-                         IsEnabled="{Binding Status.IsModifiable}"/>
+                         IsEnabled="{Binding Status.IsModifiable}"
+                         Visibility="{Binding Status.SelectMode, Converter={StaticResource VisiblilityUIMode}}"/>
 
-
-            <CheckBox Style="{StaticResource MaterialDesignDarkCheckBox}"
-                      Content="تفعيل الحساب"
-                      FontSize="16"
-                      Margin="10,5,10,5"
-                      Grid.Row="1" Grid.Column="1"
-                      IsChecked="{Binding Model.IsActive}"
-                      IsEnabled="{Binding Status.IsModifiable}"/>
 
             <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
                       ItemsSource="{Binding Branches}"

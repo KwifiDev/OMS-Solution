@@ -1,4 +1,5 @@
 ﻿
+using OMS.UI.APIs.Dtos.Hybrid;
 using OMS.UI.Models;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables
@@ -79,6 +80,22 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// <param name="personId">The person Id of the user to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the user model, or null if not found.</returns>
         Task<UserLoginModel?> GetUserLoginByPersonIdAsync(int personId);
+
+
+        /// <summary>
+        /// Updates an existing user activation asynchronously.
+        /// </summary>
+        /// <param name="userId">The id of the user to update activation.</param>
+        /// <param name="isActive">The bool value of the user activation.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the user id, or null if not found.</returns>
+        Task<bool> UpdateUserActivationStatus(int userId, bool isActive);
+
+        /// <summary>
+        /// Check if username Available asynchronously.
+        /// </summary>
+        /// <param name="dto">The dto of userId and username to check.</param>
+        /// <returns>True if the username Available, otherwise false.</returns>
+        Task<bool> CheckUsernameAvailable(UsernameAvailableDto dto);
 
 
     }

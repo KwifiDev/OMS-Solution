@@ -113,5 +113,10 @@
         public static string CancelDebtErrorMessage => "حدث خطأ اثناء عملية الغاء الدين";
 
 
+        // User Activation Confirmation
+
+        public static string ActivateUserConfirmation => "هل انت متأكد من إجراء هذه العملية؟\nسيتم تفعيل الحساب الحالي.";
+        public static string InActivateUserConfirmation => "هل انت متأكد من إجراء هذه العملية؟\nسيتم الغاء تفعيل الحساب الحالي.";
+
     }
 }

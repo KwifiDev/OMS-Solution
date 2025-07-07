@@ -1,4 +1,5 @@
-﻿using OMS.UI.APIs.Services.Interfaces.Tables;
+﻿using CommunityToolkit.Mvvm.Input;
+using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
@@ -57,6 +58,47 @@ namespace OMS.UI.ViewModels.Pages
             }
 
             await base.DeleteItem();
+        }
+
+        [RelayCommand(CanExecute = nameof(CanActiveUser))]
+        private async Task ActiveUser()
+        {
+            await UpdateUserActivation(MessageTemplates.ActivateUserConfirmation, true, "فعّال", "تم التفعيل");
+            ActiveUserCommand.NotifyCanExecuteChanged();
+        }
+
+        private bool CanActiveUser()
+        {
+            return SelectedItem?.IsActive == "غير فعّال";
+        }
+
+        [RelayCommand(CanExecute = nameof(CanInActiveUser))]
+        private async Task InActiveUser()
+        {
+            await UpdateUserActivation(MessageTemplates.InActivateUserConfirmation, false, "غير فعّال", "تم الغاء التفعيل");
+            InActiveUserCommand.NotifyCanExecuteChanged();
+        }
+
+        private bool CanInActiveUser()
+        {
+            return SelectedItem?.IsActive == "فعّال";
+        }
+
+        private async Task UpdateUserActivation(string userConfirmationMessage, bool isActiveUser, string isActiveTitle, string successTitle)
+        {
+            if (!_messageService.ShowQuestionMessage("تنويه", userConfirmationMessage))
+                return;
+
+            bool isSuccess = await _service.UpdateUserActivationStatus(SelectedItem!.UserId, isActiveUser);
+
+            if (isSuccess)
+            {
+                SelectedItem!.IsActive = isActiveTitle;
+                _messageService.ShowInfoMessage(successTitle, MessageTemplates.SuccessMessage);
+                
+                ActiveUserCommand.NotifyCanExecuteChanged();
+                InActiveUserCommand.NotifyCanExecuteChanged();
+            }
         }
 
     }
