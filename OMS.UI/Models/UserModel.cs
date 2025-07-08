@@ -10,7 +10,6 @@ namespace OMS.UI.Models
         private int _branchId;
         private string _userName = null!;
         private string _password = null!;
-        private int _permissions;
         private bool _isActive;
 
 
@@ -59,11 +58,7 @@ namespace OMS.UI.Models
             get => _password;
             set => SetProperty(ref _password, value, validate: true);
         }
-        public int Permissions
-        {
-            get => _permissions;
-            set => SetProperty(ref _permissions, value);
-        }
+
         public bool IsActive
         {
             get => _isActive;

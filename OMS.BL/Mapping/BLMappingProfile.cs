@@ -25,8 +25,6 @@ namespace OMS.BL.Mapping
 
             CreateMap<Payment, PaymentModel>().ReverseMap();
 
-            CreateMap<PermissionsConfig, PermissionsConfigModel>().ReverseMap();
-
             CreateMap<Person, PersonModel>().ReverseMap();
 
             CreateMap<Revenue, RevenueModel>().ReverseMap();

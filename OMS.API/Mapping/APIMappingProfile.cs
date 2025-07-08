@@ -30,8 +30,6 @@ namespace OMS.API.Mapping
 
             CreateMap<PaymentModel, PaymentDto>().ReverseMap();
 
-            CreateMap<PermissionsConfigModel, PermissionsConfigDto>().ReverseMap();
-
             CreateMap<PersonModel, PersonDto>().ReverseMap();
 
             CreateMap<RevenueModel, RevenueDto>().ReverseMap();

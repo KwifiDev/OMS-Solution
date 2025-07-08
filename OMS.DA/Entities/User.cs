@@ -19,11 +19,9 @@ public partial class User
     [Unicode(false)]
     public string Username { get; set; } = null!;
 
-    [StringLength(64)]
+    [StringLength(44)]
     [Unicode(false)]
     public string Password { get; set; } = null!;
-
-    public int Permissions { get; set; }
 
     public bool IsActive { get; set; }
 

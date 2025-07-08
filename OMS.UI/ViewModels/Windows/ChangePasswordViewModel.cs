@@ -49,7 +49,7 @@ namespace OMS.UI.ViewModels.Windows
 
             ChangePasswordModel = new ChangePasswordModel { UserId = (int)userId };
 
-            return userId > 0;
+            return await Task.FromResult(userId > 0);
         }
 
         [RelayCommand]

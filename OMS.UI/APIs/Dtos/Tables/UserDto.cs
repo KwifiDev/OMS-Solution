@@ -15,7 +15,5 @@ public partial class UserDto
 
     public required string Password { get; set; }
 
-    public required int Permissions { get; set; }
-
     public bool IsActive { get; set; } = false;
 }

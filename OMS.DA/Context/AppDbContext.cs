@@ -51,8 +51,6 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<PaymentsSummary> PaymentsSummaries { get; set; }
 
-    public virtual DbSet<PermissionsConfig> PermissionsConfigs { get; set; }
-
     public virtual DbSet<Person> People { get; set; }
 
     public virtual DbSet<Revenue> Revenues { get; set; }
@@ -124,8 +122,6 @@ public partial class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new PaymentConfig());
 
         modelBuilder.ApplyConfiguration(new PaymentsSummaryConfig());
-
-        modelBuilder.ApplyConfiguration(new PermissionsConfigConfig());
 
         modelBuilder.ApplyConfiguration(new PersonConfig());
 

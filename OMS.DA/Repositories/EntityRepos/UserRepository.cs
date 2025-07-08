@@ -22,8 +22,7 @@ namespace OMS.DA.Repositories.EntityRepos
                       UserId = u.UserId,
                       BranchId = u.BranchId,
                       PersonId = u.PersonId,
-                      Username = u.Username,
-                      Permissions = u.Permissions
+                      Username = u.Username
                   })
                   .Where(u => u.UserId == id)
                   .FirstOrDefaultAsync();
@@ -49,7 +48,6 @@ namespace OMS.DA.Repositories.EntityRepos
                             PersonId = u.PersonId,
                             BranchId = u.BranchId,
                             Username = u.Username,
-                            Permissions = u.Permissions,
                             IsActive = u.IsActive,
                             Person = new Person
                             {
@@ -71,7 +69,6 @@ namespace OMS.DA.Repositories.EntityRepos
                            PersonId = u.PersonId,
                            BranchId = u.BranchId,
                            Username = u.Username,
-                           Permissions = u.Permissions,
                            IsActive = u.IsActive,
                            Person = new Person
                            {
@@ -91,8 +88,7 @@ namespace OMS.DA.Repositories.EntityRepos
                     UserId = u.UserId,
                     BranchId = u.BranchId,
                     PersonId = u.PersonId,
-                    Username = u.Username,
-                    Permissions = u.Permissions
+                    Username = u.Username
                 })
                 .Where(u => u.PersonId == personId)
                 .FirstOrDefaultAsync();
