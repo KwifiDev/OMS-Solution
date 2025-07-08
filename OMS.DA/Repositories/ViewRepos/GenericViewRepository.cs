@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.Context;
 using OMS.DA.CustomAttributes;
-using OMS.DA.IRepositories.IEntityRepos;
+using OMS.DA.IRepositories.IViewRepos;
 using System.Reflection;
 
 namespace OMS.DA.Repositories.ViewRepos
@@ -9,19 +9,19 @@ namespace OMS.DA.Repositories.ViewRepos
     public class GenericViewRepository<T> : IGenericViewRepository<T> where T : class
     {
 
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbSet<T> _dbSet;
 
         public GenericViewRepository(AppDbContext context)
         {
             _dbSet = context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbSet.AsNoTracking().ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public virtual async Task<T?> GetByIdAsync(int id)
         {
             PropertyInfo? idProperty = typeof(T).GetProperties()
                                       .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(IdAttribute)));

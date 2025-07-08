@@ -10,11 +10,8 @@ namespace OMS.DA.Repositories.EntityRepos
 {
     public class SaleRepository : GenericRepository<Sale>, ISaleRepository
     {
-        private readonly AppDbContext _context;
-
         public SaleRepository(AppDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task<int> AddSaleAsync(int clientId, int serviceId, short quantity, string? description, string? notes, EnSaleStatus status, int createdByUserId)

@@ -64,14 +64,11 @@ namespace OMS.API.Controllers
                         Errors = { { "id", new[] { "Route ID must match body ID" } } }
                     });
 
-                string? oldUsername = await _service.GetUsernameById(dto.UserId);
+                var isValid = await _service.IsUsernameValid(_mapper.Map<UserModel>(dto));
 
-                if (oldUsername == null) return NotFound();
+                if (isValid == null) return NotFound();
 
-                if (oldUsername != dto.Username)
-                {
-                    if (await _service.IsUsernameUsedAsync(dto.UserId ,dto.Username)) return Conflict();
-                }
+                if (isValid == false) return Conflict();
 
                 var model = _mapper.Map<UserModel>(dto);
                 var isUpdated = await UpdateModelAsync(model);
@@ -122,7 +119,7 @@ namespace OMS.API.Controllers
         {
             try
             {
-                var model = await _service.GetByUsernameAndPasswordAsync(loginDto.Username, loginDto.Password);
+                var model = await _service.GetByUsernameAndPasswordAsync(_mapper.Map<RequestLoginModel>(loginDto));
 
                 return model is null
                     ? NotFound()

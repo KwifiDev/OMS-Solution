@@ -19,6 +19,6 @@ public partial class DiscountDto
     public required EnClientType ClientType { get; set; }
 
     [Required(ErrorMessage = "ClientType is Required")]
-    [Range(1, 100, ErrorMessage = "DiscountPercentage must be Between [1 - 100]")]
+    [Range(1, 99, ErrorMessage = "DiscountPercentage must be Between [1 - 99]")]
     public required decimal DiscountPercentage { get; set; }
 }

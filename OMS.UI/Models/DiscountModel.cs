@@ -8,7 +8,7 @@ namespace OMS.UI.Models
         private int _discountId;
         private int _serviceId;
         private EnClientType _clientType;
-        private decimal _discountPercentage;
+        private decimal _discountPercentage = 1;
 
 
         [Key]
@@ -28,16 +28,16 @@ namespace OMS.UI.Models
             set => SetProperty(ref _serviceId, value);
         }
 
-        [Required(ErrorMessage = "ClientType is Required")]
-        [Range(0, 2, ErrorMessage = "ClientType Must Be Between [0 - 2]")]
+        [Required(ErrorMessage = "نوع العميل مطلوب")]
+        [Range(0, 2, ErrorMessage = "|يجب ان يكون نوع العميل |محامي - عادي - اخر")]
         public EnClientType ClientType
         {
             get => _clientType;
             set => SetProperty(ref _clientType, value);
         }
 
-        [Required(ErrorMessage = "ClientType is Required")]
-        [Range(1, 100, ErrorMessage = "DiscountPercentage must be Between [1 - 100]")]
+        [Required(ErrorMessage = "يجب تحدد نسبة الخصم")]
+        [Range(1, 99, ErrorMessage = "DiscountPercentage must be Between [1 - 99]")]
         public decimal DiscountPercentage
         {
             get => _discountPercentage;

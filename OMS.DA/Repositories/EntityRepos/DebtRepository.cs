@@ -10,11 +10,8 @@ namespace OMS.DA.Repositories.EntityRepos
 {
     public class DebtRepository : GenericRepository<Debt>, IDebtRepository
     {
-        private readonly AppDbContext _context;
-
         public DebtRepository(AppDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task<EnPayDebtStatus> PayDebtByIdAsync(int debtId, string? notes, int createdByUserId)

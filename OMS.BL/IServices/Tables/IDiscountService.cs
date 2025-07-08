@@ -1,4 +1,5 @@
-﻿using OMS.BL.Models.Tables;
+﻿using OMS.BL.Models.Hybrid;
+using OMS.BL.Models.Tables;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -48,5 +49,13 @@ namespace OMS.BL.IServices.Tables
         /// <param name="discountId">The ID of the discount to delete.</param>
         /// <returns>True if the discount was deleted successfully, otherwise false.</returns>
         Task<bool> DeleteAsync(int discountId);
+
+
+        /// <summary>
+        /// check if a discount is already exist asynchronously.
+        /// </summary>
+        /// <param name="model">The model of the discount to check.</param>
+        /// <returns>True if the discount was exist, otherwise false.</returns>
+        Task<bool> IsDiscountAlreadyApplied(CheckDiscountAppliedModel model);
     }
 }

@@ -7,7 +7,7 @@ namespace OMS.DA.Repositories.EntityRepos
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly AppDbContext _context;
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbSet<T> _dbSet;
 
         public GenericRepository(AppDbContext context)
         {

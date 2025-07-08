@@ -7,16 +7,13 @@ namespace OMS.DA.Repositories.ViewRepos
 {
     public class DebtsSummaryRepository : GenericViewRepository<DebtsSummary>, IDebtsSummaryRepository
     {
-        private readonly DbSet<DebtsSummary> _debtsSummaries;
-
         public DebtsSummaryRepository(AppDbContext context) : base(context)
         {
-            _debtsSummaries = context.Set<DebtsSummary>();
         }
 
         public async Task<IEnumerable<DebtsSummary>> GetByClientIdAsync(int clientId)
         {
-            return await _debtsSummaries
+            return await _dbSet
                          .AsNoTracking()
                          .Where(e => e.ClientId == clientId)
                          .Select(e => new DebtsSummary

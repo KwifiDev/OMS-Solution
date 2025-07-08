@@ -10,11 +10,8 @@ namespace OMS.DA.Repositories.EntityRepos
 {
     public class AccountRepository : GenericRepository<Account>, IAccountRepository
     {
-        private readonly AppDbContext _context;
-
         public AccountRepository(AppDbContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task<Account?> GetByClientIdAsync(int clientId)

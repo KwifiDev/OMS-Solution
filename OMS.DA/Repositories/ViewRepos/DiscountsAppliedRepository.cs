@@ -7,16 +7,13 @@ namespace OMS.DA.IRepositories.IViewRepos
 {
     public class DiscountsAppliedRepository : GenericViewRepository<DiscountsApplied>, IDiscountsAppliedRepository
     {
-        private readonly DbSet<DiscountsApplied> _discountsApplieds;
-
         public DiscountsAppliedRepository(AppDbContext context) : base(context)
         {
-            _discountsApplieds = context.Set<DiscountsApplied>();
         }
 
         public async Task<IEnumerable<DiscountsApplied>> GetByServiceIdAsync(int serviceId)
         {
-            return await _discountsApplieds
+            return await _dbSet
                          .AsNoTracking()
                          .Where(e => e.ServiceId == serviceId)
                          .Select(e => new DiscountsApplied

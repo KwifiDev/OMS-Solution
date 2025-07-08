@@ -1,4 +1,6 @@
-﻿using OMS.DA.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using OMS.Common.Enums;
+using OMS.DA.Context;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -10,5 +12,8 @@ namespace OMS.DA.Repositories.EntityRepos
         {
 
         }
+
+        public async Task<bool> IsDiscountAlreadyApplied(int serviceId, EnClientType clientType)
+            => await _dbSet.AnyAsync(d => d.ServiceId == serviceId && d.ClientType == clientType);
     }
 }

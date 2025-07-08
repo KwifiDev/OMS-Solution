@@ -1,4 +1,4 @@
-﻿namespace OMS.DA.IRepositories.IEntityRepos
+﻿namespace OMS.DA.IRepositories.IViewRepos
 {
     /// <summary>
     /// Represents a generic repository interface for Retrieve Data operations.

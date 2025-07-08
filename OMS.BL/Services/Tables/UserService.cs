@@ -34,9 +34,9 @@ namespace OMS.BL.Services.Tables
             return await _userRepository.UpdateAsync(user);
         }
 
-        public async Task<UserLoginModel?> GetByUsernameAndPasswordAsync(string username, string password)
+        public async Task<UserLoginModel?> GetByUsernameAndPasswordAsync(RequestLoginModel model)
         {
-            User? user = await _userRepository.GetByUsernameAndPasswordAsync(username, password);
+            User? user = await _userRepository.GetByUsernameAndPasswordAsync(model.Username, model.Password);
 
             return user == null ? null : _mapperService.Map<User, UserLoginModel>(user);
         }
@@ -82,6 +82,20 @@ namespace OMS.BL.Services.Tables
             bool isChanged = await _userRepository.UpdatePassword(changePasswordModel.UserId, changePasswordModel.NewPassword);
 
             return isChanged;
+        }
+
+        public async Task<bool?> IsUsernameValid(UserModel model)
+        {
+            string? oldUsername = await GetUsernameById(model.UserId);
+
+            if (oldUsername == null) return null;
+
+            if (oldUsername != model.Username)
+            {
+                if (await _userRepository.IsUsernameUsedAsync(model.UserId, model.Username)) return false;
+            }
+
+            return true;
         }
 
     }

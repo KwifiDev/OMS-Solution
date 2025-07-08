@@ -66,10 +66,9 @@ namespace OMS.BL.IServices.Tables
         /// <summary>
         /// Retrieves a user by their username and password asynchronously.
         /// </summary>
-        /// <param name="username">The username of the user to retrieve.</param>
-        /// <param name="password">The password of the user to retrieve.</param>
+        /// <param name="model">The model of login to send username and password of the user to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the user model, or null if not found.</returns>
-        Task<UserLoginModel?> GetByUsernameAndPasswordAsync(string username, string password);
+        Task<UserLoginModel?> GetByUsernameAndPasswordAsync(RequestLoginModel model);
 
 
         /// <summary>
@@ -118,6 +117,14 @@ namespace OMS.BL.IServices.Tables
         /// <param name="model">The Change Password Model of the user to Change Password.</param>
         /// <returns>true if the user Password Changed, otherwise false.</returns>
         Task<bool> ChangePassword(ChangePasswordModel model);
+
+
+        /// <summary>
+        /// Check if Username can be saved asynchronously.
+        /// </summary>
+        /// <param name="model">The Model of the user to Check Username if valid.</param>
+        /// <returns>true if the username valid, null if user not found, false if username confilt with onther user.</returns>
+        Task<bool?> IsUsernameValid(UserModel model);
 
     }
 }

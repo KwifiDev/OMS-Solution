@@ -3,6 +3,7 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
+using OMS.BL.Models.Hybrid;
 
 namespace OMS.BL.Services.Tables
 {
@@ -17,5 +18,7 @@ namespace OMS.BL.Services.Tables
             _discountRepository = repository;
         }
 
+        public async Task<bool> IsDiscountAlreadyApplied(CheckDiscountAppliedModel model)
+            => await _discountRepository.IsDiscountAlreadyApplied(model.ServiceId, model.ClientType);
     }
 }

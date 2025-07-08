@@ -1,6 +1,6 @@
 ﻿using OMS.BL.IServices.Views;
 using OMS.BL.Mapping;
-using OMS.DA.IRepositories.IEntityRepos;
+using OMS.DA.IRepositories.IViewRepos;
 
 namespace OMS.BL.Services.Views
 {

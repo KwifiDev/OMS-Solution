@@ -10,11 +10,8 @@ namespace OMS.DA.Repositories.EntityRepos
 {
     public class ClientRepository : GenericRepository<Client>, IClientRepository
     {
-        private readonly AppDbContext _context;
-
         public ClientRepository(AppDbContext context) : base(context)
         {
-            _context = context;
         }
 
 
