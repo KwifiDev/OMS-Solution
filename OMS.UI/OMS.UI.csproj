@@ -11,7 +11,9 @@
   <ItemGroup>
     <None Remove="appsettings.json" />
     <None Remove="Resources\Fonts\LBC.ttf" />
+    <None Remove="Resources\Images\BackgroundStartup.jpg" />
     <None Remove="Resources\Images\Login.jpg" />
+    <None Remove="Resources\Images\Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +24,9 @@
 
   <ItemGroup>
     <Resource Include="Resources\Fonts\LBC.ttf" />
+    <Resource Include="Resources\Images\BackgroundStartup.jpg" />
     <Resource Include="Resources\Images\Login.jpg" />
+    <Resource Include="Resources\Images\Logo.png" />
   </ItemGroup>
 
   <ItemGroup>

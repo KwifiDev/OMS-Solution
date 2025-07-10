@@ -25,5 +25,6 @@
         public const string PaymentsSummary = "api/paymentssummary";
         public const string Revenues = "api/revenues";
         public const string DashboardSummary = "api/dashboardsummary";
+        public const string HealthCheck = "api/healthcheck";
     }
 }

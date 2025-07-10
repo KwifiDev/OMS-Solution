@@ -3,13 +3,13 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OMS.UI.APIs.Services.Connection;
 using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.APIs.Services.Tables;
 using OMS.UI.APIs.Services.Views;
 using OMS.UI.Mapping;
-using OMS.UI.Models;
 using OMS.UI.Services.Authentication;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Hash;
@@ -28,9 +28,7 @@ using OMS.UI.ViewModels.Windows.AddEditViewModel;
 using OMS.UI.Views;
 using OMS.UI.Views.Pages;
 using OMS.UI.Views.Windows;
-using System.Net.Http;
 using System.Windows;
-using static OMS.UI.Services.Authentication.AuthenticationService;
 
 namespace OMS.UI
 {
@@ -198,6 +196,8 @@ namespace OMS.UI
             services.AddSingleton<SettingsPageViewModel>();
 
             services.AddTransient<ChangePasswordViewModel>();
+
+            services.AddTransient<StartupViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -289,6 +289,9 @@ namespace OMS.UI
             services.AddTransient(provider =>
                 new ChangePasswordWindow { DataContext = provider.GetRequiredService<ChangePasswordViewModel>() });
 
+            services.AddTransient(provider =>
+                new StartupWindow { DataContext = provider.GetRequiredService<StartupViewModel>() });
+
         }
 
         private static void RegisterMVVMServices(IServiceCollection services)
@@ -312,132 +315,16 @@ namespace OMS.UI
             services.AddTransient<IRegistryService, RegistryService>();
 
             services.AddSingleton<IHashService, HashService>();
-        }
 
-
-
-        private async Task InitializeApplicationAsync()
-        {
-            await _host.StartAsync();
-            await VerifyServerConnectionAsync();
-        }
-
-        private async Task VerifyServerConnectionAsync()
-        {
-            try
-            {
-                var httpClientFactory = Ioc.Default.GetRequiredService<IHttpClientFactory>();
-                var httpClient = httpClientFactory.CreateClient("ApiClient");
-
-                var response = await httpClient.GetAsync("api/healthcheck/status");
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    MessageBox.Show($"Failed to connect to the server & database.\nStatus Code: {response.StatusCode}\nContent: {await response.Content.ReadAsStringAsync()}",
-                                    "Server & DB Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    Shutdown();
-                }
-            }
-            catch (HttpRequestException httpEx)
-            {
-                MessageBox.Show($"Network error while connecting to the server: {httpEx.Message}",
-                                "Server Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Shutdown();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An unexpected error occurred: {ex.Message}",
-                                "Server Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Shutdown();
-            }
-        }
-
-        private (bool hasCredentials, string? username, string? password) CheckForSavedCredentials()
-        {
-            var regService = Ioc.Default.GetRequiredService<IRegistryService>();
-            regService.GetUserLoginConfig(out string? username, out string? password);
-
-            return (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password), username, password);
-        }
-
-        private async Task<(bool IsAuthenticated, UserLoginModel? User)> TryAuthenticateWithSavedCredentialsAsync(string username, string password)
-        {
-            try
-            {
-                var authenticationService = Ioc.Default.GetRequiredService<IAuthenticationService>();
-                var user = await authenticationService.AuthenticateAsync(username, password);
-                var validationStatus = authenticationService.ValidateUserAccount(user);
-
-                return (validationStatus == EnUserValidateStatus.FoundAndActive, user);
-            }
-            catch
-            {
-                return (false, null);
-            }
-        }
-
-        private async Task HandleUserAuthenticationAsync()
-        {
-            var (hasSavedCredentials, username, password) = CheckForSavedCredentials();
-
-            if (!hasSavedCredentials)
-            {
-                ShowLoginWindow();
-                return;
-            }
-
-            var authenticationResult = await TryAuthenticateWithSavedCredentialsAsync(username!, password!);
-
-            if (authenticationResult.IsAuthenticated)
-            {
-                ShowMainWindow(authenticationResult.User!);
-            }
-            else
-            {
-                ResetUserLoginConfig();
-                ShowLoginWindow();
-            }
-        }
-
-        private void ResetUserLoginConfig()
-        {
-            var regService = Ioc.Default.GetRequiredService<IRegistryService>();
-            regService.ResetUserLoginConfig();
-        }
-
-        private void ShowLoginWindow()
-        {
-            var loginWindow = Ioc.Default.GetRequiredService<LoginWindow>();
-            loginWindow.Show();
-        }
-
-        private void ShowMainWindow(UserLoginModel user)
-        {
-            var userSessionService = Ioc.Default.GetRequiredService<IUserSessionService>();
-            userSessionService.Login(user);
-
-            var mainWindow = Ioc.Default.GetRequiredService<MainWindow>();
-            mainWindow.Show();
-        }
-
-        private void HandleStartupError(Exception ex)
-        {
-            MessageBox.Show($"Application failed to start: {ex.Message}",
-                          "Startup Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            Shutdown();
+            services.AddTransient<IConnectionService, ConnectionService>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
-            try
-            {
-                await InitializeApplicationAsync();
-                await HandleUserAuthenticationAsync();
-            }
-            catch (Exception ex)
-            {
-                HandleStartupError(ex);
-            }
+            await _host.StartAsync();
+
+            var startupWindow = Ioc.Default.GetRequiredService<StartupWindow>();
+            startupWindow.Show();
 
             base.OnStartup(e);
         }
