@@ -61,6 +61,15 @@ namespace OMS.UI.ViewModels.Windows
         }
 
         [RelayCommand]
+        private void ChangeUserPassword()
+        {
+            int? userId = _userSessionService.CurrentUser?.UserId;
+
+            if (userId != null && userId > 0)
+                _dialogService.ShowDialog<ChangePasswordWindow, int?>(userId);
+        }
+
+        [RelayCommand]
         private void Logout()
         {
             var ok = _messageService.ShowQuestionMessage("تسجيل خروج", MessageTemplates.LogoutConfirmation);

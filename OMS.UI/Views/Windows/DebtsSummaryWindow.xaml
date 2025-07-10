@@ -20,7 +20,8 @@
         FlowDirection="RightToLeft"
         FontFamily="LBC"
         ResizeMode="NoResize"
-        WindowStyle="None">
+        WindowStyle="None"
+        Icon="{DynamicResource AppIcon}">
 
     <Window.Resources>
         <ResourceDictionary>

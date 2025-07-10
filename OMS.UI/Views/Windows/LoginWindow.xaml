@@ -21,7 +21,8 @@
         FontFamily="LBC"
         WindowStyle="None"
         AllowsTransparency="True"
-        Name="LoginWin">
+        Name="LoginWin"
+        Icon="{DynamicResource AppIcon}">
 
     <i:Interaction.Behaviors>
         <behaviors:DragWindowBehavior/>

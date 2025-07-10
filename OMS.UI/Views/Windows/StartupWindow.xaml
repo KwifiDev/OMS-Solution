@@ -15,7 +15,8 @@
         FontFamily="LBC"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent">
+        Background="Transparent"
+        Icon="{DynamicResource AppIcon}">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">

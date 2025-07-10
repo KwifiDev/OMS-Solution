@@ -1,17 +1,19 @@
 ﻿using OMS.UI.APIs.EndPoints;
+using OMS.UI.Services.ShowMassage;
 using System.Net.Http;
-using System.Windows;
 
 namespace OMS.UI.APIs.Services.Connection
 {
     public class ConnectionService : IConnectionService
     {
         private readonly HttpClient _httpClient;
+        private readonly IMessageService _messageService;
         private readonly string _endpoint;
 
-        public ConnectionService(IHttpClientFactory httpClientFactory)
+        public ConnectionService(IHttpClientFactory httpClientFactory, IMessageService messageService)
         {
             _httpClient = httpClientFactory.CreateClient("ApiClient");
+            _messageService = messageService;
             _endpoint = ApiEndpoints.HealthCheck;
         }
 
@@ -23,21 +25,25 @@ namespace OMS.UI.APIs.Services.Connection
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show($"Failed to connect to the server & database.\nStatus Code: {response.StatusCode}\nContent: {await response.Content.ReadAsStringAsync()}",
-                                    "Server & DB Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    _messageService.ShowErrorMessage(
+                        "Server & DB Connection Error",
+                        $"Failed to connect to the server & database.\nStatus Code: {response.StatusCode}\nContent: {await response.Content.ReadAsStringAsync()}");
+
                     return false;
                 }
             }
             catch (HttpRequestException httpEx)
             {
-                MessageBox.Show($"Network error while connecting to the server: {httpEx.Message}",
-                                "Server Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _messageService.ShowErrorMessage(
+                                "Server Connection Error",
+                                $"Network error while connecting to the server: {httpEx.Message}");
                 return false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An unexpected error occurred: {ex.Message}",
-                                "Server Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                _messageService.ShowErrorMessage(
+                                "Server Connection Error",
+                                $"An unexpected error occurred: {ex.Message}");
                 return false;
             }
 

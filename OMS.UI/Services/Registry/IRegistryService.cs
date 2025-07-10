@@ -1,6 +1,4 @@
-﻿using static OMS.UI.Services.Registry.RegistryService;
-
-namespace OMS.UI.Services.Registry
+﻿namespace OMS.UI.Services.Registry
 {
     public interface IRegistryService
     {

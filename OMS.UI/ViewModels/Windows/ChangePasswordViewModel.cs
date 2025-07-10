@@ -7,7 +7,9 @@ using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Hash;
+using OMS.UI.Services.Registry;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,8 +20,10 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IUserService _userService;
         private readonly IHashService _hashService;
         private readonly IWindowService _windowService;
+        private readonly IRegistryService _registryService;
         private readonly IMessageService _messageService;
         private readonly IMapper _mapper;
+        private readonly IUserSessionService _userSessionService;
 
 
         [ObservableProperty]
@@ -33,14 +37,16 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private ChangePasswordModel _changePasswordModel = null!;
 
-        public ChangePasswordViewModel(IUserService userService, IHashService hashService, IWindowService windowService,
-                                       IMessageService messageService, IMapper mapper)
+        public ChangePasswordViewModel(IUserService userService, IHashService hashService, IWindowService windowService, IRegistryService registryService,
+                                       IMessageService messageService, IMapper mapper, IUserSessionService userSessionService)
         {
             _userService = userService;
             _hashService = hashService;
             _windowService = windowService;
+            _registryService = registryService;
             _messageService = messageService;
             _mapper = mapper;
+            _userSessionService = userSessionService;
         }
 
         public async Task<bool> OnOpeningDialog(int? userId)
@@ -71,9 +77,23 @@ namespace OMS.UI.ViewModels.Windows
                 return;
             }
 
-            
+            SaveNewPasswordConifg(dto.NewPassword);
+
             _messageService.ShowInfoMessage("نجاح", MessageTemplates.PasswordResetSuccessMessage);
             IsModifiable = false;
+
+        }
+
+        private void SaveNewPasswordConifg(string newPassword)
+        {
+            if (ChangePasswordModel.UserId == _userSessionService.CurrentUser?.UserId)
+            {
+                _registryService.GetUserLoginConfig(out string? username, out string? password);
+                if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
+                {
+                    _registryService.SetUserLoginConfig(username, newPassword);
+                }
+            }
 
         }
 

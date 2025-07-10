@@ -93,5 +93,14 @@ namespace OMS.UI.Services.Windows
                 mainWindow?.Close();
             });
         }
+
+        public void HideStartupWindow()
+        {
+            _dispatcher.Invoke(() =>
+            {
+                var startupWindow = Application.Current.Windows.OfType<StartupWindow>().FirstOrDefault();
+                startupWindow?.Hide();
+            });
+        }
     }
 }

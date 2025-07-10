@@ -7,6 +7,11 @@
     
     <Application.Resources>
         <ResourceDictionary>
+            
+            <ImageSource x:Key="AppIcon">pack://application:,,,/Resources/Images/Logo.ico</ImageSource>
+            <Style TargetType="{x:Type Window}">
+                <Setter Property="Icon" Value="{DynamicResource AppIcon}"/>
+            </Style>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/MainFontStyle.xaml"/>

@@ -9,6 +9,7 @@ using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.Views;
 using OMS.UI.Views.Windows;
+using System.Windows;
 using static OMS.UI.Services.Authentication.AuthenticationService;
 
 namespace OMS.UI.ViewModels.Windows
@@ -45,15 +46,21 @@ namespace OMS.UI.ViewModels.Windows
             try
             {
                 await SetLoadingMessage("جاري الاتصال في الخادم");
-                await _connectionService.VerifyServerConnectionAsync();
+                await CheckServerConnectionAsync();
 
-                await SetLoadingMessage("جاري التحقق من الاعتماديات");
                 await HandleUserAuthenticationAsync();
             }
             catch (Exception ex)
             {
                 HandleStartupError(ex);
             }
+        }
+
+        private async Task CheckServerConnectionAsync()
+        {
+            var isConnected = await _connectionService.VerifyServerConnectionAsync();
+
+            if (!isConnected) _windowService.Exit();
         }
 
         private (bool hasCredentials, string? username, string? password) CheckForSavedCredentials()
@@ -85,24 +92,36 @@ namespace OMS.UI.ViewModels.Windows
             if (!hasSavedCredentials)
             {
                 await SetLoadingMessage("فتح نافذة تسجيل الدخول");
-                _windowService.Open<LoginWindow>();
+
+                SwitchWindow<LoginWindow>();
                 return;
             }
 
+            await SetLoadingMessage("جاري التحقق من الاعتماديات");
             var authenticationResult = await TryAuthenticateWithSavedCredentialsAsync(username!, password!);
 
             if (authenticationResult.IsAuthenticated)
             {
-                await SetLoadingMessage("يتم تسجيل الدخول");
+                await SetLoadingMessage("جاري تسجيل الدخول, الرجاء الانتظار...");
                 _userSessionService.Login(authenticationResult.User!);
-                _windowService.Open<MainWindow>();
+
+                SwitchWindow<MainWindow>();
             }
             else
             {
                 await SetLoadingMessage("بيانات الاعتماد غير صحيحة");
+                
                 _regestryService.ResetUserLoginConfig();
-                _windowService.Open<LoginWindow>();
+                await SetLoadingMessage("تم اعادة تعيين الاعتماديات");
+
+                SwitchWindow<LoginWindow>();
             }
+        }
+
+        private void SwitchWindow<TWindow>() where TWindow : Window
+        {
+            _windowService.HideStartupWindow();
+            _windowService.Open<TWindow>();
         }
 
         private async Task SetLoadingMessage(string message, int milisecounds = 2000)
@@ -114,7 +133,7 @@ namespace OMS.UI.ViewModels.Windows
         private void HandleStartupError(Exception ex)
         {
             _messageService.ShowErrorMessage("Startup Error", $"Application failed to start: {ex.Message}");
-            _windowService.Close();
+            _windowService.Exit();
         }
     }
 }

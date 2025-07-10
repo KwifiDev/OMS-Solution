@@ -4,6 +4,7 @@ using OMS.UI.Models;
 using OMS.UI.Models.Validations;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Hash;
+using OMS.UI.Services.Registry;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
 using OMS.UI.Services.StatusManagement.Service;
@@ -21,6 +22,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private readonly IBranchService _branchService;
         private readonly IUserSessionService _userSessionService;
         private readonly IHashService _hashService;
+        private readonly IRegistryService _registryService;
 
         [ObservableProperty]
         private IFindPersonViewModel _findPersonViewModel;
@@ -28,7 +30,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         [ObservableProperty]
         private ObservableCollection<BranchOptionModel> _branches = null!;
 
-        public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMessageService messageService,
+        public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMessageService messageService, IRegistryService registryService,
                                     IFindPersonViewModel findPersonViewModel, IWindowService windowService, IStatusService statusService,
                                     IUserSessionService userSessionService, IHashService hashService) : base(userService, messageService, windowService, statusService)
         {
@@ -36,6 +38,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             _userSessionService = userSessionService;
             _findPersonViewModel = findPersonViewModel;
             _hashService = hashService;
+            _registryService = registryService;
 
             FindPersonViewModel.PersonFound += OnPersonFound;
             InitializeBranches();
@@ -83,7 +86,21 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             }
             else
             {
-                return await _service.UpdateAsync(userModel.UserId, userModel);
+                bool isUpdated = await _service.UpdateAsync(userModel.UserId, userModel);
+                if (isUpdated) UpdateUsernameConfig(userModel.Username);
+                return isUpdated;
+            }
+        }
+
+        private void UpdateUsernameConfig(string newUsername)
+        {
+            if (Model.UserId == _userSessionService.CurrentUser?.UserId)
+            {
+                _registryService.GetUserLoginConfig(out string? username, out string? password);
+                if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
+                {
+                    _registryService.SetUserLoginConfig(newUsername, password);
+                }
             }
         }
 
