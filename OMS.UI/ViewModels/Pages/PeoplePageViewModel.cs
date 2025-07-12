@@ -2,6 +2,7 @@
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Services.Dialog;
+using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Views.Windows;
 
@@ -9,8 +10,9 @@ namespace OMS.UI.ViewModels.Pages
 {
     public partial class PeoplePageViewModel : BasePageViewModel<IPersonService, IPersonDetailService, PersonDetailModel, PersonModel>
     {
-        public PeoplePageViewModel(IPersonService personService, IPersonDetailService personDetailService, IDialogService dialogService,
-                                   IMessageService messageService) : base(personService, personDetailService, dialogService, messageService)
+        public PeoplePageViewModel(IPersonService personService, IPersonDetailService personDetailService, ILoadingService loadingService,
+                                   IDialogService dialogService, IMessageService messageService)
+                                   : base(personService, personDetailService, loadingService, dialogService, messageService)
         {
         }
 
@@ -19,12 +21,6 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override int GetItemId(PersonDetailModel item)
             => item.PersonId;
-
-        protected override async Task LoadData()
-        {
-            var peopleData = await _displayService.GetAllAsync();
-            Items = new(peopleData);
-        }
 
         protected override async Task ShowDetailsWindow(int itemId)
             => await _dialogService.ShowDialog<PersonDetailsWindow, int?>(itemId);

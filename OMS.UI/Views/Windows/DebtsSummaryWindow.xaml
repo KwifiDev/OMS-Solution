@@ -30,6 +30,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/BranchDetailsStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolean"/>
+            <converters:VisiblilityUIConverter x:Key="BooleanToVisibilityConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -126,9 +127,9 @@
                Background="{StaticResource PageHeaderGradient}"
                Foreground="White"/>
 
-        <DataGrid Name="dataGrid"
-                  Grid.Row="3"
-                  Grid.ColumnSpan="2"
+        <Grid  Grid.Row="3" Grid.ColumnSpan="2">
+      
+            <DataGrid Name="dataGrid"
                   ItemsSource="{Binding Items}"
                   SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                   AutoGenerateColumns="False"
@@ -232,17 +233,35 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
-
-
-
-        <TextBlock Text="ليس هناك أي ديون لهذا العميل"
-               Grid.Row="4"
-               Grid.ColumnSpan="2"
+        
+            <TextBlock Text="ليس هناك أي ديون لهذا العميل"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                FontSize="30"
                Foreground="{DynamicResource MaterialDesignBodyLight}"
                Visibility="{Binding HasItems, ElementName=dataGrid, Converter={StaticResource InverseBoolean}}"/>
+
+            <Border Background="White" Visibility="{Binding LoadingService.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ProgressBar Height="50"
+                      Width="50"
+                      Margin="5"
+                      IsIndeterminate="True"
+                      Style="{StaticResource MaterialDesignCircularProgressBar}"
+                      Background="DeepSkyBlue"
+                      Foreground="Snow"/>
+
+                    <TextBlock Text="جاري تحميل البيانات..." 
+                    Foreground="Black"
+                    Margin="0 10 0 0"
+                    HorizontalAlignment="Center"
+                    FontSize="16"/>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+        
+
 
     </Grid>
 

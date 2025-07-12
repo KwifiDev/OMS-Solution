@@ -29,6 +29,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/BranchDetailsStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolean"/>
+            <converters:VisiblilityUIConverter x:Key="BooleanToVisibilityConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -65,39 +66,40 @@
                Background="{StaticResource PageHeaderGradient}"
                Foreground="White"/>
 
-        <DataGrid Name="dataGrid"
-          Grid.Row="2"
-          ItemsSource="{Binding Items}"
-          SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-          AutoGenerateColumns="False"
-          IsReadOnly="True"
-          HeadersVisibility="Column"
-          CanUserAddRows="False"
-          CanUserResizeColumns="False"
-          CanUserReorderColumns="False"
-          EnableRowVirtualization="True"
-          EnableColumnVirtualization="True"
-          VirtualizingPanel.ScrollUnit="Pixel"
-          AlternationCount="2"
-          AlternatingRowBackground="{DynamicResource MaterialDesignAlternateBackground}"
-          RowBackground="{DynamicResource MaterialDesignBackground}"
-          ColumnWidth="*"
-          BorderThickness="3"
-          BorderBrush="AliceBlue"
-          RowHeight="40"
-          FontSize="14"
-          Margin="2"
-          HorizontalGridLinesBrush="{DynamicResource MaterialDesignDivider}"
-          VerticalGridLinesBrush="{DynamicResource MaterialDesignDivider}"
-          materialDesign:DataGridAssist.CellPadding="8 4"
-          materialDesign:DataGridAssist.ColumnHeaderPadding="16 8"
-          ScrollViewer.CanContentScroll="True"
-          ScrollViewer.IsDeferredScrollingEnabled="True"
-          ScrollViewer.VerticalScrollBarVisibility="Auto"
-          ScrollViewer.HorizontalScrollBarVisibility="Auto"
-          SelectionMode="Single"
-          SelectionUnit="FullRow"
-          KeyboardNavigation.TabNavigation="Once">
+        <Grid  Grid.Row="2">
+       
+            <DataGrid Name="dataGrid"
+                     ItemsSource="{Binding Items}"
+                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                     AutoGenerateColumns="False"
+                     IsReadOnly="True"
+                     HeadersVisibility="Column"
+                     CanUserAddRows="False"
+                     CanUserResizeColumns="False"
+                     CanUserReorderColumns="False"
+                     EnableRowVirtualization="True"
+                     EnableColumnVirtualization="True"
+                     VirtualizingPanel.ScrollUnit="Pixel"
+                     AlternationCount="2"
+                     AlternatingRowBackground="{DynamicResource MaterialDesignAlternateBackground}"
+                     RowBackground="{DynamicResource MaterialDesignBackground}"
+                     ColumnWidth="*"
+                     BorderThickness="3"
+                     BorderBrush="AliceBlue"
+                     RowHeight="40"
+                     FontSize="14"
+                     Margin="2"
+                     HorizontalGridLinesBrush="{DynamicResource MaterialDesignDivider}"
+                     VerticalGridLinesBrush="{DynamicResource MaterialDesignDivider}"
+                     materialDesign:DataGridAssist.CellPadding="8 4"
+                     materialDesign:DataGridAssist.ColumnHeaderPadding="16 8"
+                     ScrollViewer.CanContentScroll="True"
+                     ScrollViewer.IsDeferredScrollingEnabled="True"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     SelectionMode="Single"
+                     SelectionUnit="FullRow"
+                     KeyboardNavigation.TabNavigation="Once">
 
             <!-- أنماط الصفوف -->
             <DataGrid.RowStyle>
@@ -149,16 +151,35 @@
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
-
-
-
-        <TextBlock Text="ليس هناك أي خصومات على هذه الخدمة"
-               Grid.Row="2"
+       
+            <TextBlock Text="ليس هناك أي خصومات على هذه الخدمة"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                FontSize="30"
                Foreground="{DynamicResource MaterialDesignBodyLight}"
                Visibility="{Binding HasItems, ElementName=dataGrid, Converter={StaticResource InverseBoolean}}"/>
+
+            <Border Background="White" Visibility="{Binding LoadingService.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ProgressBar Height="50"
+                      Width="50"
+                      Margin="5"
+                      IsIndeterminate="True"
+                      Style="{StaticResource MaterialDesignCircularProgressBar}"
+                      Background="DeepSkyBlue"
+                      Foreground="Snow"/>
+
+                    <TextBlock Text="جاري تحميل البيانات..." 
+                    Foreground="Black"
+                    Margin="0 10 0 0"
+                    HorizontalAlignment="Center"
+                    FontSize="16"/>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+        
+        
 
     </Grid>
 

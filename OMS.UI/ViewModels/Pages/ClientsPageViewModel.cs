@@ -5,6 +5,7 @@ using OMS.UI.Models;
 using OMS.UI.Models.Records;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
+using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
 using OMS.UI.Views.Windows;
@@ -13,9 +14,9 @@ namespace OMS.UI.ViewModels.Pages
 {
     public partial class ClientsPageViewModel : BasePageViewModel<IClientService, IClientsSummaryService, ClientsSummaryModel, ClientModel>
     {
-        public ClientsPageViewModel(IClientService clientService, IClientsSummaryService clientsSummaryService,
-                                    IDialogService dialogService, IMessageService messageService)
-                                    : base(clientService, clientsSummaryService, dialogService, messageService)
+        public ClientsPageViewModel(IClientService clientService, IClientsSummaryService clientsSummaryService, 
+                                    ILoadingService loadingService, IDialogService dialogService, IMessageService messageService)
+                                    : base(clientService, clientsSummaryService, loadingService, dialogService, messageService)
         {
             SelectedItemChanged += NotifyCanExecuteChanged;
         }
@@ -27,12 +28,6 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override int GetItemId(ClientsSummaryModel item)
             => item.ClientId;
-
-        protected override async Task LoadData()
-        {
-            var clientItems = await _displayService.GetAllAsync();
-            Items = new(clientItems);
-        }
 
         protected override Task ShowDetailsWindow(int itemId)
         {

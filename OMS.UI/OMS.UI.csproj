@@ -56,13 +56,13 @@
     <Compile Update="Views\Windows\AccountPaymentsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Windows\AddEditRevenueWindow.xaml.cs">
+    <Compile Update="Views\Windows\AddEditWindow\AddEditRevenueWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Windows\AddEditBranchWindow.xaml.cs">
+    <Compile Update="Views\Windows\AddEditWindow\AddEditBranchWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Windows\AddEditDebtWindow.xaml.cs">
+    <Compile Update="Views\Windows\AddEditWindow\AddEditDebtWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\Windows\DebtsSummaryWindow.xaml.cs">
@@ -74,10 +74,10 @@
     <Page Update="Resources\Styles\UsersListViewStyle.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Windows\AddEditBranchWindow.xaml">
+    <Page Update="Views\Windows\AddEditWindow\AddEditBranchWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\Windows\AddEditDebtWindow.xaml">
+    <Page Update="Views\Windows\AddEditWindow\AddEditDebtWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

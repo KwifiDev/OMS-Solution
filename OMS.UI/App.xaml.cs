@@ -13,6 +13,7 @@ using OMS.UI.Mapping;
 using OMS.UI.Services.Authentication;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Hash;
+using OMS.UI.Services.Loading;
 using OMS.UI.Services.Navigation;
 using OMS.UI.Services.Registry;
 using OMS.UI.Services.Settings;
@@ -317,6 +318,8 @@ namespace OMS.UI
             services.AddSingleton<IHashService, HashService>();
 
             services.AddTransient<IConnectionService, ConnectionService>();
+
+            services.AddTransient<ILoadingService, LoadingService>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)

@@ -7,6 +7,7 @@
       xmlns:local="clr-namespace:OMS.UI.Views.Pages" 
       xmlns:pages="clr-namespace:OMS.UI.ViewModels.Pages"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:converters="clr-namespace:OMS.UI.Converters"
       d:DataContext="{d:DesignInstance Type=pages:UsersPageViewModel}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
@@ -21,6 +22,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/PageStyle.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/Resources/Styles/UsersListViewStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <converters:VisiblilityUIConverter x:Key="BooleanToVisibilityConverter"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -59,7 +61,9 @@
             </StackPanel>
         </materialDesign:Card>
 
-        <ListView Name="usersList"
+        <Grid Grid.Row="1">
+      
+            <ListView Name="usersList"
            Margin="0 0 5 0"
            Grid.Row="1"
            ItemsSource="{Binding Items}"
@@ -122,6 +126,27 @@
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
+
+            <Border Background="White" Visibility="{Binding LoadingService.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ProgressBar Height="50"
+                     Width="50"
+                     Margin="5"
+                     IsIndeterminate="True"
+                     Style="{StaticResource MaterialDesignCircularProgressBar}"
+                     Background="DeepSkyBlue"
+                     Foreground="Snow"/>
+
+                    <TextBlock Text="جاري تحميل البيانات..." 
+                   Foreground="Black"
+                   Margin="0 10 0 0"
+                   HorizontalAlignment="Center"
+                   FontSize="16"/>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+        
 
     </Grid>
 </Page>

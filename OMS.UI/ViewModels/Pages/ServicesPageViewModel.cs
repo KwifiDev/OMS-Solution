@@ -3,6 +3,7 @@ using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Services.Dialog;
+using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.Windows;
 using OMS.UI.Views.Windows;
@@ -13,9 +14,9 @@ namespace OMS.UI.ViewModels.Pages
     {
         private readonly IWindowService _windowService;
 
-        public ServicesPageViewModel(IServiceService service, IServicesSummaryService displayService,
+        public ServicesPageViewModel(IServiceService service, IServicesSummaryService displayService, ILoadingService loadingService,
                                      IDialogService dialogService, IMessageService messageService, IWindowService windowService)
-                                     : base(service, displayService, dialogService, messageService)
+                                     : base(service, displayService, loadingService, dialogService, messageService)
         {
             _windowService = windowService;
         }
@@ -27,12 +28,6 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override int GetItemId(ServicesSummaryModel item)
             => item.ServiceId;
-
-        protected override async Task LoadData()
-        {
-            var servicesData = await _displayService.GetAllAsync();
-            Items = new(servicesData);
-        }
 
         protected override async Task ShowDetailsWindow(int itemId)
             => await _dialogService.ShowDialog<DiscountsAppliedWindow, int>(itemId);

@@ -4,6 +4,7 @@ using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
+using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
@@ -16,8 +17,9 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IWindowService _windowService;
         private int _clientId;
 
-        public SalesSummaryViewModel(ISaleService service, ISalesSummaryService displayService, IDialogService dialogService,
-                                     IMessageService messageService, IWindowService windowService) : base(service, displayService, dialogService, messageService)
+        public SalesSummaryViewModel(ISaleService service, ISalesSummaryService displayService, ILoadingService loadingService,
+                                     IDialogService dialogService, IMessageService messageService, IWindowService windowService)
+                                     : base(service, displayService, loadingService, dialogService, messageService)
         {
             SelectedItemChanged += NotifyCanExecuteChanged;
             CommandConditions[nameof(EditItemCommand)] += CanChangeSale;
@@ -49,8 +51,11 @@ namespace OMS.UI.ViewModels.Windows
 
         protected override async Task LoadData()
         {
-            var salesData = await _displayService.GetSalesByClientIdAsync(_clientId);
-            Items = new(salesData);
+            await LoadingService.ExecuteWithLoadingIndicator(async () =>
+            {
+                var salesData = await _displayService.GetSalesByClientIdAsync(_clientId);
+                Items = new(salesData);
+            });
         }
 
         protected override Task ShowDetailsWindow(int itemId)

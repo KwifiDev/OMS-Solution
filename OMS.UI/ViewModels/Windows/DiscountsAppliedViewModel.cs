@@ -3,6 +3,7 @@ using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Services.Dialog;
+using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
@@ -15,9 +16,9 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IWindowService _windowService;
         private int _serviceId;
 
-        public DiscountsAppliedViewModel(IDiscountService service, IDiscountsAppliedService displayService, IDialogService dialogService,
-                                         IMessageService messageService, IWindowService windowService)
-                                         : base(service, displayService, dialogService, messageService)
+        public DiscountsAppliedViewModel(IDiscountService service, IDiscountsAppliedService displayService, ILoadingService loadingService,
+                                         IDialogService dialogService, IMessageService messageService, IWindowService windowService)
+                                         : base(service, displayService, loadingService, dialogService, messageService)
         {
             _windowService = windowService;
         }
@@ -41,8 +42,11 @@ namespace OMS.UI.ViewModels.Windows
 
         protected override async Task LoadData()
         {
-            var discountsAppliedItems = await _displayService.GetDiscountsByServiceIdAsync(_serviceId);
-            Items = new(discountsAppliedItems);
+            await LoadingService.ExecuteWithLoadingIndicator(async () =>
+            {
+                var discountsAppliedItems = await _displayService.GetDiscountsByServiceIdAsync(_serviceId);
+                Items = new(discountsAppliedItems);
+            });
         }
 
         protected override async Task ShowEditorWindow(int? itemId = null)

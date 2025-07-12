@@ -58,6 +58,7 @@
         public static string InvalidCredentialsErrorMessage => "بيانات الاعتماد غير صحيحة";
         public static string AccountLockedErrorMessage => "الحساب مقفل بسبب عدة محاولات فاشلة";
         public static string AccountInActiveErrorMessage => "الحساب الخص بك معطل";
+        public static string AccountCantInActive => "لا يمكن الغاء تفعيل الحساب الذي تستخدمه حالياً";
 
         public static string LogoutErrorMessage => "حدث خطأ أثناء تسجيل الخروج";
         public static string RegistrationErrorMessage => "حدث خطأ أثناء إنشاء الحساب";

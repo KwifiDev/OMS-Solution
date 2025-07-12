@@ -4,6 +4,7 @@ using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
+using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.UserSession;
 using OMS.UI.Views.Windows;
@@ -14,9 +15,9 @@ namespace OMS.UI.ViewModels.Pages
     {
         private readonly IUserSessionService _userSessionService;
 
-        public UsersPageViewModel(IUserService userService, IUserDetailService userDetailService, IDialogService dialogService,
-                                  IMessageService messageService, IUserSessionService userSessionService) :
-                                  base(userService, userDetailService, dialogService, messageService)
+        public UsersPageViewModel(IUserService userService, IUserDetailService userDetailService, ILoadingService loadingService,
+                                  IDialogService dialogService, IMessageService messageService, IUserSessionService userSessionService)
+                                  : base(userService, userDetailService, loadingService, dialogService, messageService)
         {
             _userSessionService = userSessionService;
         }
@@ -26,12 +27,6 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override int GetItemId(UserDetailModel item)
             => item.UserId;
-
-        protected override async Task LoadData()
-        {
-            var usersData = await _displayService.GetAllAsync();
-            Items = new(usersData);
-        }
 
         protected override Task ShowDetailsWindow(int itemId)
         {
@@ -75,6 +70,12 @@ namespace OMS.UI.ViewModels.Pages
         [RelayCommand(CanExecute = nameof(CanInActiveUser))]
         private async Task InActiveUser()
         {
+            if (_userSessionService.CurrentUser?.UserId == SelectedItem?.UserId)
+            {
+                _messageService.ShowInfoMessage("منع الوصول", MessageTemplates.AccountCantInActive);
+                return;
+            }
+
             await UpdateUserActivation(MessageTemplates.InActivateUserConfirmation, false, "غير فعّال", "تم الغاء التفعيل");
             InActiveUserCommand.NotifyCanExecuteChanged();
         }
@@ -101,7 +102,7 @@ namespace OMS.UI.ViewModels.Pages
             {
                 SelectedItem!.IsActive = isActiveTitle;
                 _messageService.ShowInfoMessage(successTitle, MessageTemplates.SuccessMessage);
-                
+
                 ActiveUserCommand.NotifyCanExecuteChanged();
                 InActiveUserCommand.NotifyCanExecuteChanged();
             }

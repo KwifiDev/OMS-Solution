@@ -1,25 +1,26 @@
 ﻿
 using OMS.UI.Models;
+using OMS.UI.Services.ModelTransfer;
 
 namespace OMS.UI.APIs.Services.Interfaces.Views
 {
     /// <summary>
     /// Represents a service for managing debts summary.
     /// </summary>
-    public interface IDebtsSummaryService
+    public interface IDebtsSummaryService : IDisplayService<DebtsSummaryModel>
     {
         /// <summary>
         /// Retrieves all debts summary asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of debts summary models.</returns>
-        Task<IEnumerable<DebtsSummaryModel>> GetAllAsync();
+        //Task<IEnumerable<DebtsSummaryModel>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a debt summary by its ID asynchronously.
         /// </summary>
         /// <param name="debtId">The ID of the debt summary to retrieve.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the debt summary model, or null if not found.</returns>
-        Task<DebtsSummaryModel?> GetByIdAsync(int debtId);
+        //Task<DebtsSummaryModel?> GetByIdAsync(int debtId);
 
         /// <summary>
         /// Retrieves DebtsSummary by client asynchronously.

@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
+using OMS.UI.Services.Loading;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
@@ -13,12 +14,15 @@ namespace OMS.UI.ViewModels.Pages
     public abstract partial class BasePageViewModel<TService, TDisplayService, TModel, TMessageModel> : ObservableObject
         where TModel : class
         where TMessageModel : class
+        where TDisplayService : IDisplayService<TModel>
     {
         protected readonly Dictionary<string, Func<bool>> CommandConditions = new();
         protected readonly TService _service;
         protected readonly TDisplayService _displayService;
+        protected readonly ILoadingService _loadingService;
         protected readonly IDialogService _dialogService;
         protected readonly IMessageService _messageService;
+
 
         [ObservableProperty]
         private ObservableCollection<TModel> _items = new();
@@ -26,17 +30,31 @@ namespace OMS.UI.ViewModels.Pages
         private TModel? _selectedItem;
         protected event EventHandler? SelectedItemChanged;
 
-        public BasePageViewModel(TService service, TDisplayService displayService,
+        public ILoadingService LoadingService => _loadingService;
+
+        public BasePageViewModel(TService service, TDisplayService displayService, ILoadingService loadingService,
                                  IDialogService dialogService, IMessageService messageService)
         {
             _service = service;
             _displayService = displayService;
+            _loadingService = loadingService;
             _dialogService = dialogService;
             _messageService = messageService;
 
             SetDefaultCommandConditions();
 
             WeakReferenceMessenger.Default.Register<IMessage<TMessageModel>>(this, OnMessageReceived);
+        }
+
+        [RelayCommand]
+        protected virtual async Task LoadData()
+        {
+            await LoadingService.ExecuteWithLoadingIndicator(async () =>
+            {
+                var items = await _displayService.GetAllAsync();
+                Items = new(items);
+            });
+
         }
 
         private void SetDefaultCommandConditions()
@@ -142,8 +160,6 @@ namespace OMS.UI.ViewModels.Pages
         }
 
         #region Common Abstract Methods
-        [RelayCommand]
-        protected abstract Task LoadData();
         protected abstract Task<TModel> ConvertToModel(TMessageModel messageModel);
         protected abstract int GetItemId(TModel item);
         protected abstract Task<bool> ExecuteDelete(int itemId);

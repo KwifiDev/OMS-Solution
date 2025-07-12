@@ -7,6 +7,7 @@ using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
+using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
 using OMS.UI.Services.Windows;
@@ -28,9 +29,9 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private decimal? _totalDebts = 0;
 
-        public DebtsSummaryViewModel(IUserAccountService userAccountService, IDebtService service, IDebtsSummaryService displayService,
-                                     IDialogService dialogService, IMessageService messageService, IWindowService windowService)
-                                     : base(service, displayService, dialogService, messageService)
+        public DebtsSummaryViewModel(IUserAccountService userAccountService, IDebtService service, ILoadingService loadingService,
+                                     IDebtsSummaryService displayService, IDialogService dialogService, IMessageService messageService, IWindowService windowService)
+                                     : base(service, displayService, loadingService, dialogService, messageService)
         {
             _userAccountService = userAccountService;
             _windowService = windowService;
@@ -70,8 +71,15 @@ namespace OMS.UI.ViewModels.Windows
 
         protected override async Task<bool> LoadData()
         {
-            if (!await LoadDebtsData()) return false;
-            if (!await LoadUserAccount()) return false;
+            await LoadingService.ExecuteWithLoadingIndicator(async () =>
+            {
+                if (!await LoadDebtsData()) return;
+                if (!await LoadUserAccount()) return;
+            });
+
+            //if (!await LoadDebtsData()) return false;
+            //if (!await LoadUserAccount()) return false;
+
             return true;
         }
 

@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using MaterialDesignThemes.Wpf;
 using OMS.UI.APIs.Services.Interfaces.Views;
+using OMS.UI.Services.Loading;
+using OMS.UI.Services.ShowMassage;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 
@@ -12,9 +14,12 @@ namespace OMS.UI.ViewModels.Pages
         public record DashboardCard(PackIconKind Icon, Brush Color, string Title, decimal? Value);
 
         private readonly IDashboardSummaryService _dashboardSummaryService;
+        private readonly ILoadingService _loadingService;
+        private readonly IMessageService _messageService;
 
         [ObservableProperty]
         private ObservableCollection<DashboardCard>? _cards;
+
 
         private readonly Stack<Brush> _cardColorStack = new();
         private static readonly Brush[] PastelBrushes =
@@ -28,9 +33,13 @@ namespace OMS.UI.ViewModels.Pages
             Brushes.PowderBlue, Brushes.Thistle
         };
 
-        public DashboardPageViewModel(IDashboardSummaryService dashboardSummaryService)
+        public ILoadingService LoadingService => _loadingService;
+
+        public DashboardPageViewModel(IDashboardSummaryService dashboardSummaryService, ILoadingService loadingService, IMessageService messageService)
         {
             _dashboardSummaryService = dashboardSummaryService;
+            _loadingService = loadingService;
+            _messageService = messageService;
         }
 
         private void InitializeColorStack()
@@ -47,28 +56,29 @@ namespace OMS.UI.ViewModels.Pages
         [RelayCommand]
         private async Task LoadData()
         {
-            var dashboardSummary = await _dashboardSummaryService.GetData();
+            await LoadingService.ExecuteWithLoadingIndicator(async () =>
+            {
+                var dashboardSummary = await _dashboardSummaryService.GetData();
+                if (dashboardSummary is null) return;
 
-            if (dashboardSummary is null)
-                return;
+                InitializeColorStack();
 
-            InitializeColorStack();
-
-            Cards =
-            [
-                CreateCard(PackIconKind.CurrencyUsd, "جميع العائدات", dashboardSummary.TotalRevenues),
-                CreateCard(PackIconKind.AccountArrowUp, "الايداعات", dashboardSummary.Deposit),
-                CreateCard(PackIconKind.AccountArrowDown, "السحوبات", dashboardSummary.Withdraw),
-                CreateCard(PackIconKind.Package, "ارصدة الزبائن", dashboardSummary.TotalBalance),
-                CreateCard(PackIconKind.AccountBalanceWallet, "دفعات الزبائن", dashboardSummary.TotalPayments),
-                CreateCard(PackIconKind.SaleCircle, "جميع المبيعات", dashboardSummary.TotalSales),
-                CreateCard(PackIconKind.Discount, "الخصومات على المبيعات", dashboardSummary.TotalSalesAmountDeducted),
-                CreateCard(PackIconKind.MoneyOff, "الديون الغير مدفوعة", dashboardSummary.NotPaidDebts),
-                CreateCard(PackIconKind.Cash, "الديون المدفوعة", dashboardSummary.PaidDebts),
-                CreateCard(PackIconKind.DiscountCircle, "الخصومات على الديون", dashboardSummary.TotalDebtsAmountDeducted),
-                CreateCard(PackIconKind.Monitor, "التدفق المالي", dashboardSummary.NetCashFlow),
-                CreateCard(PackIconKind.ClipboardFlow, "جميع المبالغ المدخلة", dashboardSummary.TotalIncome)
-            ];
+                Cards =
+                [
+                    CreateCard(PackIconKind.CurrencyUsd, "جميع العائدات", dashboardSummary.TotalRevenues),
+                    CreateCard(PackIconKind.AccountArrowUp, "الايداعات", dashboardSummary.Deposit),
+                    CreateCard(PackIconKind.AccountArrowDown, "السحوبات", dashboardSummary.Withdraw),
+                    CreateCard(PackIconKind.Package, "ارصدة الزبائن", dashboardSummary.TotalBalance),
+                    CreateCard(PackIconKind.AccountBalanceWallet, "دفعات الزبائن", dashboardSummary.TotalPayments),
+                    CreateCard(PackIconKind.SaleCircle, "جميع المبيعات", dashboardSummary.TotalSales),
+                    CreateCard(PackIconKind.Discount, "الخصومات على المبيعات", dashboardSummary.TotalSalesAmountDeducted),
+                    CreateCard(PackIconKind.MoneyOff, "الديون الغير مدفوعة", dashboardSummary.NotPaidDebts),
+                    CreateCard(PackIconKind.Cash, "الديون المدفوعة", dashboardSummary.PaidDebts),
+                    CreateCard(PackIconKind.DiscountCircle, "الخصومات على الديون", dashboardSummary.TotalDebtsAmountDeducted),
+                    CreateCard(PackIconKind.Monitor, "التدفق المالي", dashboardSummary.NetCashFlow),
+                    CreateCard(PackIconKind.ClipboardFlow, "جميع المبالغ المدخلة", dashboardSummary.TotalIncome)
+                ];
+            });
         }
 
         private DashboardCard CreateCard(PackIconKind icon, string title, decimal? value)

@@ -1,25 +1,26 @@
 ﻿
 using OMS.UI.Models;
+using OMS.UI.Services.ModelTransfer;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables
 {
     /// <summary>
     /// Represents a service for managing revenue data.
     /// </summary>
-    public interface IRevenueService
+    public interface IRevenueService : IDisplayService<RevenueModel>
     {
         /// <summary>
         /// Retrieves all revenues asynchronously.
         /// </summary>
         /// <returns>A collection of revenue models.</returns>
-        Task<IEnumerable<RevenueModel>> GetAllAsync();
+        //Task<IEnumerable<RevenueModel>> GetAllAsync();
 
         /// <summary>
         /// Retrieves a revenue by its ID asynchronously.
         /// </summary>
         /// <param name="revenueId">The ID of the revenue to retrieve.</param>
         /// <returns>The revenue model, or null if not found.</returns>
-        Task<RevenueModel?> GetByIdAsync(int revenueId);
+        //Task<RevenueModel?> GetByIdAsync(int revenueId);
 
         /// <summary>
         /// Adds a new revenue asynchronously.
