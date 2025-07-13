@@ -23,6 +23,43 @@ namespace OMS.API.Controllers
         }
 
 
+        /// <summary>
+        /// Checks if an revenues can added.
+        /// </summary>
+        /// <remarks>
+        /// This operation is more efficient than GET for existence checks as it doesn't return the entity body.
+        /// 
+        /// Example:
+        /// HEAD /api/revenues/
+        /// </remarks>
+        /// <returns>
+        /// - 200 OK with empty body if can add a new revenue
+        /// - 404 Not Found if revenue cant add to db
+        /// - Appropriate error response for invalid requests
+        /// </returns>
+        /// <response code="200">accepte to add new revenue (returns empty response with headers)</response>
+        /// <response code="404">If already there revene on this date</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpHead("canaddrevenue")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public virtual async Task<IActionResult> HeadAsync()
+        {
+            try
+            {
+                var canAdd = await _service.CanAddRevenue();
+                return canAdd ? Ok() : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError
+                );
+            }
+        }
+
         #region override abstract Methods
         protected override int GetModelId(RevenueModel model) => model.RevenueId;
         protected override void SetDtoId(RevenueDto dto, int id) => dto.RevenueId = id;

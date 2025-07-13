@@ -16,5 +16,20 @@ namespace OMS.UI.APIs.Services.Tables
         {
         }
 
+        public async Task<bool> CanAddOnThisDay()
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Head, $"{_httpClient.BaseAddress}{_endpoint}/canaddrevenue");
+                var response = await _httpClient.SendAsync(request);
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
     }
 }

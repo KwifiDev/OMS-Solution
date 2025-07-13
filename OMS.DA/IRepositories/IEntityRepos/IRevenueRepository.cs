@@ -2,5 +2,6 @@
 {
     public interface IRevenueRepository
     {
+        Task<DateOnly> GetLastAddRevenueDate();
     }
 }

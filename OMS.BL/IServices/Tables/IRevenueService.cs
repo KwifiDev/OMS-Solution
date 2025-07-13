@@ -47,5 +47,11 @@ namespace OMS.BL.IServices.Tables
         /// <param name="revenueId">The ID of the revenue to delete.</param>
         /// <returns>True if the revenue was deleted successfully, otherwise false.</returns>
         Task<bool> DeleteAsync(int revenueId);
+
+        /// <summary>
+        /// check if can add new revenue recored
+        /// </summary>
+        /// <returns>True if a new revenue can add, otherwise false.</returns>
+        Task<bool> CanAddRevenue();
     }
 }

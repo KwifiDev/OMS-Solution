@@ -241,22 +241,30 @@
                Foreground="{DynamicResource MaterialDesignBodyLight}"
                Visibility="{Binding HasItems, ElementName=dataGrid, Converter={StaticResource InverseBoolean}}"/>
 
-            <Border Background="White" Visibility="{Binding LoadingService.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <ProgressBar Height="50"
-                      Width="50"
-                      Margin="5"
-                      IsIndeterminate="True"
-                      Style="{StaticResource MaterialDesignCircularProgressBar}"
-                      Background="DeepSkyBlue"
-                      Foreground="Snow"/>
-
-                    <TextBlock Text="جاري تحميل البيانات..." 
-                    Foreground="Black"
-                    Margin="0 10 0 0"
-                    HorizontalAlignment="Center"
-                    FontSize="16"/>
-                </StackPanel>
+            <Border Background="#BFFFFFFF"
+           Visibility="{Binding LoadingService.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}"
+           HorizontalAlignment="Stretch"
+           VerticalAlignment="Stretch">
+                <Grid>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ProgressBar Height="5"
+                            IsIndeterminate="True"
+                            Style="{StaticResource MaterialDesignLinearProgressBar}"
+                            Background="BlueViolet"
+                            Foreground="Indigo">
+                            <ProgressBar.Effect>
+                                <BlurEffect Radius="5"/>
+                            </ProgressBar.Effect>
+                            <ProgressBar.Clip>
+                                <RectangleGeometry Rect="0,0,130,5" RadiusX="5" RadiusY="3"/>
+                            </ProgressBar.Clip>
+                        </ProgressBar>
+                        <TextBlock Text="جاري تحميل البيانات..."
+                          Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                          Margin="0 10 0 0"
+                          FontSize="16"/>
+                    </StackPanel>
+                </Grid>
             </Border>
 
         </Grid>

@@ -119,5 +119,9 @@
         public static string ActivateUserConfirmation => "هل انت متأكد من إجراء هذه العملية؟\nسيتم تفعيل الحساب الحالي.";
         public static string InActivateUserConfirmation => "هل انت متأكد من إجراء هذه العملية؟\nسيتم الغاء تفعيل الحساب الحالي.";
 
+        // Revenue Messages
+
+        public static string CantAddRevenueMessage => "لا يمكن اضافة عائدات اليوم لانك اضفتها بالفعل";
+
     }
 }

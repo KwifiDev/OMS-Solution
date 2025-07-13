@@ -28,7 +28,19 @@ namespace OMS.UI.ViewModels.Pages
         }
 
         protected override async Task ShowEditorWindow(int? itemId = null)
-            => await _dialogService.ShowDialog<AddEditRevenueWindow, int?>(itemId);
+        {
+            if (itemId is null)
+            {
+                if (!await _service.CanAddOnThisDay())
+                {
+                    _messageService.ShowInfoMessage("منع اضافة", MessageTemplates.CantAddRevenueMessage);
+                    return;
+                }
+            } 
+            
+
+            await _dialogService.ShowDialog<AddEditRevenueWindow, int?>(itemId);
+        }
 
         protected override async Task<RevenueModel> ConvertToModel(RevenueModel messageModel)
         {

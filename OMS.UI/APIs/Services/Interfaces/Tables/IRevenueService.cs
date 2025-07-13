@@ -43,5 +43,6 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// <param name="revenueId">The ID of the revenue to delete.</param>
         /// <returns>True if the revenue was deleted successfully, otherwise false.</returns>
         Task<bool> DeleteAsync(int revenueId);
+        Task<bool> CanAddOnThisDay();
     }
 }
