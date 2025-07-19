@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using OMS.UI.APIs.Services.Connection;
 using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;
@@ -130,10 +131,15 @@ namespace OMS.UI
 
         private static void RegisterMapper(IServiceCollection services)
         {
+            ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddConsole();
+            });
+
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new UIMappingProfile());
-            });
+            }, loggerFactory);
             var mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
         }

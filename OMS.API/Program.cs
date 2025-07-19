@@ -22,11 +22,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
 
+ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder.AddConsole();
+});
+
 var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new APIMappingProfile());
     mc.AddProfile(new BLMappingProfile());
-});
+}, loggerFactory);
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddSingleton<IMapperService, MapperService>();
