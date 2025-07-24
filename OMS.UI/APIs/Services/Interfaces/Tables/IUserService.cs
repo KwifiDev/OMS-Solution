@@ -65,14 +65,6 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the user was deleted successfully.</returns>
         Task<bool> DeleteAsync(int userId);
 
-        /// <summary>
-        /// Retrieves a user by their username and password asynchronously.
-        /// </summary>
-        /// <param name="username">The username of the user to retrieve.</param>
-        /// <param name="password">The password of the user to retrieve.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the user model, or null if not found.</returns>
-        Task<UserLoginModel?> GetByUsernameAndPasswordAsync(string username, string password);
-
 
         /// <summary>
         /// Retrieves a user by their person Id asynchronously.
@@ -93,16 +85,10 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// <summary>
         /// Check if username Available asynchronously.
         /// </summary>
-        /// <param name="dto">The dto of userId and username to check.</param>
+        /// <param name="userId">The id of the user to update activation.</param>
+        /// <param name="username">The username of the user to retrieve.</param>
         /// <returns>True if the username Available, otherwise false.</returns>
-        Task<bool> CheckUsernameAvailable(UsernameAvailableDto dto);
-
-        /// <summary>
-        /// Change password of the user by its ID asynchronously.
-        /// </summary>
-        /// <param name="dto">The dto of userId and password to change.</param>
-        /// <returns>True if the user password changed, otherwise false.</returns>
-        Task<bool> ChangePasswordAsync(ChangePasswordDto dto);
+        Task<bool> CheckUsernameAvailable(int userId, string username);
 
 
     }

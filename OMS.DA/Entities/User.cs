@@ -1,27 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Entities;
 
 [Index("PersonId", Name = "users_personid_unique", IsUnique = true)]
-[Index("Username", Name = "users_username_unique", IsUnique = true)]
-public partial class User
+[Index("UserName", Name = "users_username_unique", IsUnique = true)]
+public partial class User : IdentityUser<int>
 {
+
     [Key]
-    public int UserId { get; set; }
+    [Column("UserId")]
+    public override int Id { get => base.Id; set => base.Id = value; }
 
     public int PersonId { get; set; }
 
     public int BranchId { get; set; }
 
-    [StringLength(20)]
+    [Required, Column("Username")]
     [Unicode(false)]
-    public string Username { get; set; } = null!;
+    public override string? UserName { get => base.UserName; set => base.UserName = value; }
 
-    [StringLength(44)]
+    [Required, Column("Password")]
+    [StringLength(128)]
     [Unicode(false)]
-    public string Password { get; set; } = null!;
+    public override string? PasswordHash { get => base.PasswordHash; set => base.PasswordHash = value; }
 
     public bool IsActive { get; set; }
 

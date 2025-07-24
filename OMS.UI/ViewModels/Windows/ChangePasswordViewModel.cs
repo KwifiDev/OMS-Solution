@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OMS.UI.APIs.Dtos.Hybrid;
 using OMS.UI.APIs.Services.Interfaces.Tables;
+using OMS.UI.APIs.Services.Tables;
 using OMS.UI.Models;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
@@ -17,7 +18,7 @@ namespace OMS.UI.ViewModels.Windows
 {
     public partial class ChangePasswordViewModel : ObservableValidator, IDialogInitializer<int?>
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
         private readonly IHashService _hashService;
         private readonly IWindowService _windowService;
         private readonly IRegistryService _registryService;
@@ -37,10 +38,10 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private ChangePasswordModel _changePasswordModel = null!;
 
-        public ChangePasswordViewModel(IUserService userService, IHashService hashService, IWindowService windowService, IRegistryService registryService,
+        public ChangePasswordViewModel(IAuthService authService, IHashService hashService, IWindowService windowService, IRegistryService registryService,
                                        IMessageService messageService, IMapper mapper, IUserSessionService userSessionService)
         {
-            _userService = userService;
+            _authService = authService;
             _hashService = hashService;
             _windowService = windowService;
             _registryService = registryService;
@@ -64,12 +65,16 @@ namespace OMS.UI.ViewModels.Windows
             if (!ChangePasswordModel.ArePropertiesValid()) return;
             if (!IsNewPasswordMatched()) return;
 
-            var dto = _mapper.Map<ChangePasswordDto>(ChangePasswordModel);
+            var model = new ChangePasswordModel
+            {
+                UserId = ChangePasswordModel.UserId,
+                OldPassword = ChangePasswordModel.OldPassword,
+                NewPassword = ChangePasswordModel.NewPassword
+            };
 
-            dto.OldPassword = _hashService.HashPassword(dto.OldPassword);
-            dto.NewPassword = _hashService.HashPassword(dto.NewPassword);
+            HashPass(model);
 
-            bool isChanged = await _userService.ChangePasswordAsync(dto);
+            bool isChanged = await _authService.ChangePasswordAsync(model);
 
             if (!isChanged)
             {
@@ -77,11 +82,17 @@ namespace OMS.UI.ViewModels.Windows
                 return;
             }
 
-            SaveNewPasswordConifg(dto.NewPassword);
+            SaveNewPasswordConifg(model.NewPassword);
 
             _messageService.ShowInfoMessage("نجاح", MessageTemplates.PasswordResetSuccessMessage);
             IsModifiable = false;
 
+        }
+
+        private void HashPass(ChangePasswordModel model)
+        {
+            model.OldPassword = _hashService.HashPassword(model.OldPassword);
+            model.NewPassword = _hashService.HashPassword(model.NewPassword);
         }
 
         private void SaveNewPasswordConifg(string newPassword)

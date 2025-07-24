@@ -39,7 +39,9 @@ namespace OMS.BL.Mapping
 
             CreateMap<Transaction, TransactionModel>().ReverseMap();
 
-            CreateMap<User, UserModel>().ReverseMap();
+            CreateMap<User, UserModel>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
+                .ReverseMap();
 
             CreateMap<AccountBalancesTransaction, AccountBalancesTransactionModel>().ReverseMap();
 
@@ -74,12 +76,33 @@ namespace OMS.BL.Mapping
             CreateMap<UserDetail, UserDetailModel>().ReverseMap();
 
             CreateMap<User, UserLoginModel>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(scr => scr.Person.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(scr => scr.Person.LastName))
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(scr => scr.Person.Gender))
                 .ReverseMap();
 
             CreateMap<DashboardSummary, DashboardSummaryModel>().ReverseMap();
+
+            CreateMap<RegisterModel, User>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<FullRegisterModel, PersonModel>()
+                .ForMember(dest => dest.PersonId, opt => opt.MapFrom(src => src.PersonId))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone));
+
+
+            CreateMap<FullRegisterModel, RegisterModel>()
+                .ForMember(dest => dest.PersonId, opt => opt.MapFrom(src => src.PersonId))
+                .ForMember(dest => dest.BranchId, opt => opt.MapFrom(src => src.BranchId))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive));
         }
     }
 }

@@ -13,10 +13,10 @@ public partial class UserDto
     [Range(1, int.MaxValue, ErrorMessage = "Branch ID must be a positive number")]
     public int BranchId { get; set; }
 
-    [Required(ErrorMessage = "Username is required")]
-    [StringLength(50, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 50 characters")]
-    [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Username can only contain letters, numbers and underscores")]
-    public string Username { get; set; } = null!;
+    [Required(ErrorMessage = "UserName is required")]
+    [StringLength(50, MinimumLength = 3, ErrorMessage = "UserName must be between 3 and 50 characters")]
+    [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "UserName can only contain letters, numbers and underscores")]
+    public string UserName { get; set; } = null!;
 
     [Required(ErrorMessage = "Password is required")]
     [RegularExpression(@"^[a-zA-Z0-9+/]{43}=$", ErrorMessage = "Password is not a valid SHA256 hash Base64.")]

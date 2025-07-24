@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
+using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Validations;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Authentication;
@@ -38,8 +40,6 @@ namespace OMS.UI.ViewModels.Windows
         [NotifyDataErrorInfo]
         private string _password = string.Empty;
 
-        private string _hashPassword = null!;
-
         [ObservableProperty]
         private string _loginButtonContent = "تسجيل الدخول";
 
@@ -71,6 +71,23 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private async Task Login()
         {
+            //var auth = Ioc.Default.GetRequiredService<IAuthService>();
+
+            //var isAdded = await auth.CreateUserAsync(new Models.UserModel
+            //{
+            //    PersonId = 2106,
+            //    BranchId = 1014,
+            //    Username = "Munir007X",
+            //    Password = _hashService.HashPassword("Asp.123"),
+            //    IsActive = true
+            //});
+
+            //if (isAdded) 
+            //{
+            //    _messageService.ShowInfoMessage("تم الأضافة", "");
+            //    _windowService.Exit();
+            //}
+
             if (!ValidateInputs())
             {
                 ShowValidationError(GetErrors()?.FirstOrDefault()?.ErrorMessage);
@@ -79,16 +96,16 @@ namespace OMS.UI.ViewModels.Windows
 
             IsLoading = true;
 
-            _hashPassword = _hashService.HashPassword(Password);
+            string hashPassword = _hashService.HashPassword(Password);
 
-            var user = await _authenticationService.AuthenticateAsync(Username, _hashPassword);
+            var user = await _authenticationService.AuthenticateAsync(Username, hashPassword);
 
             var validationStatus = _authenticationService.ValidateUserAccount(user);
 
             if (!CheckUserAccountStatus(validationStatus)) { IsLoading = false; return; }
 
             if (IsRememberUserLogin)
-                _registryService.SetUserLoginConfig(Username, _hashPassword);
+                _registryService.SetUserLoginConfig(Username, hashPassword);
             else
                 _registryService.ResetUserLoginConfig();
 

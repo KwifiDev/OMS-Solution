@@ -109,6 +109,19 @@ namespace OMS.API.Mapping
                 .ForMember(dest => dest.DiscountPercentage, opt => opt.Ignore())
                 .ReverseMap();
 
+            CreateMap<RegisterModel, UserDto>().ReverseMap();
+
+            CreateMap<RegisterDto, FullRegisterModel>()
+                .ForMember(dest => dest.PersonId, opt => opt.Ignore());
+
+
+            CreateMap<RegisterDto, PersonModel>()
+                .ForMember(dest => dest.PersonId, opt => opt.Ignore())
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
+                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone ?? null));
+
         }
     }
 }

@@ -7,16 +7,16 @@ namespace OMS.UI.Services.Authentication
     {
         public enum EnUserValidateStatus { NotFound, NotActive, FoundAndActive }
 
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public AuthenticationService(IUserService userService)
+        public AuthenticationService(IAuthService authService)
         {
-            _userService = userService;
+            _authService = authService;
         }
 
         public async Task<UserLoginModel> AuthenticateAsync(string username, string password)
         {
-            return (await _userService.GetByUsernameAndPasswordAsync(username, password))!;
+            return (await _authService.SignInAsync(username, password))!;
         }
 
         public EnUserValidateStatus ValidateUserAccount(UserLoginModel? user)

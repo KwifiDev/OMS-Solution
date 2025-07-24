@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OMS.DA.Configurations.EntitiesConfigurations;
+using OMS.DA.Configurations.IdentitiesConfigurations;
 using OMS.DA.Configurations.ViewsConfigurations;
 using OMS.DA.Entities;
 using OMS.DA.Views;
 
 namespace OMS.DA.Context;
 
-public partial class AppDbContext : DbContext
+public partial class AppDbContext : IdentityDbContext<User, Role, int>
 {
     public AppDbContext()
     {
@@ -69,8 +71,6 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<TransactionsSummary> TransactionsSummaries { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
-
     public virtual DbSet<UserAccount> UserAccounts { get; set; }
 
     public virtual DbSet<UserDetail> UserDetails { get; set; }
@@ -87,6 +87,10 @@ public partial class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        IdentityConfig.ConfigureAll(modelBuilder);
+
         modelBuilder.UseCollation("Arabic_CI_AS");
 
         modelBuilder.ApplyConfiguration(new AccountConfig());

@@ -10,12 +10,9 @@ namespace OMS.BL.Models.Hybrid
 
         public int BranchId { get; internal set; }
 
-        public string Username { get; set; } = null!;
-
-        public int Permissions { get; set; }
+        public string UserName { get; set; } = null!;
 
         public bool IsActive { get; set; } = false;
-
 
         public string FirstName { get; set; } = null!;
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OMS.UI.APIs.Dtos.Hybrid;
+using OMS.UI.APIs.Dtos.Hybrid.OMS.API.Dtos.Hybrid;
 using OMS.UI.APIs.Dtos.StoredProcedureParams;
 using OMS.UI.APIs.Dtos.Tables;
 using OMS.UI.APIs.Dtos.Views;
@@ -46,6 +47,7 @@ namespace OMS.UI.Mapping
             CreateMap<RevenueDto, RevenueModel>().ReverseMap();
             CreateMap<DashboardSummaryDto, DashboardSummaryModel>().ReverseMap();
             CreateMap<ChangePasswordDto, ChangePasswordModel>().ReverseMap();
+            CreateMap<RegisterDto, RegisterModel>().ReverseMap();
         }
     }
 }

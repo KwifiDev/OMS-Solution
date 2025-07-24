@@ -11,7 +11,7 @@ namespace OMS.DA.IRepositories.IViewRepos
         Task<IEnumerable<UserDetail>> GetAllAsync();
 
         /// <summary>
-        /// Retrieves an UserDetail by UserId.
+        /// Retrieves an UserDetail by Id.
         /// </summary>
         /// <param name="userId">The ID of the user.</param>
         /// <returns>The UserDetail if found; otherwise, null.</returns>

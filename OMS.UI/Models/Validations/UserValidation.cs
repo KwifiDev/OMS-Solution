@@ -1,5 +1,4 @@
-﻿using OMS.UI.APIs.Dtos.Hybrid;
-using OMS.UI.APIs.Services.Interfaces.Tables;
+﻿using OMS.UI.APIs.Services.Interfaces.Tables;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
@@ -14,13 +13,13 @@ namespace OMS.UI.Models.Validations
             _userService = userService;
         }
 
-        public async Task<ValidationResult?> ValidateFullUsernameAsync(int userId ,string username)
+        public async Task<ValidationResult?> ValidateFullUsernameAsync(int userId, string username)
         {
             var formatResult = ValidateUsername(username, new ValidationContext(username));
             if (formatResult != ValidationResult.Success)
                 return formatResult;
 
-            bool isAvailable = await _userService.CheckUsernameAvailable(new UsernameAvailableDto { UserId = userId, Username = username });
+            bool isAvailable = await _userService.CheckUsernameAvailable(userId, username);
             return isAvailable
                 ? ValidationResult.Success
                 : new ValidationResult("اسم المستخدم محجوز لمستخدم آخر.");

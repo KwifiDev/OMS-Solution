@@ -26,5 +26,6 @@
         public const string Revenues = "api/revenues";
         public const string DashboardSummary = "api/dashboardsummary";
         public const string HealthCheck = "api/healthcheck";
+        public const string Authentication = "api/auth";
     }
 }

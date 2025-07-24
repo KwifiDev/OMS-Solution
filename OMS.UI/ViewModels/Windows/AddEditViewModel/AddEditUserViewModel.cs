@@ -23,6 +23,8 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private readonly IUserSessionService _userSessionService;
         private readonly IHashService _hashService;
         private readonly IRegistryService _registryService;
+        private readonly IAuthService _authService;
+
 
         [ObservableProperty]
         private IFindPersonViewModel _findPersonViewModel;
@@ -32,13 +34,14 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMessageService messageService, IRegistryService registryService,
                                     IFindPersonViewModel findPersonViewModel, IWindowService windowService, IStatusService statusService,
-                                    IUserSessionService userSessionService, IHashService hashService) : base(userService, messageService, windowService, statusService)
+                                    IUserSessionService userSessionService, IHashService hashService, IAuthService authService) : base(userService, messageService, windowService, statusService)
         {
             _branchService = branchService;
             _userSessionService = userSessionService;
             _findPersonViewModel = findPersonViewModel;
             _hashService = hashService;
             _registryService = registryService;
+            _authService = authService;
 
             FindPersonViewModel.PersonFound += OnPersonFound;
             InitializeBranches();
@@ -82,7 +85,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             if (isAdding)
             {
                 userModel.Password = _hashService.HashPassword(userModel.Password);
-                return await _service.AddAsync(userModel);
+                return await _authService.CreateUserAsync(userModel);
             }
             else
             {

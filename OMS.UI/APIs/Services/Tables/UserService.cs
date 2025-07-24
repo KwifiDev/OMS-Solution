@@ -19,32 +19,32 @@ namespace OMS.UI.APIs.Services.Tables
         {
         }
 
-        public async Task<UserLoginModel?> GetByUsernameAndPasswordAsync(string username, string password)
-        {
+        //public async Task<UserLoginModel?> GetByUsernameAndPasswordAsync(string username, string password)
+        //{
 
-            var requestUserDto = new RequestLoginDto { Username = username, Password = password };
+        //    var requestUserDto = new RequestLoginDto { Username = username, Password = password };
 
-            try
-            {
-                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/login", requestUserDto);
+        //    try
+        //    {
+        //        var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/login", requestUserDto);
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    LogError(new Exception($"اسم المستخدم او كملة المرور غير صحيحة.\nStatus Code: {response.StatusCode}"));
-                    return null;
-                }
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            LogError(new Exception($"اسم المستخدم او كملة المرور غير صحيحة.\nStatus Code: {response.StatusCode}"));
+        //            return null;
+        //        }
 
-                var responseLoginDto = await response.Content.ReadFromJsonAsync<ResponseLoginDto>();
+        //        var responseLoginDto = await response.Content.ReadFromJsonAsync<ResponseLoginDto>();
 
-                return _mapper.Map<UserLoginModel>(responseLoginDto);
+        //        return _mapper.Map<UserLoginModel>(responseLoginDto);
 
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                return null;
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(ex);
+        //        return null;
+        //    }
+        //}
 
         public async Task<UserLoginModel?> GetUserLoginByPersonIdAsync(int personId)
         {
@@ -144,16 +144,16 @@ namespace OMS.UI.APIs.Services.Tables
             }
         }
 
-        public async Task<bool> CheckUsernameAvailable(UsernameAvailableDto dto)
+        public async Task<bool> CheckUsernameAvailable(int userId, string username)
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/checkusernameavailable", dto);
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/checkusernameavailable", new { UserId = userId, Username = username});
 
                 if (!response.IsSuccessStatusCode)
                 {
                     if (response.StatusCode == HttpStatusCode.Conflict)
-                        LogError(new Exception($"اسم المستخدم محجوز من قبل مستخدم اخر.\nStatus Code: {response.StatusCode}\nInfo: {dto.UserId}, {dto.Username}"));
+                        LogError(new Exception($"اسم المستخدم محجوز من قبل مستخدم اخر.\nStatus Code: {response.StatusCode}\nInfo: {userId}, {username}"));
                     else
                         LogError(new Exception($"حدث خطأ اثناء التحقق من وجود اسم المستخدم.\nStatus Code: {response.StatusCode}"));
                     return false;
@@ -169,27 +169,30 @@ namespace OMS.UI.APIs.Services.Tables
             }
         }
 
-        public async Task<bool> ChangePasswordAsync(ChangePasswordDto dto)
-        {
-            try
-            {
-                var response = await _httpClient.PutAsJsonAsync($"{_endpoint}/changepassword", dto);
+        //public async Task<bool> ChangePasswordAsync(ChangePasswordModel model)
+        //{
+        //    try
+        //    {
+        //        var dto = _mapper.Map<ChangePasswordDto>(model);
 
-                if (!response.IsSuccessStatusCode)
-                {
 
-                    LogError(new Exception($"حدث خطأ اثناء تعيين كلمة المرور.\nStatus Code: {response.StatusCode}"));
-                    return false;
-                }
+        //        var response = await _httpClient.PutAsJsonAsync($"{_endpoint}/changepassword", dto);
 
-                return true;
+        //        if (!response.IsSuccessStatusCode)
+        //        {
 
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                return false;
-            }
-        }
+        //            LogError(new Exception($"حدث خطأ اثناء تعيين كلمة المرور.\nStatus Code: {response.StatusCode}"));
+        //            return false;
+        //        }
+
+        //        return true;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogError(ex);
+        //        return false;
+        //    }
+        //}
     }
 }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using OMS.API.Mapping;
 using OMS.BL.IServices.Tables;
 using OMS.BL.IServices.Views;
@@ -6,6 +7,7 @@ using OMS.BL.Mapping;
 using OMS.BL.Services.Tables;
 using OMS.BL.Services.Views;
 using OMS.DA.Context;
+using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Repositories.EntityRepos;
@@ -22,16 +24,19 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
 
-ILoggerFactory loggerFactory = LoggerFactory.Create(builder =>
+builder.Services.AddIdentity<User, Role>(options =>
 {
-    builder.AddConsole();
-});
+    options.User.RequireUniqueEmail = false;
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
 
-var mapperConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile(new APIMappingProfile());
-    mc.AddProfile(new BLMappingProfile());
-}, loggerFactory);
+var configExpression = new MapperConfigurationExpression();
+configExpression.AddProfile(new APIMappingProfile());
+configExpression.AddProfile(new BLMappingProfile());
+ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
+var mapperConfig = new MapperConfiguration(configExpression, loggerFactory);
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddSingleton<IMapperService, MapperService>();
@@ -109,6 +114,11 @@ builder.Services.AddScoped<IRevenueService, RevenueService>();
 builder.Services.AddScoped<IDashboardSummaryRepository, DashboardSummaryRepository>();
 builder.Services.AddScoped<IDashboardSummaryService, DashboardSummaryService>();
 
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -120,6 +130,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
