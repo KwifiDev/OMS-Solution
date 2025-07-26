@@ -102,7 +102,7 @@ namespace OMS.API.Mapping
 
             CreateMap<ChangePasswordModel, ChangePasswordDto>().ReverseMap();
 
-            CreateMap<RequestLoginModel, RequestLoginDto>().ReverseMap();
+            CreateMap<LoginModel, LoginDto>().ReverseMap();
 
             CreateMap<CheckDiscountAppliedModel, DiscountDto>()
                 .ForMember(dest => dest.DiscountId, opt => opt.Ignore())
@@ -121,6 +121,8 @@ namespace OMS.API.Mapping
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.Phone ?? null));
+
+            CreateMap<RoleDto, RoleModel>().ReverseMap();
 
         }
     }

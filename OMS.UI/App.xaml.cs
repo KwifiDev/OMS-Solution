@@ -129,6 +129,8 @@ namespace OMS.UI
             services.AddTransient<IDashboardSummaryService, DashboardSummaryService>();
 
             services.AddTransient<IAuthService, AuthService>();
+
+            services.AddTransient<IRoleService, RoleService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)

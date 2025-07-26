@@ -101,7 +101,7 @@ namespace OMS.UI.APIs.Services.Tables
 
         public async Task<UserLoginModel?> SignInAsync(string username, string password)
         {
-            var requestUserDto = new RequestLoginDto { Username = username, Password = password };
+            var requestUserDto = new LoginDto { Username = username, Password = password };
 
             try
             {

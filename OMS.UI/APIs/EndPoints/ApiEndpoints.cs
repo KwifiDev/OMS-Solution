@@ -27,5 +27,6 @@
         public const string DashboardSummary = "api/dashboardsummary";
         public const string HealthCheck = "api/healthcheck";
         public const string Authentication = "api/auth";
+        public const string Roles = "api/roles";
     }
 }

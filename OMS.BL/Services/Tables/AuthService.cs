@@ -4,23 +4,28 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
 using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.Tables;
+using OMS.Common.Enums;
 using OMS.DA.Entities;
 
 namespace OMS.BL.Services.Tables
 {
     public class AuthService : IAuthService
     {
-        private readonly IPersonService _personService;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IMapperService _mapperService;
 
-        public AuthService(IPersonService personService, UserManager<User> userManager, SignInManager<User> signInManager, IMapperService mapperService)
+        private readonly IPersonService _personService;
+        private readonly IRoleService _roleService;
+
+        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IMapperService mapperService,
+                           IPersonService personService, IRoleService roleService)
         {
-            _personService = personService;
             _userManager = userManager;
             _signInManager = signInManager;
             _mapperService = mapperService;
+            _personService = personService;
+            _roleService = roleService;
         }
 
         public async Task<bool> ChangePasswordAsync(ChangePasswordModel model)
@@ -40,14 +45,13 @@ namespace OMS.BL.Services.Tables
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
-            int userId = Convert.ToInt32(await _userManager.GetUserIdAsync(user));
-            model.UserId = userId;
+            if (!result.Succeeded) return false;
 
-
-            return result.Succeeded;
+            model.UserId = Convert.ToInt32(await _userManager.GetUserIdAsync(user));
+            return true;
         }
 
-        public async Task<UserLoginModel?> SignInAsync(RequestLoginModel model)
+        public async Task<UserLoginModel?> LoginAsync(LoginModel model)
         {
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
 
@@ -62,7 +66,7 @@ namespace OMS.BL.Services.Tables
             return _mapperService.Map<User, UserLoginModel>(user!);
         }
 
-        public async Task<bool> RegisterWithPersonAsync(FullRegisterModel model)
+        public async Task<bool> RegisterUserWithProfileAsync(FullRegisterModel model)
         {
             var personModel = _mapperService.Map<FullRegisterModel, PersonModel>(model);
 
@@ -77,6 +81,53 @@ namespace OMS.BL.Services.Tables
             var isSuccess = await RegisterAsync(registerModel);
 
             return isSuccess;
+        }
+
+        public async Task<IEnumerable<string>> GetUserRolesAsync(int userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user is null) return Enumerable.Empty<string>();
+
+            return await _userManager.GetRolesAsync(user);
+        }
+
+        public async Task<EnAuthResult> AddUserToRoleAsync(int userId, string roleName)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null) return EnAuthResult.UserNotFound;
+
+            var role = await _roleService.FindByNameAsync(roleName);
+            if (role is null) return EnAuthResult.RoleNotFound;
+
+            var isInRole = await _userManager.IsInRoleAsync(user, roleName);
+            if (isInRole) return EnAuthResult.Conflict;
+
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+            return result.Succeeded ? EnAuthResult.Success : EnAuthResult.Failed;
+        }
+
+        public async Task<EnAuthResult> RemoveUserFromRoleAsync(int userId, string roleName)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null) return EnAuthResult.UserNotFound;
+
+            var role = await _roleService.FindByNameAsync(roleName);
+            if (role is null) return EnAuthResult.RoleNotFound;
+
+            var isInRole = await _userManager.IsInRoleAsync(user, roleName);
+            if (!isInRole) return EnAuthResult.RoleNotFound;
+
+            var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+            return result.Succeeded ? EnAuthResult.Success : EnAuthResult.Failed;
+        }
+
+        public async Task<bool?> IsUserInRoleAsync(int userId, string roleName)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null) return null;
+
+            return await _userManager.IsInRoleAsync(user, roleName);
         }
     }
 }

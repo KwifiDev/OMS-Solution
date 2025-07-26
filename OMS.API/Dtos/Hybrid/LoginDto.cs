@@ -2,7 +2,7 @@
 
 namespace OMS.API.Dtos.Hybrid
 {
-    public class RequestLoginDto
+    public class LoginDto
     {
         [Required(ErrorMessage = "UserName is required")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "UserName must be between 3 and 50 characters")]

@@ -48,6 +48,7 @@ namespace OMS.UI.Mapping
             CreateMap<DashboardSummaryDto, DashboardSummaryModel>().ReverseMap();
             CreateMap<ChangePasswordDto, ChangePasswordModel>().ReverseMap();
             CreateMap<RegisterDto, RegisterModel>().ReverseMap();
+            CreateMap<RoleDto, RoleModel>().ReverseMap();
         }
     }
 }

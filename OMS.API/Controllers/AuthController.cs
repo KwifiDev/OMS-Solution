@@ -44,7 +44,7 @@ namespace OMS.API.Controllers
             {
                 var model = _mapper.Map<FullRegisterModel>(dto);
 
-                var isSuccess = await _authService.RegisterWithPersonAsync(model);
+                var isSuccess = await _authService.RegisterUserWithProfileAsync(model);
 
                 if (!isSuccess)
                 {
@@ -139,11 +139,11 @@ namespace OMS.API.Controllers
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ResponseLoginDto>> SignInByUsernameAndPasswordAsync([FromBody] RequestLoginDto loginDto)
+        public async Task<ActionResult<ResponseLoginDto>> SignInByUsernameAndPasswordAsync([FromBody] LoginDto loginDto)
         {
             try
             {
-                var model = await _authService.SignInAsync(_mapper.Map<RequestLoginModel>(loginDto));
+                var model = await _authService.LoginAsync(_mapper.Map<LoginModel>(loginDto));
 
                 return model is null
                     ? NotFound()

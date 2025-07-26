@@ -103,6 +103,8 @@ namespace OMS.BL.Mapping
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive));
+
+            CreateMap<Role, RoleModel>().ReverseMap();
         }
     }
 }

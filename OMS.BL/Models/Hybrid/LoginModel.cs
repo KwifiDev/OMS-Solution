@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace OMS.BL.Models.Hybrid
+﻿namespace OMS.BL.Models.Hybrid
 {
-    public class RequestLoginModel
+    public class LoginModel
     {
         public string UserName { get; set; } = null!;
 

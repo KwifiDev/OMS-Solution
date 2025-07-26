@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
 using OMS.BL.Models.Hybrid;
@@ -24,6 +23,14 @@ namespace OMS.BL.Services.Tables
             _userManager = userManager;
         }
 
+        public override Task<bool> AddAsync(UserModel model)
+           => throw new NotImplementedException("This future not avalible");
+
+        public override Task<bool> UpdateAsync(UserModel userModel)
+            => throw new NotImplementedException("This future not avalible");
+
+
+
         public override async Task<UserModel?> GetByIdAsync(int id)
         {
             if (id <= 0) return default;
@@ -33,11 +40,6 @@ namespace OMS.BL.Services.Tables
             return user == null ? default : _mapperService.Map<User, UserModel>(user);
         }
 
-        public override Task<bool> AddAsync(UserModel model)
-            => Task.FromResult(false);
-
-        public override Task<bool> UpdateAsync(UserModel userModel)
-            => Task.FromResult(false);
 
         public async Task<UserLoginModel?> GetUserLoginByPersonIdAsync(int personId)
         {
@@ -54,9 +56,7 @@ namespace OMS.BL.Services.Tables
         }
 
         public async Task<int> GetIdByPersonIdAsync(int personId)
-        {
-            return await _userRepository.GetIdByPersonIdAsync(personId);
-        }
+            => await _userRepository.GetIdByPersonIdAsync(personId);
 
         public async Task<bool> IsUserActive(int userId)
             => await _userRepository.IsUserActive(userId);
@@ -76,35 +76,35 @@ namespace OMS.BL.Services.Tables
 
             if (oldUsername == null) return null;
 
-            if (oldUsername != model.UserName)
-            {
-                if (await _userRepository.IsUsernameUsedAsync(model.UserId, model.UserName)) return false;
-            }
+            if (oldUsername == model.UserName) return true;
 
-            return true;
+            return !(await _userRepository.IsUsernameUsedAsync(model.UserId, model.UserName));
+        }
+
+        private async Task<bool> UpdateUserBranchAsync(User user)
+           => await _userRepository.UpdateAsync(user);
+
+        private async Task<EnUserResult> UpdateUserNameAsync(User user)
+        {
+            var userIdentity = await _userManager.FindByIdAsync(user.Id.ToString());
+            if (userIdentity == null) return EnUserResult.NotFound;
+
+            var result = await _userManager.SetUserNameAsync(userIdentity, user.UserName);
+            return result.Succeeded ? EnUserResult.Success : EnUserResult.ChangeUserNameFaild;
         }
 
         public async Task<EnUserResult> UpdateUserAsync(UserModel model)
         {
             var isValid = await IsUsernameValid(model);
-
             if (isValid is null) return EnUserResult.NotFound;
-
             if (isValid == false) return EnUserResult.UserNameConflict;
 
             var user = _mapperService.Map<UserModel, User>(model);
 
-            var isSuccess = await _userRepository.UpdateAsync(user);
-
+            var isSuccess = await UpdateUserBranchAsync(user);
             if (!isSuccess) return EnUserResult.ChangeBranchIdFaild;
 
-            var userIdentity = await _userManager.FindByIdAsync(user.Id.ToString());
-
-            var result = await _userManager.SetUserNameAsync(userIdentity!, user.UserName);
-
-            if (!result.Succeeded) return EnUserResult.ChangeUserNameFaild;
-
-            return EnUserResult.Success;
+            return await UpdateUserNameAsync(user);
         }
 
     }
