@@ -1,4 +1,4 @@
-﻿using OMS.UI.Models;
+﻿using OMS.UI.Models.Others;
 using static OMS.UI.Services.Authentication.AuthenticationService;
 
 namespace OMS.UI.Services.Authentication

@@ -1,4 +1,4 @@
-﻿using OMS.UI.Models;
+﻿using OMS.UI.Models.Views;
 
 namespace OMS.UI.APIs.Services.Interfaces.Views
 {

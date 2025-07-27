@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Messaging.Messages;
-using OMS.UI.Models;
+using OMS.UI.Models.Tables;
 
 namespace OMS.UI.Services.ModelTransfer
 {

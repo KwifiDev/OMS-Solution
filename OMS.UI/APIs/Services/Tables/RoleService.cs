@@ -1,23 +1,42 @@
 ﻿using AutoMapper;
+using OMS.UI.APIs.Dtos.Tables;
 using OMS.UI.APIs.EndPoints;
+using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;
+using OMS.UI.Models.Tables;
 using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace OMS.UI.APIs.Services.Tables
 {
-    public class RoleService : IRoleService
+    public class RoleService : GenericApiService<RoleDto, RoleModel>, IRoleService
     {
-
-        private readonly IMapper _mapper;
-        private readonly HttpClient _httpClient;
-        private readonly string _endpoint;
-
-
         public RoleService(IHttpClientFactory httpClientFactory, IMapper mapper)
+            : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Roles)
         {
-            _mapper = mapper;
-            _httpClient = httpClientFactory.CreateClient("ApiClient");
-            _endpoint = ApiEndpoints.Roles;
         }
+
+        public async Task<RoleModel?> GetByNameAsync(string roleName)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_endpoint}/{roleName}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في جلب البيانات من الخادم للاسم: {roleName}.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return null;
+                }
+
+                var dto = await response.Content.ReadFromJsonAsync<RoleDto>();
+                return dto != null ? _mapper.Map<RoleModel>(dto) : null;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return null;
+            }
+        }
+
     }
 }

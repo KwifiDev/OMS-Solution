@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using OMS.UI.APIs.Services.Interfaces.Tables;
-using OMS.UI.Models;
+using OMS.UI.Models.Others;
 
 namespace OMS.UI.Services.UserSession
 {

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OMS.UI.APIs.Services.Interfaces.Tables;
-using OMS.UI.Models;
+using OMS.UI.Models.Others;
+using OMS.UI.Models.Tables;
 using OMS.UI.Models.Validations;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Hash;

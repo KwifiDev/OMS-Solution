@@ -1,5 +1,5 @@
 ﻿using OMS.UI.APIs.Services.Interfaces.Tables;
-using OMS.UI.Models;
+using OMS.UI.Models.Others;
 
 namespace OMS.UI.Services.Authentication
 {

@@ -1,4 +1,4 @@
-﻿using OMS.UI.Models;
+﻿using OMS.UI.Models.Tables;
 using System.Windows;
 using System.Windows.Controls;
 

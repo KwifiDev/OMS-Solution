@@ -108,7 +108,7 @@ namespace OMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<RoleDto>> GetByIdAsync([FromRoute] string roleName)
+        public async Task<ActionResult<RoleDto>> GetByNameAsync([FromRoute] string roleName)
         {
             try
             {

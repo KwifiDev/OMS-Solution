@@ -1,4 +1,5 @@
-﻿using OMS.UI.Models;
+﻿using OMS.UI.Models.Tables;
+using OMS.UI.Models.Views;
 using OMS.UI.Services.StatusManagement;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables

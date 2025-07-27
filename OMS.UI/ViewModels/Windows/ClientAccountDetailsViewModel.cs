@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OMS.UI.APIs.Services.Interfaces.Views;
-using OMS.UI.Models;
+using OMS.UI.Models.Views;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Windows;
 using OMS.UI.Views.Windows;

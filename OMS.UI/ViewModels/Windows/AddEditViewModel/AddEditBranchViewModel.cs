@@ -1,5 +1,5 @@
 ﻿using OMS.UI.APIs.Services.Interfaces.Tables;
-using OMS.UI.Models;
+using OMS.UI.Models.Tables;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.Windows;

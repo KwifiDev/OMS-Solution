@@ -5,7 +5,8 @@ using OMS.UI.APIs.Dtos.Tables;
 using OMS.UI.APIs.EndPoints;
 using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;
-using OMS.UI.Models;
+using OMS.UI.Models.Others;
+using OMS.UI.Models.Tables;
 using System.Net.Http;
 using System.Net.Http.Json;
 

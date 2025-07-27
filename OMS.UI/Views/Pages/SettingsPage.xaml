@@ -161,7 +161,7 @@
                     Background="CornflowerBlue"
                     FontWeight="Bold"
                     Foreground="White"
-                    Content="الامن والتشفير"
+                    Content="الادوار والصلاحيات"
                     Command="{Binding OpenSecurityConfigCommand}">
             </Button>
 

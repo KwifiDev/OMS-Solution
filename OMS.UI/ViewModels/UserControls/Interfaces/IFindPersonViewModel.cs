@@ -1,4 +1,4 @@
-﻿using OMS.UI.Models;
+﻿using OMS.UI.Models.Tables;
 using OMS.UI.Services.StatusManagement;
 using static OMS.UI.ViewModels.UserControls.FindPersonViewModel;
 

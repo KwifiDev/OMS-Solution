@@ -1,5 +1,4 @@
-﻿
-using OMS.UI.Models;
+﻿using OMS.UI.Models.Tables;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables
 {

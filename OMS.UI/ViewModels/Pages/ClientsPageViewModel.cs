@@ -1,8 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
-using OMS.UI.Models;
 using OMS.UI.Models.Records;
+using OMS.UI.Models.Tables;
+using OMS.UI.Models.Views;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Loading;

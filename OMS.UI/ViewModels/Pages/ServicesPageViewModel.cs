@@ -1,7 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
-using OMS.UI.Models;
+using OMS.UI.Models.Tables;
+using OMS.UI.Models.Views;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;

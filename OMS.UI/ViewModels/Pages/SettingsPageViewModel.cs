@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using OMS.UI.Models;
+using OMS.UI.Models.Others;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Registry;
 using OMS.UI.Services.Settings;

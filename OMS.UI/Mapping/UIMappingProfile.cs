@@ -4,7 +4,9 @@ using OMS.UI.APIs.Dtos.Hybrid.OMS.API.Dtos.Hybrid;
 using OMS.UI.APIs.Dtos.StoredProcedureParams;
 using OMS.UI.APIs.Dtos.Tables;
 using OMS.UI.APIs.Dtos.Views;
-using OMS.UI.Models;
+using OMS.UI.Models.Others;
+using OMS.UI.Models.Tables;
+using OMS.UI.Models.Views;
 
 
 namespace OMS.UI.Mapping

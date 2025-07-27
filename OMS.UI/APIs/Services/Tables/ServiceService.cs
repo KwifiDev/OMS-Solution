@@ -4,9 +4,10 @@ using OMS.UI.APIs.Dtos.Tables;
 using AutoMapper;
 using OMS.UI.APIs.EndPoints;
 using System.Net.Http;
-using OMS.UI.Models;
 using OMS.UI.APIs.Dtos.Views;
 using System.Net.Http.Json;
+using OMS.UI.Models.Tables;
+using OMS.UI.Models.Others;
 
 namespace OMS.UI.APIs.Services.Tables
 {

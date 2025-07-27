@@ -4,8 +4,8 @@ using OMS.UI.APIs.Dtos.Views;
 using AutoMapper;
 using OMS.UI.APIs.EndPoints;
 using System.Net.Http;
-using OMS.UI.Models;
 using System.Net.Http.Json;
+using OMS.UI.Models.Views;
 
 namespace OMS.UI.APIs.Services.Views
 {
