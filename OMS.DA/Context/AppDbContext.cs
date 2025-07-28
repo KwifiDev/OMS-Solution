@@ -77,6 +77,8 @@ public partial class AppDbContext : IdentityDbContext<User, Role, int>
 
     public virtual DbSet<DashboardSummary> DashboardSummaries { get; set; }
 
+    public virtual DbSet<RolesSummary> RolesSummaries { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -152,6 +154,8 @@ public partial class AppDbContext : IdentityDbContext<User, Role, int>
         modelBuilder.ApplyConfiguration(new UserDetailConfig());
 
         modelBuilder.ApplyConfiguration(new DashboardSummaryConfig());
+
+        modelBuilder.ApplyConfiguration(new RolesSummaryConfig());
 
         OnModelCreatingPartial(modelBuilder);
     }

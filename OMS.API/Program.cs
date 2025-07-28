@@ -117,6 +117,9 @@ builder.Services.AddScoped<IDashboardSummaryService, DashboardSummaryService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 
+builder.Services.AddScoped<IRolesSummaryRepository, RolesSummaryRepository>();
+builder.Services.AddScoped<IRolesSummaryService, RolesSummaryService>();
+
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 

@@ -105,6 +105,8 @@ namespace OMS.BL.Mapping
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive));
 
             CreateMap<Role, RoleModel>().ReverseMap();
+
+            CreateMap<RolesSummary, RolesSummaryModel>().ReverseMap();
         }
     }
 }

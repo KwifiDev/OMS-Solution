@@ -56,6 +56,9 @@
     <Compile Update="Views\Windows\AccountPaymentsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Windows\AddEditWindow\AddEditRoleWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Windows\AddEditWindow\AddEditRevenueWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -68,6 +71,9 @@
     <Compile Update="Views\Windows\DebtsSummaryWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Windows\RolesSummaryWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -78,6 +84,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\Windows\AddEditWindow\AddEditDebtWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Windows\RolesSummaryWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

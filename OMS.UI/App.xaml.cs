@@ -131,6 +131,8 @@ namespace OMS.UI
             services.AddTransient<IAuthService, AuthService>();
 
             services.AddTransient<IRoleService, RoleService>();
+
+            services.AddTransient<IRolesSummaryService, RolesSummaryService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)
@@ -209,6 +211,10 @@ namespace OMS.UI
             services.AddTransient<ChangePasswordViewModel>();
 
             services.AddTransient<StartupViewModel>();
+
+            services.AddTransient<RolesSummaryViewModel>();
+
+            services.AddTransient<AddEditRoleViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -302,6 +308,12 @@ namespace OMS.UI
 
             services.AddTransient(provider =>
                 new StartupWindow { DataContext = provider.GetRequiredService<StartupViewModel>() });
+
+            services.AddTransient(provider =>
+                new RolesSummaryWindow { DataContext = provider.GetRequiredService<RolesSummaryViewModel>() });
+
+            services.AddTransient(provider =>
+                new AddEditRoleWindow { DataContext = provider.GetRequiredService<AddEditRoleViewModel>() });
 
         }
 

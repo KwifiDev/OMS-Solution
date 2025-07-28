@@ -162,7 +162,7 @@
                     FontWeight="Bold"
                     Foreground="White"
                     Content="الادوار والصلاحيات"
-                    Command="{Binding OpenSecurityConfigCommand}">
+                    Command="{Binding OpenRolesConfigCommand}">
             </Button>
 
             <Button 

@@ -46,7 +46,7 @@ namespace OMS.BL.Services.Tables
 
             var isExists = await _roleManager.RoleExistsAsync(role.Name!);
 
-            if (!isExists) return EnRoleResult.RoleConflict;
+            if (isExists) return EnRoleResult.RoleConflict;
 
             var result = await _roleManager.CreateAsync(role);
 
@@ -65,7 +65,7 @@ namespace OMS.BL.Services.Tables
 
             var isExists = await _roleManager.RoleExistsAsync(model.Name!);
 
-            if (!isExists) return EnRoleResult.RoleConflict;
+            if (isExists) return EnRoleResult.RoleConflict;
 
             role.Name = model.Name;
             var result = await _roleManager.UpdateAsync(role);

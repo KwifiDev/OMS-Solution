@@ -1,0 +1,131 @@
+﻿<Window x:Class="OMS.UI.Views.Windows.AddEditRoleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+        xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows.AddEditViewModel"
+        xmlns:inputBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
+        xmlns:windowBehaviors="clr-namespace:OMS.UI.Behaviors.Windows"
+        d:DataContext="{d:DesignInstance Type=windows:AddEditRoleViewModel}"
+        mc:Ignorable="d"
+        Height="350" 
+        Width="600"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource MaterialDesignWindow}"
+        FlowDirection="RightToLeft"
+        FontFamily="LBC"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Icon="{DynamicResource AppIcon}">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/PageStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Resources/Styles/BranchDetailsStyle.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <i:Interaction.Behaviors>
+        <windowBehaviors:DragWindowBehavior/>
+    </i:Interaction.Behaviors>
+
+    <Grid FlowDirection="RightToLeft">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Label x:Name="lblTitle"
+            Style="{StaticResource MaterialDesignLabel}"
+            FontWeight="Bold" 
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            FontSize="24"
+            Content="{Binding Status.Title, FallbackValue='نمط العملية'}"
+            Background="{StaticResource PageHeaderGradient}"
+            Grid.ColumnSpan="5"
+            Foreground="White"/>
+
+        <Border Grid.Row="1" Grid.RowSpan="2" 
+                Style="{StaticResource PhotoBorder}" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+            
+            <materialDesign:PackIcon 
+                                    Kind="RecordCircleOutline" 
+                                    Width="60"
+                                    Height="60"
+                                    Foreground="{StaticResource MaterialDesignShadowBrush}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"/>
+        </Border>
+
+        <Border Padding="10"
+             Background="{StaticResource PageHeaderGradient}"
+             VerticalAlignment="Bottom"
+             Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4">
+            <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Text="رقم المعرف:"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        FontSize="16"/>
+
+                <TextBlock Text="{Binding Model.RoleIdDisplay, FallbackValue='لا يوجد'}"
+                        VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        FontSize="16"/>
+            </StackPanel>
+        </Border>
+
+        <TextBox Name="txtBranchName" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+              Text="{Binding Model.Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+              FontSize="16"
+              Margin="10,5,10,5"
+              Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+              materialDesign:HintAssist.Hint="اسم الدور"
+              IsEnabled="{Binding Status.IsModifiable}">
+            <i:Interaction.Behaviors>
+                <inputBehaviors:ArabicOnlyInputBehavior/>
+            </i:Interaction.Behaviors>
+        </TextBox>
+
+        <Button x:Name="btnSave"
+             Grid.Row="5"
+             Style="{StaticResource MaterialDesignOutlinedDarkButton}"
+             Width="120"
+             Content="{Binding Status.ClickContent, FallbackValue='اضافة'}"
+             Command="{Binding SaveCommand}"
+             IsEnabled="{Binding Status.IsModifiable}">
+        </Button>
+
+        <Button
+                Grid.Row="5"
+                Grid.Column="2"
+                Style="{StaticResource MaterialDesignOutlinedDarkButton}"
+                Width="120"
+                Content="اغلاق"
+                Command="{Binding CloseCommand}">
+        </Button>
+
+    </Grid>
+
+
+
+</Window>

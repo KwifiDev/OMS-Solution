@@ -2,9 +2,11 @@
 using CommunityToolkit.Mvvm.Input;
 using OMS.UI.Models.Others;
 using OMS.UI.Resources.Strings;
+using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Registry;
 using OMS.UI.Services.Settings;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.Views.Windows;
 
 namespace OMS.UI.ViewModels.Pages
 {
@@ -13,17 +15,20 @@ namespace OMS.UI.ViewModels.Pages
         private readonly IRegistryService _registrySerivce;
         private readonly ISettingsService _settingsService;
         private readonly IMessageService _messageService;
+        private readonly IDialogService _dialogService;
 
 
         [ObservableProperty]
         private PersonalAppInfoModel _personalAppInfoModel;
 
 
-        public SettingsPageViewModel(IRegistryService registrySerivce, ISettingsService settingsService, IMessageService messageService)
+        public SettingsPageViewModel(IRegistryService registrySerivce, ISettingsService settingsService, IMessageService messageService,
+                                     IDialogService dialogService)
         {
             _registrySerivce = registrySerivce;
             _settingsService = settingsService;
             _messageService = messageService;
+            _dialogService = dialogService;
             PersonalAppInfoModel = new();
         }
 
@@ -53,9 +58,9 @@ namespace OMS.UI.ViewModels.Pages
         }
 
         [RelayCommand]
-        private void OpenSecurityConfig()
+        private async Task OpenRolesConfig()
         {
-            _messageService.ShowInfoMessage("معلومات", MessageTemplates.NotImplementedMessage);
+            await _dialogService.ShowDialog<RolesSummaryWindow, int?>();
         }
 
         [RelayCommand]
