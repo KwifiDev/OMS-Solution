@@ -5,6 +5,7 @@ using OMS.API.Dtos.Hybrid;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Hybrid;
+using OMS.Common.Enums;
 
 namespace OMS.API.Controllers
 {
@@ -117,7 +118,6 @@ namespace OMS.API.Controllers
         }
 
 
-
         /// <summary>
         /// Handles user login authentication (without token for now).
         /// </summary>
@@ -203,6 +203,185 @@ namespace OMS.API.Controllers
                     statusCode: StatusCodes.Status500InternalServerError,
                     type: "https://tools.ietf.org/html/rfc7231#section-6.6.1"
                 );
+            }
+        }
+
+
+        /// <summary>
+        /// Retrieves a specific user roles by its ID.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /api/auth/1
+        /// </remarks>
+        /// <param name="userId">The ID of the user to retrieve (must be positive integer)</param>
+        /// <returns>The requested user roles</returns>
+        /// <response code="200">Returns the requested user roles</response>
+        /// <response code="204">Returns no user Roles</response>
+        /// <response code="404">If roles was not found</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpGet("userroles/{userId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public virtual async Task<ActionResult<IEnumerable<string>>> GetUserRolesByUserIdAsync([FromRoute] int userId)
+        {
+            if (userId <= 0) return NotFound();
+
+            try
+            {
+                var userRoles = await _authService.GetUserRolesAsync(userId);
+                return userRoles is null || !userRoles.Any()
+                    ? NoContent()
+                    : Ok(userRoles);
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error retrieving entity",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+        /// <summary>
+        /// add user to role
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     POST /api/auth/usertorole
+        /// </remarks>
+        /// <param name="dto">The dto contain userid and role name</param>
+        /// <returns>Status 200 OK</returns>
+        /// <response code="200">Returns ok if added</response>
+        /// <response code="404">If person not data not Ok</response>
+        /// <response code="500">On internal server error</response>
+        [HttpPost("usertorole")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddUserToRoleAsync([FromBody] UserRoleDto dto)
+        {
+            try
+            {
+                var model = _mapper.Map<UserRoleModel>(dto);
+                var result = await _authService.AddUserToRoleAsync(model);
+
+                return result switch
+                {
+                    EnAuthResult.UserNotFound => NotFound(),
+                    EnAuthResult.RoleNotFound => NotFound(),
+                    EnAuthResult.Conflict => Conflict(),
+                    EnAuthResult.Success => Ok(),
+                    _ => Problem(
+                                 title: "Failed add user to role",
+                                 detail: "Check database constraint",
+                                 statusCode: StatusCodes.Status400BadRequest),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Failed add User to role",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
+            }
+        }
+
+
+        /// <summary>
+        /// remove user from role
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     POST /api/auth/userfromrole
+        /// </remarks>
+        /// <param name="dto">The dto contain userid and role name</param>
+        /// <returns>Status 200 OK</returns>
+        /// <response code="200">Returns ok if removed user from role</response>
+        /// <response code="404">If person not data not Ok</response>
+        /// <response code="500">On internal server error</response>
+        [HttpPost("userfromrole")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RemoveUserFromRoleAsync([FromBody] UserRoleDto dto)
+        {
+            try
+            {
+                var model = _mapper.Map<UserRoleModel>(dto);
+                var result = await _authService.RemoveUserFromRoleAsync(model);
+
+                return result switch
+                {
+                    EnAuthResult.UserNotFound => NotFound(),
+                    EnAuthResult.RoleNotFound => NotFound(),
+                    EnAuthResult.Conflict => Conflict(),
+                    EnAuthResult.Success => Ok(),
+                    _ => Problem(
+                                 title: "Failed remove user from role",
+                                 detail: "Check database constraint",
+                                 statusCode: StatusCodes.Status400BadRequest),
+                };
+
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Failed remove User from role",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
+            }
+        }
+
+
+        /// <summary>
+        /// check if user in role
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     POST /api/auth/userinrole
+        /// </remarks>
+        /// <param name="dto">The dto contain userid and role name</param>
+        /// <returns>Status 200 OK</returns>
+        /// <response code="200">Returns ok if user in role</response>
+        /// <response code="404">If person not data not Ok</response>
+        /// <response code="400">If user not found</response>
+        /// <response code="500">On internal server error</response>
+        [HttpPost("userinrole")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> IsUserInRoleAsync([FromBody] UserRoleDto dto)
+        {
+            try
+            {
+                var model = _mapper.Map<UserRoleModel>(dto);
+                var isInRole = await _authService.IsUserInRoleAsync(model);
+
+                return isInRole switch
+                {
+                     null => BadRequest(),
+                     false => NotFound(),
+                     true => Ok()
+                };
+                
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Failed check User in role",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
             }
         }
     }

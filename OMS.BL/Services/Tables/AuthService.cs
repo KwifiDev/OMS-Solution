@@ -92,42 +92,42 @@ namespace OMS.BL.Services.Tables
             return await _userManager.GetRolesAsync(user);
         }
 
-        public async Task<EnAuthResult> AddUserToRoleAsync(int userId, string roleName)
+        public async Task<EnAuthResult> AddUserToRoleAsync(UserRoleModel model)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _userManager.FindByIdAsync(model.UserId.ToString());
             if (user is null) return EnAuthResult.UserNotFound;
 
-            var role = await _roleService.FindByNameAsync(roleName);
+            var role = await _roleService.FindByNameAsync(model.RoleName);
             if (role is null) return EnAuthResult.RoleNotFound;
 
-            var isInRole = await _userManager.IsInRoleAsync(user, roleName);
+            var isInRole = await _userManager.IsInRoleAsync(user, model.RoleName);
             if (isInRole) return EnAuthResult.Conflict;
 
-            var result = await _userManager.AddToRoleAsync(user, roleName);
+            var result = await _userManager.AddToRoleAsync(user, model.RoleName);
             return result.Succeeded ? EnAuthResult.Success : EnAuthResult.Failed;
         }
 
-        public async Task<EnAuthResult> RemoveUserFromRoleAsync(int userId, string roleName)
+        public async Task<EnAuthResult> RemoveUserFromRoleAsync(UserRoleModel model)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _userManager.FindByIdAsync(model.UserId.ToString());
             if (user is null) return EnAuthResult.UserNotFound;
 
-            var role = await _roleService.FindByNameAsync(roleName);
+            var role = await _roleService.FindByNameAsync(model.RoleName);
             if (role is null) return EnAuthResult.RoleNotFound;
 
-            var isInRole = await _userManager.IsInRoleAsync(user, roleName);
+            var isInRole = await _userManager.IsInRoleAsync(user, model.RoleName);
             if (!isInRole) return EnAuthResult.RoleNotFound;
 
-            var result = await _userManager.RemoveFromRoleAsync(user, roleName);
+            var result = await _userManager.RemoveFromRoleAsync(user, model.RoleName);
             return result.Succeeded ? EnAuthResult.Success : EnAuthResult.Failed;
         }
 
-        public async Task<bool?> IsUserInRoleAsync(int userId, string roleName)
+        public async Task<bool?> IsUserInRoleAsync(UserRoleModel model)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await _userManager.FindByIdAsync(model.UserId.ToString());
             if (user is null) return null;
 
-            return await _userManager.IsInRoleAsync(user, roleName);
+            return await _userManager.IsInRoleAsync(user, model.RoleName);
         }
     }
 }

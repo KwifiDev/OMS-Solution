@@ -121,11 +121,11 @@
                     <DataGridTextColumn Header="الرقم" Binding="{Binding RoleId}" Width="65"/>
                     <DataGridTextColumn Header="اسم الدور" Binding="{Binding RoleName}"/>
                     <DataGridTextColumn Header="المستخدمين" Binding="{Binding UsersCount}"/>
-                    <DataGridTextColumn Header="كافة المستخدمين" Binding="{Binding TotalUsers}"/>
-                    <DataGridTextColumn Header="نسبة المستخدمين" Binding="{Binding PercentageOfUsers}"/>
-                    <DataGridTextColumn Header="الصلاحيات" Binding="{Binding ClaimsCount}"/>
-                    <DataGridTextColumn Header="انواع الصلاحيات" Binding="{Binding DisplayClaimTypes}"/>
-                    <DataGridTextColumn Header="قيم الصلاحيات" Binding="{Binding DisplayClaimValues}"/>
+                    <DataGridTextColumn Header="كل المستخدمين" Binding="{Binding TotalUsers}" Width="1.1*"/>
+                    <DataGridTextColumn Header="نسبة المستخدمين" Binding="{Binding PercentageOfUsers}" Width="1.2*"/>
+                    <DataGridTextColumn Header="الصلاحيات" Binding="{Binding ClaimsCount}" Width="0.8*"/>
+                    <DataGridTextColumn Header="انواع الصلاحيات" Binding="{Binding DisplayClaimTypes}" Width="2*"/>
+                    <DataGridTextColumn Header="قيم الصلاحيات" Binding="{Binding DisplayClaimValues}"  Width="2*"/>
                 </DataGrid.Columns>
 
             <!-- القائمة السياقية -->
@@ -141,15 +141,15 @@
                               CommandParameter="{Binding SelectedItem}"
                               Icon="{materialDesign:PackIcon Kind=ShoppingCart}"/>
 
-                    <MenuItem Header="حذف الدور" 
+                        <MenuItem Header="حذف الدور" 
                               Command="{Binding DeleteItemCommand}" 
                               CommandParameter="{Binding SelectedItem}"
                               Icon="{materialDesign:PackIcon Kind=ShoppingCartRemove}"
                               Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"/>
 
-                    <Separator Style="{StaticResource MaterialDesignSeparator}"/>
+                        <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
-                    <MenuItem Header="تحديث" 
+                        <MenuItem Header="تحديث" 
                               Command="{Binding LoadDataCommand}"
                               Icon="{materialDesign:PackIcon Kind=Refresh}"/>
                 </ContextMenu>

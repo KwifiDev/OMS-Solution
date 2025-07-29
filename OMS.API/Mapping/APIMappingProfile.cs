@@ -126,6 +126,7 @@ namespace OMS.API.Mapping
 
             CreateMap<RolesSummaryDto, RolesSummaryModel>().ReverseMap();
 
+            CreateMap<UserRoleDto, UserRoleModel>().ReverseMap();
         }
     }
 }

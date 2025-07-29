@@ -126,6 +126,96 @@ namespace OMS.UI.APIs.Services.Tables
             }
         }
 
+        public async Task<IEnumerable<string>> GetUserRolesByUserIdAsync(int userId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_endpoint}/userroles/{userId}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في جلب البيانات من الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return Enumerable.Empty<string>();
+                }
+
+                var roles = await response.Content.ReadFromJsonAsync<IEnumerable<string>>();
+                return roles ?? Enumerable.Empty<string>();
+            }
+            catch (HttpRequestException httpEx)
+            {
+                LogError(httpEx);
+                return Enumerable.Empty<string>();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
+        }
+
+        public async Task<bool> AddUserToRoleAsync(int userId, string roleName)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/usertorole", new { UserId = userId, RoleName = roleName });
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في اضافة البيانات الى الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
+
+        public async Task<bool> RemoveUserFromRoleAsync(int userId, string roleName)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/userfromrole", new { UserId = userId, RoleName = roleName });
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في اضافة البيانات الى الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
+
+        public async Task<bool> IsUserInRoleAsync(int userId, string roleName)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/userinrole", new { UserId = userId, RoleName = roleName });
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في اضافة البيانات الى الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
+
         private void LogError(Exception ex)
         {
             MessageBox.Show($"Error: {ex.Message}\nStackTrace: {ex.StackTrace}", "Response Server", MessageBoxButton.OK, MessageBoxImage.Error);
