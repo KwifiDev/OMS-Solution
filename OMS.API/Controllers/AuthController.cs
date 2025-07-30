@@ -343,6 +343,43 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
+        /// change user roles
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     POST /api/auth/changeuserroles
+        /// </remarks>
+        /// <param name="dto">The dto contain userid and roles</param>
+        /// <returns>Status 200 OK</returns>
+        /// <response code="200">Returns ok if added</response>
+        /// <response code="404">If person not data not Ok</response>
+        /// <response code="500">On internal server error</response>
+        [HttpPost("changeuserroles")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ChangeUserRolesAsync([FromBody] InputUserRolesDto dto)
+        {
+            try
+            {
+                var model = _mapper.Map<InputUserRolesModel>(dto);
+                var result = await _authService.ChangeUserRolesAsync(model);
+
+                return result ? Ok() : BadRequest();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Failed add User to role",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
+            }
+        }
+
+
+        /// <summary>
         /// check if user in role
         /// </summary>
         /// <remarks>

@@ -122,6 +122,29 @@ namespace OMS.BL.Services.Tables
             return result.Succeeded ? EnAuthResult.Success : EnAuthResult.Failed;
         }
 
+        public async Task<bool> ChangeUserRolesAsync(InputUserRolesModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId.ToString());
+
+            if (user is null) return false;
+
+            if (model.RolesToAdd.Count > 0)
+            {
+                var addResult = await _userManager.AddToRolesAsync(user, model.RolesToAdd);
+
+                if (!addResult.Succeeded) return false;
+            }
+            
+            if (model.RolesToRemove.Count > 0)
+            {
+                var removeResult = await _userManager.RemoveFromRolesAsync(user, model.RolesToRemove);
+
+                if (!removeResult.Succeeded) return false;
+            }
+
+            return true;
+        }
+
         public async Task<bool?> IsUserInRoleAsync(UserRoleModel model)
         {
             var user = await _userManager.FindByIdAsync(model.UserId.ToString());
@@ -129,5 +152,7 @@ namespace OMS.BL.Services.Tables
 
             return await _userManager.IsInRoleAsync(user, model.RoleName);
         }
+
+
     }
 }

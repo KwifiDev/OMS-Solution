@@ -86,6 +86,18 @@ namespace OMS.UI.ViewModels.Pages
             return SelectedItem?.IsActive == "فعّال";
         }
 
+        [RelayCommand(CanExecute = nameof(CanOpenRolesManager))]
+        private async Task OpenUserRolesManager()
+        {
+            await _dialogService.ShowDialog<UserRolesWindow, UserDetailModel>(SelectedItem);
+        }
+
+        private bool CanOpenRolesManager()
+        {
+            return SelectedItem != null;
+        }
+
+
         [RelayCommand]
         private async Task OpenChangePassword()
         {

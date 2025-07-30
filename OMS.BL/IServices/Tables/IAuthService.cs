@@ -14,6 +14,7 @@ namespace OMS.BL.IServices.Tables
         Task<IEnumerable<string>> GetUserRolesAsync(int userId);
         Task<EnAuthResult> AddUserToRoleAsync(UserRoleModel model);
         Task<EnAuthResult> RemoveUserFromRoleAsync(UserRoleModel model);
+        Task<bool> ChangeUserRolesAsync(InputUserRolesModel model);
         Task<bool?> IsUserInRoleAsync(UserRoleModel model);
     }
 }

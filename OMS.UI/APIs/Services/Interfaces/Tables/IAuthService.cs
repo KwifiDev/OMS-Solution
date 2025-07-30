@@ -13,5 +13,6 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         Task<bool> AddUserToRoleAsync(int userId, string roleName);
         Task<bool> RemoveUserFromRoleAsync(int userId, string roleName);
         Task<bool> IsUserInRoleAsync(int userId, string roleName);
+        Task<bool> ChangeUserRolesAsync(int userId, ICollection<string> rolesToAdd, ICollection<string> rolesToRemove);
     }
 }

@@ -123,5 +123,11 @@
 
         public static string CantAddRevenueMessage => "لا يمكن اضافة عائدات اليوم لانك اضفتها بالفعل";
 
+
+        // Crud Roles Messages
+
+        public static string AssignRolesSuccessMessage => "تم تعيين جميع الصلاحيات لهذا المتسخدم بنجاح";
+        public static string AssignRolesErrorMessage => "حدث خطأ اثناء عملية تعيين الصلاحيات للمستخدم";
+
     }
 }

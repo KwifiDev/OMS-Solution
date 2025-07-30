@@ -215,6 +215,8 @@ namespace OMS.UI
             services.AddTransient<RolesSummaryViewModel>();
 
             services.AddTransient<AddEditRoleViewModel>();
+
+            services.AddTransient<UserRolesViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -314,6 +316,9 @@ namespace OMS.UI
 
             services.AddTransient(provider =>
                 new AddEditRoleWindow { DataContext = provider.GetRequiredService<AddEditRoleViewModel>() });
+
+            services.AddTransient(provider =>
+                new UserRolesWindow { DataContext = provider.GetRequiredService<UserRolesViewModel>() });
 
         }
 

@@ -6,6 +6,7 @@ using OMS.UI.APIs.EndPoints;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Windows;
@@ -138,6 +139,8 @@ namespace OMS.UI.APIs.Services.Tables
                     return Enumerable.Empty<string>();
                 }
 
+                if (response.StatusCode == HttpStatusCode.NoContent) return Enumerable.Empty<string>();
+
                 var roles = await response.Content.ReadFromJsonAsync<IEnumerable<string>>();
                 return roles ?? Enumerable.Empty<string>();
             }
@@ -215,6 +218,29 @@ namespace OMS.UI.APIs.Services.Tables
                 return false;
             }
         }
+
+        public async Task<bool> ChangeUserRolesAsync(int userId, ICollection<string> rolesToAdd, ICollection<string> rolesToRemove)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/changeuserroles", new { UserId = userId, RolesToAdd = rolesToAdd, RolesToRemove = rolesToRemove });
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في اضافة البيانات الى الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
+
+
 
         private void LogError(Exception ex)
         {

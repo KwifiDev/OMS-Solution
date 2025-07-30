@@ -1,4 +1,5 @@
-﻿using OMS.BL.Models.Tables;
+﻿using OMS.BL.Models.Hybrid;
+using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
 
 namespace OMS.BL.IServices.Tables

@@ -96,7 +96,15 @@
 
                     <Separator Style="{StaticResource MaterialDesignSeparator}"/>
 
-                    <MenuItem Header="اضافة موظف" 
+                        <MenuItem Header="الادوار" 
+                                  Command="{Binding OpenUserRolesManagerCommand}"
+                                  CommandParameter="{Binding SelectedItem}"
+                                  Icon="{materialDesign:PackIcon Kind=Human}"/>
+
+                        <Separator Style="{StaticResource MaterialDesignSeparator}"/>
+
+
+                        <MenuItem Header="اضافة موظف" 
                        Command="{Binding AddItemCommand}"
                        Icon="{materialDesign:PackIcon Kind=AccountPlus}"/>
 
