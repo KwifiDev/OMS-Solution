@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.Context;
 using OMS.DA.Entities;
+using OMS.DA.Entities.Identity;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.DA.Repositories.EntityRepos

@@ -4,7 +4,8 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
 using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
-using OMS.DA.Entities;
+using OMS.DA.Entities.Identity;
+using System.Security.Claims;
 
 namespace OMS.BL.Services.Tables
 {
@@ -63,6 +64,8 @@ namespace OMS.BL.Services.Tables
 
             if (role is null) return EnRoleResult.NotFound;
 
+            if (role.Name == model.Name) return EnRoleResult.Success;
+
             var isExists = await _roleManager.RoleExistsAsync(model.Name!);
 
             if (isExists) return EnRoleResult.RoleConflict;
@@ -88,6 +91,40 @@ namespace OMS.BL.Services.Tables
         {
             var role = await _roleManager.FindByIdAsync(roleId.ToString());
             return (role is not null);
+        }
+
+        public async Task<EnRoleResult> AddRoleClaimAsync(int roleId, Claim claim)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId.ToString());
+            if (role is null) return EnRoleResult.NotFound;
+
+            var isExist = (await _roleManager.GetClaimsAsync(role)).Any(c => c.Type == claim.Type && c.Value == claim.Value);
+            if (isExist) return EnRoleResult.RoleConflict;
+
+            var result = await _roleManager.AddClaimAsync(role, claim);
+
+            return result.Succeeded ? EnRoleResult.Success : EnRoleResult.Failed;
+        }
+
+        public async Task<EnRoleResult> RemoveRoleClaimAsync(int roleId, Claim claim)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId.ToString());
+            if (role is null) return EnRoleResult.NotFound;
+
+            var isExist = (await _roleManager.GetClaimsAsync(role)).Any(c => c.Type == claim.Type && c.Value == claim.Value);
+            if (!isExist) return EnRoleResult.NotFound;
+
+            var result = await _roleManager.RemoveClaimAsync(role, claim);
+
+            return result.Succeeded ? EnRoleResult.Success : EnRoleResult.Failed;
+        }
+
+        public async Task<IEnumerable<Claim>> GetRoleClaimsAsync(int roleId)
+        {
+            var role = await _roleManager.FindByIdAsync(roleId.ToString());
+            if (role is null) return Enumerable.Empty<Claim>();
+
+            return await _roleManager.GetClaimsAsync(role);
         }
 
 

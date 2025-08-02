@@ -4,11 +4,12 @@ using OMS.DA.Configurations.EntitiesConfigurations;
 using OMS.DA.Configurations.IdentitiesConfigurations;
 using OMS.DA.Configurations.ViewsConfigurations;
 using OMS.DA.Entities;
+using OMS.DA.Entities.Identity;
 using OMS.DA.Views;
 
 namespace OMS.DA.Context;
 
-public partial class AppDbContext : IdentityDbContext<User, Role, int>
+public partial class AppDbContext : IdentityDbContext<User, Role, int, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
 {
     public AppDbContext()
     {

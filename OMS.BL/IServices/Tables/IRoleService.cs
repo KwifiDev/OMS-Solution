@@ -1,6 +1,6 @@
-﻿using OMS.BL.Models.Hybrid;
-using OMS.BL.Models.Tables;
+﻿using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
+using System.Security.Claims;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -20,11 +20,11 @@ namespace OMS.BL.IServices.Tables
 
         Task<bool> IsExists(int roleId);
 
+        Task<EnRoleResult> AddRoleClaimAsync(int roleId, Claim claim);
 
-        //Task<EnRoleResult> UpdateRoleClaimsAsync(int roleId, List<ClaimModel> claims);
-        //Task<IList<Claim>> GetRoleClaimsAsync(int roleId);
-        //Task<EnRoleResult> AssignPermissionsToRole(int roleId, IEnumerable<string> permissions);
-        //Task<IEnumerable<string>> GetRolePermissions(int roleId);
-        //Task<bool> HasPermissionAsync(int roleId, string permission);
+        Task<EnRoleResult> RemoveRoleClaimAsync(int roleId, Claim claim);
+
+        Task<IEnumerable<Claim>> GetRoleClaimsAsync(int roleId);
+
     }
 }

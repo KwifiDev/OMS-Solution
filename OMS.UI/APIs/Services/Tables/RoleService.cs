@@ -6,6 +6,7 @@ using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Tables;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security.Claims;
 
 namespace OMS.UI.APIs.Services.Tables
 {
@@ -38,5 +39,47 @@ namespace OMS.UI.APIs.Services.Tables
             }
         }
 
+
+        public async Task<bool> AddRoleClaimAsync(int roleId, Claim claim)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/addroleclaim", claim);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في اضافة البيانات الى الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
+
+        public async Task<bool> RemoveRoleClaimAsync(int roleId, Claim claim)
+        {
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/removeroleclaim", claim);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في اضافة البيانات الى الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
     }
 }

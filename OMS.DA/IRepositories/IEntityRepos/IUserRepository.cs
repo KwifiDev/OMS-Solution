@@ -1,4 +1,4 @@
-﻿using OMS.DA.Entities;
+﻿using OMS.DA.Entities.Identity;
 
 namespace OMS.DA.IRepositories.IEntityRepos
 {

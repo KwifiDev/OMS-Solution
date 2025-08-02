@@ -6,6 +6,7 @@ using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
+using System.Security.Claims;
 
 namespace OMS.API.Controllers
 {
@@ -316,7 +317,7 @@ namespace OMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public virtual async Task<IActionResult> HeadAsync([FromRoute] int id)
+        public async Task<IActionResult> HeadAsync([FromRoute] int id)
         {
             if (id <= 0) return NotFound();
 
@@ -331,6 +332,96 @@ namespace OMS.API.Controllers
                     detail: ex.Message,
                     statusCode: StatusCodes.Status500InternalServerError
                 );
+            }
+        }
+
+
+        /// <summary>
+        /// add a role claim
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     POST /api/roles/addroleclaim
+        /// </remarks>
+        /// <param name="roleDto">The DTO containing data for the new role</param>
+        /// <returns>The ok role claim added</returns>
+        /// <response code="201">Returns ok</response>
+        /// <response code="400">If the request is invalid or validation fails</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpPost("addroleclaim")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddRoleClaimsAsync([FromRoute] int roleId, [FromBody] Claim claim)
+        {
+            try
+            {
+                var result = await _roleService.AddRoleClaimAsync(roleId, claim);
+                
+                if (result != EnRoleResult.Success)
+                {
+                    return ValidationProblem(new ValidationProblemDetails
+                    {
+                        Title = "Validation Error",
+                        Detail = "Failed to save role claim in the database",
+                        Errors = { { "General", new[] { "Failed to save role claim in the database" } } }
+                    });
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error creating role claims",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
+            }
+        }
+
+
+        /// <summary>
+        /// remove a role claim
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     POST /api/roles/removeroleclaim
+        /// </remarks>
+        /// <param name="roleDto">The DTO containing data for the new role</param>
+        /// <returns>The ok role claim removed</returns>
+        /// <response code="201">Returns ok</response>
+        /// <response code="400">If the request is invalid or validation fails</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpPost("removeroleclaim")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RemoveRoleClaimsAsync([FromRoute] int roleId, [FromBody] Claim claim)
+        {
+            try
+            {
+                var result = await _roleService.RemoveRoleClaimAsync(roleId, claim);
+
+                if (result != EnRoleResult.Success)
+                {
+                    return ValidationProblem(new ValidationProblemDetails
+                    {
+                        Title = "Validation Error",
+                        Detail = "Failed to remove role claim in the database",
+                        Errors = { { "General", new[] { "Failed to remove role claim in the database" } } }
+                    });
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error creating role claims",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
             }
         }
 

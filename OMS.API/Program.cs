@@ -7,11 +7,12 @@ using OMS.BL.Mapping;
 using OMS.BL.Services.Tables;
 using OMS.BL.Services.Views;
 using OMS.DA.Context;
-using OMS.DA.Entities;
+using OMS.DA.Entities.Identity;
 using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Repositories.EntityRepos;
 using OMS.DA.Repositories.ViewRepos;
+using OMS.DA.UOW;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +30,10 @@ builder.Services.AddIdentity<User, Role>(options =>
     options.User.RequireUniqueEmail = false;
 })
 .AddEntityFrameworkStores<AppDbContext>()
-.AddDefaultTokenProviders();
+.AddDefaultTokenProviders()
+.AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<User, Role>>();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var configExpression = new MapperConfigurationExpression();
 configExpression.AddProfile(new APIMappingProfile());

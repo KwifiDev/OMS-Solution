@@ -5,7 +5,8 @@ using OMS.BL.Mapping;
 using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
-using OMS.DA.Entities;
+using OMS.DA.Entities.Identity;
+using OMS.DA.UOW;
 
 namespace OMS.BL.Services.Tables
 {
@@ -17,15 +18,17 @@ namespace OMS.BL.Services.Tables
 
         private readonly IPersonService _personService;
         private readonly IRoleService _roleService;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IMapperService mapperService,
-                           IPersonService personService, IRoleService roleService)
+                           IPersonService personService, IRoleService roleService, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapperService = mapperService;
             _personService = personService;
             _roleService = roleService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<bool> ChangePasswordAsync(ChangePasswordModel model)
@@ -125,24 +128,42 @@ namespace OMS.BL.Services.Tables
         public async Task<bool> ChangeUserRolesAsync(InputUserRolesModel model)
         {
             var user = await _userManager.FindByIdAsync(model.UserId.ToString());
-
             if (user is null) return false;
 
-            if (model.RolesToAdd.Count > 0)
+            using var transaction = await _unitOfWork.BeginTransactionAsync();
+
+            try
             {
-                var addResult = await _userManager.AddToRolesAsync(user, model.RolesToAdd);
+                if (model.RolesToAdd.Count > 0)
+                {
+                    var addResult = await _userManager.AddToRolesAsync(user, model.RolesToAdd);
 
-                if (!addResult.Succeeded) return false;
+                    if (!addResult.Succeeded)
+                    {
+                        await transaction.RollbackAsync();
+                        return false;
+                    }
+                }
+
+                if (model.RolesToRemove.Count > 0)
+                {
+                    var removeResult = await _userManager.RemoveFromRolesAsync(user, model.RolesToRemove);
+
+                    if (!removeResult.Succeeded)
+                    {
+                        await transaction.RollbackAsync();
+                        return false;
+                    }
+                }
+
+                await transaction.CommitAsync();
+                return true;
             }
-            
-            if (model.RolesToRemove.Count > 0)
+            catch
             {
-                var removeResult = await _userManager.RemoveFromRolesAsync(user, model.RolesToRemove);
-
-                if (!removeResult.Succeeded) return false;
+                await transaction.RollbackAsync();
+                return false;
             }
-
-            return true;
         }
 
         public async Task<bool?> IsUserInRoleAsync(UserRoleModel model)
@@ -152,7 +173,6 @@ namespace OMS.BL.Services.Tables
 
             return await _userManager.IsInRoleAsync(user, model.RoleName);
         }
-
 
     }
 }

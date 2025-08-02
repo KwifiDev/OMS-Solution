@@ -124,8 +124,8 @@
                     <DataGridTextColumn Header="كل المستخدمين" Binding="{Binding TotalUsers}" Width="1.1*"/>
                     <DataGridTextColumn Header="نسبة المستخدمين" Binding="{Binding PercentageOfUsers}" Width="1.2*"/>
                     <DataGridTextColumn Header="الصلاحيات" Binding="{Binding ClaimsCount}" Width="0.8*"/>
-                    <DataGridTextColumn Header="انواع الصلاحيات" Binding="{Binding DisplayClaimTypes}" Width="2*"/>
-                    <DataGridTextColumn Header="قيم الصلاحيات" Binding="{Binding DisplayClaimValues}"  Width="2*"/>
+                    <DataGridTextColumn Header="انواع المطالبات" Binding="{Binding DisplayClaimTypes}" Width="2*"/>
+                    <DataGridTextColumn Header="قيم المطالبات" Binding="{Binding DisplayClaimValues}"  Width="2*"/>
                 </DataGrid.Columns>
 
             <!-- القائمة السياقية -->

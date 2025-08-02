@@ -154,7 +154,7 @@ namespace OMS.DA.Migrations
                     b.HasIndex(new[] { "UserAccount" }, "accounts_useraccount_unique")
                         .IsUnique();
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("OMS.DA.Entities.Branch", b =>
@@ -178,7 +178,7 @@ namespace OMS.DA.Migrations
                     b.HasKey("BranchId")
                         .HasName("branches_branchid_primary");
 
-                    b.ToTable("Branches");
+                    b.ToTable("Branches", (string)null);
                 });
 
             modelBuilder.Entity("OMS.DA.Entities.Client", b =>
@@ -202,7 +202,7 @@ namespace OMS.DA.Migrations
                     b.HasIndex(new[] { "PersonId" }, "clients_personid_unique")
                         .IsUnique();
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("OMS.DA.Entities.Debt", b =>
@@ -270,7 +270,7 @@ namespace OMS.DA.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Debts", t =>
+                    b.ToTable("Debts", null, t =>
                         {
                             t.HasTrigger("TR_InsertNewDebt");
                         });
@@ -302,7 +302,7 @@ namespace OMS.DA.Migrations
                     b.HasIndex(new[] { "ServiceId", "ClientType" }, "unique_service_client")
                         .IsUnique();
 
-                    b.ToTable("Discounts");
+                    b.ToTable("Discounts", (string)null);
                 });
 
             modelBuilder.Entity("OMS.DA.Entities.Payment", b =>
@@ -338,7 +338,7 @@ namespace OMS.DA.Migrations
 
                     b.HasIndex("CreatedByUserId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("OMS.DA.Entities.Person", b =>
@@ -371,7 +371,7 @@ namespace OMS.DA.Migrations
                     b.HasKey("PersonId")
                         .HasName("people_personid_primary");
 
-                    b.ToTable("People");
+                    b.ToTable("People", (string)null);
                 });
 
             modelBuilder.Entity("OMS.DA.Entities.Revenue", b =>
@@ -400,7 +400,7 @@ namespace OMS.DA.Migrations
                     b.HasIndex(new[] { "CreatedAt" }, "revenues_createdat_unique")
                         .IsUnique();
 
-                    b.ToTable("Revenues");
+                    b.ToTable("Revenues", (string)null);
                 });
 
             modelBuilder.Entity("OMS.DA.Entities.Role", b =>
@@ -491,7 +491,7 @@ namespace OMS.DA.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Sales", t =>
+                    b.ToTable("Sales", null, t =>
                         {
                             t.HasTrigger("TR_InsertNewSale");
                         });
@@ -523,7 +523,7 @@ namespace OMS.DA.Migrations
                     b.HasKey("ServiceId")
                         .HasName("services_serviceid_primary");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("OMS.DA.Entities.Transaction", b =>
@@ -563,7 +563,7 @@ namespace OMS.DA.Migrations
 
                     b.HasIndex("CreatedByUserId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transactions", (string)null);
                 });
 
             modelBuilder.Entity("OMS.DA.Entities.User", b =>

@@ -4,8 +4,9 @@ using OMS.BL.Mapping;
 using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
-using OMS.DA.Entities;
+using OMS.DA.Entities.Identity;
 using OMS.DA.IRepositories.IEntityRepos;
+using OMS.DA.UOW;
 
 namespace OMS.BL.Services.Tables
 {
@@ -13,14 +14,17 @@ namespace OMS.BL.Services.Tables
     {
         private readonly IUserRepository _userRepository;
         private readonly UserManager<User> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
 
         public UserService(IGenericRepository<User> genericRepo,
                            IMapperService mapper,
                            IUserRepository repository,
-                           UserManager<User> userManager) : base(genericRepo, mapper)
+                           UserManager<User> userManager,
+                           IUnitOfWork unitOfWork) : base(genericRepo, mapper)
         {
             _userRepository = repository;
             _userManager = userManager;
+            _unitOfWork = unitOfWork;
         }
 
         public override Task<bool> AddAsync(UserModel model)
@@ -101,10 +105,29 @@ namespace OMS.BL.Services.Tables
 
             var user = _mapperService.Map<UserModel, User>(model);
 
-            var isSuccess = await UpdateUserBranchAsync(user);
-            if (!isSuccess) return EnUserResult.ChangeBranchIdFaild;
+            using var transaction = await _unitOfWork.BeginTransactionAsync();
 
-            return await UpdateUserNameAsync(user);
+            try
+            {
+                var isBranchUpdated = await UpdateUserBranchAsync(user);
+                if (!isBranchUpdated) return EnUserResult.ChangeBranchIdFaild;
+
+                var result = await UpdateUserNameAsync(user);
+
+                if (result != EnUserResult.Success)
+                {
+                    await transaction.RollbackAsync();
+                    return EnUserResult.UserNameConflict;
+                }
+
+                await transaction.CommitAsync();
+                return EnUserResult.Success;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                return EnUserResult.NotFound;
+            }
         }
 
     }

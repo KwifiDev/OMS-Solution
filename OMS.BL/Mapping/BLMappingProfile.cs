@@ -3,6 +3,7 @@ using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.Tables;
 using OMS.BL.Models.Views;
 using OMS.DA.Entities;
+using OMS.DA.Entities.Identity;
 using OMS.DA.Views;
 
 namespace OMS.BL.Mapping
@@ -107,6 +108,8 @@ namespace OMS.BL.Mapping
             CreateMap<Role, RoleModel>().ReverseMap();
 
             CreateMap<RolesSummary, RolesSummaryModel>().ReverseMap();
+
+            CreateMap<RoleClaim, RoleClaimModel>().ReverseMap();
         }
     }
 }

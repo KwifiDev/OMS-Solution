@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OMS.DA.Entities;
+using OMS.DA.Entities.Identity;
 
 namespace OMS.DA.Configurations.EntitiesConfigurations
 {

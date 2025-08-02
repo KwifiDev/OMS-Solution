@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OMS.DA.Entities;
+namespace OMS.DA.Entities.Identity;
 
 [Index("PersonId", Name = "users_personid_unique", IsUnique = true)]
 [Index("UserName", Name = "users_username_unique", IsUnique = true)]
