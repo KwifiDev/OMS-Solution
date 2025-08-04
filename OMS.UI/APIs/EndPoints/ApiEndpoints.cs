@@ -29,5 +29,6 @@
         public const string Authentication = "api/auth";
         public const string Roles = "api/roles";
         public const string RolesSummary = "api/rolessummary";
+        public const string RoleClaims = "api/roleclaims";
     }
 }

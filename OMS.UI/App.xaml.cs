@@ -30,6 +30,7 @@ using OMS.UI.ViewModels.Windows.AddEditViewModel;
 using OMS.UI.Views;
 using OMS.UI.Views.Pages;
 using OMS.UI.Views.Windows;
+using OMS.UI.Views.Windows.AddEditWindow;
 using System.Windows;
 
 namespace OMS.UI
@@ -133,6 +134,8 @@ namespace OMS.UI
             services.AddTransient<IRoleService, RoleService>();
 
             services.AddTransient<IRolesSummaryService, RolesSummaryService>();
+
+            services.AddTransient<IRoleClaimService, RoleClaimService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)
@@ -217,6 +220,10 @@ namespace OMS.UI
             services.AddTransient<AddEditRoleViewModel>();
 
             services.AddTransient<UserRolesViewModel>();
+
+            services.AddTransient<RoleClaimsViewModel>();
+
+            services.AddTransient<AddEditRoleClaimViewModel>();
         }
 
         private static void RegisterViews(IServiceCollection services)
@@ -319,6 +326,12 @@ namespace OMS.UI
 
             services.AddTransient(provider =>
                 new UserRolesWindow { DataContext = provider.GetRequiredService<UserRolesViewModel>() });
+
+            services.AddTransient(provider =>
+                new RoleClaimsWindow { DataContext = provider.GetRequiredService<RoleClaimsViewModel>() });
+
+            services.AddTransient(provider =>
+                new AddEditRoleClaimWindow { DataContext = provider.GetRequiredService<AddEditRoleClaimViewModel>() });
 
         }
 

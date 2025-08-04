@@ -20,11 +20,5 @@ namespace OMS.BL.IServices.Tables
 
         Task<bool> IsExists(int roleId);
 
-        Task<EnRoleResult> AddRoleClaimAsync(int roleId, Claim claim);
-
-        Task<EnRoleResult> RemoveRoleClaimAsync(int roleId, Claim claim);
-
-        Task<IEnumerable<Claim>> GetRoleClaimsAsync(int roleId);
-
     }
 }

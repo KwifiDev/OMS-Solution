@@ -93,40 +93,5 @@ namespace OMS.BL.Services.Tables
             return (role is not null);
         }
 
-        public async Task<EnRoleResult> AddRoleClaimAsync(int roleId, Claim claim)
-        {
-            var role = await _roleManager.FindByIdAsync(roleId.ToString());
-            if (role is null) return EnRoleResult.NotFound;
-
-            var isExist = (await _roleManager.GetClaimsAsync(role)).Any(c => c.Type == claim.Type && c.Value == claim.Value);
-            if (isExist) return EnRoleResult.RoleConflict;
-
-            var result = await _roleManager.AddClaimAsync(role, claim);
-
-            return result.Succeeded ? EnRoleResult.Success : EnRoleResult.Failed;
-        }
-
-        public async Task<EnRoleResult> RemoveRoleClaimAsync(int roleId, Claim claim)
-        {
-            var role = await _roleManager.FindByIdAsync(roleId.ToString());
-            if (role is null) return EnRoleResult.NotFound;
-
-            var isExist = (await _roleManager.GetClaimsAsync(role)).Any(c => c.Type == claim.Type && c.Value == claim.Value);
-            if (!isExist) return EnRoleResult.NotFound;
-
-            var result = await _roleManager.RemoveClaimAsync(role, claim);
-
-            return result.Succeeded ? EnRoleResult.Success : EnRoleResult.Failed;
-        }
-
-        public async Task<IEnumerable<Claim>> GetRoleClaimsAsync(int roleId)
-        {
-            var role = await _roleManager.FindByIdAsync(roleId.ToString());
-            if (role is null) return Enumerable.Empty<Claim>();
-
-            return await _roleManager.GetClaimsAsync(role);
-        }
-
-
     }
 }

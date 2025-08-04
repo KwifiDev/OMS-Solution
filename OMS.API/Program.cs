@@ -124,6 +124,9 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IRolesSummaryRepository, RolesSummaryRepository>();
 builder.Services.AddScoped<IRolesSummaryService, RolesSummaryService>();
 
+builder.Services.AddScoped<IRoleClaimRepository, RoleClaimRepository>();
+builder.Services.AddScoped<IRoleClaimService, RoleClaimService>();
+
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 

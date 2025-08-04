@@ -3,7 +3,6 @@ using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models.Tables;
 using OMS.UI.Models.Views;
-using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
@@ -37,10 +36,9 @@ namespace OMS.UI.ViewModels.Windows
 
         protected override int GetItemId(RolesSummaryModel item) => item.RoleId;
 
-        protected override Task ShowDetailsWindow(int itemId)
+        protected override async Task ShowDetailsWindow(int itemId)
         {
-            _messageService.ShowInfoMessage("معلومات", MessageTemplates.NotImplementedMessage);
-            return Task.CompletedTask;
+            await _dialogService.ShowDialog<RoleClaimsWindow, int?>(itemId);
         }
 
         protected override async Task ShowEditorWindow(int? itemId = null)
