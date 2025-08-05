@@ -71,19 +71,44 @@ namespace OMS.BL.Services.Tables
 
         public async Task<bool> RegisterUserWithProfileAsync(FullRegisterModel model)
         {
-            var personModel = _mapperService.Map<FullRegisterModel, PersonModel>(model);
+            await using var transaction = await _unitOfWork.BeginTransactionAsync();
 
-            var isPersonAdded = await _personService.AddAsync(personModel);
+            try
+            {
+                var personModel = _mapperService.Map<FullRegisterModel, PersonModel>(model);
 
-            if (!isPersonAdded) return false;
+                var isPersonAdded = await _personService.AddAsync(personModel);
 
-            model.PersonId = personModel.PersonId;
+                if (!isPersonAdded)
+                {
+                    //await transaction.RollbackAsync();
+                    // auto rollback
+                    return false;
+                }
 
-            var registerModel = _mapperService.Map<FullRegisterModel, RegisterModel>(model);
+                model.PersonId = personModel.PersonId;
 
-            var isSuccess = await RegisterAsync(registerModel);
+                var registerModel = _mapperService.Map<FullRegisterModel, RegisterModel>(model);
 
-            return isSuccess;
+                var isSuccess = await RegisterAsync(registerModel);
+
+                if (!isSuccess)
+                {
+                    //await transaction.RollbackAsync();
+                    // auto rollback
+                    return false;
+                }
+
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch
+            {
+                //await transaction.RollbackAsync();
+                // auto rollback
+                return false;
+            }
+
         }
 
         public async Task<IEnumerable<string>> GetUserRolesAsync(int userId)
@@ -130,7 +155,7 @@ namespace OMS.BL.Services.Tables
             var user = await _userManager.FindByIdAsync(model.UserId.ToString());
             if (user is null) return false;
 
-            using var transaction = await _unitOfWork.BeginTransactionAsync();
+            await using var transaction = await _unitOfWork.BeginTransactionAsync();
 
             try
             {
@@ -140,7 +165,8 @@ namespace OMS.BL.Services.Tables
 
                     if (!addResult.Succeeded)
                     {
-                        await transaction.RollbackAsync();
+                        //await transaction.RollbackAsync();
+                        // auto rollback
                         return false;
                     }
                 }
@@ -151,7 +177,8 @@ namespace OMS.BL.Services.Tables
 
                     if (!removeResult.Succeeded)
                     {
-                        await transaction.RollbackAsync();
+                        //await transaction.RollbackAsync();
+                        // auto rollback
                         return false;
                     }
                 }
@@ -161,7 +188,8 @@ namespace OMS.BL.Services.Tables
             }
             catch
             {
-                await transaction.RollbackAsync();
+                //await transaction.RollbackAsync();
+                // auto rollback
                 return false;
             }
         }

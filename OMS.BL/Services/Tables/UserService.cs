@@ -105,7 +105,7 @@ namespace OMS.BL.Services.Tables
 
             var user = _mapperService.Map<UserModel, User>(model);
 
-            using var transaction = await _unitOfWork.BeginTransactionAsync();
+            await using var transaction = await _unitOfWork.BeginTransactionAsync();
 
             try
             {
@@ -116,7 +116,8 @@ namespace OMS.BL.Services.Tables
 
                 if (result != EnUserResult.Success)
                 {
-                    await transaction.RollbackAsync();
+                    //await transaction.RollbackAsync();
+                    // auto rollback
                     return EnUserResult.UserNameConflict;
                 }
 
@@ -125,7 +126,8 @@ namespace OMS.BL.Services.Tables
             }
             catch
             {
-                await transaction.RollbackAsync();
+                //await transaction.RollbackAsync();
+                // auto rollback
                 return EnUserResult.NotFound;
             }
         }

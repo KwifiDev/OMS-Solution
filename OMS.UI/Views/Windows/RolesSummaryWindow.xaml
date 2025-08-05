@@ -203,7 +203,15 @@
                                 <TextBlock Text="{Binding DisplayClaimValues}" 
                                            TextWrapping="Wrap"
                                            VerticalAlignment="Center"
-                                           TextTrimming="CharacterEllipsis"/>
+                                           TextTrimming="CharacterEllipsis">
+                                    <TextBlock.ToolTip>
+                                        <ToolTip>
+                                            <TextBlock Text="{Binding DisplayClaimValues}" 
+                                                       TextWrapping="Wrap" 
+                                                       MaxWidth="200"/>
+                                        </ToolTip>
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
