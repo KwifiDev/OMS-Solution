@@ -7,6 +7,7 @@ namespace OMS.API.Dtos.Tables
         public int Id { get; set; }
 
         [Required, MinLength(3, ErrorMessage = "Role Name Must be at least 3 char")]
-        public string? Name { get; set; }
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "only English charecters")]
+        public string Name { get; set; } = null!;
     }
 }

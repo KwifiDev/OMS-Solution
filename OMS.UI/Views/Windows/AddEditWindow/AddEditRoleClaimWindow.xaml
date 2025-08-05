@@ -83,6 +83,11 @@
               Grid.Row="3" Grid.Column="1"
               materialDesign:HintAssist.Hint="قيمة المطالبة"
               IsEnabled="{Binding Status.IsModifiable}">
+            
+            <i:Interaction.Behaviors>
+                <inputBehaviors:ClaimValueInputBehavior/>
+            </i:Interaction.Behaviors>
+            
         </TextBox>
 
         <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"

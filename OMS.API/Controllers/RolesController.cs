@@ -145,6 +145,8 @@ namespace OMS.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<RoleDto>> AddAsync([FromBody] RoleDto roleDto)
         {
+            if (roleDto.Id < 0) return NotFound();
+
             try
             {
                 var model = _mapper.Map<RoleModel>(roleDto);

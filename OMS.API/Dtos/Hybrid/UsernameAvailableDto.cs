@@ -6,7 +6,7 @@ namespace OMS.API.Dtos.Hybrid
     {
         public int UserId { get; set; }
 
-        [MinLength(3, ErrorMessage = "المستخدم يجب ان يكون على الاقل ثلاث محارف")]
+        [MinLength(3, ErrorMessage = "username must be at least 3 char")]
         public string Username { get; set; } = null!;
     }
 }

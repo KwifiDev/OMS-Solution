@@ -17,6 +17,9 @@ namespace OMS.UI.Models.Tables
                 OnPropertyChanged(nameof(RoleIdDisplay));
             } 
         }
+
+        [Required, MinLength(3, ErrorMessage = "الدور على الاقل مكون 3 محارف")]
+        [RegularExpression(@"^[a-zA-z]+$", ErrorMessage = "ضع احرف انكليزية فقط")]
         public string? Name
         {
             get => _name;

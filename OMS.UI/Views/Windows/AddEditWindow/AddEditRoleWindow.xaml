@@ -102,7 +102,7 @@
               materialDesign:HintAssist.Hint="اسم الدور"
               IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
-                <inputBehaviors:ArabicOnlyInputBehavior/>
+                <inputBehaviors:EnglishOnlyInputBehavior/>
             </i:Interaction.Behaviors>
         </TextBox>
 

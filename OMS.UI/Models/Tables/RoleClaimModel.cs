@@ -9,7 +9,6 @@ namespace OMS.UI.Models.Tables
         private string? _claimType;
         private string? _claimValue;
 
-
         [Key]
         public int Id
         {
@@ -23,12 +22,15 @@ namespace OMS.UI.Models.Tables
             set => SetProperty(ref _roleId, value);
         }
 
+        [Required(ErrorMessage = "حدد نوع المطالبة")]
         public string? ClaimType
         {
             get => _claimType;
             set => SetProperty(ref _claimType, value);
         }
 
+        [Required(ErrorMessage = "ضع قيمة المطالبة")]
+        [RegularExpression(@"^[a-zA-Z]+\.[a-zA-Z]+$", ErrorMessage = "الادخال يجب ان يكون مثل 'Exp.Add'")]
         public string? ClaimValue
         {
             get => _claimValue;
