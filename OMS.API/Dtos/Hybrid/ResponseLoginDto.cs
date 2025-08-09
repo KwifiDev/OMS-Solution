@@ -1,4 +1,5 @@
-﻿using OMS.Common.Enums;
+﻿using OMS.BL.Models.Hybrid;
+using OMS.Common.Enums;
 
 namespace OMS.API.Dtos.Hybrid
 {
@@ -21,5 +22,7 @@ namespace OMS.API.Dtos.Hybrid
         public string LastName { get; set; } = null!;
 
         public EnGender Gender { get; set; }
+
+        public TokenModel TokenInfo { get; set; } = null!;
     }
 }

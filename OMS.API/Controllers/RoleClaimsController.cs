@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Hybrid;
 using OMS.API.Dtos.Tables;
@@ -9,6 +10,7 @@ using System.Security.Claims;
 
 namespace OMS.API.Controllers
 {
+    [Authorize]
     [Route("api/roleclaims")]
     [ApiController]
     public class RoleClaimsController : GenericViewController<IRoleClaimService, RoleClaimDto, RoleClaimModel>

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Tables;
 using OMS.API.Dtos.Views;
@@ -10,6 +11,7 @@ namespace OMS.API.Controllers
     /// <summary>
     /// API controller for managing branches data.
     /// </summary>
+    [Authorize]
     [Route("api/branches")]
     [ApiController]
     public class BranchesController : GenericController<IBranchService, BranchDto, BranchModel>

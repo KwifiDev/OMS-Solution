@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.StoredProcedureParams;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
-using OMS.Common.Enums;
 
 namespace OMS.API.Controllers
 {
+    [Authorize]
     [Route("api/debts")]
     [ApiController]
     public class DebtsController : GenericController<IDebtService, DebtDto, DebtModel>

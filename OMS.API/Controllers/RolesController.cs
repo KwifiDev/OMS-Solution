@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using OMS.Common.Enums;
 
 namespace OMS.API.Controllers
 {
+    [Authorize]
     [Route("api/roles")]
     [ApiController]
     public class RolesController : ControllerBase

@@ -26,7 +26,7 @@ namespace OMS.UI.ViewModels.Windows
         public async Task<bool> OnOpeningDialog(int? parameters)
         {
             await LoadData();
-            return true;
+            return Items.Any();
         }
 
         protected override async Task<bool> ExecuteDelete(int itemId) => await _service.DeleteAsync(itemId);

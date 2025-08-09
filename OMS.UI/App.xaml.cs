@@ -8,6 +8,7 @@ using OMS.UI.APIs.Services.Connection;
 using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
+using OMS.UI.APIs.Services.Security;
 using OMS.UI.APIs.Services.Tables;
 using OMS.UI.APIs.Services.Views;
 using OMS.UI.Mapping;
@@ -31,6 +32,7 @@ using OMS.UI.Views;
 using OMS.UI.Views.Pages;
 using OMS.UI.Views.Windows;
 using OMS.UI.Views.Windows.AddEditWindow;
+using System.Net.Http.Headers;
 using System.Windows;
 
 namespace OMS.UI
@@ -69,10 +71,14 @@ namespace OMS.UI
 
         private static void RegisterApiServices(IServiceCollection services)
         {
+            services.AddTransient<AuthHeaderHandler>();
+
             services.AddHttpClient("ApiClient", client =>
             {
                 client.BaseAddress = new Uri("https://localhost:7012/");
-            });
+            })
+            .AddHttpMessageHandler<AuthHeaderHandler>();
+
             services.AddTransient(typeof(IGenericViewApiService<,>), typeof(GenericViewApiService<,>));
             services.AddTransient(typeof(IGenericApiService<,>), typeof(GenericApiService<,>));
         }
@@ -136,6 +142,8 @@ namespace OMS.UI
             services.AddTransient<IRolesSummaryService, RolesSummaryService>();
 
             services.AddTransient<IRoleClaimService, RoleClaimService>();
+
+            //services.AddTransient<ITokenService, TokenService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)

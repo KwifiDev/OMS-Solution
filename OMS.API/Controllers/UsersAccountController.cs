@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Views;
@@ -9,6 +10,7 @@ namespace OMS.API.Controllers
     /// <summary>
     /// API controller for managing users account data.
     /// </summary>
+    [Authorize]
     [Route("api/usersaccount")]
     [ApiController]
     public class UsersAccountController : GenericViewController<IUserAccountService, UserAccountDto, UserAccountModel>

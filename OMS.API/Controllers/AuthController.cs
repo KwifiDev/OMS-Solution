@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OMS.API.Dtos.Hybrid;
@@ -84,6 +85,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If person not data not Ok</response>
         /// <response code="500">On internal server error</response>
         [HttpPost()]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -181,6 +183,7 @@ namespace OMS.API.Controllers
         /// <response code="400">If ChangePasswordDto not valid</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPut("changepassword")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -221,6 +224,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If roles was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("userroles/{userId:int}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -259,6 +263,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If person not data not Ok</response>
         /// <response code="500">On internal server error</response>
         [HttpPost("usertorole")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -307,6 +312,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If person not data not Ok</response>
         /// <response code="500">On internal server error</response>
         [HttpPost("userfromrole")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -355,6 +361,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If person not data not Ok</response>
         /// <response code="500">On internal server error</response>
         [HttpPost("changeuserroles")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -393,6 +400,7 @@ namespace OMS.API.Controllers
         /// <response code="400">If user not found</response>
         /// <response code="500">On internal server error</response>
         [HttpPost("userinrole")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

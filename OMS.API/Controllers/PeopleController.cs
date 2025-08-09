@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
@@ -9,6 +10,7 @@ namespace OMS.API.Controllers
     /// <summary>
     /// API controller for managing people data.
     /// </summary>
+    [Authorize]
     [Route("api/people")]
     [ApiController]
     public class PeopleController : GenericController<IPersonService, PersonDto, PersonModel>

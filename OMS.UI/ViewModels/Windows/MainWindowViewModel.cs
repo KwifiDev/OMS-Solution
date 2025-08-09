@@ -76,7 +76,6 @@ namespace OMS.UI.ViewModels.Windows
             if (!ok) return;
 
             _userSessionService.Logout();
-            _registryService.ResetUserLoginConfig();
             _windowService.Hide();
             _windowService.Open<LoginWindow>();
         }

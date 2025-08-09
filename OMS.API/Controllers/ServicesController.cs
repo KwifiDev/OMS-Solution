@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Tables;
 using OMS.API.Dtos.Views;
@@ -7,6 +8,7 @@ using OMS.BL.Models.Tables;
 
 namespace OMS.API.Controllers
 {
+    [Authorize]
     [Route("api/services")]
     [ApiController]
     public class ServicesController : GenericController<IServiceService, ServiceDto, ServiceModel>

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.StoredProcedureParams;
 using OMS.API.Dtos.Tables;
@@ -8,6 +9,7 @@ using OMS.BL.Models.Tables;
 
 namespace OMS.API.Controllers
 {
+    [Authorize]
     [Route("api/sales")]
     [ApiController]
     public class SalesController : GenericController<ISaleService, SaleDto, SaleModel>

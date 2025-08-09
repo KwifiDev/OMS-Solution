@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Views;
 
 namespace OMS.API.Controllers
 {
+    [Authorize]
     [Route("api/dashboardsummary")]
     [ApiController]
     public class DashboardSummaryController : ControllerBase

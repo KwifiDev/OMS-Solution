@@ -22,7 +22,6 @@ namespace OMS.UI.Mapping
             CreateMap<BranchOptionDto, BranchOptionModel>().ReverseMap();
             CreateMap<PersonDetailDto, PersonDetailModel>().ReverseMap();
             CreateMap<BranchOperationalMetricDto, BranchOperationalMetricModel>().ReverseMap();
-            CreateMap<ResponseLoginDto, UserLoginModel>().ReverseMap();
             CreateMap<ClientDto, ClientModel>().ReverseMap();
             CreateMap<ClientsSummaryDto, ClientsSummaryModel>().ReverseMap();
             CreateMap<AccountDto, AccountModel>().ReverseMap();

@@ -26,7 +26,11 @@ namespace OMS.UI.APIs.Services.Tables
             {
                 var response = await _httpClient.GetAsync($"{_endpoint}/by-client/{clientId}");
 
-                if (!response.IsSuccessStatusCode) return null;
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return null;
+                }
 
 
                 var dto = await response.Content.ReadFromJsonAsync<AccountDto>();

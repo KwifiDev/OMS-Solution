@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OMS.API.Dtos.StoredProcedureParams;
@@ -12,6 +13,7 @@ namespace OMS.API.Controllers
     /// <summary>
     /// API controller for managing accounts.
     /// </summary>
+    [Authorize]
     [Route("api/accounts")]
     [ApiController]
     public class AccountsController : GenericController<IAccountService, AccountDto, AccountModel>

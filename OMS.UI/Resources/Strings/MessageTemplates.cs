@@ -77,10 +77,9 @@
         // Creating Client Account Messages
 
         public static string ClientAccountAdditionSuccess => "تم انشاء حساب الكتروني للعميل بنجاح";
-
         public static string ClientAccountAdditionError => "حدث خطأ اثناء عملية انشاء حساب الكتروني للعميل";
-
         public static string ClientAccountDeletionError => "حدث خطأ اثناء عملية حذف الحساب الكتروني الخاص في العميل";
+        public static string ClientAccountViewError => "حدث خطأ اثناء جلب بيانات العميل من السرفر";
 
 
         // Transaction Success Messages

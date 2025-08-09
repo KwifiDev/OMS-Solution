@@ -6,7 +6,7 @@ namespace OMS.UI.Services.UserSession
     {
         UserLoginModel? CurrentUser { get; }
         bool IsLoggedIn { get; }
-        void Login(UserLoginModel user);
+        void Login(UserLoginModel user, string hashPassword, bool isRememberMe = false);
         void Logout();
         Task UpdateModel();
     }

@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Validations;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Authentication;
@@ -71,23 +69,6 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private async Task Login()
         {
-            //var auth = Ioc.Default.GetRequiredService<IAuthService>();
-
-            //var isAdded = await auth.CreateUserAsync(new Models.UserModel
-            //{
-            //    PersonId = 2106,
-            //    BranchId = 1014,
-            //    Username = "Munir007X",
-            //    Password = _hashService.HashPassword("Asp.123"),
-            //    IsActive = true
-            //});
-
-            //if (isAdded) 
-            //{
-            //    _messageService.ShowInfoMessage("تم الأضافة", "");
-            //    _windowService.Exit();
-            //}
-
             if (!ValidateInputs())
             {
                 ShowValidationError(GetErrors()?.FirstOrDefault()?.ErrorMessage);
@@ -104,12 +85,7 @@ namespace OMS.UI.ViewModels.Windows
 
             if (!CheckUserAccountStatus(validationStatus)) { IsLoading = false; return; }
 
-            if (IsRememberUserLogin)
-                _registryService.SetUserLoginConfig(Username, hashPassword);
-            else
-                _registryService.ResetUserLoginConfig();
-
-            _userSessionService.Login(user);
+            _userSessionService.Login(user, hashPassword, IsRememberUserLogin);
 
             _windowService.HideLoginWindow();
             _windowService.Open<MainWindow>();

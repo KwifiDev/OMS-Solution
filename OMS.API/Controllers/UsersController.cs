@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Hybrid;
 using OMS.API.Dtos.Tables;
@@ -11,6 +12,7 @@ namespace OMS.API.Controllers
     /// <summary>
     /// API controller for managing users data.
     /// </summary>
+    [Authorize]
     [Route("api/users")]
     [ApiController]
     public class UsersController : GenericController<IUserService, UserDto, UserModel>

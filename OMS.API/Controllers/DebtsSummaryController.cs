@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Views;
@@ -6,6 +7,7 @@ using OMS.BL.Models.Views;
 
 namespace OMS.API.Controllers
 {
+    [Authorize]
     [Route("api/debtssummary")]
     [ApiController]
     public class DebtsSummaryController : GenericViewController<IDebtsSummaryService, DebtsSummaryDto, DebtsSummaryModel>

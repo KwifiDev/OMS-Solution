@@ -103,7 +103,7 @@ namespace OMS.UI.ViewModels.Windows
             if (authenticationResult.IsAuthenticated)
             {
                 await SetLoadingMessage("جاري تسجيل الدخول, الرجاء الانتظار...");
-                _userSessionService.Login(authenticationResult.User!);
+                _userSessionService.Login(authenticationResult.User!, password!, true);
 
                 SwitchWindow<MainWindow>();
             }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.StoredProcedureParams;
 using OMS.API.Dtos.Tables;
@@ -11,6 +12,7 @@ namespace OMS.API.Controllers
     /// <summary>
     /// API controller for managing clients data.
     /// </summary>
+    [Authorize]
     [Route("api/clients")]
     [ApiController]
     public class ClientsController : GenericController<IClientService, ClientDto, ClientModel>

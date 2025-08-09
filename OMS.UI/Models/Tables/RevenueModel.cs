@@ -21,7 +21,7 @@ public class RevenueModel : BaseModel
     }
 
     [Required(ErrorMessage = "سعر الخدمة مطلوب")]
-    [Range(typeof(decimal), "10000", "1000000", ErrorMessage = "العائد المادي على الاقل يجب ان يكون 10000 في اليوم")]
+    [Range(typeof(decimal), "10000", "10000000", ErrorMessage = "(العائد المادي يجب ان يكون بين(10,000 - 10,000,000")]
     public decimal Amount
     {
         get => _amount;

@@ -1,4 +1,5 @@
 ﻿using OMS.Common.Enums;
+using OMS.UI.Models.Others;
 
 namespace OMS.UI.APIs.Dtos.Hybrid
 {
@@ -19,6 +20,8 @@ namespace OMS.UI.APIs.Dtos.Hybrid
         public string FirstName { get; set; } = null!;
 
         public string LastName { get; set; } = null!;
+
+        public TokenModel TokenInfo { get; set; } = null!;
 
         public EnGender Gender { get; set; }
     }

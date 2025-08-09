@@ -45,7 +45,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             _authService = authService;
 
             FindPersonViewModel.PersonFound += OnPersonFound;
-            InitializeBranches();
+            
         }
 
         private async void OnPersonFound(object? obj, PersonFoundEventArgs e)
@@ -56,6 +56,15 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             if (userId == 0) return;
 
             await EnterEditModeAsync(userId);
+        }
+
+        public override async Task<bool> OnOpeningDialog(int? id = -1)
+        {
+            var isSuccess = await base.OnOpeningDialog(id);
+            
+            if (isSuccess) await InitializeBranches();
+            
+            return isSuccess;
         }
 
         protected override async Task<UserModel?> GetByIdAsync(int id)
@@ -140,7 +149,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             RefreshUserSession();
         }
 
-        private async void InitializeBranches()
+        private async Task InitializeBranches()
         {
             var branchOption = await _branchService.GetAllBranchesOption();
             Branches = new ObservableCollection<BranchOptionModel>(branchOption!);

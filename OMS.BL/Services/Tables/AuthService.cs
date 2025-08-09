@@ -4,30 +4,32 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
 using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.Tables;
+using OMS.BL.Services.Security;
 using OMS.Common.Enums;
 using OMS.DA.Entities.Identity;
 using OMS.DA.UOW;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace OMS.BL.Services.Tables
 {
     public class AuthService : IAuthService
     {
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly IMapperService _mapperService;
 
         private readonly IPersonService _personService;
         private readonly IRoleService _roleService;
+        private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
 
         public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IMapperService mapperService,
-                           IPersonService personService, IRoleService roleService, IUnitOfWork unitOfWork)
+                           IPersonService personService, IRoleService roleService, ITokenService tokenService, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _mapperService = mapperService;
             _personService = personService;
             _roleService = roleService;
+            _tokenService = tokenService;
             _unitOfWork = unitOfWork;
         }
 
@@ -56,17 +58,29 @@ namespace OMS.BL.Services.Tables
 
         public async Task<UserLoginModel?> LoginAsync(LoginModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
+            var user = await _userManager.Users
+                             .Include(u => u.Person)
+                             .FirstOrDefaultAsync(u => u.UserName == model.UserName);
 
-            if (!result.Succeeded) return null;
+            if (user is null || user.Person is null) return null;
 
-            User? user = await _userManager.Users
-                               .Include(u => u.Person)
-                               .FirstOrDefaultAsync(u => u.UserName == model.UserName);
+            var isSigningIn = await _userManager.CheckPasswordAsync(user, model.Password);
 
-            if (user == null || user.Person == null) return null;
+            if (!isSigningIn) return null;
 
-            return _mapperService.Map<User, UserLoginModel>(user!);
+            var jwtSecurityToken = await _tokenService.GenerateToken(user);
+            if (jwtSecurityToken is null) return null;
+
+            var userLoginModel = _mapperService.Map<User, UserLoginModel>(user!);
+
+            userLoginModel.TokenInfo = new TokenModel
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                Expires = jwtSecurityToken.ValidTo,
+                TokenType = "Bearer"
+            };
+
+            return userLoginModel;
         }
 
         public async Task<bool> RegisterUserWithProfileAsync(FullRegisterModel model)
@@ -78,34 +92,20 @@ namespace OMS.BL.Services.Tables
                 var personModel = _mapperService.Map<FullRegisterModel, PersonModel>(model);
 
                 var isPersonAdded = await _personService.AddAsync(personModel);
-
-                if (!isPersonAdded)
-                {
-                    //await transaction.RollbackAsync();
-                    // auto rollback
-                    return false;
-                }
+                if (!isPersonAdded) return false;
 
                 model.PersonId = personModel.PersonId;
 
                 var registerModel = _mapperService.Map<FullRegisterModel, RegisterModel>(model);
 
                 var isSuccess = await RegisterAsync(registerModel);
-
-                if (!isSuccess)
-                {
-                    //await transaction.RollbackAsync();
-                    // auto rollback
-                    return false;
-                }
+                if (!isSuccess) return false;
 
                 await transaction.CommitAsync();
                 return true;
             }
             catch
             {
-                //await transaction.RollbackAsync();
-                // auto rollback
                 return false;
             }
 
@@ -162,25 +162,13 @@ namespace OMS.BL.Services.Tables
                 if (model.RolesToAdd.Count > 0)
                 {
                     var addResult = await _userManager.AddToRolesAsync(user, model.RolesToAdd);
-
-                    if (!addResult.Succeeded)
-                    {
-                        //await transaction.RollbackAsync();
-                        // auto rollback
-                        return false;
-                    }
+                    if (!addResult.Succeeded) return false;
                 }
 
                 if (model.RolesToRemove.Count > 0)
                 {
                     var removeResult = await _userManager.RemoveFromRolesAsync(user, model.RolesToRemove);
-
-                    if (!removeResult.Succeeded)
-                    {
-                        //await transaction.RollbackAsync();
-                        // auto rollback
-                        return false;
-                    }
+                    if (!removeResult.Succeeded) return false;
                 }
 
                 await transaction.CommitAsync();
@@ -188,8 +176,6 @@ namespace OMS.BL.Services.Tables
             }
             catch
             {
-                //await transaction.RollbackAsync();
-                // auto rollback
                 return false;
             }
         }

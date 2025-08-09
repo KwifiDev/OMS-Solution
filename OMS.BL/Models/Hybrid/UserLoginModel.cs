@@ -19,5 +19,7 @@ namespace OMS.BL.Models.Hybrid
         public string LastName { get; set; } = null!;
 
         public EnGender Gender { get; set; }
+
+        public TokenModel TokenInfo { get; set; } = null!;
     }
 }
