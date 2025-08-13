@@ -5,8 +5,9 @@ namespace OMS.UI.Services.UserSession
     public interface IUserSessionService
     {
         UserLoginModel? CurrentUser { get; }
+        TokenModel? CurrentToken { get; }
         bool IsLoggedIn { get; }
-        void Login(UserLoginModel user, string hashPassword, bool isRememberMe = false);
+        void Login(LoginInfoModel loginInfo, string password, bool isRememberMe = false);
         void Logout();
         Task UpdateModel();
     }

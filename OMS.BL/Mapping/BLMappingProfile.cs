@@ -110,6 +110,8 @@ namespace OMS.BL.Mapping
             CreateMap<RolesSummary, RolesSummaryModel>().ReverseMap();
 
             CreateMap<RoleClaim, RoleClaimModel>().ReverseMap();
+
+            CreateMap<Permission, PermissionModel>().ReverseMap();
         }
     }
 }

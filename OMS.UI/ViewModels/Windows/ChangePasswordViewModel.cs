@@ -72,7 +72,7 @@ namespace OMS.UI.ViewModels.Windows
                 NewPassword = ChangePasswordModel.NewPassword
             };
 
-            HashPass(model);
+            //HashPass(model);
 
             bool isChanged = await _authService.ChangePasswordAsync(model);
 
@@ -89,11 +89,11 @@ namespace OMS.UI.ViewModels.Windows
 
         }
 
-        private void HashPass(ChangePasswordModel model)
-        {
-            model.OldPassword = _hashService.HashPassword(model.OldPassword);
-            model.NewPassword = _hashService.HashPassword(model.NewPassword);
-        }
+        //private void HashPass(ChangePasswordModel model)
+        //{
+        //    model.OldPassword = _hashService.HashPassword(model.OldPassword);
+        //    model.NewPassword = _hashService.HashPassword(model.NewPassword);
+        //}
 
         private void SaveNewPasswordConifg(string newPassword)
         {

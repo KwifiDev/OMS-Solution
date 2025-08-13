@@ -77,15 +77,13 @@ namespace OMS.UI.ViewModels.Windows
 
             IsLoading = true;
 
-            string hashPassword = _hashService.HashPassword(Password);
+            var loginInfo = await _authenticationService.AuthenticateAsync(Username, Password);
 
-            var user = await _authenticationService.AuthenticateAsync(Username, hashPassword);
-
-            var validationStatus = _authenticationService.ValidateUserAccount(user);
+            var validationStatus = _authenticationService.ValidateUserAccount(loginInfo);
 
             if (!CheckUserAccountStatus(validationStatus)) { IsLoading = false; return; }
 
-            _userSessionService.Login(user, hashPassword, IsRememberUserLogin);
+            _userSessionService.Login(loginInfo, Password, IsRememberUserLogin);
 
             _windowService.HideLoginWindow();
             _windowService.Open<MainWindow>();

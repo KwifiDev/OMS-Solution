@@ -9,13 +9,13 @@ namespace OMS.API.Dtos.Hybrid
         public int UserId { get; set; }
 
         [Required(ErrorMessage = "Old Password is required")]
-        [RegularExpression(@"^[a-zA-Z0-9+/]{43}=$", ErrorMessage = "Old Password is not a valid SHA256 hash Base64.")]
+        [MinLength(5, ErrorMessage = "Password must be at least 5 characters")]
         [DataType(DataType.Password)]
         public string OldPassword { get; set; } = null!;
 
 
         [Required(ErrorMessage = "new Password is required")]
-        [RegularExpression(@"^[a-zA-Z0-9+/]{43}=$", ErrorMessage = "New Password is not a valid SHA256 hash Base64.")]
+        [MinLength(5, ErrorMessage = "Password must be at least 5 characters")]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; } = null!;
 

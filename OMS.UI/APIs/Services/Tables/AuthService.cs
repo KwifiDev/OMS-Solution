@@ -101,7 +101,7 @@ namespace OMS.UI.APIs.Services.Tables
             }
         }
 
-        public async Task<UserLoginModel?> SignInAsync(string username, string password)
+        public async Task<LoginInfoModel?> SignInAsync(string username, string password)
         {
             var requestUserDto = new LoginDto { Username = username, Password = password };
 
@@ -115,15 +115,17 @@ namespace OMS.UI.APIs.Services.Tables
                     return null;
                 }
 
-                var responseLoginDto = await response.Content.ReadFromJsonAsync<ResponseLoginDto>();
+                var loginInfo = await response.Content.ReadFromJsonAsync<LoginInfoDto>();
 
-                return _mapper.Map<UserLoginModel>(responseLoginDto);
+                var userLogin = _mapper.Map<UserLoginModel>(loginInfo!.UserLogin);
+
+                return new LoginInfoModel { TokenInfo = loginInfo.TokenInfo, UserLogin = userLogin };
 
             }
             catch (Exception ex)
             {
                 LogError(ex);
-                return null;
+                return default;
             }
         }
 

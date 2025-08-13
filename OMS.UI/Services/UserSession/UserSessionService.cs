@@ -17,6 +17,9 @@ namespace OMS.UI.Services.UserSession
         [ObservableProperty]
         private UserLoginModel? _currentUser;
 
+        [ObservableProperty]
+        private TokenModel? _currentToken;
+
 
         public UserSessionService(IUserService userService, IRegistryService registryService)
         {
@@ -24,12 +27,13 @@ namespace OMS.UI.Services.UserSession
             _registryService = registryService;
         }
 
-        public void Login(UserLoginModel user, string hashPassword, bool isRememberMe = false)
+        public void Login(LoginInfoModel loginInfo, string password, bool isRememberMe = false)
         {
-            CurrentUser = user;
+            CurrentUser = loginInfo.UserLogin;
+            CurrentToken = loginInfo.TokenInfo;
 
             if (isRememberMe)
-                _registryService.SetUserLoginConfig(user.Username, hashPassword);
+                _registryService.SetUserLoginConfig(loginInfo.UserLogin.Username, password);
             else
                 _registryService.ResetUserLoginConfig();
 
@@ -39,6 +43,8 @@ namespace OMS.UI.Services.UserSession
         public void Logout()
         {
             CurrentUser = null;
+            CurrentToken = null;
+
             _registryService.ResetUserLoginConfig();
 
             IsLoggedIn = false;

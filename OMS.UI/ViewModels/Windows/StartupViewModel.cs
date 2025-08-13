@@ -70,14 +70,14 @@ namespace OMS.UI.ViewModels.Windows
             return (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password), username, password);
         }
 
-        private async Task<(bool IsAuthenticated, UserLoginModel? User)> TryAuthenticateWithSavedCredentialsAsync(string username, string password)
+        private async Task<(bool IsAuthenticated, LoginInfoModel? LoginInfo)> TryAuthenticateWithSavedCredentialsAsync(string username, string password)
         {
             try
             {
-                var user = await _authenticationService.AuthenticateAsync(username, password);
-                var validationStatus = _authenticationService.ValidateUserAccount(user);
+                var loginInfo = await _authenticationService.AuthenticateAsync(username, password);
+                var validationStatus = _authenticationService.ValidateUserAccount(loginInfo);
 
-                return (validationStatus == EnUserValidateStatus.FoundAndActive, user);
+                return (validationStatus == EnUserValidateStatus.FoundAndActive, loginInfo);
             }
             catch
             {
@@ -98,19 +98,19 @@ namespace OMS.UI.ViewModels.Windows
             }
 
             await SetLoadingMessage("جاري التحقق من الاعتماديات");
-            var authenticationResult = await TryAuthenticateWithSavedCredentialsAsync(username!, password!);
+            var (IsAuthenticated, LoginInfo) = await TryAuthenticateWithSavedCredentialsAsync(username!, password!);
 
-            if (authenticationResult.IsAuthenticated)
+            if (IsAuthenticated)
             {
                 await SetLoadingMessage("جاري تسجيل الدخول, الرجاء الانتظار...");
-                _userSessionService.Login(authenticationResult.User!, password!, true);
+                _userSessionService.Login(LoginInfo!, password!, true);
 
                 SwitchWindow<MainWindow>();
             }
             else
             {
                 await SetLoadingMessage("بيانات الاعتماد غير صحيحة");
-                
+
                 _regestryService.ResetUserLoginConfig();
                 await SetLoadingMessage("تم اعادة تعيين الاعتماديات");
 

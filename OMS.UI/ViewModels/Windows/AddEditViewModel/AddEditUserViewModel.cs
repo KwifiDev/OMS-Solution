@@ -94,7 +94,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         {
             if (isAdding)
             {
-                userModel.Password = _hashService.HashPassword(userModel.Password);
+                //userModel.Password = _hashService.HashPassword(userModel.Password);
                 return await _authService.CreateUserAsync(userModel);
             }
             else
@@ -119,8 +119,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         protected override bool ValidateModel()
         {
-            if (Status.SelectMode == AddEditStatus.EnMode.Edit)
-                Model.Password = _hashService.HashPassword("FakePassword");
+            if (Status.SelectMode == AddEditStatus.EnMode.Edit) Model.Password = "ChangePasswordDisabled";
 
             if (!base.ValidateModel()) return false;
             if (!ValidatePersonSelection()) return false;

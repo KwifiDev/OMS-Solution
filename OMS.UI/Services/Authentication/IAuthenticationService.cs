@@ -5,7 +5,7 @@ namespace OMS.UI.Services.Authentication
 {
     public interface IAuthenticationService
     {
-        Task<UserLoginModel> AuthenticateAsync(string username, string password);
-        EnUserValidateStatus ValidateUserAccount(UserLoginModel? user);
+        Task<LoginInfoModel> AuthenticateAsync(string username, string password);
+        EnUserValidateStatus ValidateUserAccount(LoginInfoModel? loginInfo);
     }
 }

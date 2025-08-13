@@ -1,6 +1,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OMS.API.Mapping;
@@ -17,6 +19,7 @@ using OMS.DA.IRepositories.IEntityRepos;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Repositories.EntityRepos;
 using OMS.DA.Repositories.ViewRepos;
+using OMS.DA.Seeders;
 using OMS.DA.UOW;
 using System.Security.Claims;
 using System.Text;
@@ -159,6 +162,9 @@ builder.Services.AddScoped<IRolesSummaryService, RolesSummaryService>();
 builder.Services.AddScoped<IRoleClaimRepository, RoleClaimRepository>();
 builder.Services.AddScoped<IRoleClaimService, RoleClaimService>();
 
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
+
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 // Mapping jwt configs to JwtSettings Object
@@ -205,6 +211,26 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    await DataSeeder.SeedDataAsync
+        (
+            context: scope.ServiceProvider.GetRequiredService<AppDbContext>(),
+            roleManager: scope.ServiceProvider.GetRequiredService<RoleManager<Role>>(),
+            userManager: scope.ServiceProvider.GetRequiredService<UserManager<User>>()
+        );
+
+    var permissionService = scope.ServiceProvider.GetRequiredService<IPermissionService>();
+    var permissions = (await permissionService.GetAllAsync()).Select(p => p.Name);
+
+    var authorizationOptions = scope.ServiceProvider.GetRequiredService<IOptions<AuthorizationOptions>>();
+    foreach (var permission in permissions)
+    {
+        authorizationOptions.Value.AddPolicy(permission, policy =>
+            policy.RequireClaim("Permission", permission));
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

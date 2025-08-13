@@ -24,8 +24,6 @@ namespace OMS.UI.Models.Others
 
         public EnGender Gender { get; set; }
 
-        public TokenModel TokenInfo { get; set; } = null!;
-
         // Display Props
         public string FullName { get => FirstName + " " + LastName; }
     }

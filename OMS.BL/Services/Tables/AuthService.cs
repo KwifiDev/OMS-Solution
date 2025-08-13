@@ -56,31 +56,31 @@ namespace OMS.BL.Services.Tables
             return true;
         }
 
-        public async Task<UserLoginModel?> LoginAsync(LoginModel model)
+        public async Task<(TokenModel TokenInfo, UserLoginModel UserLogin)> LoginAsync(LoginModel model)
         {
             var user = await _userManager.Users
                              .Include(u => u.Person)
                              .FirstOrDefaultAsync(u => u.UserName == model.UserName);
 
-            if (user is null || user.Person is null) return null;
+            if (user is null || user.Person is null) return default;
 
             var isSigningIn = await _userManager.CheckPasswordAsync(user, model.Password);
 
-            if (!isSigningIn) return null;
-
-            var jwtSecurityToken = await _tokenService.GenerateToken(user);
-            if (jwtSecurityToken is null) return null;
+            if (!isSigningIn) return default;
 
             var userLoginModel = _mapperService.Map<User, UserLoginModel>(user!);
 
-            userLoginModel.TokenInfo = new TokenModel
+            var jwtSecurityToken = await _tokenService.GenerateToken(user);
+            if (jwtSecurityToken is null) return default;
+
+            var tokenInfo = new TokenModel
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 Expires = jwtSecurityToken.ValidTo,
                 TokenType = "Bearer"
             };
 
-            return userLoginModel;
+            return (tokenInfo, userLoginModel);
         }
 
         public async Task<bool> RegisterUserWithProfileAsync(FullRegisterModel model)

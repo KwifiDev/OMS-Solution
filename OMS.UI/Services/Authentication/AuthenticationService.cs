@@ -14,19 +14,19 @@ namespace OMS.UI.Services.Authentication
             _authService = authService;
         }
 
-        public async Task<UserLoginModel> AuthenticateAsync(string username, string password)
+        public async Task<LoginInfoModel> AuthenticateAsync(string username, string password)
         {
             return (await _authService.SignInAsync(username, password))!;
         }
 
-        public EnUserValidateStatus ValidateUserAccount(UserLoginModel? user)
+        public EnUserValidateStatus ValidateUserAccount(LoginInfoModel? loginInfo)
         {
-            if (user == null)
+            if (loginInfo == null)
             {
                 return EnUserValidateStatus.NotFound;
             }
 
-            if (!user.IsActive)
+            if (!loginInfo.UserLogin.IsActive)
             {
                 return EnUserValidateStatus.NotActive;
             }

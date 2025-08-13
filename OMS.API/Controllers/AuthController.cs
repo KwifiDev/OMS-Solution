@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OMS.API.Dtos.Hybrid;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
@@ -37,7 +36,7 @@ namespace OMS.API.Controllers
         /// <response code="500">On internal server error</response>
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
@@ -87,7 +86,7 @@ namespace OMS.API.Controllers
         [HttpPost()]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<int>> CreateAsync([FromBody] UserDto dto)
@@ -138,18 +137,18 @@ namespace OMS.API.Controllers
         /// <response code="500">On internal server error</response>
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ResponseLoginDto>> SignInByUsernameAndPasswordAsync([FromBody] LoginDto loginDto)
+        public async Task<ActionResult<LoginInfoDto>> SignInByUsernameAndPasswordAsync([FromBody] LoginDto loginDto)
         {
             try
             {
-                var model = await _authService.LoginAsync(_mapper.Map<LoginModel>(loginDto));
+                var (TokenInfo, UserLogin) = await _authService.LoginAsync(_mapper.Map<LoginModel>(loginDto));
 
-                return model is null
+                return UserLogin is null
                     ? NotFound()
-                    : Ok(_mapper.Map<ResponseLoginDto>(model));
+                    : Ok(new LoginInfoDto { TokenInfo = TokenInfo, UserLogin = _mapper.Map<ResponseLoginDto>(UserLogin) });
             }
             catch (Exception ex)
             {
@@ -265,7 +264,7 @@ namespace OMS.API.Controllers
         [HttpPost("usertorole")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddUserToRoleAsync([FromBody] UserRoleDto dto)
@@ -314,7 +313,7 @@ namespace OMS.API.Controllers
         [HttpPost("userfromrole")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> RemoveUserFromRoleAsync([FromBody] UserRoleDto dto)
@@ -363,7 +362,7 @@ namespace OMS.API.Controllers
         [HttpPost("changeuserroles")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ChangeUserRolesAsync([FromBody] InputUserRolesDto dto)
@@ -402,7 +401,7 @@ namespace OMS.API.Controllers
         [HttpPost("userinrole")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> IsUserInRoleAsync([FromBody] UserRoleDto dto)
@@ -414,11 +413,11 @@ namespace OMS.API.Controllers
 
                 return isInRole switch
                 {
-                     null => BadRequest(),
-                     false => NotFound(),
-                     true => Ok()
+                    null => BadRequest(),
+                    false => NotFound(),
+                    true => Ok()
                 };
-                
+
             }
             catch (Exception ex)
             {

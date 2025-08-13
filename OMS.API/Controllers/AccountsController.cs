@@ -94,8 +94,8 @@ namespace OMS.API.Controllers
         /// <response code="500">If an internal server error occurs.</response>
         [HttpPost("transactions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ModelStateDictionary), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<AccountTransactionDto>> StartTransactionAsync([FromBody] AccountTransactionDto dto)
         {
             try

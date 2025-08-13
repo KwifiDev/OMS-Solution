@@ -21,9 +21,9 @@ namespace OMS.UI.APIs.Services.Security
                 var userSessionService = scope.ServiceProvider.GetRequiredService<IUserSessionService>();
 
                 if (userSessionService.IsLoggedIn &&
-                    userSessionService.CurrentUser?.TokenInfo != null)
+                    userSessionService.CurrentToken != null)
                 {
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userSessionService.CurrentUser.TokenInfo.Token);
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userSessionService.CurrentToken.Token);
                 }
             }
             return await base.SendAsync(request, cancellationToken);
