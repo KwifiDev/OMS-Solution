@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Views;
 using OMS.BL.Models.Views;
+using OMS.Common.Data;
 
 namespace OMS.API.Controllers
 {
@@ -29,6 +30,7 @@ namespace OMS.API.Controllers
         /// <response code="200">Returns the complete list of payments</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("accounts/{accountId:int}/payments")]
+        [Authorize(Policy = PermissionsData.PaymentsSummary.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<PaymentsSummaryDto>>> GetPaymentsByAccountIdAsync([FromRoute] int accountId)

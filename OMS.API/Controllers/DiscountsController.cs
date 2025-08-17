@@ -5,6 +5,7 @@ using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.Tables;
+using OMS.Common.Data;
 
 namespace OMS.API.Controllers
 {
@@ -35,6 +36,7 @@ namespace OMS.API.Controllers
         /// <response code="400">If the request is invalid or validation fails</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPost]
+        [Authorize(Policy = PermissionsData.Discounts.Add)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]

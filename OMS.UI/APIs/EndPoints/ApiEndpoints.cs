@@ -30,5 +30,6 @@
         public const string Roles = "api/roles";
         public const string RolesSummary = "api/rolessummary";
         public const string RoleClaims = "api/roleclaims";
+        public const string Permissions = "api/permissions";
     }
 }

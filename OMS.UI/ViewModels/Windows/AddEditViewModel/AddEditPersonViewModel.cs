@@ -35,9 +35,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         protected override async Task<bool> SaveDataAsync(bool isAdding, PersonModel personModel)
             => isAdding ? await _service.AddAsync(personModel) : await _service.UpdateAsync(personModel.PersonId, personModel);
 
-        //protected override void UpdateModelAfterSave(BL.Models.Tables.PersonModel personModel)
-        //    => Model.PersonId = personModel.PersonId;
-
         protected override void SendMessage()
         {
             base.SendMessage();

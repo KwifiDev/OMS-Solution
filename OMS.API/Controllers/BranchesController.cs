@@ -5,6 +5,7 @@ using OMS.API.Dtos.Tables;
 using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
+using OMS.Common.Data;
 
 namespace OMS.API.Controllers
 {
@@ -16,6 +17,7 @@ namespace OMS.API.Controllers
     [ApiController]
     public class BranchesController : GenericController<IBranchService, BranchDto, BranchModel>
     {
+
         /// <summary>
         /// Initializes a new instance of the BranchesController class.
         /// </summary>
@@ -25,8 +27,6 @@ namespace OMS.API.Controllers
             : base(branchService, mapper)
         {
         }
-
-
 
         /// <summary>
         /// Retrieves all branches option.
@@ -40,6 +40,7 @@ namespace OMS.API.Controllers
         /// <returns>List of all branches option</returns>
         /// <response code="200">Returns the complete list of branches option</response>
         /// <response code="500">If there was an internal server error</response>
+        [Authorize(Policy = PermissionsData.Branches.View)]
         [HttpGet("options")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -59,8 +60,6 @@ namespace OMS.API.Controllers
                     type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
             }
         }
-
-
 
         #region override abstract Methods
         protected override int GetModelId(BranchModel model) => model.BranchId;

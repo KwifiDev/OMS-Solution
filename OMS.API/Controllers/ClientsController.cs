@@ -6,6 +6,7 @@ using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
+using OMS.Common.Data;
 
 namespace OMS.API.Controllers
 {
@@ -42,6 +43,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If entity was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("by-person/{personId:int}")]
+        [Authorize(Policy = PermissionsData.Clients.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -80,6 +82,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If entity was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("{personId:int}/id")]
+        [Authorize(Policy = PermissionsData.Clients.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -116,6 +119,7 @@ namespace OMS.API.Controllers
         /// <response code="404">Client not found.</response>
         /// <response code="500">Internal server error.</response>
         [HttpPost("pay")]
+        [Authorize(Policy = PermissionsData.Clients.PayDebts)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]

@@ -32,7 +32,6 @@ using OMS.UI.Views;
 using OMS.UI.Views.Pages;
 using OMS.UI.Views.Windows;
 using OMS.UI.Views.Windows.AddEditWindow;
-using System.Net.Http.Headers;
 using System.Windows;
 
 namespace OMS.UI
@@ -142,6 +141,8 @@ namespace OMS.UI
             services.AddTransient<IRolesSummaryService, RolesSummaryService>();
 
             services.AddTransient<IRoleClaimService, RoleClaimService>();
+
+            services.AddTransient<IPermissionService, PermissionService>();
 
             //services.AddTransient<ITokenService, TokenService>();
         }

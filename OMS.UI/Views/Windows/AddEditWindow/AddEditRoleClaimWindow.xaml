@@ -76,7 +76,7 @@
         </Border>
 
 
-        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+        <!--<TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
               Text="{Binding Model.ClaimValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
               FontSize="16"
               Margin="10,5,10,5"
@@ -88,7 +88,21 @@
                 <inputBehaviors:ClaimValueInputBehavior/>
             </i:Interaction.Behaviors>
             
-        </TextBox>
+        </TextBox>-->
+
+        <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
+                  ItemsSource="{Binding ClaimsValues}"
+                  DisplayMemberPath="Name"
+                  SelectedValuePath="Name"
+                  SelectedValue="{Binding Model.ClaimValue}"
+                  Height="50"
+                  FontSize="16" 
+                  Margin="10,10,20,0"
+                  Padding="15 0"
+                  Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
+                  materialDesign:HintAssist.Hint="قيمة المطالبة"
+                  IsEnabled="{Binding Status.IsModifiable}">
+        </ComboBox>
 
         <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
                ItemsSource="{Binding ClaimsTypes}"

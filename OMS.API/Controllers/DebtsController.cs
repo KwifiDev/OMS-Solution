@@ -6,6 +6,7 @@ using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
+using OMS.Common.Data;
 
 namespace OMS.API.Controllers
 {
@@ -31,6 +32,7 @@ namespace OMS.API.Controllers
         /// <response code="400">If the request is invalid (invalid clientID, serviceID, UserID, invalid amount, etc.).</response>
         /// <response code="500">If an internal server error occurs.</response>
         [HttpPost]
+        [Authorize(Policy = PermissionsData.Debts.Add)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -70,6 +72,7 @@ namespace OMS.API.Controllers
         /// <response code="409">Debt cannot be canceled in its current state.</response>
         /// <response code="500">Internal server error.</response>
         [HttpPatch("{debtId:int}/cancel")]
+        [Authorize(Policy = PermissionsData.Debts.Cancel)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -113,6 +116,7 @@ namespace OMS.API.Controllers
         /// <response code="404">Debt not found.</response>
         /// <response code="500">Internal server error.</response>
         [HttpPost("pay")]
+        [Authorize(Policy = PermissionsData.Debts.Pay)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]

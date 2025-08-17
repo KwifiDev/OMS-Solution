@@ -5,6 +5,7 @@ using OMS.API.Dtos.Tables;
 using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
+using OMS.Common.Data;
 
 namespace OMS.API.Controllers
 {
@@ -31,6 +32,7 @@ namespace OMS.API.Controllers
         /// <response code="200">Returns the complete list of Services option</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("options")]
+        [Authorize(Policy = PermissionsData.Services.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<ServiceOptionDto>>> GetAllServicesOptionAsync()

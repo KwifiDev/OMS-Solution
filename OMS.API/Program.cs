@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OMS.API.Extensions;
 using OMS.API.Mapping;
 using OMS.BL.IServices.Tables;
 using OMS.BL.IServices.Views;
@@ -27,7 +28,11 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Conventions.Add(new AuthorizeCrudConvetion());
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -167,6 +172,11 @@ builder.Services.AddScoped<IPermissionService, PermissionService>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 
+
+
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+
 // Mapping jwt configs to JwtSettings Object
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("Jwt"));
 
@@ -228,7 +238,10 @@ using (var scope = app.Services.CreateScope())
     foreach (var permission in permissions)
     {
         authorizationOptions.Value.AddPolicy(permission, policy =>
-            policy.RequireClaim("Permission", permission));
+        {
+            //policy.RequireClaim("Permission", permission);
+            policy.Requirements.Add(new PermissionRequirement(permission));
+        });
     }
 }
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Views;
+using OMS.Common.Data;
 
 namespace OMS.API.Controllers
 {
@@ -32,6 +33,7 @@ namespace OMS.API.Controllers
         /// <response code="200">Returns the complete data of dashboard</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet]
+        [Authorize(Policy = PermissionsData.Dashboard.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]

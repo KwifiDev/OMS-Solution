@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OMS.API.Dtos.StoredProcedureParams;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
+using OMS.Common.Data;
 
 namespace OMS.API.Controllers
 {
@@ -18,6 +18,7 @@ namespace OMS.API.Controllers
     [ApiController]
     public class AccountsController : GenericController<IAccountService, AccountDto, AccountModel>
     {
+
         /// <summary>
         /// Initializes a new instance of the AccountsController class.
         /// </summary>
@@ -43,6 +44,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If no account is found with the given client ID.</response>
         /// <response code="500">If an internal server error occurs.</response>
         [HttpGet("by-client/{clientId:int}")]
+        [Authorize(Policy = PermissionsData.Accounts.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -93,6 +95,7 @@ namespace OMS.API.Controllers
         /// <response code="400">If the request is invalid (missing account ID, invalid amount, etc.).</response>
         /// <response code="500">If an internal server error occurs.</response>
         [HttpPost("transactions")]
+        [Authorize(Policy = PermissionsData.Accounts.Transaction)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

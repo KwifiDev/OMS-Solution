@@ -2,6 +2,7 @@
 using OMS.UI.Services.UserSession;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
 
 namespace OMS.UI.APIs.Services.Security
 {
@@ -16,17 +17,32 @@ namespace OMS.UI.APIs.Services.Security
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                var userSessionService = scope.ServiceProvider.GetRequiredService<IUserSessionService>();
+            int retryCount = 0;
+            const int maxRetryCount = 5;
+            const int delayMilliseconds = 1000;
 
-                if (userSessionService.IsLoggedIn &&
-                    userSessionService.CurrentToken != null)
+            while (true)
+            {
+                try
                 {
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userSessionService.CurrentToken.Token);
+                    using (var scope = _serviceProvider.CreateScope())
+                    {
+                        var userSessionService = scope.ServiceProvider.GetRequiredService<IUserSessionService>();
+
+                        if (userSessionService.IsLoggedIn &&
+                            userSessionService.CurrentToken != null)
+                        {
+                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", userSessionService.CurrentToken.Token);
+                        }
+                    }
+                    return await base.SendAsync(request, cancellationToken);
+                }
+                catch (HttpRequestException ex) when (ex.InnerException is SocketException && retryCount < maxRetryCount)
+                {
+                    retryCount++;
+                    await Task.Delay(delayMilliseconds * retryCount, cancellationToken);
                 }
             }
-            return await base.SendAsync(request, cancellationToken);
         }
     }
 }

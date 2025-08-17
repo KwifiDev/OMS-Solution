@@ -5,6 +5,7 @@ using OMS.API.Dtos.Hybrid;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
+using OMS.Common.Data;
 using OMS.Common.Enums;
 using System.Security.Claims;
 
@@ -33,6 +34,7 @@ namespace OMS.API.Controllers
         /// <response code="200">Returns the complete list of role claims</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("by-role/{roleId:int}")]
+        [Authorize(Policy = PermissionsData.RoleClaims.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<RoleClaimDto>>> GetRoleClaimsByRoleIdAsync([FromRoute] int roleId)
@@ -67,6 +69,7 @@ namespace OMS.API.Controllers
         /// <response code="400">If the request is invalid or validation fails</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPost("add/{roleId:int}")]
+        [Authorize(Policy = PermissionsData.RoleClaims.Add)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -113,6 +116,7 @@ namespace OMS.API.Controllers
         /// <response code="400">If the request is invalid or validation fails</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPost("remove/{roleId:int}")]
+        [Authorize(Policy = PermissionsData.RoleClaims.Delete)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]

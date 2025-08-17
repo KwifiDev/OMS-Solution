@@ -56,6 +56,7 @@ namespace OMS.UI.Mapping
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Name))
                 .ReverseMap();
             CreateMap<RoleClaimModel, RoleClaimDto>().ReverseMap();
+            CreateMap<PermissionModel, PermissionDto>().ReverseMap();
         }
     }
 }

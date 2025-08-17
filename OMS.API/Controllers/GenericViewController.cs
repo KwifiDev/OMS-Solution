@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using OMS.API.CustomAttributes;
+using OMS.Common.Enums;
 
 namespace OMS.API.Controllers
 {
@@ -49,6 +51,7 @@ namespace OMS.API.Controllers
         /// <response code="200">Returns the complete list of entities</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet]
+        [AuthorizeCrud(EnCrudAction.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public virtual async Task<ActionResult<IEnumerable<TDto>>> GetAllAsync()
@@ -81,6 +84,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If entity was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("{id:int}")]
+        [AuthorizeCrud(EnCrudAction.View)]
         [ActionName("GetById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
+using OMS.Common.Data;
 using OMS.Common.Enums;
 
 namespace OMS.API.Controllers
@@ -37,6 +38,7 @@ namespace OMS.API.Controllers
         /// <response code="200">Returns the complete list of roles</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet]
+        [Authorize(Policy = PermissionsData.Roles.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<RoleDto>>> GetAllAsync()
@@ -69,6 +71,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If role was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("{id:int}")]
+        [Authorize(Policy = PermissionsData.Roles.View)]
         [ActionName("GetById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -106,6 +109,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If role was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("{roleName}")]
+        [Authorize(Policy = PermissionsData.Roles.View)]
         [ActionName("GetByName")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -142,6 +146,7 @@ namespace OMS.API.Controllers
         /// <response code="400">If the request is invalid or validation fails</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPost]
+        [Authorize(Policy = PermissionsData.Roles.Add)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -204,6 +209,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If role with specified ID doesn't exist</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPut("{id:int}")]
+        [Authorize(Policy = PermissionsData.Roles.Edit)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -265,6 +271,7 @@ namespace OMS.API.Controllers
         /// <response code="409">If conflict occurs (e.g. foreign key constraint)</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpDelete("{id:int}")]
+        [Authorize(Policy = PermissionsData.Roles.Delete)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]

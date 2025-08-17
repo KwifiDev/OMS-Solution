@@ -5,6 +5,7 @@ using OMS.API.Dtos.Hybrid;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
+using OMS.Common.Data;
 using OMS.Common.Enums;
 
 namespace OMS.API.Controllers
@@ -50,6 +51,7 @@ namespace OMS.API.Controllers
         /// <response code="409">If user with specified oldUsername exist</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPut("{id:int}")]
+        [Authorize(Policy = PermissionsData.Users.Edit)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -106,6 +108,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If entity was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("{personId:int}/login")]
+        [Authorize(Policy = PermissionsData.Users.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -143,6 +146,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If entity was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("{personId:int}/personid")]
+        [Authorize(Policy = PermissionsData.Users.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -181,6 +185,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If entity was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("{personId:int}/id")]
+        [Authorize(Policy = PermissionsData.Users.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -222,6 +227,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If no user exists or not active user with the specified ID</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpHead("{userId:int}/isactive")]
+        [Authorize(Policy = PermissionsData.Users.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -264,6 +270,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If user with specified ID doesn't exist</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPut("updateactivation")]
+        [Authorize(Policy = PermissionsData.Users.Activation)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -308,6 +315,7 @@ namespace OMS.API.Controllers
         /// <response code="409">If username used</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPost("checkusernameavailable")]
+        [Authorize(Policy = PermissionsData.Users.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]

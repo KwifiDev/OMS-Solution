@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using OMS.API.CustomAttributes;
+using OMS.Common.Enums;
 
 namespace OMS.API.Controllers
 {
@@ -45,6 +48,7 @@ namespace OMS.API.Controllers
         /// <response code="400">If the request is invalid or validation fails</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPost]
+        [AuthorizeCrud(EnCrudAction.Add)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -111,6 +115,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If entity with specified ID doesn't exist</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPut("{id:int}")]
+        [AuthorizeCrud(EnCrudAction.Edit)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -171,6 +176,7 @@ namespace OMS.API.Controllers
         /// <response code="409">If conflict occurs (e.g. foreign key constraint)</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpDelete("{id:int}")]
+        [AuthorizeCrud(EnCrudAction.Delete)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
