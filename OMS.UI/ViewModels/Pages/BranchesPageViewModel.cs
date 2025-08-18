@@ -1,4 +1,5 @@
-﻿using OMS.UI.APIs.Services.Interfaces.Tables;
+﻿using OMS.Common.Data;
+using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models.Tables;
 using OMS.UI.Models.Views;
@@ -6,15 +7,22 @@ using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Views.Windows;
 
 namespace OMS.UI.ViewModels.Pages
 {
     public partial class BranchesPageViewModel : BasePageViewModel<IBranchService, IBranchOperationalMetricService, BranchOperationalMetricModel, BranchModel>
     {
+
+        protected override string ViewClaim => PermissionsData.BranchesOperationalMetric.View;
+        protected override string AddClaim => PermissionsData.Branches.Add;
+        protected override string EditClaim => PermissionsData.Branches.Edit;
+        protected override string DeleteClaim => PermissionsData.Branches.Delete;
+
         public BranchesPageViewModel(IBranchService branchService, IBranchOperationalMetricService branchOperationalMetricService, 
-                                     ILoadingService loadingService, IDialogService dialogService, IMessageService messageService)
-                                     : base(branchService, branchOperationalMetricService, loadingService, dialogService, messageService)
+                                     ILoadingService loadingService, IDialogService dialogService, IMessageService messageService, IUserSessionService userSessionService)
+                                     : base(branchService, branchOperationalMetricService, loadingService, dialogService, messageService, userSessionService)
         {
         }
 

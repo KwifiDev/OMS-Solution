@@ -7,6 +7,7 @@ using OMS.UI.Services.Loading;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
+using OMS.UI.Services.UserSession;
 using System.Collections.ObjectModel;
 
 namespace OMS.UI.ViewModels.Pages
@@ -22,7 +23,12 @@ namespace OMS.UI.ViewModels.Pages
         protected readonly ILoadingService _loadingService;
         protected readonly IDialogService _dialogService;
         protected readonly IMessageService _messageService;
+        protected readonly IUserSessionService _userSessionService;
 
+        protected abstract string ViewClaim { get; }
+        protected abstract string AddClaim { get; }
+        protected abstract string EditClaim { get; }
+        protected abstract string DeleteClaim { get; }
 
         [ObservableProperty]
         private ObservableCollection<TModel> _items = new();
@@ -33,13 +39,14 @@ namespace OMS.UI.ViewModels.Pages
         public ILoadingService LoadingService => _loadingService;
 
         public BasePageViewModel(TService service, TDisplayService displayService, ILoadingService loadingService,
-                                 IDialogService dialogService, IMessageService messageService)
+                                 IDialogService dialogService, IMessageService messageService, IUserSessionService userSessionService)
         {
             _service = service;
             _displayService = displayService;
             _loadingService = loadingService;
             _dialogService = dialogService;
             _messageService = messageService;
+            _userSessionService = userSessionService;
 
             SetDefaultCommandConditions();
 
@@ -59,6 +66,7 @@ namespace OMS.UI.ViewModels.Pages
 
         private void SetDefaultCommandConditions()
         {
+            CommandConditions[nameof(AddItemCommand)] = () => true;
             CommandConditions[nameof(EditItemCommand)] = () => SelectedItem != null;
             CommandConditions[nameof(DeleteItemCommand)] = () => SelectedItem != null;
             CommandConditions[nameof(ShowDetailsCommand)] = () => SelectedItem != null;
@@ -116,14 +124,12 @@ namespace OMS.UI.ViewModels.Pages
             await ShowDetailsWindow(GetItemId(SelectedItem));
         }
 
-        private bool CanShowDetails() =>
-            CommandConditions.TryGetValue(nameof(ShowDetailsCommand), out var condition) ? condition() : true;
+        private bool CanShowDetails() => CanActionItem(nameof(ShowDetailsCommand), ViewClaim);
 
         [RelayCommand(CanExecute = nameof(CanAddItem))]
         protected virtual async Task AddItem() => await ShowEditorWindow();
 
-        private bool CanAddItem() =>
-            CommandConditions.TryGetValue(nameof(AddItemCommand), out var condition) ? condition() : true;
+        private bool CanAddItem() => CanActionItem(nameof(AddItemCommand), AddClaim);
 
         [RelayCommand(CanExecute = nameof(CanEditItem))]
         protected virtual async Task EditItem()
@@ -132,8 +138,7 @@ namespace OMS.UI.ViewModels.Pages
             await ShowEditorWindow(GetItemId(SelectedItem));
         }
 
-        private bool CanEditItem() =>
-            CommandConditions.TryGetValue(nameof(EditItemCommand), out var condition) ? condition() : true;
+        private bool CanEditItem() => CanActionItem(nameof(EditItemCommand), EditClaim);
 
         [RelayCommand(CanExecute = nameof(CanDeleteItem))]
         protected virtual async Task DeleteItem()
@@ -151,8 +156,14 @@ namespace OMS.UI.ViewModels.Pages
                 success ? MessageTemplates.DeletionSuccessMessage : MessageTemplates.DeletionErrorMessage);
         }
 
-        private bool CanDeleteItem() =>
-            CommandConditions.TryGetValue(nameof(DeleteItemCommand), out var condition) ? condition() : true;
+        private bool CanDeleteItem() => CanActionItem(nameof(DeleteItemCommand), DeleteClaim);
+
+        private bool CanActionItem(string nameOfItemCommand, string actionClaim)
+        {
+            var conditionValue = CommandConditions.TryGetValue(nameOfItemCommand, out var condition) ? condition() : true;
+
+            return conditionValue && _userSessionService.Claims!.Contains(actionClaim);
+        }
 
         protected void OnSelectedItemChanged()
         {

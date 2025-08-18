@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using OMS.Common.Data;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Tables;
 using OMS.UI.Services.Dialog;
@@ -7,6 +8,7 @@ using OMS.UI.Services.Loading;
 using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
 using OMS.UI.Views.Windows.AddEditWindow;
@@ -15,13 +17,18 @@ namespace OMS.UI.ViewModels.Windows
 {
     public partial class RoleClaimsViewModel : BasePageViewModel<IRoleClaimService, IRoleClaimService, RoleClaimModel, RoleClaimModel>, IDialogInitializer<int?>
     {
+        protected override string ViewClaim => PermissionsData.RoleClaims.View;
+        protected override string AddClaim => PermissionsData.RoleClaims.Add;
+        protected override string EditClaim => string.Empty;
+        protected override string DeleteClaim => PermissionsData.RoleClaims.Delete;
+
         private int _roleId;
         private readonly IWindowService _windowService;
         private readonly IRoleService _roleService;
 
         public RoleClaimsViewModel(IRoleClaimService service, ILoadingService loadingService, IRoleService roleService,
-                                   IDialogService dialogService, IMessageService messageService, IWindowService windowService)
-                                   : base(service, service, loadingService, dialogService, messageService)
+                                   IDialogService dialogService, IMessageService messageService, IWindowService windowService, IUserSessionService userSessionService)
+                                   : base(service, service, loadingService, dialogService, messageService, userSessionService)
         {
             _windowService = windowService;
             _roleService = roleService;

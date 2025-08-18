@@ -6,6 +6,7 @@ namespace OMS.UI.Services.UserSession
     {
         UserLoginModel? CurrentUser { get; }
         TokenModel? CurrentToken { get; }
+        IEnumerable<string>? Claims { get; }
         bool IsLoggedIn { get; }
         void Login(LoginInfoModel loginInfo, string password, bool isRememberMe = false);
         void Logout();

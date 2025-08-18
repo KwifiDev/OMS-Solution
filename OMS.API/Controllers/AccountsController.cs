@@ -47,7 +47,7 @@ namespace OMS.API.Controllers
         [Authorize(Policy = PermissionsData.Accounts.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<AccountDto>> GetByClientIdAsync([FromRoute] int clientId)
         {
@@ -62,7 +62,7 @@ namespace OMS.API.Controllers
             try
             {
                 var model = await _service.GetByClientIdAsync(clientId);
-                return model is null ? NotFound() : Ok(_mapper.Map<AccountDto>(model));
+                return model is null ? NoContent() : Ok(_mapper.Map<AccountDto>(model));
             }
             catch (Exception ex)
             {

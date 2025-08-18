@@ -61,7 +61,8 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             if (!await base.EnterEditModeAsync(id)) return false;
 
             LoadAssociatedPerson();
-            return await LoadAssociatedAccount();
+            await LoadAssociatedAccount();
+            return FindPersonViewModel.Person != null;
         }
 
         protected override async Task Save(object? parameter)
@@ -113,9 +114,9 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             var accountModel = await _accountService.GetByClientIdAsync(Model.ClientId);
             if (accountModel == null) 
             {
-                _messageService.ShowErrorMessage("خطا في الحساب", MessageTemplates.ClientAccountViewError);
+                //_messageService.ShowErrorMessage("خطا في الحساب", MessageTemplates.ClientAccountViewError);
                 return false;
-            } 
+            }
 
             ClientAccount = accountModel;
             HasCreateUserAccount = true;

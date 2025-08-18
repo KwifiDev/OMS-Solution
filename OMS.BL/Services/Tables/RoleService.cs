@@ -5,7 +5,6 @@ using OMS.BL.Mapping;
 using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
 using OMS.DA.Entities.Identity;
-using System.Security.Claims;
 
 namespace OMS.BL.Services.Tables
 {
@@ -93,5 +92,12 @@ namespace OMS.BL.Services.Tables
             return (role is not null);
         }
 
+        public async Task<IEnumerable<string>> GetClaimsAsync(string roleName)
+        {
+            var role = await _roleManager.FindByNameAsync(roleName);
+            if (role is null) return Enumerable.Empty<string>();
+
+            return (await _roleManager.GetClaimsAsync(role)).Select(claim => claim.Value);
+        }
     }
 }

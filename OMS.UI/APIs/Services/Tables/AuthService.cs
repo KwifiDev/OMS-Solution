@@ -119,7 +119,7 @@ namespace OMS.UI.APIs.Services.Tables
 
                 var userLogin = _mapper.Map<UserLoginModel>(loginInfo!.UserLogin);
 
-                return new LoginInfoModel { TokenInfo = loginInfo.TokenInfo, UserLogin = userLogin };
+                return new LoginInfoModel { TokenInfo = loginInfo.TokenInfo, UserLogin = userLogin, Claims = loginInfo.Claims };
 
             }
             catch (Exception ex)

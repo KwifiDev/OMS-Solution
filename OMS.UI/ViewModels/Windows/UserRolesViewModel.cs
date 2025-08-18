@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OMS.Common.Data;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Views;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using System.Collections.ObjectModel;
 
@@ -19,6 +21,7 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IMapper _mapper;
         private readonly IMessageService _messageService;
         private readonly IWindowService _windowService;
+        private readonly IUserSessionService _userSessionService;
 
         [ObservableProperty]
         private UserDetailModel _currentUser = null!;
@@ -29,13 +32,14 @@ namespace OMS.UI.ViewModels.Windows
         private IEnumerable<string> _currentUserRoles = Enumerable.Empty<string>();
 
         public UserRolesViewModel(IRoleService roleService, IAuthService authService, IMapper mapper,
-                                  IMessageService messageService, IWindowService windowService)
+                                  IMessageService messageService, IWindowService windowService, IUserSessionService userSessionService)
         {
             _roleService = roleService;
             _authService = authService;
             _mapper = mapper;
             _messageService = messageService;
             _windowService = windowService;
+            _userSessionService = userSessionService;
         }
 
         public async Task<bool> OnOpeningDialog(UserDetailModel? userModel)
@@ -43,24 +47,25 @@ namespace OMS.UI.ViewModels.Windows
             if (userModel is null) return false;
 
             CurrentUser = userModel;
-            await LoadData();
-
-            return true;
+            
+            return await LoadData();
         }
 
 
         [RelayCommand]
-        private async Task LoadData()
+        private async Task<bool> LoadData()
         {
             try
             {
                 var allRoles = await _roleService.GetAllAsync();
                 AvailableRoles = new(_mapper.Map<IEnumerable<UserRoleSelectionModel>>(allRoles));
                 await LoadCurrentUserRolesAsync();
+                return AvailableRoles.Count > 0;
             }
             catch (Exception ex)
             {
                 _messageService.ShowErrorMessage("خطأ في تحميل البيانات", $"حدث خطأ أثناء تحميل الأدوار: {ex.Message}");
+                return false;
             }
         }
 
@@ -76,11 +81,16 @@ namespace OMS.UI.ViewModels.Windows
             }
         }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanSaveRoleChanges))]
         private async Task SaveRoleChangesAsync()
         {
             var (rolesToAdd, rolesToRemove) = CalculateRoleChanges();
             await ApplyRoleChangesAsync(rolesToAdd, rolesToRemove);
+        }
+
+        private bool CanSaveRoleChanges()
+        {
+            return _userSessionService.Claims!.Contains(PermissionsData.Users.ManageRoles);
         }
 
         private (ICollection<string> rolesToAdd, ICollection<string> rolesToRemove) CalculateRoleChanges()

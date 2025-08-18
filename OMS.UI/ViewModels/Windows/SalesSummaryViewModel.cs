@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using OMS.Common.Data;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models.Tables;
@@ -7,6 +8,7 @@ using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
 using OMS.UI.Views.Windows;
@@ -15,12 +17,17 @@ namespace OMS.UI.ViewModels.Windows
 {
     public partial class SalesSummaryViewModel : BasePageViewModel<ISaleService, ISalesSummaryService, SalesSummaryModel, SaleModel>, IDialogInitializer<int?>
     {
+        protected override string ViewClaim => PermissionsData.SalesSummary.View;
+        protected override string AddClaim => PermissionsData.Sales.Add;
+        protected override string EditClaim => PermissionsData.Sales.Edit;
+        protected override string DeleteClaim => PermissionsData.Sales.Delete;
+
         private readonly IWindowService _windowService;
         private int _clientId;
 
         public SalesSummaryViewModel(ISaleService service, ISalesSummaryService displayService, ILoadingService loadingService,
-                                     IDialogService dialogService, IMessageService messageService, IWindowService windowService)
-                                     : base(service, displayService, loadingService, dialogService, messageService)
+                                     IDialogService dialogService, IMessageService messageService, IWindowService windowService, IUserSessionService userSessionService)
+                                     : base(service, displayService, loadingService, dialogService, messageService, userSessionService)
         {
             SelectedItemChanged += NotifyCanExecuteChanged;
             CommandConditions[nameof(EditItemCommand)] += CanChangeSale;

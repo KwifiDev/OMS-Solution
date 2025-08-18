@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using OMS.UI.APIs.Dtos.Hybrid;
 using OMS.UI.APIs.Services.Interfaces.Tables;
-using OMS.UI.APIs.Services.Tables;
 using OMS.UI.Models.Others;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
@@ -72,8 +70,6 @@ namespace OMS.UI.ViewModels.Windows
                 NewPassword = ChangePasswordModel.NewPassword
             };
 
-            //HashPass(model);
-
             bool isChanged = await _authService.ChangePasswordAsync(model);
 
             if (!isChanged)
@@ -89,11 +85,6 @@ namespace OMS.UI.ViewModels.Windows
 
         }
 
-        //private void HashPass(ChangePasswordModel model)
-        //{
-        //    model.OldPassword = _hashService.HashPassword(model.OldPassword);
-        //    model.NewPassword = _hashService.HashPassword(model.NewPassword);
-        //}
 
         private void SaveNewPasswordConifg(string newPassword)
         {

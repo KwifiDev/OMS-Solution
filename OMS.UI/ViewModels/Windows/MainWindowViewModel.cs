@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using OMS.Common.Data;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
 using OMS.UI.Resources.Strings;
@@ -88,7 +89,7 @@ namespace OMS.UI.ViewModels.Windows
         }
         private bool CanOpenDashboard()
         {
-            return CanOpenPage<DashboardPageViewModel>();
+            return CanOpenPage<DashboardPageViewModel>(PermissionsData.Dashboard.View);
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenRevenues))]
@@ -100,7 +101,7 @@ namespace OMS.UI.ViewModels.Windows
 
         private bool CanOpenRevenues()
         {
-            return CanOpenPage<RevenuesPageViewModel>();
+            return CanOpenPage<RevenuesPageViewModel>(PermissionsData.Revenues.View);
         }
 
 
@@ -112,7 +113,7 @@ namespace OMS.UI.ViewModels.Windows
         }
         private bool CanOpenPeople()
         {
-            return CanOpenPage<PeoplePageViewModel>();
+            return CanOpenPage<PeoplePageViewModel>(PermissionsData.PeopleDetail.View);
         }
 
 
@@ -124,7 +125,7 @@ namespace OMS.UI.ViewModels.Windows
         }
         private bool CanOpenUsers()
         {
-            return CanOpenPage<UsersPageViewModel>();
+            return CanOpenPage<UsersPageViewModel>(PermissionsData.UsersDetail.View);
         }
 
 
@@ -136,7 +137,7 @@ namespace OMS.UI.ViewModels.Windows
         }
         private bool CanOpenBranches()
         {
-            return CanOpenPage<BranchesPageViewModel>();
+            return CanOpenPage<BranchesPageViewModel>(PermissionsData.BranchesOperationalMetric.View);
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenServices))]
@@ -148,7 +149,7 @@ namespace OMS.UI.ViewModels.Windows
 
         private bool CanOpenServices()
         {
-            return CanOpenPage<ServicesPageViewModel>();
+            return CanOpenPage<ServicesPageViewModel>(PermissionsData.ServicesSummary.View);
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenClients))]
@@ -160,7 +161,7 @@ namespace OMS.UI.ViewModels.Windows
 
         private bool CanOpenClients()
         {
-            return CanOpenPage<ClientsPageViewModel>();
+            return CanOpenPage<ClientsPageViewModel>(PermissionsData.ClientsSummary.View);
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenSettings))]
@@ -172,7 +173,7 @@ namespace OMS.UI.ViewModels.Windows
 
         private bool CanOpenSettings()
         {
-            return CanOpenPage<SettingsPageViewModel>();
+            return CanOpenPage<SettingsPageViewModel>(PermissionsData.Roles.View);
         }
 
 
@@ -187,9 +188,9 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private void Exit() => _windowService.Exit();
 
-        private bool CanOpenPage<TViewModel>() where TViewModel : class
+        private bool CanOpenPage<TViewModel>(string claim) where TViewModel : class
         {
-            return _navigationService.SelectedViewModelPage?.GetType() != typeof(TViewModel);
+            return _navigationService.SelectedViewModelPage?.GetType() != typeof(TViewModel) && _userSessionService.Claims!.Contains(claim);
         }
 
         private void NotifyCommandsCanExecuteChanged()

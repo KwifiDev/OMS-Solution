@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using OMS.Common.Data;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models.Records;
@@ -9,15 +10,22 @@ using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Views.Windows;
 
 namespace OMS.UI.ViewModels.Pages
 {
     public partial class ClientsPageViewModel : BasePageViewModel<IClientService, IClientsSummaryService, ClientsSummaryModel, ClientModel>
     {
-        public ClientsPageViewModel(IClientService clientService, IClientsSummaryService clientsSummaryService, 
-                                    ILoadingService loadingService, IDialogService dialogService, IMessageService messageService)
-                                    : base(clientService, clientsSummaryService, loadingService, dialogService, messageService)
+
+        protected override string ViewClaim => PermissionsData.ClientsSummary.View;
+        protected override string AddClaim => PermissionsData.Clients.Add;
+        protected override string EditClaim => PermissionsData.Clients.Edit;
+        protected override string DeleteClaim => PermissionsData.Clients.Delete;
+
+        public ClientsPageViewModel(IClientService clientService, IClientsSummaryService clientsSummaryService,
+                                    ILoadingService loadingService, IDialogService dialogService, IMessageService messageService, IUserSessionService userSessionService)
+                                    : base(clientService, clientsSummaryService, loadingService, dialogService, messageService, userSessionService)
         {
             SelectedItemChanged += NotifyCanExecuteChanged;
         }
@@ -53,48 +61,66 @@ namespace OMS.UI.ViewModels.Pages
             ShowDebtsSummaryCommand.NotifyCanExecuteChanged();
         }
 
-        [RelayCommand(CanExecute = nameof(CanOpenAccountServices))]
+        [RelayCommand(CanExecute = nameof(CanShowClientAccountDetails))]
         private void ShowClientAccountDetails()
         {
             _dialogService.ShowDialog<ClientAccountDetailsWindow, int?>(SelectedItem?.AccountId);
         }
 
-        [RelayCommand(CanExecute = nameof(CanOpenAccountServices))]
+        private bool CanShowClientAccountDetails()
+        {
+            return SelectedItem?.AccountId != null && _userSessionService.Claims!.Contains(PermissionsData.Accounts.View);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanShowClientAccountTransaction))]
         private async Task ShowClientAccountDeposit()
         {
             await _dialogService.ShowDialog<ClientAccountTransactionWindow, TransactionParams>
                 (new TransactionParams(SelectedItem?.AccountId, TransactionStatus.EnMode.Deposit));
         }
 
-        [RelayCommand(CanExecute = nameof(CanOpenAccountServices))]
+        [RelayCommand(CanExecute = nameof(CanShowClientAccountTransaction))]
         private async Task ShowClientAccountWithdraw()
         {
             await _dialogService.ShowDialog<ClientAccountTransactionWindow, TransactionParams>
                 (new TransactionParams(SelectedItem?.AccountId, TransactionStatus.EnMode.Withdraw));
         }
 
-        [RelayCommand(CanExecute = nameof(CanOpenAccountServices))]
+        [RelayCommand(CanExecute = nameof(CanShowClientAccountTransaction))]
         private void ShowClientAccountTransfer()
         {
             _messageService.ShowInfoMessage("لم يتم اجراء", "لم يتم انشاء هذه الأضافة بعد");
         }
 
-        [RelayCommand]
+        private bool CanShowClientAccountTransaction()
+        {
+            return SelectedItem?.AccountId != null && _userSessionService.Claims!.Contains(PermissionsData.Accounts.Transaction);
+        }
+
+
+        [RelayCommand(CanExecute = nameof(CanShowSalesSummary))]
         private async Task ShowSalesSummary()
         {
             await _dialogService.ShowDialog<SalesSummaryWindow, int?>(SelectedItem?.ClientId);
         }
 
-        [RelayCommand(CanExecute = nameof(CanOpenAccountServices))]
+        private bool CanShowSalesSummary()
+        {
+            return SelectedItem?.AccountId != null && _userSessionService.Claims!.Contains(PermissionsData.SalesSummary.View);
+        }
+
+
+        [RelayCommand(CanExecute = nameof(CanShowDebtsSummary))]
         private async Task ShowDebtsSummary()
         {
             await _dialogService.ShowDialog<DebtsSummaryWindow, (int ClientId, int AccountId)>((SelectedItem!.ClientId, (int)SelectedItem.AccountId!));
         }
 
-        private bool CanOpenAccountServices()
+        private bool CanShowDebtsSummary()
         {
-            return SelectedItem?.AccountId != null;
+            return SelectedItem?.AccountId != null && _userSessionService.Claims!.Contains(PermissionsData.DebtsSummary.View);
         }
+
 
     }
 }

@@ -61,10 +61,11 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         public override async Task<bool> OnOpeningDialog(int? id = -1)
         {
             var isSuccess = await base.OnOpeningDialog(id);
+
+            bool isBranchesLoaded = false;
+            if (isSuccess) isBranchesLoaded = await InitializeBranches();
             
-            if (isSuccess) await InitializeBranches();
-            
-            return isSuccess;
+            return isSuccess && isBranchesLoaded;
         }
 
         protected override async Task<UserModel?> GetByIdAsync(int id)
@@ -94,7 +95,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         {
             if (isAdding)
             {
-                //userModel.Password = _hashService.HashPassword(userModel.Password);
                 return await _authService.CreateUserAsync(userModel);
             }
             else
@@ -148,10 +148,12 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             RefreshUserSession();
         }
 
-        private async Task InitializeBranches()
+        private async Task<bool> InitializeBranches()
         {
             var branchOption = await _branchService.GetAllBranchesOption();
             Branches = new ObservableCollection<BranchOptionModel>(branchOption!);
+
+            return Branches.Count > 0;
         }
 
         private void LoadAssociatedPerson()

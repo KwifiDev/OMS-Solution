@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using OMS.Common.Data;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models.Tables;
@@ -6,6 +7,7 @@ using OMS.UI.Models.Views;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
 using OMS.UI.Views.Windows;
@@ -14,11 +16,17 @@ namespace OMS.UI.ViewModels.Windows
 {
     public partial class RolesSummaryViewModel : BasePageViewModel<IRoleService, IRolesSummaryService, RolesSummaryModel, RoleModel>, IDialogInitializer<int?>
     {
+        protected override string ViewClaim => PermissionsData.RolesSummary.View;
+        protected override string AddClaim => PermissionsData.Roles.Add;
+        protected override string EditClaim => PermissionsData.Roles.Edit;
+        protected override string DeleteClaim => PermissionsData.Roles.Delete;
+
+
         private readonly IWindowService _windowService;
 
         public RolesSummaryViewModel(IRoleService service, IRolesSummaryService displayService, ILoadingService loadingService,
-                                     IDialogService dialogService, IMessageService messageService, IWindowService windowService)
-                                     : base(service, displayService, loadingService, dialogService, messageService)
+                                     IDialogService dialogService, IMessageService messageService, IWindowService windowService, IUserSessionService userSessionService)
+                                     : base(service, displayService, loadingService, dialogService, messageService, userSessionService)
         {
             _windowService = windowService;
         }

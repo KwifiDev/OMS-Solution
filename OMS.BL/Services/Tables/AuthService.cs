@@ -56,7 +56,7 @@ namespace OMS.BL.Services.Tables
             return true;
         }
 
-        public async Task<(TokenModel TokenInfo, UserLoginModel UserLogin)> LoginAsync(LoginModel model)
+        public async Task<(TokenModel TokenInfo, UserLoginModel UserLogin, IEnumerable<string> claims)> LoginAsync(LoginModel model)
         {
             var user = await _userManager.Users
                              .Include(u => u.Person)
@@ -80,7 +80,15 @@ namespace OMS.BL.Services.Tables
                 TokenType = "Bearer"
             };
 
-            return (tokenInfo, userLoginModel);
+            var roles = await _userManager.GetRolesAsync(user);
+            var userClaims = new HashSet<string>();
+            foreach (var roleName in roles)
+            {
+                var claims = await _roleService.GetClaimsAsync(roleName);
+                userClaims.UnionWith(claims);
+            }
+
+            return (tokenInfo, userLoginModel, userClaims);
         }
 
         public async Task<bool> RegisterUserWithProfileAsync(FullRegisterModel model)

@@ -11,6 +11,7 @@ namespace OMS.UI.ViewModels.Pages
 {
     public partial class DashboardPageViewModel : ObservableObject
     {
+
         public record DashboardCard(PackIconKind Icon, Brush Color, string Title, decimal? Value);
 
         private readonly IDashboardSummaryService _dashboardSummaryService;

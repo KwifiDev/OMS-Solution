@@ -145,11 +145,11 @@ namespace OMS.API.Controllers
         {
             try
             {
-                var (TokenInfo, UserLogin) = await _authService.LoginAsync(_mapper.Map<LoginModel>(loginDto));
+                var (TokenInfo, UserLogin, userClaims) = await _authService.LoginAsync(_mapper.Map<LoginModel>(loginDto));
 
                 return UserLogin is null
                     ? NotFound()
-                    : Ok(new LoginInfoDto { TokenInfo = TokenInfo, UserLogin = _mapper.Map<ResponseLoginDto>(UserLogin) });
+                    : Ok(new LoginInfoDto { TokenInfo = TokenInfo, UserLogin = _mapper.Map<ResponseLoginDto>(UserLogin), Claims = userClaims });
             }
             catch (Exception ex)
             {
@@ -224,7 +224,7 @@ namespace OMS.API.Controllers
         /// <response code="404">If roles was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("userroles/{userId:int}")]
-        [Authorize(Roles = PermissionsData.Users.ManageRoles)]
+        [Authorize(Policy = PermissionsData.Users.ManageRoles)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -1,6 +1,5 @@
 ﻿using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
-using System.Security.Claims;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -20,5 +19,6 @@ namespace OMS.BL.IServices.Tables
 
         Task<bool> IsExists(int roleId);
 
+        Task<IEnumerable<string>> GetClaimsAsync(string roleName);
     }
 }

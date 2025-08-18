@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using OMS.Common.Data;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models.Tables;
@@ -14,13 +15,15 @@ namespace OMS.UI.ViewModels.Pages
 {
     public partial class UsersPageViewModel : BasePageViewModel<IUserService, IUserDetailService, UserDetailModel, UserModel>
     {
-        private readonly IUserSessionService _userSessionService;
+        protected override string ViewClaim => PermissionsData.UsersDetail.View;
+        protected override string AddClaim => PermissionsData.Users.Add;
+        protected override string EditClaim => PermissionsData.Users.Edit;
+        protected override string DeleteClaim => PermissionsData.Users.Delete;
 
         public UsersPageViewModel(IUserService userService, IUserDetailService userDetailService, ILoadingService loadingService,
                                   IDialogService dialogService, IMessageService messageService, IUserSessionService userSessionService)
-                                  : base(userService, userDetailService, loadingService, dialogService, messageService)
+                                  : base(userService, userDetailService, loadingService, dialogService, messageService, userSessionService)
         {
-            _userSessionService = userSessionService;
         }
 
         protected override async Task<bool> ExecuteDelete(int itemId)
@@ -65,7 +68,7 @@ namespace OMS.UI.ViewModels.Pages
 
         private bool CanActiveUser()
         {
-            return SelectedItem?.IsActive == "غير فعّال";
+            return SelectedItem?.IsActive == "غير فعّال" && _userSessionService.Claims!.Contains(PermissionsData.Users.Activation);
         }
 
         [RelayCommand(CanExecute = nameof(CanInActiveUser))]
@@ -83,7 +86,7 @@ namespace OMS.UI.ViewModels.Pages
 
         private bool CanInActiveUser()
         {
-            return SelectedItem?.IsActive == "فعّال";
+            return SelectedItem?.IsActive == "فعّال" && _userSessionService.Claims!.Contains(PermissionsData.Users.Activation);
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenRolesManager))]
@@ -94,14 +97,19 @@ namespace OMS.UI.ViewModels.Pages
 
         private bool CanOpenRolesManager()
         {
-            return SelectedItem != null;
+            return SelectedItem != null && _userSessionService.Claims!.Contains(PermissionsData.Users.ManageRoles);
         }
 
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanOpenChangePassword))]
         private async Task OpenChangePassword()
         {
             await _dialogService.ShowDialog<ChangePasswordWindow, int?>(SelectedItem?.UserId);
+        }
+
+        private bool CanOpenChangePassword()
+        {
+            return SelectedItem != null && _userSessionService.Claims!.Contains(PermissionsData.Users.ChangePassword);
         }
 
         private async Task UpdateUserActivation(string userConfirmationMessage, bool isActiveUser, string isActiveTitle, string successTitle)

@@ -7,6 +7,7 @@ using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Tables;
 using OMS.UI.Models.Views;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 
@@ -32,6 +33,7 @@ namespace OMS.UI.APIs.Services.Tables
                     return null;
                 }
 
+                if (response.StatusCode == HttpStatusCode.NoContent) return null;
 
                 var dto = await response.Content.ReadFromJsonAsync<AccountDto>();
                 return dto != null ? _mapper.Map<AccountModel>(dto) : null;

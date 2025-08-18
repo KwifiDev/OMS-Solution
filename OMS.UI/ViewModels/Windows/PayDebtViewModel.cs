@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using OMS.Common.Data;
 using OMS.Common.Enums;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
@@ -81,7 +82,7 @@ namespace OMS.UI.ViewModels.Windows
             return true;
         }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanPayDebt))]
         private async Task PayDebt()
         {
             switch (DebtStatus.SelectMode)
@@ -94,6 +95,11 @@ namespace OMS.UI.ViewModels.Windows
                     await HandleAllDebtsPayment();
                     break;
             }
+        }
+
+        private bool CanPayDebt() 
+        {
+            return _userSessionService.Claims!.Contains(PermissionsData.Debts.Pay);
         }
 
         private async Task HandleSingleDebtPayment()

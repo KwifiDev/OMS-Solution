@@ -1,17 +1,25 @@
-﻿using OMS.UI.APIs.Services.Interfaces.Tables;
+﻿using OMS.Common.Data;
+using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Tables;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Views.Windows;
 
 namespace OMS.UI.ViewModels.Pages
 {
     public partial class RevenuesPageViewModel : BasePageViewModel<IRevenueService, IRevenueService, RevenueModel, RevenueModel>
     {
-        public RevenuesPageViewModel(IRevenueService revenueService, IDialogService dialogService, ILoadingService loadingService, IMessageService messageService)
-                                     : base(revenueService, revenueService, loadingService, dialogService, messageService)
+        protected override string ViewClaim => PermissionsData.Revenues.View;
+        protected override string AddClaim => PermissionsData.Revenues.Add;
+        protected override string EditClaim => PermissionsData.Revenues.Edit;
+        protected override string DeleteClaim => PermissionsData.Revenues.Delete;
+
+        public RevenuesPageViewModel(IRevenueService revenueService, IDialogService dialogService, ILoadingService loadingService,
+                                     IMessageService messageService, IUserSessionService userSessionService)
+                                     : base(revenueService, revenueService, loadingService, dialogService, messageService, userSessionService)
         {
         }
 
@@ -36,8 +44,8 @@ namespace OMS.UI.ViewModels.Pages
                     _messageService.ShowInfoMessage("منع اضافة", MessageTemplates.CantAddRevenueMessage);
                     return;
                 }
-            } 
-            
+            }
+
 
             await _dialogService.ShowDialog<AddEditRevenueWindow, int?>(itemId);
         }

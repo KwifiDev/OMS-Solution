@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OMS.Common.Data;
 using OMS.Common.Enums;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
@@ -103,7 +104,7 @@ namespace OMS.UI.ViewModels.Windows
         }
 
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanStartTansaction))]
         private async Task StartTansaction(object? parameter)
         {
             if (!_messageService.ShowQuestionMessage("اجراء مناقلة",
@@ -124,6 +125,11 @@ namespace OMS.UI.ViewModels.Windows
             UpdateStatusAndNotify();
 
             await LoadClientAccountAsync(AccountTransaction.AccountId);
+        }
+
+        private bool CanStartTansaction()
+        {
+            return _userSessionService.Claims!.Contains(PermissionsData.Accounts.Transaction);
         }
 
         private bool ValidateModel()
@@ -165,10 +171,15 @@ namespace OMS.UI.ViewModels.Windows
             TransactionStatus.ModelObject = AccountTransaction;
 
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanShowAccountTransactions))]
         private async Task ShowAccountTransactions(int accountId)
         {
             await _dialogService.ShowDialog<AccountTransactionsWindow, int>(accountId);
+        }
+
+        private bool CanShowAccountTransactions()
+        {
+            return _userSessionService.Claims!.Contains(PermissionsData.Accounts.View);
         }
 
         [RelayCommand]

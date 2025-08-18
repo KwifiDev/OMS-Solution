@@ -1,11 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using OMS.Common.Data;
 using OMS.UI.Models.Others;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Registry;
 using OMS.UI.Services.Settings;
 using OMS.UI.Services.ShowMassage;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Views.Windows;
 
 namespace OMS.UI.ViewModels.Pages
@@ -16,19 +18,19 @@ namespace OMS.UI.ViewModels.Pages
         private readonly ISettingsService _settingsService;
         private readonly IMessageService _messageService;
         private readonly IDialogService _dialogService;
-
-
+        private readonly IUserSessionService _userSessionService;
         [ObservableProperty]
         private PersonalAppInfoModel _personalAppInfoModel;
 
 
         public SettingsPageViewModel(IRegistryService registrySerivce, ISettingsService settingsService, IMessageService messageService,
-                                     IDialogService dialogService)
+                                     IDialogService dialogService, IUserSessionService userSessionService)
         {
             _registrySerivce = registrySerivce;
             _settingsService = settingsService;
             _messageService = messageService;
             _dialogService = dialogService;
+            _userSessionService = userSessionService;
             PersonalAppInfoModel = new();
         }
 
@@ -57,10 +59,15 @@ namespace OMS.UI.ViewModels.Pages
             _messageService.ShowInfoMessage("معلومات", MessageTemplates.NotImplementedMessage);
         }
 
-        [RelayCommand]
+        [RelayCommand(CanExecute = nameof(CanOpenRolesConfig))]
         private async Task OpenRolesConfig()
         {
             await _dialogService.ShowDialog<RolesSummaryWindow, int?>();
+        }
+
+        private bool CanOpenRolesConfig()
+        {
+            return _userSessionService.Claims!.Contains(PermissionsData.Roles.View);
         }
 
         [RelayCommand]

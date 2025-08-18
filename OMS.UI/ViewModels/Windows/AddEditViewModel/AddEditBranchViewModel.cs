@@ -24,7 +24,5 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         protected override async Task<bool> SaveDataAsync(bool isAdding, BranchModel branchModel)
             => isAdding ? await _service.AddAsync(branchModel) : await _service.UpdateAsync(branchModel.BranchId, branchModel);
 
-        //protected override void UpdateModelAfterSave(BranchModel branchModel)
-        //    => Model.BranchId = branchModel.BranchId;
     }
 }

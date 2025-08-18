@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using OMS.Common.Data;
 using OMS.Common.Enums;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
@@ -12,6 +13,7 @@ using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Loading;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
+using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.Pages;
 using OMS.UI.Views.Windows;
@@ -20,6 +22,12 @@ namespace OMS.UI.ViewModels.Windows
 {
     public partial class DebtsSummaryViewModel : BasePageViewModel<IDebtService, IDebtsSummaryService, DebtsSummaryModel, DebtModel>, IDialogInitializer<(int ClientId, int AccountId)>
     {
+        protected override string ViewClaim => PermissionsData.DebtsSummary.View;
+        protected override string AddClaim => PermissionsData.Debts.Add;
+        protected override string EditClaim => PermissionsData.Debts.Edit;
+        protected override string DeleteClaim => PermissionsData.Debts.Delete;
+
+
         private readonly IWindowService _windowService;
         private readonly IUserAccountService _userAccountService;
         private int _clientId;
@@ -31,17 +39,17 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private decimal? _totalDebts = 0;
 
-        public DebtsSummaryViewModel(IUserAccountService userAccountService, IDebtService service, ILoadingService loadingService,
-                                     IDebtsSummaryService displayService, IDialogService dialogService, IMessageService messageService, IWindowService windowService)
-                                     : base(service, displayService, loadingService, dialogService, messageService)
+        public DebtsSummaryViewModel(IUserAccountService userAccountService, IDebtService service, ILoadingService loadingService, IDebtsSummaryService displayService,
+                                     IDialogService dialogService, IMessageService messageService, IWindowService windowService, IUserSessionService userSessionService)
+                                     : base(service, displayService, loadingService, dialogService, messageService, userSessionService)
         {
             _userAccountService = userAccountService;
             _windowService = windowService;
 
             SelectedItemChanged += OnSelectedItemChanged;
 
-            CommandConditions[nameof(EditItemCommand)] += CanChangeDebt;
-            CommandConditions[nameof(DeleteItemCommand)] += CanChangeDebt;
+            CommandConditions[nameof(EditItemCommand)] += CanOpenPayDebtDialog;
+            CommandConditions[nameof(DeleteItemCommand)] += CanOpenPayDebtDialog;
 
             WeakReferenceMessenger.Default.Register<PayDebtModel>(this, OnPayDebtReceived);
         }
@@ -79,9 +87,6 @@ namespace OMS.UI.ViewModels.Windows
                 if (!await LoadUserAccount()) return;
             });
 
-            //if (!await LoadDebtsData()) return false;
-            //if (!await LoadUserAccount()) return false;
-
             return true;
         }
 
@@ -116,11 +121,9 @@ namespace OMS.UI.ViewModels.Windows
             PayAllClientDebtsCommand.NotifyCanExecuteChanged();
         }
 
-        private bool CanChangeDebt() =>
-           SelectedItem?.Status == "غير مدفوع" &&
-           SelectedItem.TotalDebts <= UserAccount?.ClientBalance;
 
-        [RelayCommand(CanExecute = nameof(CanChangeDebt))]
+
+        [RelayCommand(CanExecute = nameof(CanCancelDebt))]
         private async Task CancelDebt()
         {
             if (SelectedItem is null) return;
@@ -141,10 +144,16 @@ namespace OMS.UI.ViewModels.Windows
             CalcTotalDebts();
         }
 
+        private bool CanCancelDebt()
+        {
+            return SelectedItem?.Status == "غير مدفوع" && _userSessionService.Claims!.Contains(PermissionsData.Debts.Cancel);
+        }
+
+
         [RelayCommand]
         private void Close() => _windowService.Close();
 
-        [RelayCommand(CanExecute = nameof(CanChangeDebt))]
+        [RelayCommand(CanExecute = nameof(CanOpenPayDebtDialog))]
         private async Task OpenPayDebtDialog()
         {
             bool isOpened = await _dialogService.ShowDialog<PayDebtWindow, (int Id, DebtStatus.EnMode)>(
@@ -157,8 +166,12 @@ namespace OMS.UI.ViewModels.Windows
             }
         }
 
-        private bool CanPayAllDebts() =>
-            TotalDebts <= UserAccount?.ClientBalance && TotalDebts != 0;
+        private bool CanOpenPayDebtDialog()
+        {
+            return SelectedItem?.Status == "غير مدفوع" && SelectedItem.TotalDebts <= UserAccount?.ClientBalance
+                 && _userSessionService.Claims!.Contains(PermissionsData.Debts.Pay);
+        }
+
 
         [RelayCommand(CanExecute = nameof(CanPayAllDebts))]
         private async Task PayAllClientDebts()
@@ -170,16 +183,32 @@ namespace OMS.UI.ViewModels.Windows
                 await LoadData();
         }
 
-        [RelayCommand]
+        private bool CanPayAllDebts()
+        {
+            return TotalDebts <= UserAccount?.ClientBalance && TotalDebts != 0 && _userSessionService.Claims!.Contains(PermissionsData.Debts.Pay);
+        }
+
+
+        [RelayCommand(CanExecute = nameof(CanOpenClientPaymentsDialog))]
         private async Task OpenClientPaymentsDialog()
         {
             await _dialogService.ShowDialog<AccountPaymentsWindow, int>(_accountId);
         }
 
-        [RelayCommand]
+        private bool CanOpenClientPaymentsDialog()
+        {
+            return _userSessionService.Claims!.Contains(PermissionsData.PaymentsSummary.View);
+        }
+
+        [RelayCommand(CanExecute = nameof(CanShowAccountTransactions))]
         private async Task ShowAccountTransactions(int accountId)
         {
             await _dialogService.ShowDialog<AccountTransactionsWindow, int>(accountId);
+        }
+
+        private bool CanShowAccountTransactions()
+        {
+            return _userSessionService.Claims!.Contains(PermissionsData.TransactionsSummary.View);
         }
 
         protected override async Task<DebtsSummaryModel> ConvertToModel(DebtModel messageModel)
