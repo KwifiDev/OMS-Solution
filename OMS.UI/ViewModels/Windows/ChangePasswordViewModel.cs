@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
-using OMS.UI.Services.Hash;
 using OMS.UI.Services.Registry;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.UserSession;
@@ -17,11 +15,9 @@ namespace OMS.UI.ViewModels.Windows
     public partial class ChangePasswordViewModel : ObservableValidator, IDialogInitializer<int?>
     {
         private readonly IAuthService _authService;
-        private readonly IHashService _hashService;
         private readonly IWindowService _windowService;
         private readonly IRegistryService _registryService;
         private readonly IMessageService _messageService;
-        private readonly IMapper _mapper;
         private readonly IUserSessionService _userSessionService;
 
 
@@ -36,15 +32,13 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private ChangePasswordModel _changePasswordModel = null!;
 
-        public ChangePasswordViewModel(IAuthService authService, IHashService hashService, IWindowService windowService, IRegistryService registryService,
-                                       IMessageService messageService, IMapper mapper, IUserSessionService userSessionService)
+        public ChangePasswordViewModel(IAuthService authService, IWindowService windowService, IRegistryService registryService,
+                                       IMessageService messageService, IUserSessionService userSessionService)
         {
             _authService = authService;
-            _hashService = hashService;
             _windowService = windowService;
             _registryService = registryService;
             _messageService = messageService;
-            _mapper = mapper;
             _userSessionService = userSessionService;
         }
 
@@ -70,7 +64,7 @@ namespace OMS.UI.ViewModels.Windows
                 NewPassword = ChangePasswordModel.NewPassword
             };
 
-            bool isChanged = await _authService.ChangePasswordAsync(model);
+            bool isChanged = IsCurrentUser() ? await _authService.ChangeMyPasswordAsync(model) : await _authService.ChangePasswordAsync(model);
 
             if (!isChanged)
             {
@@ -83,6 +77,11 @@ namespace OMS.UI.ViewModels.Windows
             _messageService.ShowInfoMessage("نجاح", MessageTemplates.PasswordResetSuccessMessage);
             IsModifiable = false;
 
+        }
+
+        private bool IsCurrentUser()
+        {
+            return _userSessionService.CurrentUser!.UserId == ChangePasswordModel.UserId;
         }
 
 

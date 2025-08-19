@@ -43,9 +43,9 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             Model.ClaimType = ClaimsTypes.Select(cto => cto.Value).FirstOrDefault();
             Model.RoleId = (int)roleId;
 
-            await LoadPermissionsData();
+            var isPermissionsLoaded = await LoadPermissionsData();
 
-            return true;
+            return isPermissionsLoaded;
         }
 
         private async Task<bool> LoadPermissionsData()

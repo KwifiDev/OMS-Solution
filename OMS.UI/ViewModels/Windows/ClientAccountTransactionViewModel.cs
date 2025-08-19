@@ -179,7 +179,7 @@ namespace OMS.UI.ViewModels.Windows
 
         private bool CanShowAccountTransactions()
         {
-            return _userSessionService.Claims!.Contains(PermissionsData.Accounts.View);
+            return _userSessionService.Claims!.Contains(PermissionsData.TransactionsSummary.View);
         }
 
         [RelayCommand]

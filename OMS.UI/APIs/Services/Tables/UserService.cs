@@ -20,32 +20,27 @@ namespace OMS.UI.APIs.Services.Tables
         {
         }
 
-        //public async Task<UserLoginModel?> GetByUsernameAndPasswordAsync(string username, string password)
-        //{
 
-        //    var requestUserDto = new RequestLoginDto { Username = username, Password = password };
+        public async Task<bool> UpdateMyUserAsync(int id, UserModel model)
+        {
+            try
+            {
+                var response = await _httpClient.PutAsJsonAsync($"{_endpoint}/updatemyuser/{id}", _mapper.Map<UserDto>(model));
 
-        //    try
-        //    {
-        //        var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/login", requestUserDto);
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في تحديث البيانات في الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return false;
+                }
 
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            LogError(new Exception($"اسم المستخدم او كملة المرور غير صحيحة.\nStatus Code: {response.StatusCode}"));
-        //            return null;
-        //        }
-
-        //        var responseLoginDto = await response.Content.ReadFromJsonAsync<ResponseLoginDto>();
-
-        //        return _mapper.Map<UserLoginModel>(responseLoginDto);
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogError(ex);
-        //        return null;
-        //    }
-        //}
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
 
         public async Task<UserLoginModel?> GetUserLoginByPersonIdAsync(int personId)
         {
@@ -169,31 +164,5 @@ namespace OMS.UI.APIs.Services.Tables
                 return false;
             }
         }
-
-        //public async Task<bool> ChangePasswordAsync(ChangePasswordModel model)
-        //{
-        //    try
-        //    {
-        //        var dto = _mapper.Map<ChangePasswordDto>(model);
-
-
-        //        var response = await _httpClient.PutAsJsonAsync($"{_endpoint}/changepassword", dto);
-
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-
-        //            LogError(new Exception($"حدث خطأ اثناء تعيين كلمة المرور.\nStatus Code: {response.StatusCode}"));
-        //            return false;
-        //        }
-
-        //        return true;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogError(ex);
-        //        return false;
-        //    }
-        //}
     }
 }

@@ -1,6 +1,4 @@
-﻿
-using OMS.UI.APIs.Dtos.Hybrid;
-using OMS.UI.Models.Others;
+﻿using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables
@@ -90,6 +88,15 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// <param name="username">The username of the user to retrieve.</param>
         /// <returns>True if the username Available, otherwise false.</returns>
         Task<bool> CheckUsernameAvailable(int userId, string username);
+
+
+        /// <summary>
+        /// Updates an existing user asynchronously.
+        /// </summary>
+        /// <param name="id">The user model id to update.</param>
+        /// <param name="model">The user model to update.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the user was updated successfully.</returns>
+        Task<bool> UpdateMyUserAsync(int id, UserModel model);
 
 
     }

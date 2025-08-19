@@ -46,7 +46,7 @@ namespace OMS.API.Extensions
                     }
                 }
 
-                _cache.Set(cacheKey, permissions, TimeSpan.FromMinutes(5));
+                _cache.Set(cacheKey, permissions, TimeSpan.FromMinutes(1));
             }
 
             if (permissions is not null && permissions.Contains(requirement.Permission))

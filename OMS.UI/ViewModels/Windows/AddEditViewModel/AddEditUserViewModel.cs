@@ -35,7 +35,8 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMessageService messageService, IRegistryService registryService,
                                     IFindPersonViewModel findPersonViewModel, IWindowService windowService, IStatusService statusService,
-                                    IUserSessionService userSessionService, IHashService hashService, IAuthService authService) : base(userService, messageService, windowService, statusService)
+                                    IUserSessionService userSessionService, IHashService hashService, IAuthService authService)
+                                    : base(userService, messageService, windowService, statusService)
         {
             _branchService = branchService;
             _userSessionService = userSessionService;
@@ -75,8 +76,8 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         {
             if (!await base.EnterEditModeAsync(id)) return false;
 
-            LoadAssociatedPerson();
-            return true;
+            var isPersonLoaded = await LoadAssociatedPerson();
+            return isPersonLoaded;
         }
 
         protected override async Task Save(object? parameter)
@@ -99,10 +100,15 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             }
             else
             {
-                bool isUpdated = await _service.UpdateAsync(userModel.UserId, userModel);
+                bool isUpdated = IsCurrentUser() ? await _service.UpdateMyUserAsync(userModel.UserId, userModel) : await _service.UpdateAsync(userModel.UserId, userModel);
                 if (isUpdated) UpdateUsernameConfig(userModel.Username);
                 return isUpdated;
             }
+        }
+
+        private bool IsCurrentUser()
+        {
+            return _userSessionService.CurrentUser!.UserId == Model.UserId;
         }
 
         private void UpdateUsernameConfig(string newUsername)
@@ -156,10 +162,11 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             return Branches.Count > 0;
         }
 
-        private void LoadAssociatedPerson()
+        private async Task<bool> LoadAssociatedPerson()
         {
             FindPersonViewModel.PersonId = Model.PersonId.ToString();
-            FindPersonViewModel.FindPerson();
+            await FindPersonViewModel.FindPerson();
+            return FindPersonViewModel.Person != null;
         }
 
         private bool ValidatePersonSelection()

@@ -52,6 +52,31 @@ namespace OMS.UI.APIs.Services.Tables
             }
         }
 
+        public async Task<bool> ChangeMyPasswordAsync(ChangePasswordModel model)
+        {
+            try
+            {
+                var dto = _mapper.Map<ChangePasswordDto>(model);
+
+                var response = await _httpClient.PutAsJsonAsync($"{_endpoint}/changemypassword", dto);
+
+                if (!response.IsSuccessStatusCode)
+                {
+
+                    LogError(new Exception($"حدث خطأ اثناء تعيين كلمة المرور.\nStatus Code: {response.StatusCode}"));
+                    return false;
+                }
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
+
         public async Task<bool> CreateUserAsync(UserModel model)
         {
             try

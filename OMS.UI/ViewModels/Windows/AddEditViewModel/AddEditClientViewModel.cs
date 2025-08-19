@@ -60,9 +60,9 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         {
             if (!await base.EnterEditModeAsync(id)) return false;
 
-            LoadAssociatedPerson();
-            await LoadAssociatedAccount();
-            return FindPersonViewModel.Person != null;
+            var isPersonLoaded = await LoadAssociatedPerson();
+            var isAccountLoaded = await LoadAssociatedAccount();
+            return isPersonLoaded;
         }
 
         protected override async Task Save(object? parameter)
@@ -191,10 +191,11 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private void ShowAccountDeletionError()
             => _messageService.ShowInfoMessage("خطأ", MessageTemplates.ClientAccountDeletionError);
 
-        private void LoadAssociatedPerson()
+        private async Task<bool> LoadAssociatedPerson()
         {
             FindPersonViewModel.PersonId = Model.PersonId.ToString();
-            FindPersonViewModel.FindPerson();
+            await FindPersonViewModel.FindPerson();
+            return FindPersonViewModel.Person != null;
         }
 
         private void ShowValidationError(string title, string message)

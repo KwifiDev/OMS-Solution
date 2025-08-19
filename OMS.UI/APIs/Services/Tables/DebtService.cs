@@ -79,6 +79,7 @@ namespace OMS.UI.APIs.Services.Tables
                 if (!response.IsSuccessStatusCode)
                 {
                     LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return EnPayDebtStatus.Failed;
                 }
 
                 return (EnPayDebtStatus)(await response.Content.ReadFromJsonAsync<int>());

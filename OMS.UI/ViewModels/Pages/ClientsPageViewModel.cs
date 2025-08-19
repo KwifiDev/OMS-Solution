@@ -59,6 +59,7 @@ namespace OMS.UI.ViewModels.Pages
             ShowClientAccountWithdrawCommand.NotifyCanExecuteChanged();
             ShowClientAccountTransferCommand.NotifyCanExecuteChanged();
             ShowDebtsSummaryCommand.NotifyCanExecuteChanged();
+            ShowSalesSummaryCommand.NotifyCanExecuteChanged();
         }
 
         [RelayCommand(CanExecute = nameof(CanShowClientAccountDetails))]

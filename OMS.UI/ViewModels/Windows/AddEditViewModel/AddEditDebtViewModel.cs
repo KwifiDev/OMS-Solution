@@ -27,7 +27,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         {
             _serviceService = serviceService;
             _userSessionService = userSessionService;
-            InitializeServices();
+            
         }
 
 
@@ -36,14 +36,16 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             var isSuccess = await base.OnOpeningDialog(parameters.DebtId);
             Model.ClientId = parameters.ClientId;
             Model.CreatedByUserId = _userSessionService.CurrentUser!.UserId;
-            return isSuccess;
+            var isServicesLoaded = await InitializeServices();
+            return isSuccess && isServicesLoaded;
         }
 
 
-        private async void InitializeServices()
+        private async Task<bool> InitializeServices()
         {
             var serviceOption = await _serviceService.GetAllServicesOption();
             Services = new(serviceOption);
+            return Services.Count > 0;
         }
 
         protected override async Task<DebtModel?> GetByIdAsync(int id) => await _service.GetByIdAsync(id);

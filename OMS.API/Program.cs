@@ -239,7 +239,6 @@ using (var scope = app.Services.CreateScope())
     {
         authorizationOptions.Value.AddPolicy(permission, policy =>
         {
-            //policy.RequireClaim("Permission", permission);
             policy.Requirements.Add(new PermissionRequirement(permission));
         });
     }

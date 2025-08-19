@@ -16,7 +16,7 @@ namespace OMS.UI.ViewModels.Windows
 {
     public partial class RolesSummaryViewModel : BasePageViewModel<IRoleService, IRolesSummaryService, RolesSummaryModel, RoleModel>, IDialogInitializer<int?>
     {
-        protected override string ViewClaim => PermissionsData.RolesSummary.View;
+        protected override string ViewClaim => PermissionsData.RoleClaims.View;
         protected override string AddClaim => PermissionsData.Roles.Add;
         protected override string EditClaim => PermissionsData.Roles.Edit;
         protected override string DeleteClaim => PermissionsData.Roles.Delete;

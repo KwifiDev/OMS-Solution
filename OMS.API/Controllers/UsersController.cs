@@ -7,6 +7,8 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
 using OMS.Common.Enums;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace OMS.API.Controllers
 {
@@ -60,6 +62,76 @@ namespace OMS.API.Controllers
         public override async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UserDto dto)
         {
             if (id <= 0) return NotFound();
+
+            try
+            {
+                if (!IsIdentifierIdentical(id, dto))
+                    return ValidationProblem(new ValidationProblemDetails
+                    {
+                        Errors = { { "id", new[] { "Route ID must match body ID" } } }
+                    });
+
+                var result = await _service.UpdateUserAsync(_mapper.Map<UserModel>(dto));
+
+                return result switch
+                {
+                    EnUserResult.NotFound => NotFound(),
+                    EnUserResult.UserNameConflict => Conflict(),
+                    EnUserResult.Success => NoContent(),
+                    _ => Problem(
+                                 title: "Update failed",
+                                 detail: "Entity could not be updated",
+                                 statusCode: StatusCodes.Status400BadRequest),
+                };
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Update operation failed",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1"
+                );
+            }
+        }
+
+
+        /// <summary>
+        /// Updates an existing user.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/users/1
+        ///     
+        /// Note: The ID in route must match the ID in request body.
+        /// </remarks>
+        /// <param name="id">The ID of the user to update (must be positive integer and match ID in request body).</param>
+        /// <param name="dto">The DTO containing updated data.</param>
+        /// <returns>
+        /// - 200 OK with updated user if successful
+        /// - 400 Bad Request if validation fails
+        /// - 404 Not Found if user doesn't exist
+        /// - 409 already used oldUsername
+        /// - 500 Internal Server Error if unexpected error occurs
+        /// </returns>
+        /// <response code="204">Returns no content when user updated</response>
+        /// <response code="400">If ID is invalid, doesn't match DTO ID, or validation fails</response>
+        /// <response code="404">If user with specified ID doesn't exist</response>
+        /// <response code="409">If user with specified oldUsername exist</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpPut("updatemyuser/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateMyUserAsync([FromRoute] int id, [FromBody] UserDto dto)
+        {
+            if (id <= 0) return NotFound();
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userId is null || userId.Value != dto.UserId.ToString()) return Forbid();
 
             try
             {
