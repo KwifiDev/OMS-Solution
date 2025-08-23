@@ -47,9 +47,12 @@ namespace OMS.UI.ViewModels.Windows
         }
 
         [RelayCommand]
-        private async Task LoadData()
+        private void LoadData()
         {
-            await OpenDashboard();
+            if (!_userSessionService.IsLoggedIn)
+            {
+                _windowService.CloseMainWindow();
+            }
         }
 
         [RelayCommand]
@@ -76,9 +79,17 @@ namespace OMS.UI.ViewModels.Windows
             var ok = _messageService.ShowQuestionMessage("تسجيل خروج", MessageTemplates.LogoutConfirmation);
             if (!ok) return;
 
+            ResetViewModelToDefault();
             _userSessionService.Logout();
-            _windowService.Hide();
+            _windowService.CloseMainWindow();
             _windowService.Open<LoginWindow>();
+        }
+
+        private void ResetViewModelToDefault()
+        {
+            CurrentUser = null;
+            _navigationService.ResetCurrentSelectedPage();
+            NotifyCommandsCanExecuteChanged();
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenDashboard))]
@@ -190,7 +201,7 @@ namespace OMS.UI.ViewModels.Windows
 
         private bool CanOpenPage<TViewModel>(string claim) where TViewModel : class
         {
-            return _navigationService.SelectedViewModelPage?.GetType() != typeof(TViewModel) && _userSessionService.Claims!.Contains(claim);
+            return _navigationService.SelectedViewModelPage?.GetType() != typeof(TViewModel) && _userSessionService.Claims!.Contains(claim) && CurrentUser != null;
         }
 
         private void NotifyCommandsCanExecuteChanged()

@@ -11,9 +11,9 @@
         xmlns:navBehaviors="clr-namespace:OMS.UI.Behaviors.Navigation"
         d:DataContext="{d:DesignInstance Type=ViewModels:MainWindowViewModel}"
         mc:Ignorable="d"
-        Height="600" 
+        Height="650" 
         Width="1000"
-        MinHeight="600" 
+        MinHeight="650" 
         MinWidth="1000"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource MaterialDesignWindow}"
@@ -146,7 +146,8 @@
 
                     <!-- Navigation Items -->
                     <Button Style="{StaticResource MenuButtonStyle}"
-                          Command="{Binding OpenDashboardCommand}">
+                          Command="{Binding OpenDashboardCommand}"
+                           Margin="3 3 3 3">
                         <StackPanel Orientation="Horizontal" 
                                   HorizontalAlignment="Left" 
                                   Width="180">
@@ -160,7 +161,8 @@
                     </Button>
 
                     <Button Style="{StaticResource MenuButtonStyle}"
-                            Command="{Binding OpenRevenuesCommand}">
+                            Command="{Binding OpenRevenuesCommand}"
+                            Margin="3 0 3 3">
                         <StackPanel Orientation="Horizontal" 
                                     HorizontalAlignment="Left" 
                                     Width="180">
@@ -174,7 +176,8 @@
                     </Button>
 
                     <Button Style="{StaticResource MenuButtonStyle}"
-                          Command="{Binding OpenPeopleCommand}">
+                          Command="{Binding OpenPeopleCommand}"
+                            Margin="3 0 3 3">
                         <StackPanel Orientation="Horizontal" 
                                   HorizontalAlignment="Right"  
                                   Width="180">
@@ -188,7 +191,8 @@
                     </Button>
 
                     <Button Style="{StaticResource MenuButtonStyle}"
-                            Command="{Binding OpenBranchesCommand}">
+                            Command="{Binding OpenBranchesCommand}"
+                            Margin="3 0 3 3">
 
                         <StackPanel Orientation="Horizontal" 
                                     HorizontalAlignment="Right"  
@@ -204,7 +208,8 @@
                     </Button>
 
                     <Button Style="{StaticResource MenuButtonStyle}"
-                            Command="{Binding OpenUsersCommand}">
+                            Command="{Binding OpenUsersCommand}"
+                            Margin="3 0 3 3">
                         
                         <StackPanel Orientation="Horizontal" 
                                     HorizontalAlignment="Right"  
@@ -220,7 +225,8 @@
                     </Button>
 
                     <Button Style="{StaticResource MenuButtonStyle}"
-                            Command="{Binding OpenServicesCommand}">
+                            Command="{Binding OpenServicesCommand}"
+                            Margin="3 0 3 3">
                         <StackPanel Orientation="Horizontal" 
                                     HorizontalAlignment="Right"  
                                     Width="180">
@@ -234,7 +240,8 @@
                     </Button>
 
                     <Button Style="{StaticResource MenuButtonStyle}"
-                            Command="{Binding OpenClientsCommand}">
+                            Command="{Binding OpenClientsCommand}"
+                            Margin="3 0 3 3">
                         <StackPanel Orientation="Horizontal" 
                                     HorizontalAlignment="Right"  
                                     Width="180">
@@ -251,7 +258,8 @@
                     </Button>
 
                     <Button Style="{StaticResource MenuButtonStyle}"
-                            Command="{Binding OpenSettingsCommand}">
+                            Command="{Binding OpenSettingsCommand}"
+                            Margin="3 0 3 3">
                             
                         <StackPanel Orientation="Horizontal" 
                                   HorizontalAlignment="Right"  

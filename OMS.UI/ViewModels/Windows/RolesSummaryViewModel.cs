@@ -24,6 +24,8 @@ namespace OMS.UI.ViewModels.Windows
 
         private readonly IWindowService _windowService;
 
+        private bool _isRolesChangedInToken = false;
+
         public RolesSummaryViewModel(IRoleService service, IRolesSummaryService displayService, ILoadingService loadingService,
                                      IDialogService dialogService, IMessageService messageService, IUserSessionService userSessionService, IWindowService windowService)
                                      : base(service, displayService, loadingService, dialogService, messageService, userSessionService)
@@ -37,7 +39,17 @@ namespace OMS.UI.ViewModels.Windows
             return Items.Any();
         }
 
-        protected override async Task<bool> ExecuteDelete(int itemId) => await _service.DeleteAsync(itemId);
+        protected override async Task<bool> ExecuteDelete(int itemId) 
+        {
+            var userRoles = _userSessionService.GetUserRoles();
+            var selectedRoleName = SelectedItem!.RoleName;
+
+            var isRoleRemoved = await _service.DeleteAsync(itemId);
+
+            _isRolesChangedInToken = userRoles.Contains(selectedRoleName) && isRoleRemoved;
+
+            return isRoleRemoved;
+        }
 
         protected override async Task<RolesSummaryModel> ConvertToModel(RoleModel messageModel)
             => (await _displayService.GetByIdAsync(messageModel.Id))!;
@@ -55,7 +67,10 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private async Task Close()
         {
-            await _userSessionService.UpdateClaims();
+            if (_isRolesChangedInToken)
+            {
+                await _userSessionService.UpdateToken();
+            }
             _windowService.Close();
         }
     }

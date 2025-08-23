@@ -15,6 +15,7 @@ using OMS.UI.Mapping;
 using OMS.UI.Services.Authentication;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Hash;
+using OMS.UI.Services.JWT;
 using OMS.UI.Services.Loading;
 using OMS.UI.Services.Navigation;
 using OMS.UI.Services.Registry;
@@ -369,6 +370,8 @@ namespace OMS.UI
             services.AddTransient<IConnectionService, ConnectionService>();
 
             services.AddTransient<ILoadingService, LoadingService>();
+
+            services.AddTransient<IJwtPayloadService, JwtPayloadService>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)

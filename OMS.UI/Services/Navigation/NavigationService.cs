@@ -37,5 +37,13 @@ namespace OMS.UI.Services.Navigation
                 });
             });
         }
+
+        public async Task ResetCurrentSelectedPage()
+        {
+            _currentSelectedPage = null;
+            _mainFrame.Navigate(_currentSelectedPage);
+            await ClearHistoryAsync();
+        }
+
     }
 }

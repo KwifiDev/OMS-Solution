@@ -8,5 +8,6 @@ namespace OMS.UI.Services.Navigation
         object? SelectedViewModelPage { get; }
         Task NavigateToPageAsync<T>() where T : Page;
         Task ClearHistoryAsync();
+        Task ResetCurrentSelectedPage();
     }
 }

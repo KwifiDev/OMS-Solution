@@ -13,5 +13,6 @@ namespace OMS.UI.Services.UserSession
         Task UpdateModel();
         Task UpdateToken();
         Task UpdateClaims();
+        IEnumerable<string> GetUserRoles();
     }
 }

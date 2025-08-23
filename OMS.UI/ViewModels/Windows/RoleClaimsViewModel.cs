@@ -83,6 +83,7 @@ namespace OMS.UI.ViewModels.Windows
         private async Task Close()
         {
             await SendMassage();
+            await _userSessionService.UpdateClaims();
             _windowService.Close();
         }
 

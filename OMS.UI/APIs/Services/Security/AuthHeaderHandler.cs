@@ -18,7 +18,7 @@ namespace OMS.UI.APIs.Services.Security
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             int retryCount = 0;
-            const int maxRetryCount = 5;
+            const int maxRetryCount = 10;
             const int delayMilliseconds = 1000;
 
             while (true)

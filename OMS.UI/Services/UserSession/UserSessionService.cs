@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Messaging;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
+using OMS.UI.Services.JWT;
 using OMS.UI.Services.Registry;
 
 namespace OMS.UI.Services.UserSession
@@ -11,6 +12,7 @@ namespace OMS.UI.Services.UserSession
         private readonly IUserService _userService;
         private readonly IRegistryService _registryService;
         private readonly IAuthService _authService;
+        private readonly IJwtPayloadService _jwtPayloadService;
 
         [ObservableProperty]
         private bool _isLoggedIn;
@@ -25,11 +27,12 @@ namespace OMS.UI.Services.UserSession
         private IEnumerable<string>? _claims;
 
 
-        public UserSessionService(IUserService userService, IRegistryService registryService, IAuthService authService)
+        public UserSessionService(IUserService userService, IRegistryService registryService, IAuthService authService, IJwtPayloadService jwtPayloadService)
         {
             _userService = userService;
             _registryService = registryService;
             _authService = authService;
+            _jwtPayloadService = jwtPayloadService;
         }
 
         public void Login(LoginInfoModel loginInfo, string password, bool isRememberMe = false)
@@ -78,6 +81,11 @@ namespace OMS.UI.Services.UserSession
             var claims = await _authService.GetUserClaimsByUserIdAsync(CurrentUser!.UserId);
 
             Claims = claims is null || !claims.Any() ? Claims : claims;
+        }
+
+        public IEnumerable<string> GetUserRoles()
+        {
+            return _jwtPayloadService.GetRoles(CurrentToken!.Token);
         }
     }
 }
