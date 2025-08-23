@@ -10,18 +10,18 @@ namespace OMS.API.Extensions
     {
         private readonly RoleManager<Role> _roleManager;
         private readonly IMemoryCache _cache;
+        private readonly IPermissionCacheService _cacheService;
 
-        public PermissionHandler(RoleManager<Role> roleManager, IMemoryCache cache)
+        public PermissionHandler(RoleManager<Role> roleManager, IMemoryCache cache, IPermissionCacheService cacheService)
         {
             _roleManager = roleManager;
             _cache = cache;
+            _cacheService = cacheService;
         }
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
-            if (context.User.Identity is null) return;
-
-            if (!context.User.Identity.IsAuthenticated) return;
+            if (context.User.Identity is null || !context.User.Identity.IsAuthenticated) return;
 
             var roles = context.User.FindAll(ClaimTypes.Role).Select(c => c.Value);
             if (!roles.Any()) return;
@@ -47,6 +47,7 @@ namespace OMS.API.Extensions
                 }
 
                 _cache.Set(cacheKey, permissions, TimeSpan.FromMinutes(1));
+                _cacheService.TrackPermissionKey(cacheKey);
             }
 
             if (permissions is not null && permissions.Contains(requirement.Permission))

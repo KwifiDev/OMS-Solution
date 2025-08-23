@@ -16,7 +16,7 @@ namespace OMS.UI.ViewModels.Pages
     public partial class ServicesPageViewModel : BasePageViewModel<IServiceService, IServicesSummaryService, ServicesSummaryModel, ServiceModel>
     {
 
-        protected override string ViewClaim => PermissionsData.ServicesSummary.View;
+        protected override string ViewClaim => PermissionsData.DiscountsApplied.View;
         protected override string AddClaim => PermissionsData.Services.Add;
         protected override string EditClaim => PermissionsData.Services.Edit;
         protected override string DeleteClaim => PermissionsData.Services.Delete;

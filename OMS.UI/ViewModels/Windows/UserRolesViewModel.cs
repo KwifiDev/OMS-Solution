@@ -86,6 +86,8 @@ namespace OMS.UI.ViewModels.Windows
         {
             var (rolesToAdd, rolesToRemove) = CalculateRoleChanges();
             await ApplyRoleChangesAsync(rolesToAdd, rolesToRemove);
+            await _userSessionService.UpdateClaims();
+            await _userSessionService.UpdateToken();
         }
 
         private bool CanSaveRoleChanges()

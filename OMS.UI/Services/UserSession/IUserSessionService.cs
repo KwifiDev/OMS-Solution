@@ -11,5 +11,7 @@ namespace OMS.UI.Services.UserSession
         void Login(LoginInfoModel loginInfo, string password, bool isRememberMe = false);
         void Logout();
         Task UpdateModel();
+        Task UpdateToken();
+        Task UpdateClaims();
     }
 }

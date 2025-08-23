@@ -25,7 +25,7 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IWindowService _windowService;
 
         public RolesSummaryViewModel(IRoleService service, IRolesSummaryService displayService, ILoadingService loadingService,
-                                     IDialogService dialogService, IMessageService messageService, IWindowService windowService, IUserSessionService userSessionService)
+                                     IDialogService dialogService, IMessageService messageService, IUserSessionService userSessionService, IWindowService windowService)
                                      : base(service, displayService, loadingService, dialogService, messageService, userSessionService)
         {
             _windowService = windowService;
@@ -53,6 +53,10 @@ namespace OMS.UI.ViewModels.Windows
             => await _dialogService.ShowDialog<AddEditRoleWindow, int?>(itemId);
 
         [RelayCommand]
-        private void Close() => _windowService.Close();
+        private async Task Close()
+        {
+            await _userSessionService.UpdateClaims();
+            _windowService.Close();
+        }
     }
 }

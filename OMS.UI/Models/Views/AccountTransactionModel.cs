@@ -6,7 +6,7 @@ namespace OMS.UI.Models.Views
     public class AccountTransactionModel : BaseModel
     {
         private int _accountId;
-        private decimal _amount;
+        private decimal _amount = 1000;
         private string? _notes;
         private int _createdByUserId;
         private EnTransactionType _transactionType;
@@ -20,7 +20,7 @@ namespace OMS.UI.Models.Views
         }
 
         [Required(ErrorMessage = "حقل الرصيد مطلوب")]
-        [Range(typeof(decimal), "1", "79228162514264337593543950335", ErrorMessage = "الرصيد يجب ان يكون موجب")]
+        [Range(typeof(decimal), "1000", "79228162514264337593543950335", ErrorMessage = "الرصيد يجب ان يكون موجب")]
         public decimal Amount
         {
             get => _amount;

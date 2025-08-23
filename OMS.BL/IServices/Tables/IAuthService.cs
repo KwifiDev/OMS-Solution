@@ -11,7 +11,9 @@ namespace OMS.BL.IServices.Tables
         Task<bool> RegisterUserWithProfileAsync(FullRegisterModel model);
 
 
+        Task<TokenModel?> UpdateToken(int userId);
         Task<IEnumerable<string>> GetUserRolesAsync(int userId);
+        Task<IEnumerable<string>> GetUserClaimsAsync(int userId);
         Task<EnAuthResult> AddUserToRoleAsync(UserRoleModel model);
         Task<EnAuthResult> RemoveUserFromRoleAsync(UserRoleModel model);
         Task<bool> ChangeUserRolesAsync(InputUserRolesModel model);

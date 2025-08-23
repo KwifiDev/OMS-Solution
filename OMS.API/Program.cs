@@ -174,8 +174,10 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 
 
-builder.Services.AddMemoryCache();
+builder.Services.AddMemoryCache(options => options.TrackStatistics = true);
+builder.Services.AddSingleton<IPermissionCacheService, PermissionCacheService>();
 builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+builder.Services.AddScoped<ClearPermissionCacheFilter>();
 
 // Mapping jwt configs to JwtSettings Object
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("Jwt"));

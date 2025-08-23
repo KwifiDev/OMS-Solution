@@ -10,6 +10,7 @@ namespace OMS.UI.Services.UserSession
     {
         private readonly IUserService _userService;
         private readonly IRegistryService _registryService;
+        private readonly IAuthService _authService;
 
         [ObservableProperty]
         private bool _isLoggedIn;
@@ -24,10 +25,11 @@ namespace OMS.UI.Services.UserSession
         private IEnumerable<string>? _claims;
 
 
-        public UserSessionService(IUserService userService, IRegistryService registryService)
+        public UserSessionService(IUserService userService, IRegistryService registryService, IAuthService authService)
         {
             _userService = userService;
             _registryService = registryService;
+            _authService = authService;
         }
 
         public void Login(LoginInfoModel loginInfo, string password, bool isRememberMe = false)
@@ -62,6 +64,20 @@ namespace OMS.UI.Services.UserSession
             CurrentUser = userLoginModel ?? CurrentUser;
 
             WeakReferenceMessenger.Default.Send(CurrentUser);
+        }
+
+        public async Task UpdateToken()
+        {
+            var tokenInfo = await _authService.RefreshTokenAsync(CurrentUser!.UserId);
+
+            CurrentToken = tokenInfo is null ? CurrentToken : tokenInfo;
+        }
+
+        public async Task UpdateClaims()
+        {
+            var claims = await _authService.GetUserClaimsByUserIdAsync(CurrentUser!.UserId);
+
+            Claims = claims is null || !claims.Any() ? Claims : claims;
         }
     }
 }

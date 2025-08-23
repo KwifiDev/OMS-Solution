@@ -154,11 +154,64 @@ namespace OMS.UI.APIs.Services.Tables
             }
         }
 
+        public async Task<TokenModel?> RefreshTokenAsync(int userId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_endpoint}/refreshtoken/{userId}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"حدث خطأ في علم جلب التوكن.\nStatus Code: {response.StatusCode}"));
+                    return null;
+                }
+
+                var tokenModel = await response.Content.ReadFromJsonAsync<TokenModel>();
+
+                return tokenModel;
+
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return default;
+            }
+        }
+
         public async Task<IEnumerable<string>> GetUserRolesByUserIdAsync(int userId)
         {
             try
             {
                 var response = await _httpClient.GetAsync($"{_endpoint}/userroles/{userId}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في جلب البيانات من الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return Enumerable.Empty<string>();
+                }
+
+                if (response.StatusCode == HttpStatusCode.NoContent) return Enumerable.Empty<string>();
+
+                var roles = await response.Content.ReadFromJsonAsync<IEnumerable<string>>();
+                return roles ?? Enumerable.Empty<string>();
+            }
+            catch (HttpRequestException httpEx)
+            {
+                LogError(httpEx);
+                return Enumerable.Empty<string>();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetUserClaimsByUserIdAsync(int userId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_endpoint}/userclaims/{userId}");
 
                 if (!response.IsSuccessStatusCode)
                 {

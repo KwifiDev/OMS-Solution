@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Hybrid;
 using OMS.API.Dtos.Tables;
+using OMS.API.Extensions;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Hybrid;
 using OMS.Common.Data;
@@ -162,6 +163,43 @@ namespace OMS.API.Controllers
             }
         }
 
+        /// <summary>
+        /// generate user token.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     POST /api/auth/updatetoken
+        /// </remarks>
+        /// <param name="loginDto">The login credentials</param>
+        /// <returns>User data if authenticated</returns>
+        /// <response code="200">Returns the authenticated user's data</response>
+        /// <response code="404">If oldUsername and password not Ok</response>
+        /// <response code="500">On internal server error</response>
+        [HttpGet("refreshtoken/{userId:int}")]
+        [Authorize(PermissionsData.Users.ManageRoles)]
+        [ServiceFilter(typeof(ClearPermissionCacheFilter))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<TokenModel>> RefreshTokenAsync([FromRoute] int userId)
+        {
+            try
+            {
+                var TokenInfo = await _authService.UpdateToken(userId);
+
+                return TokenInfo is null ? NotFound() : Ok(TokenInfo);
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                               title: "Generate Token Failed",
+                               detail: "An error occurred during Generate Token.",
+                               instance: ex.Message,
+                               statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
 
         /// <summary>
         /// Updates an user password.
@@ -290,6 +328,47 @@ namespace OMS.API.Controllers
                 return userRoles is null || !userRoles.Any()
                     ? NoContent()
                     : Ok(userRoles);
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error retrieving entity",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+        /// <summary>
+        /// Retrieves a specific user claims by its ID.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /api/auth/userclaims/1
+        /// </remarks>
+        /// <param name="userId">The ID of the user to retrieve (must be positive integer)</param>
+        /// <returns>The requested user claims</returns>
+        /// <response code="200">Returns the requested user claims</response>
+        /// <response code="204">Returns no user claims</response>
+        /// <response code="404">If claims was not found</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpGet("userclaims/{userId:int}")]
+        [Authorize(Policy = PermissionsData.Roles.View)]
+        [ServiceFilter(typeof(ClearPermissionCacheFilter))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public virtual async Task<ActionResult<IEnumerable<string>>> GetUserClaimsByUserIdAsync([FromRoute] int userId)
+        {
+            if (userId <= 0) return NotFound();
+
+            try
+            {
+                var userClaims = await _authService.GetUserClaimsAsync(userId);
+                return userClaims is null || !userClaims.Any()
+                    ? NoContent()
+                    : Ok(userClaims);
             }
             catch (Exception ex)
             {

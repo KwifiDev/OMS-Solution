@@ -91,6 +91,24 @@ namespace OMS.BL.Services.Tables
             return (tokenInfo, userLoginModel, userClaims);
         }
 
+        public async Task<TokenModel?> UpdateToken(int userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null) return null;
+
+            var jwtSecurityToken = await _tokenService.GenerateToken(user);
+            if (jwtSecurityToken is null) return null;
+
+            var tokenInfo = new TokenModel
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
+                Expires = jwtSecurityToken.ValidTo,
+                TokenType = "Bearer"
+            };
+
+            return tokenInfo;
+        }
+
         public async Task<bool> RegisterUserWithProfileAsync(FullRegisterModel model)
         {
             await using var transaction = await _unitOfWork.BeginTransactionAsync();
@@ -196,5 +214,20 @@ namespace OMS.BL.Services.Tables
             return await _userManager.IsInRoleAsync(user, model.RoleName);
         }
 
+        public async Task<IEnumerable<string>> GetUserClaimsAsync(int userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user is null) return new List<string>();
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var claims = new HashSet<string>();
+            foreach (var roleName in roles)
+            {
+                claims.UnionWith(await _roleService.GetClaimsAsync(roleName));
+            }
+
+            return claims;
+        }
     }
 }
