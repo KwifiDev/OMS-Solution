@@ -207,7 +207,7 @@ namespace OMS.UI.APIs.Services.Tables
             }
         }
 
-        public async Task<IEnumerable<string>> GetUserClaimsByUserIdAsync(int userId)
+        public async Task<IEnumerable<string>?> GetUserClaimsByUserIdAsync(int userId)
         {
             try
             {
@@ -216,7 +216,7 @@ namespace OMS.UI.APIs.Services.Tables
                 if (!response.IsSuccessStatusCode)
                 {
                     LogError(new Exception($"خطأ في جلب البيانات من الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
-                    return Enumerable.Empty<string>();
+                    return null;
                 }
 
                 if (response.StatusCode == HttpStatusCode.NoContent) return Enumerable.Empty<string>();

@@ -4,7 +4,7 @@ using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
 using OMS.UI.Models.Validations;
 using OMS.UI.Resources.Strings;
-using OMS.UI.Services.Hash;
+using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Registry;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement;
@@ -14,15 +14,15 @@ using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.UserControls.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using static OMS.Common.Data.PermissionsData;
 using static OMS.UI.ViewModels.UserControls.FindPersonViewModel;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 {
-    public partial class AddEditUserViewModel : AddEditBaseViewModel<UserModel, IUserService>
+    public partial class AddEditUserViewModel : AddEditBaseViewModel<UserModel, IUserService>, IDialogInitializer<(int? UserId, bool IsOpendOnUsersPage)>
     {
         private readonly IBranchService _branchService;
         private readonly IUserSessionService _userSessionService;
-        private readonly IHashService _hashService;
         private readonly IRegistryService _registryService;
         private readonly IAuthService _authService;
 
@@ -33,20 +33,22 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         [ObservableProperty]
         private ObservableCollection<BranchOptionModel> _branches = null!;
 
+
+        private bool _isOpendByUsersPage = false;
+
         public AddEditUserViewModel(IUserService userService, IBranchService branchService, IMessageService messageService, IRegistryService registryService,
                                     IFindPersonViewModel findPersonViewModel, IWindowService windowService, IStatusService statusService,
-                                    IUserSessionService userSessionService, IHashService hashService, IAuthService authService)
+                                    IUserSessionService userSessionService, IAuthService authService)
                                     : base(userService, messageService, windowService, statusService)
         {
             _branchService = branchService;
             _userSessionService = userSessionService;
             _findPersonViewModel = findPersonViewModel;
-            _hashService = hashService;
             _registryService = registryService;
             _authService = authService;
 
             FindPersonViewModel.PersonFound += OnPersonFound;
-            
+
         }
 
         private async void OnPersonFound(object? obj, PersonFoundEventArgs e)
@@ -59,13 +61,25 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             await EnterEditModeAsync(userId);
         }
 
-        public override async Task<bool> OnOpeningDialog(int? id = -1)
+        //public override async Task<bool> OnOpeningDialog(int? id = -1)
+        //{
+        //    var isSuccess = await base.OnOpeningDialog(id);
+
+        //    bool isBranchesLoaded = false;
+        //    if (isSuccess) isBranchesLoaded = await InitializeBranches();
+
+        //    return isSuccess && isBranchesLoaded;
+        //}
+
+        public async Task<bool> OnOpeningDialog((int? UserId, bool IsOpendOnUsersPage) parameters)
         {
-            var isSuccess = await base.OnOpeningDialog(id);
+            _isOpendByUsersPage = parameters.IsOpendOnUsersPage;
+
+            var isSuccess = await base.OnOpeningDialog(parameters.UserId);
 
             bool isBranchesLoaded = false;
             if (isSuccess) isBranchesLoaded = await InitializeBranches();
-            
+
             return isSuccess && isBranchesLoaded;
         }
 
@@ -150,7 +164,8 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         protected override void SendMessage()
         {
-            base.SendMessage();
+            if (_isOpendByUsersPage)
+                base.SendMessage();
             RefreshUserSession();
         }
 
@@ -196,5 +211,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         private void ShowValidationError(string title, string message)
             => _messageService.ShowInfoMessage(title, message);
+
+
     }
 }

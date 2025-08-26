@@ -11,7 +11,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         Task<bool> ChangeMyPasswordAsync(ChangePasswordModel model);
         Task<bool> CreateUserAsync(UserModel model);
         Task<IEnumerable<string>> GetUserRolesByUserIdAsync(int userId);
-        Task<IEnumerable<string>> GetUserClaimsByUserIdAsync(int userId);
+        Task<IEnumerable<string>?> GetUserClaimsByUserIdAsync(int userId);
         Task<TokenModel?> RefreshTokenAsync(int userId);
         Task<bool> AddUserToRoleAsync(int userId, string roleName);
         Task<bool> RemoveUserFromRoleAsync(int userId, string roleName);

@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using OMS.Common.Data;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Views;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
+using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;

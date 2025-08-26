@@ -9,6 +9,7 @@ namespace OMS.UI.Services.UserSession
 {
     public partial class UserSessionService : ObservableObject, IUserSessionService
     {
+
         private readonly IUserService _userService;
         private readonly IRegistryService _registryService;
         private readonly IAuthService _authService;
@@ -23,8 +24,10 @@ namespace OMS.UI.Services.UserSession
         [ObservableProperty]
         private TokenModel? _currentToken;
 
-        [ObservableProperty]
-        private IEnumerable<string>? _claims;
+        private IEnumerable<string> _claims = [];
+
+
+        public event Action? ClaimsChanged;
 
 
         public UserSessionService(IUserService userService, IRegistryService registryService, IAuthService authService, IJwtPayloadService jwtPayloadService)
@@ -35,11 +38,24 @@ namespace OMS.UI.Services.UserSession
             _jwtPayloadService = jwtPayloadService;
         }
 
+
+        public IEnumerable<string> Claims
+        {
+            get => _claims;
+            set
+            {
+                SetProperty(ref _claims, value);
+                OnClaimsChanged();
+            }
+        }
+
+
+
         public void Login(LoginInfoModel loginInfo, string password, bool isRememberMe = false)
         {
             CurrentUser = loginInfo.UserLogin;
             CurrentToken = loginInfo.TokenInfo;
-            Claims = loginInfo.Claims;
+            Claims = loginInfo.Claims ?? Enumerable.Empty<string>();
 
             if (isRememberMe)
                 _registryService.SetUserLoginConfig(loginInfo.UserLogin.Username, password);
@@ -53,7 +69,7 @@ namespace OMS.UI.Services.UserSession
         {
             CurrentUser = null;
             CurrentToken = null;
-            Claims = null;
+            Claims = Enumerable.Empty<string>();
 
             _registryService.ResetUserLoginConfig();
 
@@ -80,12 +96,18 @@ namespace OMS.UI.Services.UserSession
         {
             var claims = await _authService.GetUserClaimsByUserIdAsync(CurrentUser!.UserId);
 
-            Claims = claims is null || !claims.Any() ? Claims : claims;
+            Claims = claims is null ? Claims : claims;
         }
 
         public IEnumerable<string> GetUserRoles()
         {
             return _jwtPayloadService.GetRoles(CurrentToken!.Token);
+        }
+
+
+        private void OnClaimsChanged()
+        {
+            ClaimsChanged?.Invoke();
         }
     }
 }

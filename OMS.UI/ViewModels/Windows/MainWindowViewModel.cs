@@ -30,6 +30,30 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private UserLoginModel? _currentUser;
 
+        [ObservableProperty]
+        private bool _dashboardButtonVisibility;
+
+        [ObservableProperty]
+        private bool _revenuesButtonVisibility;
+
+        [ObservableProperty]
+        private bool _peopleButtonVisibility;
+
+        [ObservableProperty]
+        private bool _usersButtonVisibility;
+
+        [ObservableProperty]
+        private bool _branchesButtonVisibility;
+
+        [ObservableProperty]
+        private bool _servicesButtonVisibility;
+
+        [ObservableProperty]
+        private bool _clientsButtonVisibility;
+
+        [ObservableProperty]
+        private bool _settingsButtonVisibility;
+
         public MainWindowViewModel(INavigationService navigationService, IWindowService windowService, IUserService userService, IRegistryService registryService,
                                    IUserSessionService userSessionService, IDialogService dialogService, IMessageService messageService)
         {
@@ -44,24 +68,47 @@ namespace OMS.UI.ViewModels.Windows
             CurrentUser = _userSessionService.CurrentUser;
 
             WeakReferenceMessenger.Default.Register<UserLoginModel>(this, (r, user) => CurrentUser = user);
+
+            _userSessionService.ClaimsChanged += NotifyCurrentUserClaimsChanged;
+
         }
 
         [RelayCommand]
         private void LoadData()
         {
-            if (!_userSessionService.IsLoggedIn)
-            {
-                _windowService.CloseMainWindow();
-            }
+            if (!_userSessionService.IsLoggedIn) _windowService.CloseMainWindow();
+
+            NotifyCommandsCanExecuteChanged();
+            LoadButtonVisibility();
         }
 
+        private void NotifyCurrentUserClaimsChanged()
+        {
+            NotifyCommandsCanExecuteChanged();
+            LoadButtonVisibility();
+        }
+
+        private void LoadButtonVisibility()
+        {
+            DashboardButtonVisibility = CheckUserClaim(PermissionsData.Dashboard.View);
+            RevenuesButtonVisibility = CheckUserClaim(PermissionsData.Revenues.View);
+            PeopleButtonVisibility = CheckUserClaim(PermissionsData.PeopleDetail.View);
+            UsersButtonVisibility = CheckUserClaim(PermissionsData.UsersDetail.View);
+            BranchesButtonVisibility = CheckUserClaim(PermissionsData.BranchesOperationalMetric.View);
+            ServicesButtonVisibility = CheckUserClaim(PermissionsData.ServicesSummary.View);
+            ClientsButtonVisibility = CheckUserClaim(PermissionsData.ClientsSummary.View);
+            SettingsButtonVisibility = CheckUserClaim(PermissionsData.RolesSummary.View);
+        }
+
+
+
         [RelayCommand]
-        private void EditUser()
+        private async Task EditUser()
         {
             int? userId = _userSessionService.CurrentUser?.UserId;
 
             if (userId != null && userId > 0)
-                _dialogService.ShowDialog<AddEditUserWindow, int?>(userId);
+                await _dialogService.ShowDialog<AddEditUserWindow, (int? UserId, bool IsOpendOnUsersPage)>((userId, false));
         }
 
         [RelayCommand]
@@ -201,8 +248,12 @@ namespace OMS.UI.ViewModels.Windows
 
         private bool CanOpenPage<TViewModel>(string claim) where TViewModel : class
         {
-            return _navigationService.SelectedViewModelPage?.GetType() != typeof(TViewModel) && _userSessionService.Claims!.Contains(claim) && CurrentUser != null;
+            return _navigationService.SelectedViewModelPage?.GetType() != typeof(TViewModel) && CheckUserClaim(claim) && CurrentUser != null;
         }
+
+        private bool CheckUserClaim(string claim)
+            => _userSessionService.Claims!.Contains(claim);
+
 
         private void NotifyCommandsCanExecuteChanged()
         {

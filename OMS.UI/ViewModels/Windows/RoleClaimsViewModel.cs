@@ -58,26 +58,6 @@ namespace OMS.UI.ViewModels.Windows
             await LoadData();
         }
 
-        #region Common Abstract Methods
-        protected override Task<RoleClaimModel> ConvertToModel(RoleClaimModel messageModel)
-            => Task.FromResult(messageModel);
-
-        protected override async Task<bool> ExecuteDelete(int itemId)
-        {
-            if (SelectedItem is null) return false;
-            return await _service.RemoveRoleClaimAsync(_roleId, SelectedItem.ClaimType!, SelectedItem.ClaimValue!);
-        }
-
-        protected override int GetItemId(RoleClaimModel item)
-            => 0;
-
-        protected override Task ShowDetailsWindow(int itemId)
-            => throw new NotImplementedException();
-
-        protected override async Task ShowEditorWindow(int? itemId = null)
-            => await _dialogService.ShowDialog<AddEditRoleClaimWindow, int?>(_roleId);
-        #endregion
-
 
         [RelayCommand]
         private async Task Close()
@@ -102,6 +82,24 @@ namespace OMS.UI.ViewModels.Windows
             WeakReferenceMessenger.Default.Send<IMessage<RoleModel>>(message);
         }
 
+        #region Common Abstract Methods
+        protected override Task<RoleClaimModel> ConvertToModel(RoleClaimModel messageModel)
+            => Task.FromResult(messageModel);
 
+        protected override async Task<bool> ExecuteDelete(int itemId)
+        {
+            if (SelectedItem is null) return false;
+            return await _service.RemoveRoleClaimAsync(_roleId, SelectedItem.ClaimType!, SelectedItem.ClaimValue!);
+        }
+
+        protected override int GetItemId(RoleClaimModel item)
+            => 0;
+
+        protected override Task ShowDetailsWindow(int itemId)
+            => throw new NotImplementedException();
+
+        protected override async Task ShowEditorWindow(int? itemId = null)
+            => await _dialogService.ShowDialog<AddEditRoleClaimWindow, int?>(_roleId);
+        #endregion
     }
 }

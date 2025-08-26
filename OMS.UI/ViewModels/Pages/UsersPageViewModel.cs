@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using OMS.Common.Data;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
@@ -7,6 +8,7 @@ using OMS.UI.Models.Views;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Loading;
+using OMS.UI.Services.ModelTransfer;
 using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.UserSession;
 using OMS.UI.Views.Windows;
@@ -24,6 +26,15 @@ namespace OMS.UI.ViewModels.Pages
                                   IDialogService dialogService, IMessageService messageService, IUserSessionService userSessionService)
                                   : base(userService, userDetailService, loadingService, dialogService, messageService, userSessionService)
         {
+            SelectedItemChanged += NotifyCanExecuteChanged;
+        }
+
+        private void NotifyCanExecuteChanged(object? obj, EventArgs e)
+        {
+            ActiveUserCommand.NotifyCanExecuteChanged();
+            InActiveUserCommand.NotifyCanExecuteChanged();
+            OpenChangePasswordCommand.NotifyCanExecuteChanged();
+            OpenUserRolesManagerCommand.NotifyCanExecuteChanged();
         }
 
         protected override async Task<bool> ExecuteDelete(int itemId)
@@ -39,7 +50,7 @@ namespace OMS.UI.ViewModels.Pages
         }
 
         protected override async Task ShowEditorWindow(int? itemId = null)
-            => await _dialogService.ShowDialog<AddEditUserWindow, int?>(itemId);
+            => await _dialogService.ShowDialog<AddEditUserWindow, (int? UserId, bool IsOpendOnUsersPage)>((itemId, true));
 
         protected override async Task<UserDetailModel> ConvertToModel(UserModel messageModel)
         {

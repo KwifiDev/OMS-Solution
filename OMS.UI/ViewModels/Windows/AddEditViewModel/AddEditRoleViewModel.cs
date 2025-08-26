@@ -13,7 +13,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         private RoleModel? _oldRoleData;
 
-        private bool _isRolesChangedInToken = false;
         private bool _isRoleInToken = false;
 
         public AddEditRoleViewModel(IRoleService roleService, IMessageService messageService,
@@ -39,7 +38,12 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             {
                 var isRoleUpdated = await _service.UpdateAsync(roleModel.Id, roleModel);
 
-                _isRolesChangedInToken = _isRoleInToken && isRoleUpdated && _oldRoleData?.Name != roleModel.Name;
+                var isRolesNamesChangedInToken = _isRoleInToken && isRoleUpdated && _oldRoleData?.Name != roleModel.Name;
+
+                if (isRolesNamesChangedInToken)
+                {
+                    await _userSessionService.UpdateToken();
+                }
 
                 return isRoleUpdated;
             }
@@ -59,15 +63,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             }
 
             return false;
-        }
-
-        protected override async void Close()
-        {
-            if (_isRolesChangedInToken)
-            {
-                await _userSessionService.UpdateToken();
-            }
-            base.Close();
         }
     }
 }
