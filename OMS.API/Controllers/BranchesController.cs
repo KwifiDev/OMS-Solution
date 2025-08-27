@@ -6,6 +6,7 @@ using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -64,7 +65,7 @@ namespace OMS.API.Controllers
         #region override abstract Methods
         protected override int GetModelId(BranchModel model) => model.BranchId;
         protected override void SetDtoId(BranchDto dto, int id) => dto.BranchId = id;
-        protected override async Task<IEnumerable<BranchModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<PagedResult<BranchModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<BranchModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         protected override async Task<bool> AddModelAsync(BranchModel model) => await _service.AddAsync(model);
         protected override async Task<bool> UpdateModelAsync(BranchModel model) => await _service.UpdateAsync(model);

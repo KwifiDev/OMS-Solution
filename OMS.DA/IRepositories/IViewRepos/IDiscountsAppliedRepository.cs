@@ -1,4 +1,5 @@
-﻿using OMS.DA.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
@@ -8,14 +9,14 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// Retrieves all DiscountsApplied.
         /// </summary>
         /// <returns>The task result contains the collection of DiscountsApplied.</returns>
-        Task<IEnumerable<DiscountsApplied>> GetAllAsync();
+        Task<PagedResult<DiscountsApplied>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an DiscountsApplied by serviceId.
         /// </summary>
         /// <param name="serviceId">The ID of the service.</param>
         /// <returns>The DiscountsApplied if found; otherwise, null.</returns>
-        Task<IEnumerable<DiscountsApplied>> GetByServiceIdAsync(int serviceId);
+        Task<PagedResult<DiscountsApplied>> GetByServiceIdPagedAsync(int serviceId, PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an DiscountsApplied by DiscountId.

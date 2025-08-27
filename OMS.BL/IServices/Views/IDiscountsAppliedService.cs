@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 using OMS.DA.Views;
 
 namespace OMS.BL.IServices.Views
@@ -12,14 +13,14 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all discounts applied asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of discounts applied.</returns>
-        Task<IEnumerable<DiscountsAppliedModel>> GetAllAsync();
+        Task<PagedResult<DiscountsAppliedModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an DiscountsApplied Model by serviceId.
         /// </summary>
         /// <param name="serviceId">The ID of the service.</param>
         /// <returns>The DiscountsApplied Model if found; otherwise, null.</returns>
-        Task<IEnumerable<DiscountsAppliedModel>> GetByServiceIdAsync(int serviceId);
+        Task<PagedResult<DiscountsAppliedModel>> GetByServiceIdPagedAsync(int serviceId, PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a discount applied by its ID asynchronously.

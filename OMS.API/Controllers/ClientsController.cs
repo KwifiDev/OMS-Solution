@@ -7,6 +7,7 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -148,7 +149,7 @@ namespace OMS.API.Controllers
         #region override abstract Methods
         protected override int GetModelId(ClientModel model) => model.ClientId;
         protected override void SetDtoId(ClientDto dto, int id) => dto.ClientId = id;
-        protected override async Task<IEnumerable<ClientModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<PagedResult<ClientModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<ClientModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         protected override async Task<bool> AddModelAsync(ClientModel model) => await _service.AddAsync(model);
         protected override async Task<bool> UpdateModelAsync(ClientModel model) => await _service.UpdateAsync(model);

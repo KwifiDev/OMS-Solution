@@ -5,6 +5,7 @@ using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Views;
 using OMS.BL.Models.Views;
 using OMS.Common.Data;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -33,12 +34,18 @@ namespace OMS.API.Controllers
         [Authorize(Policy = PermissionsData.TransactionsSummary.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<TransactionsSummaryDto>>> GetTransactionsByAccountIdAsync([FromRoute] int accountId)
+        public async Task<ActionResult<PagedResult<TransactionsSummaryDto>>> GetTransactionsByAccountIdAsync([FromRoute] int accountId, [FromQuery] PaginationParams parameters)
         {
             try
             {
-                var models = await _service.GetTransactionsByAccountIdAsync(accountId);
-                return Ok(_mapper.Map<IEnumerable<TransactionsSummaryDto>>(models));
+                var pagedResult = await _service.GetTransactionsByAccountIdPagedAsync(accountId, parameters);
+                return Ok(new PagedResult<TransactionsSummaryDto>
+                {
+                    Items = _mapper.Map<List<TransactionsSummaryDto>>(pagedResult.Items),
+                    TotalCount = pagedResult.TotalCount,
+                    PageNumber = pagedResult.PageNumber,
+                    PageSize = pagedResult.PageSize
+                });
             }
             catch (Exception ex)
             {
@@ -51,7 +58,7 @@ namespace OMS.API.Controllers
         }
 
         #region override abstract Methods 
-        protected override async Task<IEnumerable<TransactionsSummaryModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<PagedResult<TransactionsSummaryModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<TransactionsSummaryModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         #endregion
 

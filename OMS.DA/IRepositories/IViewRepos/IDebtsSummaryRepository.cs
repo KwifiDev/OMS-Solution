@@ -1,4 +1,5 @@
-﻿using OMS.DA.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
@@ -8,14 +9,14 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// Retrieves all DebtsSummary.
         /// </summary>
         /// <returns>The task result contains the collection of DebtsSummary.</returns>
-        Task<IEnumerable<DebtsSummary>> GetAllAsync();
+        Task<PagedResult<DebtsSummary>> GetPagedAsync(PaginationParams parammeters);
 
         /// <summary>
         /// Retrieves an DebtsSummary by clientId.
         /// </summary>
         /// <param name="clientId">The ID of the client.</param>
         /// <returns>The DebtsSummary if found; otherwise, null.</returns>
-        Task<IEnumerable<DebtsSummary>> GetByClientIdAsync(int clientId);
+        Task<PagedResult<DebtsSummary>> GetByClientIdPagedAsync(int clientId, PaginationParams parammeters);
 
         /// <summary>
         /// Retrieves an DebtsSummary by debtId.

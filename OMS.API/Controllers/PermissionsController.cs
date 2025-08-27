@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -28,7 +29,7 @@ namespace OMS.API.Controllers
         #region override abstract Methods
         protected override int GetModelId(PermissionModel model) => model.Id;
         protected override void SetDtoId(PermissionDto dto, int id) => dto.Id = id;
-        protected override async Task<IEnumerable<PermissionModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<PagedResult<PermissionModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<PermissionModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         protected override async Task<bool> AddModelAsync(PermissionModel model) => await _service.AddAsync(model);
         protected override async Task<bool> UpdateModelAsync(PermissionModel model) => await _service.UpdateAsync(model);

@@ -7,6 +7,7 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -150,7 +151,7 @@ namespace OMS.API.Controllers
         #region override abstract Methods
         protected override async Task<bool> AddModelAsync(DebtModel model) => await _service.AddAsync(model);
         protected override async Task<bool> DeleteModelAsync(int id) => await _service.DeleteAsync(id);
-        protected override async Task<IEnumerable<DebtModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<PagedResult<DebtModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<DebtModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         protected override int GetModelId(DebtModel model) => model.DebtId;
         protected override bool IsIdentifierIdentical(int id, DebtDto dto) => dto.DebtId == id;

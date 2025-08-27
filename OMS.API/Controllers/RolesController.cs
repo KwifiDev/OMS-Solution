@@ -8,6 +8,7 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
 using OMS.Common.Enums;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -41,12 +42,18 @@ namespace OMS.API.Controllers
         [Authorize(Policy = PermissionsData.Roles.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<RoleDto>>> GetAllAsync()
+        public async Task<ActionResult<PagedResult<RoleDto>>> GetPagedAsync([FromQuery] PaginationParams parameters)
         {
             try
             {
-                var models = await _roleService.GetAllAsync();
-                return Ok(_mapper.Map<IEnumerable<RoleDto>>(models));
+                var pagedResult = await _roleService.GetPagedAsync(parameters);
+                return Ok(new PagedResult<RoleDto>
+                {
+                    Items = _mapper.Map<List<RoleDto>>(pagedResult.Items),
+                    TotalCount = pagedResult.TotalCount,
+                    PageNumber = pagedResult.PageNumber,
+                    PageSize = pagedResult.PageSize
+                });
             }
             catch (Exception ex)
             {

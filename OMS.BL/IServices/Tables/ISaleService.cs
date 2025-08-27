@@ -1,5 +1,6 @@
 ﻿using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,7 +13,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all sales asynchronously.
         /// </summary>
         /// <returns>A collection of SaleModel objects.</returns>
-        Task<IEnumerable<SaleModel>> GetAllAsync();
+        Task<PagedResult<SaleModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a sale by its ID asynchronously.

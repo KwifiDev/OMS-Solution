@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,7 +12,7 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all Service Summary asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of Service Summary models.</returns>
-        Task<IEnumerable<ServicesSummaryModel>> GetAllAsync();
+        Task<PagedResult<ServicesSummaryModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a Service Summary by ID asynchronously.

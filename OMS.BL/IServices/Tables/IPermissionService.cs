@@ -1,9 +1,16 @@
 ﻿using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
     public interface IPermissionService
     {
+        /// <summary>
+        /// Retrieves all Permissions asynchronously.
+        /// </summary>
+        /// <returns>A collection of permission models.</returns>
+        Task<PagedResult<PermissionModel>> GetPagedAsync(PaginationParams parameters);
+
         /// <summary>
         /// Retrieves all Permissions asynchronously.
         /// </summary>

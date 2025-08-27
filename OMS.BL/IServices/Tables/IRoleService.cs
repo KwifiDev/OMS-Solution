@@ -1,11 +1,12 @@
 ﻿using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
     public interface IRoleService
     {
-        Task<IEnumerable<RoleModel>> GetAllAsync();
+        Task<PagedResult<RoleModel>> GetPagedAsync(PaginationParams parameters);
 
         Task<RoleModel?> FindByIdAsync(int roleId);
 

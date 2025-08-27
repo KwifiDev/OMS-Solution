@@ -1,6 +1,7 @@
 ﻿using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -13,7 +14,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all users asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of user models.</returns>
-        Task<IEnumerable<UserModel>> GetAllAsync();
+        Task<PagedResult<UserModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a user by their ID asynchronously.

@@ -5,6 +5,7 @@ using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Views;
 using OMS.BL.Models.Views;
 using OMS.Common.Data;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -34,12 +35,18 @@ namespace OMS.API.Controllers
         [Authorize(Policy = PermissionsData.DiscountsApplied.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<DiscountsAppliedDto>>> GetDiscountsAppliedByServiceIdAsync([FromRoute] int serviceId)
+        public async Task<ActionResult<PagedResult<DiscountsAppliedDto>>> GetDiscountsAppliedByServiceIdAsync([FromRoute] int serviceId, [FromQuery] PaginationParams parameters)
         {
             try
             {
-                var models = await _service.GetByServiceIdAsync(serviceId);
-                return Ok(_mapper.Map<IEnumerable<DiscountsAppliedDto>>(models));
+                var pagedResult = await _service.GetByServiceIdPagedAsync(serviceId, parameters);
+                return Ok(new PagedResult<DiscountsAppliedDto>
+                {
+                    Items = _mapper.Map<List<DiscountsAppliedDto>>(pagedResult.Items),
+                    TotalCount = pagedResult.TotalCount,
+                    PageNumber = pagedResult.PageNumber,
+                    PageSize = pagedResult.PageSize
+                });
             }
             catch (Exception ex)
             {
@@ -53,7 +60,7 @@ namespace OMS.API.Controllers
 
 
         #region override abstract Methods
-        protected override async Task<IEnumerable<DiscountsAppliedModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<PagedResult<DiscountsAppliedModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<DiscountsAppliedModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         #endregion
     }

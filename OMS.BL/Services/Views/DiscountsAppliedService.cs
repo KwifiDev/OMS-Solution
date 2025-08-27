@@ -1,6 +1,7 @@
 ﻿using OMS.BL.IServices.Views;
 using OMS.BL.Mapping;
 using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -17,11 +18,17 @@ namespace OMS.BL.Services.Views
             _discountsAppliedRepository = repository;
         }
 
-        public async Task<IEnumerable<DiscountsAppliedModel>> GetByServiceIdAsync(int serviceId)
+        public async Task<PagedResult<DiscountsAppliedModel>> GetByServiceIdPagedAsync(int serviceId, PaginationParams parameters)
         {
-            var discountsApplied = await _discountsAppliedRepository.GetByServiceIdAsync(serviceId);
+            var pagedResult = await _discountsAppliedRepository.GetByServiceIdPagedAsync(serviceId, parameters);
 
-            return _mapper.Map<IEnumerable<DiscountsApplied>, IEnumerable<DiscountsAppliedModel>>(discountsApplied);
+            return new PagedResult<DiscountsAppliedModel>
+            {
+                Items = _mapper.Map<List<DiscountsApplied>, List<DiscountsAppliedModel>>(pagedResult.Items),
+                TotalCount = pagedResult.TotalCount,
+                PageNumber = pagedResult.PageNumber,
+                PageSize = pagedResult.PageSize
+            };
         }
     }
 }

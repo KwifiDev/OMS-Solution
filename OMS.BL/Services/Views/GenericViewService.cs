@@ -1,5 +1,6 @@
 ﻿using OMS.BL.IServices.Views;
 using OMS.BL.Mapping;
+using OMS.Common.Extensions.Pagination;
 using OMS.DA.IRepositories.IViewRepos;
 
 namespace OMS.BL.Services.Views
@@ -15,16 +16,19 @@ namespace OMS.BL.Services.Views
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TModel>> GetAllAsync()
+        public async Task<PagedResult<TModel>> GetPagedAsync(PaginationParams parameters)
         {
-            IEnumerable<TEntity> entities = await _repository.GetAllAsync();
+            var pagedResult = await _repository.GetPagedAsync(parameters);
 
-            if (entities == null)
+            if (pagedResult.TotalCount == 0) return new PagedResult<TModel>();
+
+            return new PagedResult<TModel>
             {
-                return Enumerable.Empty<TModel>();
-            }
-
-            return _mapper.Map<TEntity, TModel>(entities);
+                Items = _mapper.Map<List<TEntity>, List<TModel>>(pagedResult.Items),
+                TotalCount = pagedResult.TotalCount,
+                PageNumber = pagedResult.PageNumber,
+                PageSize = pagedResult.PageSize
+            };
         }
 
         public async Task<TModel?> GetByIdAsync(int id)

@@ -1,4 +1,5 @@
-﻿using OMS.DA.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
@@ -8,7 +9,7 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// Retrieves all RolesSummary.
         /// </summary>
         /// <returns>The task result contains the collection of RolesSummary.</returns>
-        Task<IEnumerable<RolesSummary>> GetAllAsync();
+        Task<PagedResult<RolesSummary>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an RolesSummary by roleId.

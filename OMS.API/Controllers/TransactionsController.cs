@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -26,7 +27,7 @@ namespace OMS.API.Controllers
         }
 
         #region override abstract Methods
-        protected override async Task<IEnumerable<TransactionModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<PagedResult<TransactionModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<TransactionModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         #endregion
     }

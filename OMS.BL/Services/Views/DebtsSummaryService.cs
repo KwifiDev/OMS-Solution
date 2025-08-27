@@ -1,6 +1,7 @@
 ﻿using OMS.BL.IServices.Views;
 using OMS.BL.Mapping;
 using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
@@ -17,11 +18,17 @@ namespace OMS.BL.Services.Views
             _debtsSummaryRepository = repository;
         }
 
-        public async Task<IEnumerable<DebtsSummaryModel>> GetByClientIdAsync(int clientId)
+        public async Task<PagedResult<DebtsSummaryModel>> GetByClientIdPagedAsync(int clientId, PaginationParams parameters)
         {
-            var debtsSummary = await _debtsSummaryRepository.GetByClientIdAsync(clientId);
+            var pagedResult = await _debtsSummaryRepository.GetByClientIdPagedAsync(clientId, parameters);
 
-            return _mapper.Map<IEnumerable<DebtsSummary>, IEnumerable<DebtsSummaryModel>>(debtsSummary);
+            return new PagedResult<DebtsSummaryModel>
+            {
+                Items = _mapper.Map<List<DebtsSummary>, List<DebtsSummaryModel>>(pagedResult.Items),
+                TotalCount = pagedResult.TotalCount,
+                PageNumber = pagedResult.PageNumber,
+                PageSize = pagedResult.PageSize
+            };
         }
     }
 }

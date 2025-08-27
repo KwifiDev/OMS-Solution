@@ -4,6 +4,7 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
 using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
+using OMS.Common.Extensions.Pagination;
 using OMS.DA.Entities.Identity;
 
 namespace OMS.BL.Services.Tables
@@ -19,9 +20,19 @@ namespace OMS.BL.Services.Tables
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<RoleModel>> GetAllAsync()
+        public async Task<PagedResult<RoleModel>> GetPagedAsync(PaginationParams parameters)
         {
-            return _mapper.Map<IEnumerable<Role>, IEnumerable<RoleModel>>(await _roleManager.Roles.ToListAsync());
+            var roleItems = await _roleManager.Roles.Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                                                .Take(parameters.PageSize)
+                                                .ToListAsync();
+
+            return new PagedResult<RoleModel>
+            {
+                Items = _mapper.Map<List<Role>, List<RoleModel>>(roleItems),
+                TotalCount = await _roleManager.Roles.CountAsync(),
+                PageNumber = parameters.PageNumber,
+                PageSize = parameters.PageSize
+            };
         }
 
         public async Task<RoleModel?> FindByIdAsync(int roleId)

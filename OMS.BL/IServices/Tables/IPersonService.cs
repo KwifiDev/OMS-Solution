@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -11,7 +12,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all people asynchronously.
         /// </summary>
         /// <returns>A collection of person models.</returns>
-        Task<IEnumerable<PersonModel>> GetAllAsync();
+        Task<PagedResult<PersonModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a person by their ID asynchronously.

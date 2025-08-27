@@ -1,4 +1,6 @@
-﻿namespace OMS.DA.IRepositories.IViewRepos
+﻿using OMS.Common.Extensions.Pagination;
+
+namespace OMS.DA.IRepositories.IViewRepos
 {
     /// <summary>
     /// Represents a generic repository interface for Retrieve Data operations.
@@ -10,7 +12,7 @@
         /// Retrieves all entities asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of entities.</returns>
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<PagedResult<T>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an entity by its ID asynchronously.

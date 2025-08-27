@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Views
 {
@@ -8,7 +9,7 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all roles asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of roles.</returns>
-        Task<IEnumerable<RolesSummaryModel>> GetAllAsync();
+        Task<PagedResult<RolesSummaryModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an roles summary by its ID asynchronously.

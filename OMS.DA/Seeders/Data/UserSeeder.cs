@@ -13,13 +13,13 @@ namespace OMS.DA.Seeders.Data
         {
             if (await userManager.Users.AnyAsync()) return;
 
-            var person = new Person { FirstName = "untitled", LastName = "untitled", Gender = EnGender.Male };
+            var person = new Person { FirstName = "FirstNameHere", LastName = "LastNameHere", Gender = EnGender.Male };
             if (!await context.People.AnyAsync())
             {
                 await context.People.AddAsync(person);
             }
 
-            var branch = new Branch { Name = "untitled", Address = "untitled ....................." };
+            var branch = new Branch { Name = "BranchNameHere", Address = "BranchAddressHere.............." };
             if (!await context.Branches.AnyAsync())
             {
                 await context.Branches.AddAsync(branch);
@@ -29,8 +29,8 @@ namespace OMS.DA.Seeders.Data
 
             var adminUser = new User
             {
-                PersonId = await context.People.Where(p => p.FirstName == "untitled").Select(p => p.PersonId).FirstOrDefaultAsync(),
-                BranchId = await context.Branches.Where(b => b.Name == "untitled").Select(b => b.BranchId).FirstOrDefaultAsync(),
+                PersonId = await context.People.Where(p => p.FirstName == "FirstNameHere").Select(p => p.PersonId).FirstOrDefaultAsync(),
+                BranchId = await context.Branches.Where(b => b.Name == "BranchNameHere").Select(b => b.BranchId).FirstOrDefaultAsync(),
                 UserName = "Admin",
                 IsActive = true
             };

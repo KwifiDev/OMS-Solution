@@ -1,5 +1,6 @@
 ﻿using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
+using OMS.Common.Extensions.Pagination;
 using OMS.DA.IRepositories.IEntityRepos;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -17,16 +18,19 @@ namespace OMS.BL.Services.Tables
             _mapperService = mapper;
         }
 
-        public virtual async Task<IEnumerable<TModel>> GetAllAsync()
+        public virtual async Task<PagedResult<TModel>> GetPagedAsync(PaginationParams parameters)
         {
-            IEnumerable<TEntity> entities = await _repository.GetAllAsync();
+            var pagedResult = await _repository.GetPagedAsync(parameters);
 
-            if (entities == null)
+            if (pagedResult.TotalCount == 0) return new PagedResult<TModel>();
+            
+            return new PagedResult<TModel>
             {
-                return Enumerable.Empty<TModel>();
-            }
-
-            return _mapperService.Map<TEntity, TModel>(entities);
+                Items = _mapperService.Map<List<TEntity>, List<TModel>>(pagedResult.Items),
+                TotalCount = pagedResult.TotalCount,
+                PageNumber = pagedResult.PageNumber,
+                PageSize = pagedResult.PageSize
+            };
         }
 
         public virtual async Task<TModel?> GetByIdAsync(int id)

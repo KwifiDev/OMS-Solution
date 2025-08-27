@@ -150,7 +150,7 @@
                     <Button Style="{StaticResource MenuButtonStyle}"
                             Command="{Binding OpenDashboardCommand}"
                             Margin="3 3 3 3"
-                            Visibility="{Binding DashboardButtonVisibility, Converter={StaticResource BooleanToVisibility}}">
+                            Visibility="{Binding MainButtonVisibility.Dashboard, Converter={StaticResource BooleanToVisibility}}">
                         
                         <StackPanel Orientation="Horizontal" 
                                   HorizontalAlignment="Left" 
@@ -167,7 +167,7 @@
                     <Button Style="{StaticResource MenuButtonStyle}"
                             Command="{Binding OpenRevenuesCommand}"
                             Margin="3 0 3 3"
-                            Visibility="{Binding RevenuesButtonVisibility, Converter={StaticResource BooleanToVisibility}}">
+                            Visibility="{Binding MainButtonVisibility.Revenues, Converter={StaticResource BooleanToVisibility}}">
                         
                         <StackPanel Orientation="Horizontal" 
                                     HorizontalAlignment="Left" 
@@ -184,7 +184,7 @@
                     <Button Style="{StaticResource MenuButtonStyle}"
                             Command="{Binding OpenPeopleCommand}"
                             Margin="3 0 3 3"
-                            Visibility="{Binding PeopleButtonVisibility, Converter={StaticResource BooleanToVisibility}}">
+                            Visibility="{Binding MainButtonVisibility.People, Converter={StaticResource BooleanToVisibility}}">
                         
                         <StackPanel Orientation="Horizontal" 
                                   HorizontalAlignment="Right"  
@@ -201,7 +201,7 @@
                     <Button Style="{StaticResource MenuButtonStyle}"
                             Command="{Binding OpenBranchesCommand}"
                             Margin="3 0 3 3"
-                            Visibility="{Binding BranchesButtonVisibility, Converter={StaticResource BooleanToVisibility}}">
+                            Visibility="{Binding MainButtonVisibility.Branches, Converter={StaticResource BooleanToVisibility}}">
 
                         <StackPanel Orientation="Horizontal" 
                                     HorizontalAlignment="Right"  
@@ -219,7 +219,7 @@
                     <Button Style="{StaticResource MenuButtonStyle}"
                             Command="{Binding OpenUsersCommand}"
                             Margin="3 0 3 3"
-                            Visibility="{Binding UsersButtonVisibility, Converter={StaticResource BooleanToVisibility}}">
+                            Visibility="{Binding MainButtonVisibility.Users, Converter={StaticResource BooleanToVisibility}}">
                         
                         
                         <StackPanel Orientation="Horizontal" 
@@ -238,7 +238,7 @@
                     <Button Style="{StaticResource MenuButtonStyle}"
                             Command="{Binding OpenServicesCommand}"
                             Margin="3 0 3 3"
-                            Visibility="{Binding ServicesButtonVisibility, Converter={StaticResource BooleanToVisibility}}">
+                            Visibility="{Binding MainButtonVisibility.Services, Converter={StaticResource BooleanToVisibility}}">
                         
                         
                         <StackPanel Orientation="Horizontal" 
@@ -256,7 +256,7 @@
                     <Button Style="{StaticResource MenuButtonStyle}"
                             Command="{Binding OpenClientsCommand}"
                             Margin="3 0 3 3"
-                            Visibility="{Binding ClientsButtonVisibility, Converter={StaticResource BooleanToVisibility}}">
+                            Visibility="{Binding MainButtonVisibility.Clients, Converter={StaticResource BooleanToVisibility}}">
                         
                         <StackPanel Orientation="Horizontal" 
                                     HorizontalAlignment="Right"  
@@ -276,7 +276,7 @@
                     <Button Style="{StaticResource MenuButtonStyle}"
                             Command="{Binding OpenSettingsCommand}"
                             Margin="3 0 3 3"
-                            Visibility="{Binding SettingsButtonVisibility, Converter={StaticResource BooleanToVisibility}}">
+                            Visibility="{Binding MainButtonVisibility.Settings, Converter={StaticResource BooleanToVisibility}}">
                         
                             
                         <StackPanel Orientation="Horizontal" 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Views;
 using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -17,7 +18,7 @@ namespace OMS.API.Controllers
         }
 
         #region Common Abstract Methods
-        protected override Task<IEnumerable<RolesSummaryModel>> GetListOfModelsAsync() => _service.GetAllAsync();
+        protected override async Task<PagedResult<RolesSummaryModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override Task<RolesSummaryModel?> GetModelByIdAsync(int id) => _service.GetByIdAsync(id);
         #endregion
     }

@@ -31,28 +31,7 @@ namespace OMS.UI.ViewModels.Windows
         private UserLoginModel? _currentUser;
 
         [ObservableProperty]
-        private bool _dashboardButtonVisibility;
-
-        [ObservableProperty]
-        private bool _revenuesButtonVisibility;
-
-        [ObservableProperty]
-        private bool _peopleButtonVisibility;
-
-        [ObservableProperty]
-        private bool _usersButtonVisibility;
-
-        [ObservableProperty]
-        private bool _branchesButtonVisibility;
-
-        [ObservableProperty]
-        private bool _servicesButtonVisibility;
-
-        [ObservableProperty]
-        private bool _clientsButtonVisibility;
-
-        [ObservableProperty]
-        private bool _settingsButtonVisibility;
+        private MainButtonsVisibilityModel _mainButtonVisibility = new();
 
         public MainWindowViewModel(INavigationService navigationService, IWindowService windowService, IUserService userService, IRegistryService registryService,
                                    IUserSessionService userSessionService, IDialogService dialogService, IMessageService messageService)
@@ -90,14 +69,14 @@ namespace OMS.UI.ViewModels.Windows
 
         private void LoadButtonVisibility()
         {
-            DashboardButtonVisibility = CheckUserClaim(PermissionsData.Dashboard.View);
-            RevenuesButtonVisibility = CheckUserClaim(PermissionsData.Revenues.View);
-            PeopleButtonVisibility = CheckUserClaim(PermissionsData.PeopleDetail.View);
-            UsersButtonVisibility = CheckUserClaim(PermissionsData.UsersDetail.View);
-            BranchesButtonVisibility = CheckUserClaim(PermissionsData.BranchesOperationalMetric.View);
-            ServicesButtonVisibility = CheckUserClaim(PermissionsData.ServicesSummary.View);
-            ClientsButtonVisibility = CheckUserClaim(PermissionsData.ClientsSummary.View);
-            SettingsButtonVisibility = CheckUserClaim(PermissionsData.RolesSummary.View);
+            MainButtonVisibility.Dashboard = CheckUserClaim(PermissionsData.Dashboard.View);
+            MainButtonVisibility.Revenues = CheckUserClaim(PermissionsData.Revenues.View);
+            MainButtonVisibility.People = CheckUserClaim(PermissionsData.PeopleDetail.View);
+            MainButtonVisibility.Users = CheckUserClaim(PermissionsData.UsersDetail.View);
+            MainButtonVisibility.Branches = CheckUserClaim(PermissionsData.BranchesOperationalMetric.View);
+            MainButtonVisibility.Services = CheckUserClaim(PermissionsData.ServicesSummary.View);
+            MainButtonVisibility.Clients = CheckUserClaim(PermissionsData.ClientsSummary.View);
+            MainButtonVisibility.Settings = CheckUserClaim(PermissionsData.RolesSummary.View);
         }
 
 

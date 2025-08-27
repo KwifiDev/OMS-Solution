@@ -7,6 +7,7 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
 using OMS.Common.Enums;
+using OMS.Common.Extensions.Pagination;
 using System.Security.Claims;
 
 namespace OMS.API.Controllers
@@ -150,8 +151,7 @@ namespace OMS.API.Controllers
 
 
         #region Common Abstract Methods
-        protected override async Task<IEnumerable<RoleClaimModel>> GetListOfModelsAsync()
-            => await _service.GetAllAsync();
+        protected override async Task<PagedResult<RoleClaimModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
 
         protected override Task<RoleClaimModel?> GetModelByIdAsync(int id)
             => _service.GetByIdAsync(id);

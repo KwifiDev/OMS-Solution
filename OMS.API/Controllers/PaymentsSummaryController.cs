@@ -5,6 +5,7 @@ using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Views;
 using OMS.BL.Models.Views;
 using OMS.Common.Data;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -33,12 +34,18 @@ namespace OMS.API.Controllers
         [Authorize(Policy = PermissionsData.PaymentsSummary.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<PaymentsSummaryDto>>> GetPaymentsByAccountIdAsync([FromRoute] int accountId)
+        public async Task<ActionResult<PagedResult<PaymentsSummaryDto>>> GetPaymentsByAccountIdPagedAsync([FromRoute] int accountId, [FromQuery] PaginationParams parameters)
         {
             try
             {
-                var models = await _service.GetPaymentsByAccountIdAsync(accountId);
-                return Ok(_mapper.Map<IEnumerable<PaymentsSummaryDto>>(models));
+                var pagedResult = await _service.GetPaymentsByAccountIdPagedAsync(accountId, parameters);
+                return Ok(new PagedResult<PaymentsSummaryDto>
+                {
+                    Items = _mapper.Map<List<PaymentsSummaryDto>>(pagedResult.Items),
+                    TotalCount = pagedResult.TotalCount,
+                    PageNumber = pagedResult.PageNumber,
+                    PageSize = pagedResult.PageSize
+                });
             }
             catch (Exception ex)
             {
@@ -52,7 +59,7 @@ namespace OMS.API.Controllers
 
 
         #region override abstract Methods
-        protected override async Task<IEnumerable<PaymentsSummaryModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<PagedResult<PaymentsSummaryModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<PaymentsSummaryModel?> GetModelByIdAsync(int paymentId) => await _service.GetByIdAsync(paymentId);
         #endregion
     }

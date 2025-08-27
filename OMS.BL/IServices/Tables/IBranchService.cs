@@ -1,5 +1,6 @@
 ﻿using OMS.BL.Models.Tables;
 using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,7 +13,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all branches asynchronously.
         /// </summary>
         /// <returns>A collection of branch models.</returns>
-        Task<IEnumerable<BranchModel>> GetAllAsync();
+        Task<PagedResult<BranchModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a branch by its ID asynchronously.

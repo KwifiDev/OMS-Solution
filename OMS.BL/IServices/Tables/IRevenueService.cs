@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -11,7 +12,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all revenues asynchronously.
         /// </summary>
         /// <returns>A collection of revenue models.</returns>
-        Task<IEnumerable<RevenueModel>> GetAllAsync();
+        Task<PagedResult<RevenueModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a revenue by its ID asynchronously.

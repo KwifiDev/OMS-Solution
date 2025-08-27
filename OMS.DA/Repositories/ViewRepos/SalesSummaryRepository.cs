@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OMS.Common.Extensions.Pagination;
 using OMS.DA.Context;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
@@ -11,9 +12,9 @@ namespace OMS.DA.Repositories.ViewRepos
         {
         }
 
-        public async Task<IEnumerable<SalesSummary>> GetByClientIdAsync(int clientId)
+        public async Task<PagedResult<SalesSummary>> GetByClientIdPagedAsync(int clientId, PaginationParams parameters)
         {
-            return await _dbSet
+            var items = await _dbSet
                          .AsNoTracking()
                          .Where(e => e.ClientId == clientId)
                          .Select(e => new SalesSummary
@@ -25,7 +26,17 @@ namespace OMS.DA.Repositories.ViewRepos
                              TotalSales = e.TotalSales,
                              Status = e.Status
                          })
+                         .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                         .Take(parameters.PageSize)
                          .ToListAsync();
+
+            return new PagedResult<SalesSummary>
+            {
+                Items = items,
+                TotalCount = _dbSet.Count(),
+                PageNumber = parameters.PageNumber,
+                PageSize = parameters.PageSize
+            };
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,7 +12,7 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all branch operational metric records asynchronously.
         /// </summary>
         /// <returns>A collection of branch operational metric models.</returns>
-        Task<IEnumerable<BranchOperationalMetricModel>> GetAllAsync();
+        Task<PagedResult<BranchOperationalMetricModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a branch operational metric record by its ID asynchronously.

@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,14 +12,14 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all debts summary asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of debts summary models.</returns>
-        Task<IEnumerable<DebtsSummaryModel>> GetAllAsync();
+        Task<PagedResult<DebtsSummaryModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an DebtsSummary Model by clientId.
         /// </summary>
         /// <param name="clientId">The ID of the client.</param>
         /// <returns>The DebtsSummary Model if found; otherwise, null.</returns>
-        Task<IEnumerable<DebtsSummaryModel>> GetByClientIdAsync(int clientId);
+        Task<PagedResult<DebtsSummaryModel>> GetByClientIdPagedAsync(int clientId, PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a debt summary by its ID asynchronously.

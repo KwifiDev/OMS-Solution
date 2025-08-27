@@ -1,4 +1,5 @@
-﻿using OMS.DA.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
@@ -8,7 +9,7 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// Retrieves all TransactionsSummary.
         /// </summary>
         /// <returns>The task result contains the collection of TransactionsSummary.</returns>
-        Task<IEnumerable<TransactionsSummary>> GetAllAsync();
+        Task<PagedResult<TransactionsSummary>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an TransactionsSummary by TransactionId.
@@ -22,6 +23,6 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// </summary>
         /// <param name="accountId">The ID of the account.</param>
         /// <returns>The task result contains the collection of TransactionsSummary by Account Id.</returns>
-        Task<IEnumerable<TransactionsSummary>> GetTransactionsByAccountIdAsync(int accountId);
+        Task<PagedResult<TransactionsSummary>> GetTransactionsByAccountIdPagedAsync(int accountId, PaginationParams parameters);
     }
 }

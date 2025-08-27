@@ -7,6 +7,7 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
 using OMS.Common.Enums;
+using OMS.Common.Extensions.Pagination;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -413,7 +414,7 @@ namespace OMS.API.Controllers
         #region override abstract Methods
         protected override int GetModelId(UserModel model) => model.UserId;
         protected override void SetDtoId(UserDto dto, int id) => dto.UserId = id;
-        protected override async Task<IEnumerable<UserModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<PagedResult<UserModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<UserModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         protected override async Task<bool> AddModelAsync(UserModel model) => await _service.AddAsync(model);
         protected override async Task<bool> UpdateModelAsync(UserModel model) => await _service.UpdateAsync(model);

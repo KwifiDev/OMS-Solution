@@ -1,4 +1,5 @@
-﻿using OMS.DA.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
@@ -8,7 +9,7 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// Retrieves all UserDetail.
         /// </summary>
         /// <returns>The task result contains the collection of UserDetail.</returns>
-        Task<IEnumerable<UserDetail>> GetAllAsync();
+        Task<PagedResult<UserDetail>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an UserDetail by Id.

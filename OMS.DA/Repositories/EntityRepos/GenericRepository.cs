@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OMS.Common.Extensions.Pagination;
 using OMS.DA.Context;
 using OMS.DA.IRepositories.IEntityRepos;
 
@@ -15,9 +16,20 @@ namespace OMS.DA.Repositories.EntityRepos
             _dbSet = context.Set<T>();
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<PagedResult<T>> GetPagedAsync(PaginationParams parameters)
         {
-            return await _dbSet.AsNoTracking().ToListAsync();
+            var items = await _dbSet.AsNoTracking()
+                                    .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                                    .Take(parameters.PageSize)
+                                    .ToListAsync();
+
+            return new PagedResult<T>
+            {
+                Items = items,
+                TotalCount = await _dbSet.CountAsync(),
+                PageNumber = parameters.PageNumber,
+                PageSize = parameters.PageSize,
+            };
         }
 
         public virtual async Task<T?> GetByIdAsync(int id)

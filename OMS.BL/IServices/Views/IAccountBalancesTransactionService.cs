@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,7 +12,7 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all account balances transactions asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of account balances transactions.</returns>
-        Task<IEnumerable<AccountBalancesTransactionModel>> GetAllAsync();
+        Task<PagedResult<AccountBalancesTransactionModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an account balances transaction by its ID asynchronously.

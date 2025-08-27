@@ -1,5 +1,6 @@
 ﻿using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,7 +13,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all accounts asynchronously.
         /// </summary>
         /// <returns>A collection of account models.</returns>
-        Task<IEnumerable<AccountModel>> GetAllAsync();
+        Task<PagedResult<AccountModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an account by its ID asynchronously.

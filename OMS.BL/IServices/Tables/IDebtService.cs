@@ -1,5 +1,6 @@
 ﻿using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,7 +13,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all debts asynchronously.
         /// </summary>
         /// <returns>A collection of DebtModel objects.</returns>
-        Task<IEnumerable<DebtModel>> GetAllAsync();
+        Task<PagedResult<DebtModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a debt by its ID asynchronously.

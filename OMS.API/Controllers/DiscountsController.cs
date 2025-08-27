@@ -6,6 +6,7 @@ using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -83,7 +84,7 @@ namespace OMS.API.Controllers
         #region override abstract Methods
         protected override async Task<bool> AddModelAsync(DiscountModel model) => await _service.AddAsync(model);
         protected override async Task<bool> DeleteModelAsync(int id) => await _service.DeleteAsync(id);
-        protected override async Task<IEnumerable<DiscountModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<PagedResult<DiscountModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<DiscountModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         protected override int GetModelId(DiscountModel model) => model.DiscountId;
         protected override bool IsIdentifierIdentical(int id, DiscountDto dto) => dto.DiscountId == id;

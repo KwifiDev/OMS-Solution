@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -11,7 +12,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all payments asynchronously.
         /// </summary>
         /// <returns>A collection of payment models.</returns>
-        Task<IEnumerable<PaymentModel>> GetAllAsync();
+        Task<PagedResult<PaymentModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a payment by its ID asynchronously.

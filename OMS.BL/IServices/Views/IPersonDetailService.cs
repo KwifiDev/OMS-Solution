@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,7 +12,7 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all person details asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of person detail models.</returns>
-        Task<IEnumerable<PersonDetailModel>> GetAllAsync();
+        Task<PagedResult<PersonDetailModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a person detail by ID asynchronously.

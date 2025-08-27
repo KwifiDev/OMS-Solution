@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OMS.API.CustomAttributes;
 using OMS.Common.Enums;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -54,12 +55,19 @@ namespace OMS.API.Controllers
         [AuthorizeCrud(EnCrudAction.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public virtual async Task<ActionResult<IEnumerable<TDto>>> GetAllAsync()
+        public virtual async Task<ActionResult<PagedResult<TDto>>> GetPagedAsync([FromQuery] PaginationParams parameters)
         {
             try
             {
-                var models = await GetListOfModelsAsync();
-                return Ok(_mapper.Map<IEnumerable<TDto>>(models));
+                var pagedResult = await GetListOfModelsAsync(parameters);
+
+                return Ok(new PagedResult<TDto>
+                {
+                    Items = _mapper.Map<List<TDto>>(pagedResult.Items),
+                    TotalCount = pagedResult.TotalCount,
+                    PageNumber = pagedResult.PageNumber,
+                    PageSize = pagedResult.PageSize
+                });
             }
             catch (Exception ex)
             {
@@ -116,7 +124,7 @@ namespace OMS.API.Controllers
         /// Retrieves all models from the service.
         /// </summary>
         /// <returns>A collection of domain models.</returns>
-        protected abstract Task<IEnumerable<TModel>> GetListOfModelsAsync();
+        protected abstract Task<PagedResult<TModel>> GetListOfModelsAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a specific model by its ID.

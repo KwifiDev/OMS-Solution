@@ -1,4 +1,5 @@
-﻿using OMS.DA.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
@@ -8,6 +9,6 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// Retrieves all DebtsByStatus.
         /// </summary>
         /// <returns>The task result contains the collection of DebtsByStatus.</returns>
-        Task<IEnumerable<DebtsByStatus>> GetAllAsync();
+        Task<PagedResult<DebtsByStatus>> GetPagedAsync(PaginationParams parameters);
     }
 }

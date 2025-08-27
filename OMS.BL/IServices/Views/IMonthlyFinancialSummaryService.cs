@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Models.Views;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Views
 {
@@ -11,6 +12,6 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all monthly financial summaries asynchronously.
         /// </summary>
         /// <returns>A collection of MonthlyFinancialSummaryModel objects.</returns>
-        Task<IEnumerable<MonthlyFinancialSummaryModel>> GetAllAsync();
+        Task<PagedResult<MonthlyFinancialSummaryModel>> GetPagedAsync(PaginationParams parameters);
     }
 }

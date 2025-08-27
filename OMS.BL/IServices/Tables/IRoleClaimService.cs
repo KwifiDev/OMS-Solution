@@ -1,5 +1,6 @@
 ﻿using OMS.BL.Models.Tables;
 using OMS.Common.Enums;
+using OMS.Common.Extensions.Pagination;
 using System.Security.Claims;
 
 namespace OMS.BL.IServices.Tables
@@ -10,7 +11,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all role claims asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of role claims models.</returns>
-        Task<IEnumerable<RoleClaimModel>> GetAllAsync();
+        Task<PagedResult<RoleClaimModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an role claims Model by roleId.

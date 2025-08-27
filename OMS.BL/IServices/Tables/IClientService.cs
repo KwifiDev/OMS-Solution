@@ -1,5 +1,6 @@
 ﻿using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -12,7 +13,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all clients asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of client models.</returns>
-        Task<IEnumerable<ClientModel>> GetAllAsync();
+        Task<PagedResult<ClientModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a client by ID asynchronously.

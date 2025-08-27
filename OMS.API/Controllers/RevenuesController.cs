@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
 {
@@ -65,7 +66,7 @@ namespace OMS.API.Controllers
         #region override abstract Methods
         protected override int GetModelId(RevenueModel model) => model.RevenueId;
         protected override void SetDtoId(RevenueDto dto, int id) => dto.RevenueId = id;
-        protected override async Task<IEnumerable<RevenueModel>> GetListOfModelsAsync() => await _service.GetAllAsync();
+        protected override async Task<PagedResult<RevenueModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<RevenueModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         protected override async Task<bool> AddModelAsync(RevenueModel model) => await _service.AddAsync(model);
         protected override async Task<bool> UpdateModelAsync(RevenueModel model) => await _service.UpdateAsync(model);

@@ -1,4 +1,5 @@
-﻿using OMS.DA.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
@@ -8,7 +9,7 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// Retrieves all ClientSummary
         /// </summary>
         /// <returns>The task result contains the collection of ClientSummary.</returns>
-        Task<IEnumerable<ClientsSummary>> GetAllAsync();
+        Task<PagedResult<ClientsSummary>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an ClientSummary by ClientId.

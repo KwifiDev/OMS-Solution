@@ -1,4 +1,5 @@
-﻿using OMS.DA.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
@@ -8,7 +9,7 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// Retrieves all AccountBalancesTransactions.
         /// </summary>
         /// <returns>The task result contains the collection of AccountBalancesTransactions.</returns>
-        Task<IEnumerable<AccountBalancesTransaction>> GetAllAsync();
+        Task<PagedResult<AccountBalancesTransaction>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an AccountBalancesTransaction by AccountId.

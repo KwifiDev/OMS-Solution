@@ -1,5 +1,6 @@
 ﻿using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.Tables;
+using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Tables
 {
@@ -13,7 +14,7 @@ namespace OMS.BL.IServices.Tables
         /// Retrieves all discounts asynchronously.
         /// </summary>
         /// <returns>A collection of discount models.</returns>
-        Task<IEnumerable<DiscountModel>> GetAllAsync();
+        Task<PagedResult<DiscountModel>> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a discount by its ID asynchronously.
