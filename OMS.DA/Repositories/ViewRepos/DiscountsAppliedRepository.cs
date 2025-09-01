@@ -32,7 +32,7 @@ namespace OMS.DA.IRepositories.IViewRepos
             return new PagedResult<DiscountsApplied>
             {
                 Items = items,
-                TotalCount = _dbSet.Count(),
+                TotalItems = _dbSet.Count(),
                 PageNumber = parameters.PageNumber,
                 PageSize = parameters.PageSize
             };

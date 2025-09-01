@@ -1,4 +1,5 @@
-﻿using OMS.UI.Models.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.UI.Models.Views;
 
 namespace OMS.UI.APIs.Services.Interfaces.Views
 {
@@ -11,7 +12,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Views
         /// Retrieves all transactions summary asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of TransactionsSummaryModel.</returns>
-        Task<IEnumerable<TransactionsSummaryModel>> GetAllAsync();
+        Task<PagedResult<TransactionsSummaryModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a transaction summary by its ID asynchronously.
@@ -25,6 +26,6 @@ namespace OMS.UI.APIs.Services.Interfaces.Views
         /// </summary>
         /// <param name="accountId">The ID of the account.</param>
         /// <returns>The task result contains the collection of TransactionsSummary by Account Id.</returns>
-        Task<IEnumerable<TransactionsSummaryModel>> GetTransactionsByAccountIdAsync(int accountId);
+        Task<PagedResult<TransactionsSummaryModel>?> GetTransactionsByAccountIdPagedAsync(int accountId, PaginationParams parameters);
     }
 }

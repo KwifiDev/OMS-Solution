@@ -1,4 +1,5 @@
-﻿using OMS.UI.Models.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.UI.Models.Views;
 using OMS.UI.Services.ModelTransfer;
 
 namespace OMS.UI.APIs.Services.Interfaces.Views
@@ -26,6 +27,6 @@ namespace OMS.UI.APIs.Services.Interfaces.Views
         /// </summary>
         /// <param name="serviceId">The ID of the service.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of discounts applied.</returns>
-        Task<IEnumerable<DiscountsAppliedModel>> GetDiscountsByServiceIdAsync(int serviceId);
+        Task<PagedResult<DiscountsAppliedModel>?> GetDiscountsByServiceIdPagedAsync(int serviceId, PaginationParams parameters);
     }
 }

@@ -33,7 +33,7 @@ namespace OMS.DA.Repositories.ViewRepos
             return new PagedResult<PaymentsSummary>
             {
                 Items = items,
-                TotalCount = _dbSet.Count(),
+                TotalItems = _dbSet.Count(),
                 PageNumber = parameters.PageNumber,
                 PageSize = parameters.PageSize
             };

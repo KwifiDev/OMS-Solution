@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OMS.Common.Extensions.Pagination;
 using OMS.UI.APIs.Dtos.Views;
 using OMS.UI.APIs.EndPoints;
 using OMS.UI.APIs.Services.Generices;
@@ -16,25 +17,33 @@ namespace OMS.UI.APIs.Services.Views
         {
         }
 
-        public async Task<IEnumerable<TransactionsSummaryModel>> GetTransactionsByAccountIdAsync(int accountId)
+        public async Task<PagedResult<TransactionsSummaryModel>?> GetTransactionsByAccountIdPagedAsync(int accountId, PaginationParams parameters)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_endpoint}/accounts/{accountId}/transactions");
+                var queryString = BuildQueryString(parameters);
+                var response = await _httpClient.GetAsync($"{_endpoint}/accounts/{accountId}/transactions?{queryString}");
 
                 if (!response.IsSuccessStatusCode)
                 {
                     LogError(new Exception($"خطأ في جلب البيانات من الخادم.\nStatus Code: {response.StatusCode}"));
-                    return Enumerable.Empty<TransactionsSummaryModel>();
+                    return null;
                 }
 
-                var dto = await response.Content.ReadFromJsonAsync<IEnumerable<TransactionsSummaryDto>>();
-                return dto != null ? _mapper.Map<IEnumerable<TransactionsSummaryModel>>(dto) : Enumerable.Empty<TransactionsSummaryModel>();
+                var pagedResultDto = await response.Content.ReadFromJsonAsync<PagedResult<TransactionsSummaryDto>>();
+                return pagedResultDto == null ? new PagedResult<TransactionsSummaryModel>() :
+                   new PagedResult<TransactionsSummaryModel>
+                   {
+                       Items = _mapper.Map<List<TransactionsSummaryModel>>(pagedResultDto.Items),
+                       TotalItems = pagedResultDto.TotalItems,
+                       PageNumber = pagedResultDto.PageNumber,
+                       PageSize = pagedResultDto.PageSize
+                   };
             }
             catch (HttpRequestException httpEx)
             {
                 LogError(httpEx);
-                return Enumerable.Empty<TransactionsSummaryModel>();
+                return null;
             }
             catch (Exception ex)
             {

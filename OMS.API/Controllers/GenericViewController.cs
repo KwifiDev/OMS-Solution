@@ -64,7 +64,7 @@ namespace OMS.API.Controllers
                 return Ok(new PagedResult<TDto>
                 {
                     Items = _mapper.Map<List<TDto>>(pagedResult.Items),
-                    TotalCount = pagedResult.TotalCount,
+                    TotalItems = pagedResult.TotalItems,
                     PageNumber = pagedResult.PageNumber,
                     PageSize = pagedResult.PageSize
                 });

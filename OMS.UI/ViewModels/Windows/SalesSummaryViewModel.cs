@@ -1,7 +1,10 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using OMS.Common.Data;
+using OMS.Common.Extensions.Pagination;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
+using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
 using OMS.UI.Models.Views;
 using OMS.UI.Resources.Strings;
@@ -25,6 +28,9 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IWindowService _windowService;
         private int _clientId;
 
+        [ObservableProperty]
+        private PaginationInfo _paginationInfo = new();
+
         public SalesSummaryViewModel(ISaleService service, ISalesSummaryService displayService, ILoadingService loadingService,
                                      IDialogService dialogService, IMessageService messageService, IWindowService windowService, IUserSessionService userSessionService)
                                      : base(service, displayService, loadingService, dialogService, messageService, userSessionService)
@@ -33,6 +39,12 @@ namespace OMS.UI.ViewModels.Windows
             CommandConditions[nameof(EditItemCommand)] += CanChangeSale;
             CommandConditions[nameof(DeleteItemCommand)] += CanChangeSale;
             _windowService = windowService;
+            PaginationInfo.PageChanged += OnPageChanged;
+        }
+
+        private async Task OnPageChanged()
+        {
+            await LoadData();
         }
 
         private void NotifyCanExecuteChanged(object? obj, EventArgs e)
@@ -61,8 +73,17 @@ namespace OMS.UI.ViewModels.Windows
         {
             await LoadingService.ExecuteWithLoadingIndicator(async () =>
             {
-                var salesData = await _displayService.GetSalesByClientIdAsync(_clientId);
-                Items = new(salesData);
+                var pagedResultSalesData = await _displayService.GetSalesByClientIdPagedAsync(_clientId, new PaginationParams(PaginationInfo.CurrentPage, PaginationInfo.PageSize));
+
+                if (pagedResultSalesData != null)
+                {
+                    Items = new(pagedResultSalesData.Items);
+                    PaginationInfo.CurrentPage = pagedResultSalesData.PageNumber;
+                    PaginationInfo.PageSize = pagedResultSalesData.PageSize;
+                    PaginationInfo.TotalItems = pagedResultSalesData.TotalItems;
+                    PaginationInfo.TotalPages = pagedResultSalesData.TotalPages;
+                }
+
             });
         }
 

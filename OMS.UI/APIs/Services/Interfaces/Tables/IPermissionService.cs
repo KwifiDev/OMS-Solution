@@ -1,4 +1,5 @@
-﻿using OMS.UI.Models.Tables;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.UI.Models.Tables;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables
 {
@@ -9,6 +10,12 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// </summary>
         /// <returns>A collection of permission models.</returns>
         Task<IEnumerable<PermissionModel>> GetAllAsync();
+
+        /// <summary>
+        /// Retrieves all permissions asynchronously.
+        /// </summary>
+        /// <returns>A collection of permission models.</returns>
+        Task<PagedResult<PermissionModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a permission by their ID asynchronously.

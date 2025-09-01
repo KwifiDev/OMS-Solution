@@ -16,6 +16,28 @@ namespace OMS.UI.APIs.Services.Tables
         {
         }
 
+        public async Task<IEnumerable<RoleModel>> GetAllAsync()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_endpoint}/all");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في جلب البيانات من الخادم :.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return Enumerable.Empty<RoleModel>();
+                }
+
+                var dto = await response.Content.ReadFromJsonAsync<IEnumerable<RoleDto>>();
+                return dto != null ? _mapper.Map<IEnumerable<RoleModel>>(dto) : Enumerable.Empty<RoleModel>(); ;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return Enumerable.Empty<RoleModel>();
+            }
+        }
+
         public async Task<RoleModel?> GetByNameAsync(string roleName)
         {
             try
@@ -37,6 +59,8 @@ namespace OMS.UI.APIs.Services.Tables
                 return null;
             }
         }
+
+
 
 
     }

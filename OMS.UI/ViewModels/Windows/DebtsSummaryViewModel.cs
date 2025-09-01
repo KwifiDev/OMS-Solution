@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using OMS.Common.Data;
 using OMS.Common.Enums;
+using OMS.Common.Extensions.Pagination;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models.Others;
@@ -37,6 +38,9 @@ namespace OMS.UI.ViewModels.Windows
         private UserAccountModel _userAccount = null!;
 
         [ObservableProperty]
+        private PaginationInfo _paginationInfo = new();
+
+        [ObservableProperty]
         private decimal? _totalDebts = 0;
 
         public DebtsSummaryViewModel(IUserAccountService userAccountService, IDebtService service, ILoadingService loadingService, IDebtsSummaryService displayService,
@@ -51,7 +55,14 @@ namespace OMS.UI.ViewModels.Windows
             CommandConditions[nameof(EditItemCommand)] += CanOpenPayDebtDialog;
             CommandConditions[nameof(DeleteItemCommand)] += CanOpenPayDebtDialog;
 
+            PaginationInfo.PageChanged += OnPageChanged;
+
             WeakReferenceMessenger.Default.Register<PayDebtModel>(this, OnPayDebtReceived);
+        }
+
+        private async Task OnPageChanged()
+        {
+            await LoadDebtsData();
         }
 
         private void OnPayDebtReceived(object recipient, PayDebtModel payDebtModel)
@@ -103,10 +114,15 @@ namespace OMS.UI.ViewModels.Windows
 
         private async Task<bool> LoadDebtsData()
         {
-            var debtsData = await _displayService.GetDebtsByClientIdAsync(_clientId);
-            if (debtsData is null) return false;
+            var pagedResultDebtsData = await _displayService.GetDebtsByClientIdPagedAsync(_clientId, new PaginationParams(PaginationInfo.CurrentPage, PaginationInfo.PageSize));
+            if (pagedResultDebtsData is null) return false;
 
-            Items = new(debtsData);
+            Items = new(pagedResultDebtsData.Items);
+            PaginationInfo.CurrentPage = pagedResultDebtsData.PageNumber;
+            PaginationInfo.PageSize = pagedResultDebtsData.PageSize;
+            PaginationInfo.TotalItems = pagedResultDebtsData.TotalItems;
+            PaginationInfo.TotalPages = pagedResultDebtsData.TotalPages;
+
             CalcTotalDebts();
 
             return true;

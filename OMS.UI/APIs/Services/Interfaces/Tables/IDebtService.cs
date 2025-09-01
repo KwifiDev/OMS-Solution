@@ -1,6 +1,7 @@
 ﻿
 
 using OMS.Common.Enums;
+using OMS.Common.Extensions.Pagination;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
 
@@ -15,7 +16,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// Retrieves all debts asynchronously.
         /// </summary>
         /// <returns>A collection of DebtModel objects.</returns>
-        Task<IEnumerable<DebtModel>> GetAllAsync();
+        Task<PagedResult<DebtModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a debt by its ID asynchronously.

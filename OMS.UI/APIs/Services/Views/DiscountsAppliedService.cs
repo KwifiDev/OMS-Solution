@@ -1,11 +1,12 @@
-﻿using OMS.UI.APIs.Services.Interfaces.Views;
-using OMS.UI.APIs.Services.Generices;
+﻿using AutoMapper;
+using OMS.Common.Extensions.Pagination;
 using OMS.UI.APIs.Dtos.Views;
-using AutoMapper;
 using OMS.UI.APIs.EndPoints;
+using OMS.UI.APIs.Services.Generices;
+using OMS.UI.APIs.Services.Interfaces.Views;
+using OMS.UI.Models.Views;
 using System.Net.Http;
 using System.Net.Http.Json;
-using OMS.UI.Models.Views;
 
 namespace OMS.UI.APIs.Services.Views
 {
@@ -17,25 +18,33 @@ namespace OMS.UI.APIs.Services.Views
         {
         }
 
-        public async Task<IEnumerable<DiscountsAppliedModel>> GetDiscountsByServiceIdAsync(int serviceId)
+        public async Task<PagedResult<DiscountsAppliedModel>?> GetDiscountsByServiceIdPagedAsync(int serviceId, PaginationParams parameters)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_endpoint}/by-service/{serviceId}");
+                var queryString = BuildQueryString(parameters);
+                var response = await _httpClient.GetAsync($"{_endpoint}/by-service/{serviceId}?{queryString}");
 
                 if (!response.IsSuccessStatusCode)
                 {
                     LogError(new Exception($"خطأ في جلب البيانات من الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
-                    return Enumerable.Empty<DiscountsAppliedModel>();
+                    return null;
                 }
 
-                var dto = await response.Content.ReadFromJsonAsync<IEnumerable<DiscountsAppliedDto>>();
-                return dto != null ? _mapper.Map<IEnumerable<DiscountsAppliedModel>>(dto) : Enumerable.Empty<DiscountsAppliedModel>();
+                var pagedResultDto = await response.Content.ReadFromJsonAsync<PagedResult<DiscountsAppliedDto>>();
+                return pagedResultDto == null ? new PagedResult<DiscountsAppliedModel>() :
+                   new PagedResult<DiscountsAppliedModel>
+                   {
+                       Items = _mapper.Map<List<DiscountsAppliedModel>>(pagedResultDto.Items),
+                       TotalItems = pagedResultDto.TotalItems,
+                       PageNumber = pagedResultDto.PageNumber,
+                       PageSize = pagedResultDto.PageSize
+                   };
             }
             catch (HttpRequestException httpEx)
             {
                 LogError(httpEx);
-                return Enumerable.Empty<DiscountsAppliedModel>();
+                return null;
             }
             catch (Exception ex)
             {

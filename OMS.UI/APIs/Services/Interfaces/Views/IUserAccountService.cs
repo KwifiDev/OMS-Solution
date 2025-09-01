@@ -1,4 +1,5 @@
-﻿using OMS.UI.Models.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.UI.Models.Views;
 
 namespace OMS.UI.APIs.Services.Interfaces.Views
 {
@@ -11,7 +12,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Views
         /// Retrieves all user accounts asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of user account models.</returns>
-        Task<IEnumerable<UserAccountModel>> GetAllAsync();
+        Task<PagedResult<UserAccountModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a user account by its ID asynchronously.

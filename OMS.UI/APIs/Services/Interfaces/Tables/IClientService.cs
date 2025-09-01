@@ -1,6 +1,6 @@
 ﻿
 using OMS.Common.Enums;
-using OMS.UI.APIs.Dtos.StoredProcedureParams;
+using OMS.Common.Extensions.Pagination;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
 
@@ -15,7 +15,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// Retrieves all clients asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of client models.</returns>
-        Task<IEnumerable<ClientModel>> GetAllAsync();
+        Task<PagedResult<ClientModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a client by ID asynchronously.

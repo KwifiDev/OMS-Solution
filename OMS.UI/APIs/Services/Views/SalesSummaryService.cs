@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OMS.Common.Extensions.Pagination;
 using OMS.UI.APIs.Dtos.Views;
 using OMS.UI.APIs.EndPoints;
 using OMS.UI.APIs.Services.Generices;
@@ -16,25 +17,34 @@ namespace OMS.UI.APIs.Services.Views
         {
         }
 
-        public async Task<IEnumerable<SalesSummaryModel>> GetSalesByClientIdAsync(int clientId)
+        public async Task<PagedResult<SalesSummaryModel>?> GetSalesByClientIdPagedAsync(int clientId, PaginationParams parameters)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_endpoint}/by-client/{clientId}");
+                var queryString = BuildQueryString(parameters);
+                var response = await _httpClient.GetAsync($"{_endpoint}/by-client/{clientId}?{queryString}");
 
                 if (!response.IsSuccessStatusCode)
                 {
                     LogError(new Exception($"خطأ في جلب البيانات من الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
-                    return Enumerable.Empty<SalesSummaryModel>();
+                    return null;
                 }
 
-                var dto = await response.Content.ReadFromJsonAsync<IEnumerable<SalesSummaryDto>>();
-                return dto != null ? _mapper.Map<IEnumerable<SalesSummaryModel>>(dto) : Enumerable.Empty<SalesSummaryModel>();
+
+                var pagedResultDto = await response.Content.ReadFromJsonAsync<PagedResult<SalesSummaryDto>>();
+                return pagedResultDto == null ? new PagedResult<SalesSummaryModel>() :
+                   new PagedResult<SalesSummaryModel>
+                   {
+                       Items = _mapper.Map<List<SalesSummaryModel>>(pagedResultDto.Items),
+                       TotalItems = pagedResultDto.TotalItems,
+                       PageNumber = pagedResultDto.PageNumber,
+                       PageSize = pagedResultDto.PageSize
+                   };
             }
             catch (HttpRequestException httpEx)
             {
                 LogError(httpEx);
-                return Enumerable.Empty<SalesSummaryModel>();
+                return null;
             }
             catch (Exception ex)
             {

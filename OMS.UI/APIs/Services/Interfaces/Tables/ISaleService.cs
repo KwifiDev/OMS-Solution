@@ -1,4 +1,5 @@
-﻿using OMS.UI.Models.Others;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables
@@ -12,7 +13,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// Retrieves all sales asynchronously.
         /// </summary>
         /// <returns>A collection of SaleModel objects.</returns>
-        Task<IEnumerable<SaleModel>> GetAllAsync();
+        Task<PagedResult<SaleModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a sale by its ID asynchronously.

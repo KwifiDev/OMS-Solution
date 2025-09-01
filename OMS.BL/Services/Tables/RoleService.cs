@@ -20,6 +20,13 @@ namespace OMS.BL.Services.Tables
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<RoleModel>> GetAllAsync()
+        {
+            var roleItems = await _roleManager.Roles.ToListAsync();
+
+            return _mapper.Map<IEnumerable<Role>, IEnumerable<RoleModel>>(roleItems);
+        }
+
         public async Task<PagedResult<RoleModel>> GetPagedAsync(PaginationParams parameters)
         {
             var roleItems = await _roleManager.Roles.Skip((parameters.PageNumber - 1) * parameters.PageSize)
@@ -29,7 +36,7 @@ namespace OMS.BL.Services.Tables
             return new PagedResult<RoleModel>
             {
                 Items = _mapper.Map<List<Role>, List<RoleModel>>(roleItems),
-                TotalCount = await _roleManager.Roles.CountAsync(),
+                TotalItems = await _roleManager.Roles.CountAsync(),
                 PageNumber = parameters.PageNumber,
                 PageSize = parameters.PageSize
             };

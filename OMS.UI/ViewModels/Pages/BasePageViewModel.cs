@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using OMS.Common.Extensions.Pagination;
+using OMS.UI.Models.Others;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Loading;
@@ -31,6 +33,9 @@ namespace OMS.UI.ViewModels.Pages
         protected abstract string DeleteClaim { get; }
 
         [ObservableProperty]
+        private PaginationInfo _paginationInfo = new();
+
+        [ObservableProperty]
         private ObservableCollection<TModel> _items = new();
 
         private TModel? _selectedItem;
@@ -48,18 +53,30 @@ namespace OMS.UI.ViewModels.Pages
             _messageService = messageService;
             _userSessionService = userSessionService;
 
+            PaginationInfo.PageChanged += OnPageChanged;
+
             SetDefaultCommandConditions();
 
             WeakReferenceMessenger.Default.Register<IMessage<TMessageModel>>(this, OnMessageReceived);
         }
+
+
 
         [RelayCommand]
         protected virtual async Task LoadData()
         {
             await LoadingService.ExecuteWithLoadingIndicator(async () =>
             {
-                var items = await _displayService.GetAllAsync();
-                Items = new(items);
+                var pagedResult = await _displayService.GetPagedAsync(new PaginationParams(PaginationInfo.CurrentPage, PaginationInfo.PageSize));
+
+                if (pagedResult is not null)
+                {
+                    Items = new(pagedResult.Items);
+                    PaginationInfo.CurrentPage = pagedResult.PageNumber;
+                    PaginationInfo.PageSize = pagedResult.PageSize;
+                    PaginationInfo.TotalItems = pagedResult.TotalItems;
+                    PaginationInfo.TotalPages = pagedResult.TotalPages;
+                }
             });
 
         }
@@ -169,6 +186,32 @@ namespace OMS.UI.ViewModels.Pages
         {
             SelectedItemChanged?.Invoke(this, EventArgs.Empty);
         }
+
+        private async Task OnPageChanged()
+        {
+            await LoadData();
+        }
+
+
+        [RelayCommand(CanExecute = nameof(CanFirstPage))]
+        private void FirstPage() => PaginationInfo.FirstPage();
+        private bool CanFirstPage() => PaginationInfo.CanFirstPage;
+
+
+        [RelayCommand(CanExecute = nameof(CanPreviousPage))]
+        private void PreviousPage() => PaginationInfo.PreviousPage();
+        private bool CanPreviousPage() => PaginationInfo.CanPreviousPage;
+
+
+        [RelayCommand(CanExecute = nameof(CanNextPage))]
+        private void NextPage() => PaginationInfo.NextPage();
+        private bool CanNextPage() => PaginationInfo.CanNextPage;
+
+
+        [RelayCommand(CanExecute = nameof(CanLastPage))]
+        private void LastPage() => PaginationInfo.LastPage();
+        private bool CanLastPage() => PaginationInfo.CanLastPage;
+
 
         #region Common Abstract Methods
         protected abstract Task<TModel> ConvertToModel(TMessageModel messageModel);

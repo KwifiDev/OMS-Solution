@@ -1,4 +1,5 @@
-﻿using OMS.UI.Models.Tables;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.UI.Models.Tables;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables
 {
@@ -11,7 +12,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// Retrieves all people asynchronously.
         /// </summary>
         /// <returns>A collection of person models.</returns>
-        Task<IEnumerable<PersonModel>> GetAllAsync();
+        Task<PagedResult<PersonModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a person by their ID asynchronously.

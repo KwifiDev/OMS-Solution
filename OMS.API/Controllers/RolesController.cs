@@ -38,6 +38,39 @@ namespace OMS.API.Controllers
         /// <returns>List of all roles</returns>
         /// <response code="200">Returns the complete list of roles</response>
         /// <response code="500">If there was an internal server error</response>
+        [HttpGet("all")]
+        [Authorize(Policy = PermissionsData.Roles.View)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<RoleDto>>> GetAllAsync()
+        {
+            try
+            {
+                var items = await _roleService.GetAllAsync();
+                return Ok(_mapper.Map<IEnumerable<RoleModel>, IEnumerable<RoleDto>>(items));
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error retrieving entities",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
+            }
+        }
+
+        /// <summary>
+        /// Retrieves all roles.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /api/roles
+        ///     
+        /// Returns all available roles in the system. Consider using filtering for large datasets.
+        /// </remarks>
+        /// <returns>List of all roles</returns>
+        /// <response code="200">Returns the complete list of roles</response>
+        /// <response code="500">If there was an internal server error</response>
         [HttpGet]
         [Authorize(Policy = PermissionsData.Roles.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -50,7 +83,7 @@ namespace OMS.API.Controllers
                 return Ok(new PagedResult<RoleDto>
                 {
                     Items = _mapper.Map<List<RoleDto>>(pagedResult.Items),
-                    TotalCount = pagedResult.TotalCount,
+                    TotalItems = pagedResult.TotalItems,
                     PageNumber = pagedResult.PageNumber,
                     PageSize = pagedResult.PageSize
                 });

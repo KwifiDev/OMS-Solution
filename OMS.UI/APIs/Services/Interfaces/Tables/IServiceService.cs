@@ -1,4 +1,5 @@
-﻿using OMS.UI.Models.Others;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables
@@ -12,7 +13,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// Retrieves all services asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of service models.</returns>
-        Task<IEnumerable<ServiceModel>> GetAllAsync();
+        Task<PagedResult<ServiceModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a service by its ID asynchronously.

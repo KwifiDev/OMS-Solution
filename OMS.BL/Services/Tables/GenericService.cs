@@ -22,12 +22,12 @@ namespace OMS.BL.Services.Tables
         {
             var pagedResult = await _repository.GetPagedAsync(parameters);
 
-            if (pagedResult.TotalCount == 0) return new PagedResult<TModel>();
+            if (pagedResult.TotalItems == 0) return new PagedResult<TModel>();
             
             return new PagedResult<TModel>
             {
                 Items = _mapperService.Map<List<TEntity>, List<TModel>>(pagedResult.Items),
-                TotalCount = pagedResult.TotalCount,
+                TotalItems = pagedResult.TotalItems,
                 PageNumber = pagedResult.PageNumber,
                 PageSize = pagedResult.PageSize
             };

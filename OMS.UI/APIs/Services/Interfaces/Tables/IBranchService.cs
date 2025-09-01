@@ -1,5 +1,6 @@
 ﻿
 
+using OMS.Common.Extensions.Pagination;
 using OMS.UI.APIs.Dtos.Views;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
@@ -15,7 +16,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// Retrieves all branches asynchronously.
         /// </summary>
         /// <returns>A collection of branch models.</returns>
-        Task<IEnumerable<BranchModel>> GetAllAsync();
+        Task<PagedResult<BranchModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a branch by its ID asynchronously.

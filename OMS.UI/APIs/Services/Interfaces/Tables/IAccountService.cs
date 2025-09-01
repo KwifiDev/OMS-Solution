@@ -1,6 +1,6 @@
-﻿using OMS.UI.Models.Tables;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.UI.Models.Tables;
 using OMS.UI.Models.Views;
-using OMS.UI.Services.StatusManagement;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables
 {
@@ -13,7 +13,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// Retrieves all accounts asynchronously.
         /// </summary>
         /// <returns>A collection of account models.</returns>
-        Task<IEnumerable<AccountModel>> GetAllAsync();
+        Task<PagedResult<AccountModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an account by its ID asynchronously.

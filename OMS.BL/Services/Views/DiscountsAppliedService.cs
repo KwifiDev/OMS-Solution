@@ -25,7 +25,7 @@ namespace OMS.BL.Services.Views
             return new PagedResult<DiscountsAppliedModel>
             {
                 Items = _mapper.Map<List<DiscountsApplied>, List<DiscountsAppliedModel>>(pagedResult.Items),
-                TotalCount = pagedResult.TotalCount,
+                TotalItems = pagedResult.TotalItems,
                 PageNumber = pagedResult.PageNumber,
                 PageSize = pagedResult.PageSize
             };

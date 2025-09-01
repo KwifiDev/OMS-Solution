@@ -1,4 +1,6 @@
-﻿namespace OMS.UI.APIs.Services.Interfaces.Tables
+﻿using OMS.Common.Extensions.Pagination;
+
+namespace OMS.UI.APIs.Services.Interfaces.Tables
 {
     /// <summary>
     /// Represents a generic service interface for CRUD operations on entities.
@@ -11,7 +13,7 @@
         /// Retrieves all entities asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains the collection of entities.</returns>
-        Task<IEnumerable<TModel>> GetAllAsync();
+        Task<PagedResult<TModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an model by its ID asynchronously.

@@ -1,4 +1,6 @@
-﻿namespace OMS.UI.Services.ModelTransfer
+﻿using OMS.Common.Extensions.Pagination;
+
+namespace OMS.UI.Services.ModelTransfer
 {
     public interface IDisplayService<TModel>
     {
@@ -6,7 +8,7 @@
         /// Retrieves all asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of Generic.</returns>
-        Task<IEnumerable<TModel>> GetAllAsync();
+        Task<PagedResult<TModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an entity by its ID asynchronously.

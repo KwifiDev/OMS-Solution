@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using OMS.Common.Extensions.Pagination;
 using OMS.UI.APIs.Dtos.Views;
 using OMS.UI.APIs.EndPoints;
 using OMS.UI.APIs.Services.Generices;
@@ -17,25 +18,33 @@ namespace OMS.UI.APIs.Services.Views
         {
         }
 
-        public async Task<IEnumerable<DebtsSummaryModel>> GetDebtsByClientIdAsync(int clientId)
+        public async Task<PagedResult<DebtsSummaryModel>?> GetDebtsByClientIdPagedAsync(int clientId, PaginationParams parameters)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_endpoint}/by-client/{clientId}");
+                var queryString = BuildQueryString(parameters);
+                var response = await _httpClient.GetAsync($"{_endpoint}/by-client/{clientId}?{queryString}");
 
                 if (!response.IsSuccessStatusCode)
                 {
                     LogError(new Exception($"خطأ في جلب البيانات من الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
-                    return Enumerable.Empty<DebtsSummaryModel>();
+                    return null;
                 }
 
-                var dto = await response.Content.ReadFromJsonAsync<IEnumerable<DebtsSummaryDto>>();
-                return dto != null ? _mapper.Map<IEnumerable<DebtsSummaryModel>>(dto) : Enumerable.Empty<DebtsSummaryModel>();
+                var pagedResultDto = await response.Content.ReadFromJsonAsync<PagedResult<DebtsSummaryDto>>();
+                return pagedResultDto == null ? new PagedResult<DebtsSummaryModel>() :
+                    new PagedResult<DebtsSummaryModel>
+                    {
+                        Items = _mapper.Map<List<DebtsSummaryModel>>(pagedResultDto.Items),
+                        TotalItems = pagedResultDto.TotalItems,
+                        PageNumber = pagedResultDto.PageNumber,
+                        PageSize = pagedResultDto.PageSize
+                    };
             }
             catch (HttpRequestException httpEx)
             {
                 LogError(httpEx);
-                return Enumerable.Empty<DebtsSummaryModel>();
+                return null;
             }
             catch (Exception ex)
             {

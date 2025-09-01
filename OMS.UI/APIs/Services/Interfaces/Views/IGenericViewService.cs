@@ -1,4 +1,6 @@
-﻿namespace OMS.UI.APIs.Services.Interfaces.Views
+﻿using OMS.Common.Extensions.Pagination;
+
+namespace OMS.UI.APIs.Services.Interfaces.Views
 {
     /// <summary>
     /// Represents a Generic View service for retrieving T.
@@ -9,7 +11,7 @@
         /// Retrieves all Generic asynchronously.
         /// </summary>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of Generic.</returns>
-        Task<IEnumerable<TModel>> GetAllAsync();
+        Task<PagedResult<TModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves an entity by its ID asynchronously.

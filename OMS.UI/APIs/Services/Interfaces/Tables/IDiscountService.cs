@@ -1,4 +1,5 @@
-﻿using OMS.UI.Models.Tables;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.UI.Models.Tables;
 
 namespace OMS.UI.APIs.Services.Interfaces.Tables
 {
@@ -12,7 +13,7 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// Retrieves all discounts asynchronously.
         /// </summary>
         /// <returns>A collection of discount models.</returns>
-        Task<IEnumerable<DiscountModel>> GetAllAsync();
+        Task<PagedResult<DiscountModel>?> GetPagedAsync(PaginationParams parameters);
 
         /// <summary>
         /// Retrieves a discount by its ID asynchronously.

@@ -25,7 +25,7 @@ namespace OMS.BL.Services.Views
             return new PagedResult<SalesSummaryModel>
             {
                 Items = _mapper.Map<List<SalesSummary>, List<SalesSummaryModel>>(pagedResult.Items),
-                TotalCount = pagedResult.TotalCount,
+                TotalItems = pagedResult.TotalItems,
                 PageNumber = pagedResult.PageNumber,
                 PageSize = pagedResult.PageSize
             };

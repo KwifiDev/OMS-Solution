@@ -43,7 +43,7 @@ namespace OMS.API.Controllers
                 return Ok(new PagedResult<DiscountsAppliedDto>
                 {
                     Items = _mapper.Map<List<DiscountsAppliedDto>>(pagedResult.Items),
-                    TotalCount = pagedResult.TotalCount,
+                    TotalItems = pagedResult.TotalItems,
                     PageNumber = pagedResult.PageNumber,
                     PageSize = pagedResult.PageSize
                 });

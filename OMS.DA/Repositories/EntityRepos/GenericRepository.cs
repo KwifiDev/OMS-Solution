@@ -26,7 +26,7 @@ namespace OMS.DA.Repositories.EntityRepos
             return new PagedResult<T>
             {
                 Items = items,
-                TotalCount = await _dbSet.CountAsync(),
+                TotalItems = await _dbSet.CountAsync(),
                 PageNumber = parameters.PageNumber,
                 PageSize = parameters.PageSize,
             };

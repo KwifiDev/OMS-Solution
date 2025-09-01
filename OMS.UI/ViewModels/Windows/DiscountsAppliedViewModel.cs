@@ -1,7 +1,10 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using OMS.Common.Data;
+using OMS.Common.Extensions.Pagination;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
+using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
 using OMS.UI.Models.Views;
 using OMS.UI.Services.Dialog;
@@ -24,12 +27,20 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IWindowService _windowService;
         private int _serviceId;
 
+        [ObservableProperty]
+        private PaginationInfo _paginationInfo = new();
 
         public DiscountsAppliedViewModel(IDiscountService service, IDiscountsAppliedService displayService, ILoadingService loadingService,
                                          IDialogService dialogService, IMessageService messageService, IWindowService windowService, IUserSessionService userSessionService)
                                          : base(service, displayService, loadingService, dialogService, messageService, userSessionService)
         {
             _windowService = windowService;
+            PaginationInfo.PageChanged += OnPageChanged;
+        }
+
+        private async Task OnPageChanged()
+        {
+            await LoadData();
         }
 
         public async Task<bool> OnOpeningDialog(int serviceId)
@@ -53,8 +64,16 @@ namespace OMS.UI.ViewModels.Windows
         {
             await LoadingService.ExecuteWithLoadingIndicator(async () =>
             {
-                var discountsAppliedItems = await _displayService.GetDiscountsByServiceIdAsync(_serviceId);
-                Items = new(discountsAppliedItems);
+                var pagedResultDiscountsApplied = await _displayService.GetDiscountsByServiceIdPagedAsync(_serviceId, new PaginationParams(PaginationInfo.CurrentPage, PaginationInfo.PageSize));
+
+                if (pagedResultDiscountsApplied != null)
+                {
+                    Items = new(pagedResultDiscountsApplied.Items);
+                    PaginationInfo.CurrentPage = pagedResultDiscountsApplied.PageNumber;
+                    PaginationInfo.PageSize = pagedResultDiscountsApplied.PageSize;
+                    PaginationInfo.TotalItems = pagedResultDiscountsApplied.TotalItems;
+                    PaginationInfo.TotalPages = pagedResultDiscountsApplied.TotalPages;
+                }
             });
         }
 

@@ -1,4 +1,5 @@
-﻿using OMS.UI.Models.Views;
+﻿using OMS.Common.Extensions.Pagination;
+using OMS.UI.Models.Views;
 using OMS.UI.Services.ModelTransfer;
 
 namespace OMS.UI.APIs.Services.Interfaces.Views
@@ -26,6 +27,6 @@ namespace OMS.UI.APIs.Services.Interfaces.Views
         /// </summary>
         /// <param name="clientId">The ID of the client.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a collection of Sales Summary.</returns>
-        Task<IEnumerable<SalesSummaryModel>> GetSalesByClientIdAsync(int clientId);
+        Task<PagedResult<SalesSummaryModel>?> GetSalesByClientIdPagedAsync(int clientId, PaginationParams parameters);
     }
 }
