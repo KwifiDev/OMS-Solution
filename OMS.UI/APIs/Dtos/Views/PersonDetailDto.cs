@@ -4,7 +4,7 @@ namespace OMS.UI.APIs.Dtos.Views
 {
     public class PersonDetailDto
     {
-        public int PersonId { get; set; }
+        public int Id { get; set; }
 
         public string FullName { get; set; } = null!;
 

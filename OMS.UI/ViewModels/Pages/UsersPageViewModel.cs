@@ -41,7 +41,7 @@ namespace OMS.UI.ViewModels.Pages
             => await _service.DeleteAsync(itemId);
 
         protected override int GetItemId(UserDetailModel item)
-            => item.UserId;
+            => item.Id;
 
         protected override Task ShowDetailsWindow(int itemId)
         {
@@ -54,14 +54,14 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override async Task<UserDetailModel> ConvertToModel(UserModel messageModel)
         {
-            return (await _displayService.GetByIdAsync(messageModel.UserId))!;
+            return (await _displayService.GetByIdAsync(messageModel.Id))!;
         }
 
         protected override async Task DeleteItem()
         {
             if (SelectedItem == null) return;
 
-            if (_userSessionService.CurrentUser?.UserId == SelectedItem?.UserId)
+            if (_userSessionService.CurrentUser?.Id == SelectedItem?.Id)
             {
                 _messageService.ShowErrorMessage("اجراء منع", MessageTemplates.InvalidDeleteUserMessage);
                 return;
@@ -85,7 +85,7 @@ namespace OMS.UI.ViewModels.Pages
         [RelayCommand(CanExecute = nameof(CanInActiveUser))]
         private async Task InActiveUser()
         {
-            if (_userSessionService.CurrentUser?.UserId == SelectedItem?.UserId)
+            if (_userSessionService.CurrentUser?.Id == SelectedItem?.Id)
             {
                 _messageService.ShowInfoMessage("منع الوصول", MessageTemplates.AccountCantInActive);
                 return;
@@ -115,7 +115,7 @@ namespace OMS.UI.ViewModels.Pages
         [RelayCommand(CanExecute = nameof(CanOpenChangePassword))]
         private async Task OpenChangePassword()
         {
-            await _dialogService.ShowDialog<ChangePasswordWindow, int?>(SelectedItem?.UserId);
+            await _dialogService.ShowDialog<ChangePasswordWindow, int?>(SelectedItem?.Id);
         }
 
         private bool CanOpenChangePassword()
@@ -128,7 +128,7 @@ namespace OMS.UI.ViewModels.Pages
             if (!_messageService.ShowQuestionMessage("تنويه", userConfirmationMessage))
                 return;
 
-            bool isSuccess = await _service.UpdateUserActivationStatus(SelectedItem!.UserId, isActiveUser);
+            bool isSuccess = await _service.UpdateUserActivationStatus(SelectedItem!.Id, isActiveUser);
 
             if (isSuccess)
             {

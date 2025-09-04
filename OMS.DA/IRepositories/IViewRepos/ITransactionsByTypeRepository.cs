@@ -1,5 +1,4 @@
-﻿using OMS.Common.Extensions.Pagination;
-using OMS.DA.Views;
+﻿using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
@@ -9,6 +8,6 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// Retrieves all TransactionsByType.
         /// </summary>
         /// <returns>The task result contains the collection of TransactionsByType.</returns>
-        Task<PagedResult<TransactionsByType>> GetPagedAsync(PaginationParams parameters);
+        Task<IEnumerable<TransactionsByType>> GetAllAsync();
     }
 }

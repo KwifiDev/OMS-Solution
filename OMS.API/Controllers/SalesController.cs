@@ -114,10 +114,10 @@ namespace OMS.API.Controllers
         protected override async Task<bool> DeleteModelAsync(int id) => await _service.DeleteAsync(id);
         protected override async Task<PagedResult<SaleModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<SaleModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
-        protected override int GetModelId(SaleModel model) => model.SaleId;
-        protected override bool IsIdentifierIdentical(int id, SaleDto dto) => dto.SaleId == id;
+        protected override int GetModelId(SaleModel model) => model.Id;
+        protected override bool IsIdentifierIdentical(int id, SaleDto dto) => dto.Id == id;
         protected override async Task<bool> IsModelExistAsync(int id) => await _service.IsExistAsync(id);
-        protected override void SetDtoId(SaleDto dto, int id) => dto.SaleId = id;
+        protected override void SetDtoId(SaleDto dto, int id) => dto.Id = id;
         protected override async Task<bool> UpdateModelAsync(SaleModel model) => await _service.UpdateAsync(model);
         #endregion
     }

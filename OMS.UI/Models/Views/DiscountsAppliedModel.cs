@@ -4,17 +4,17 @@ namespace OMS.UI.Models.Views
 {
     public class DiscountsAppliedModel : ObservableObject
     {
-        private int _discountId;
+        private int _id;
         private string _serviceName = null!;
         private decimal _servicePrice;
         private string _clientType = null!;
         private string? _discount;
 
 
-        public int DiscountId
+        public int Id
         {
-            get => _discountId;
-            set => SetProperty(ref _discountId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string ServiceName

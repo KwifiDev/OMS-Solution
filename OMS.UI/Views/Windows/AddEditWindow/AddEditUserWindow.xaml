@@ -104,7 +104,7 @@
             <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
                       ItemsSource="{Binding Branches}"
                       DisplayMemberPath="Name"
-                      SelectedValuePath="BranchId"
+                      SelectedValuePath="Id"
                       SelectedValue="{Binding Model.BranchId}"
                       Height="50"
                       FontSize="16" 

@@ -1,13 +1,15 @@
 ﻿using OMS.DA.Entities.Identity;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Entities;
 
-public partial class Branch
+public partial class Branch : IEntityKey
 {
     [Key]
-    public int BranchId { get; set; }
+    [Column("BranchId")]
+    public int Id { get; set; }
 
     [StringLength(20)]
     public string Name { get; set; } = null!;

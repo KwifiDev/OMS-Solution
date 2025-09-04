@@ -8,7 +8,7 @@ namespace OMS.DA.Configurations.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Debt> builder)
         {
-            builder.HasKey(e => e.DebtId).HasName("debts_debtid_primary");
+            builder.HasKey(e => e.Id).HasName("debts_debtid_primary");
 
             builder.ToTable(tb => tb.HasTrigger("TR_InsertNewDebt"));
 

@@ -2,7 +2,7 @@
 {
     public class RolesSummaryDto
     {
-        public int RoleId { get; set; }
+        public int Id { get; set; }
 
         public string? RoleName { get; set; }
 

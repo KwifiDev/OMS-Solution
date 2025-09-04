@@ -2,7 +2,7 @@
 {
     public partial class BranchOptionDto
     {
-        public int BranchId { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; } = null!;
     }

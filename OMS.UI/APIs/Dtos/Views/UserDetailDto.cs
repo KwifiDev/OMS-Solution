@@ -2,7 +2,7 @@
 
 public partial class UserDetailDto
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
 
     public string EmployeeName { get; set; } = null!;
 

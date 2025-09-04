@@ -60,9 +60,9 @@ namespace OMS.API.Controllers
         protected override async Task<bool> UpdateModelAsync(ServiceModel model) => await _service.UpdateAsync(model);
         protected override async Task<bool> DeleteModelAsync(int id) => await _service.DeleteAsync(id);
         protected override async Task<bool> IsModelExistAsync(int id) => await _service.IsExistAsync(id);
-        protected override int GetModelId(ServiceModel model) => model.ServiceId;
-        protected override bool IsIdentifierIdentical(int id, ServiceDto dto) => dto.ServiceId == id;
-        protected override void SetDtoId(ServiceDto dto, int id) => dto.ServiceId = id;
+        protected override int GetModelId(ServiceModel model) => model.Id;
+        protected override bool IsIdentifierIdentical(int id, ServiceDto dto) => dto.Id == id;
+        protected override void SetDtoId(ServiceDto dto, int id) => dto.Id = id;
         #endregion
     }
 }

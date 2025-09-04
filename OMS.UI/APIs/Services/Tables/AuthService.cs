@@ -92,7 +92,7 @@ namespace OMS.UI.APIs.Services.Tables
                 }
 
                 int newUserId = await response.Content.ReadFromJsonAsync<int>();
-                if (newUserId > 0) model.UserId = newUserId;
+                if (newUserId > 0) model.Id = newUserId;
                 return true;
             }
             catch (Exception ex)

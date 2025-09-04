@@ -5,7 +5,7 @@ namespace OMS.UI.Models.Tables
 {
     public class DebtModel : BaseModel
     {
-        private int _debtId;
+        private int _id;
         private int _clientId;
         private int _serviceId;
         private decimal _cost;
@@ -22,12 +22,12 @@ namespace OMS.UI.Models.Tables
 
 
         [Key]
-        public int DebtId
+        public int Id
         {
-            get => _debtId;
+            get => _id;
             set
             {
-                SetProperty(ref _debtId, value);
+                SetProperty(ref _id, value);
                 OnPropertyChanged(nameof(DebtIdDisplay));
             }
         }
@@ -112,6 +112,6 @@ namespace OMS.UI.Models.Tables
             set => SetProperty(ref _createdByUserId, value);
         }
 
-        public string DebtIdDisplay => _debtId > 0 ? _debtId.ToString() : "لا يوجد";
+        public string DebtIdDisplay => _id > 0 ? _id.ToString() : "لا يوجد";
     }
 }

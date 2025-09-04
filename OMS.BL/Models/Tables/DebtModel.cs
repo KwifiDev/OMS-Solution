@@ -1,12 +1,13 @@
-﻿using OMS.Common.Enums;
+﻿using OMS.BL.Interfaces;
+using OMS.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Models.Tables;
 
-public partial class DebtModel
+public partial class DebtModel : IModelKey
 {
     [Key]
-    public int DebtId { get; internal set; }
+    public int Id { get; set; }
 
     public required int ClientId { get; set; }
 

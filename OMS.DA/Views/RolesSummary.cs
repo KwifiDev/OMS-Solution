@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.CustomAttributes;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Views
 {
     [Keyless]
-    public class RolesSummary
+    public class RolesSummary : IEntityKey
     {
         [Id]
-        public int RoleId { get; set; }
+        [Column("RoleId")]
+        public int Id { get; set; }
 
         [StringLength(256)]
         public string? RoleName { get; set; }

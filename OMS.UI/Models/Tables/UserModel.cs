@@ -5,7 +5,7 @@ namespace OMS.UI.Models.Tables
 {
     public partial class UserModel : BaseModel
     {
-        private int _userId;
+        private int _id;
         private int _personId;
         private int _branchId;
         private string _userName = null!;
@@ -14,12 +14,12 @@ namespace OMS.UI.Models.Tables
 
 
         [Key]
-        public int UserId
+        public int Id
         {
-            get => _userId;
+            get => _id;
             set
             {
-                SetProperty(ref _userId, value);
+                SetProperty(ref _id, value);
                 OnPropertyChanged(nameof(UserIdDisplay));
             }
         }
@@ -70,9 +70,9 @@ namespace OMS.UI.Models.Tables
         }
 
         // DisplayProperty
-        public string UserIdDisplay => _userId > 0 ? _userId.ToString() : "لا يوجد";
-        public string PersonIdDisplay => _personId > 0 ? _userId.ToString() : "لا يوجد";
-        public string BranchIdDisplay => _branchId > 0 ? _userId.ToString() : "لا يوجد";
+        public string UserIdDisplay => _id > 0 ? _id.ToString() : "لا يوجد";
+        public string PersonIdDisplay => _personId > 0 ? _id.ToString() : "لا يوجد";
+        public string BranchIdDisplay => _branchId > 0 ? _id.ToString() : "لا يوجد";
         public string IsActiveDisplay => IsActive ? "نشط" : "معطل";
     }
 }

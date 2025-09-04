@@ -10,6 +10,7 @@
         xmlns:windowBehaviors="clr-namespace:OMS.UI.Behaviors.Windows"
         xmlns:inputBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
+        xmlns:userControls="clr-namespace:OMS.UI.Views.UserControls"
         d:DataContext="{d:DesignInstance Type=windows:DiscountsAppliedViewModel}"
         mc:Ignorable="d"
         Height="400" 
@@ -55,16 +56,27 @@
 
 
 
-        <Label x:Name="lblTitle"
-               Grid.Row="1"
-               Style="{StaticResource MaterialDesignLabel}"
-               FontWeight="Bold" 
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center"
-               FontSize="24"
-               Content="قائمة الخصومات"
-               Background="{StaticResource PageHeaderGradient}"
-               Foreground="White"/>
+        <Grid Background="{StaticResource PageHeaderGradient}" Grid.Row="1">
+
+            <DockPanel LastChildFill="False">
+
+                <userControls:PaginationControl DockPanel.Dock="Right"
+                                    FlowDirection="LeftToRight"
+                                    PaginationInfo="{Binding PaginationInfo}"/>
+
+                <Label
+                    Style="{StaticResource MaterialDesignLabel}"
+                    FontWeight="Bold" 
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    FontSize="24"
+                    Content="قائمة الخصومات"
+                    Foreground="White"
+                    Padding="20,0"/>
+
+            </DockPanel>
+
+        </Grid>
 
         <Grid  Grid.Row="2">
        
@@ -118,7 +130,7 @@
 
             <!-- الأعمدة -->
             <DataGrid.Columns>
-                <DataGridTextColumn Header="رقم الخصم" Binding="{Binding DiscountId}" />
+                <DataGridTextColumn Header="رقم الخصم" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="اسم الخدمة" Binding="{Binding ServiceName}" />
                 <DataGridTextColumn Header="سعر الخدمة" Binding="{Binding ServicePrice, StringFormat={}{0:0}}" />
                 <DataGridTextColumn Header="نوع العميل" Binding="{Binding ClientType}" />

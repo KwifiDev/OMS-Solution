@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.CustomAttributes;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Views;
 
 [Keyless]
-public partial class DiscountsApplied
+public partial class DiscountsApplied : IEntityKey
 {
     [Id]
-    public int DiscountId { get; set; }
+    [Column("DiscountId")]
+    public int Id { get; set; }
 
     public int? ServiceId { get; set; }
 

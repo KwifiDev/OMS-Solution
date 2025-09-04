@@ -132,7 +132,7 @@ namespace OMS.API.Controllers
             if (id <= 0) return NotFound();
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userId is null || userId.Value != dto.UserId.ToString()) return Forbid();
+            if (userId is null || userId.Value != dto.Id.ToString()) return Forbid();
 
             try
             {
@@ -412,14 +412,14 @@ namespace OMS.API.Controllers
 
 
         #region override abstract Methods
-        protected override int GetModelId(UserModel model) => model.UserId;
-        protected override void SetDtoId(UserDto dto, int id) => dto.UserId = id;
+        protected override int GetModelId(UserModel model) => model.Id;
+        protected override void SetDtoId(UserDto dto, int id) => dto.Id = id;
         protected override async Task<PagedResult<UserModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<UserModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         protected override async Task<bool> AddModelAsync(UserModel model) => await _service.AddAsync(model);
         protected override async Task<bool> UpdateModelAsync(UserModel model) => await _service.UpdateAsync(model);
         protected override async Task<bool> DeleteModelAsync(int id) => await _service.DeleteAsync(id);
-        protected override bool IsIdentifierIdentical(int id, UserDto dto) => id == dto.UserId;
+        protected override bool IsIdentifierIdentical(int id, UserDto dto) => id == dto.Id;
         protected override async Task<bool> IsModelExistAsync(int id) => await _service.IsExistAsync(id);
         #endregion
     }

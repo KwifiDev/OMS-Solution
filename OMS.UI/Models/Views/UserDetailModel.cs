@@ -6,17 +6,17 @@ namespace OMS.UI.Models.Views
     public class UserDetailModel : ObservableObject
     {
 
-        private int _userId;
+        private int _id;
         private string _employeeName = null!;
         private string _username = null!;
         private string? _isActive;
         private string _workingBranch = null!;
 
         [Key]
-        public int UserId
+        public int Id
         {
-            get => _userId;
-            set => SetProperty(ref _userId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string EmployeeName

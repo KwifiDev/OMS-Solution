@@ -4,17 +4,17 @@ namespace OMS.UI.Models.Tables
 {
     public class BranchModel : BaseModel
     {
-        private int _branchId;
+        private int _id;
         private string _name = null!;
         private string _address = null!;
 
         [Key]
-        public int BranchId
+        public int Id
         {
-            get => _branchId;
+            get => _id;
             set
             {
-                SetProperty(ref _branchId, value);
+                SetProperty(ref _id, value);
                 OnPropertyChanged(nameof(BranchIdDisplay));
             }
         }
@@ -36,6 +36,6 @@ namespace OMS.UI.Models.Tables
         }
 
         // DisplayProperty
-        public string BranchIdDisplay => _branchId > 0 ? _branchId.ToString() : "لا يوجد";
+        public string BranchIdDisplay => _id > 0 ? _id.ToString() : "لا يوجد";
     }
 }

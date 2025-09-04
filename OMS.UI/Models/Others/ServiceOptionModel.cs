@@ -5,7 +5,7 @@ namespace OMS.UI.Models.Others
     public class ServiceOptionModel
     {
         [Key]
-        public int ServiceId { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; } = null!;
     }

@@ -19,13 +19,14 @@ namespace OMS.DA.Repositories.ViewRepos
                          .Where(e => e.ClientId == clientId)
                          .Select(e => new SalesSummary
                          {
-                             SaleId = e.SaleId,
+                             Id = e.Id,
                              ServiceName = e.ServiceName,
                              Description = e.Description,
                              Notes = e.Notes,
                              TotalSales = e.TotalSales,
                              Status = e.Status
                          })
+                         .OrderByDescending(e => e.Id)
                          .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                          .Take(parameters.PageSize)
                          .ToListAsync();
@@ -33,7 +34,7 @@ namespace OMS.DA.Repositories.ViewRepos
             return new PagedResult<SalesSummary>
             {
                 Items = items,
-                TotalItems = _dbSet.Count(),
+                TotalItems = await _dbSet.Where(e => e.ClientId == clientId).CountAsync(),
                 PageNumber = parameters.PageNumber,
                 PageSize = parameters.PageSize
             };

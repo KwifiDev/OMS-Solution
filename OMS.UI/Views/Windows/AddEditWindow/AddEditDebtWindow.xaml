@@ -154,7 +154,7 @@
         <ComboBox Style="{StaticResource MaterialDesignOutlinedComboBox}"
           ItemsSource="{Binding Services}"
           DisplayMemberPath="Name"
-          SelectedValuePath="ServiceId"
+          SelectedValuePath="Id"
           SelectedValue="{Binding Model.ServiceId}"
           Height="60"
           FontSize="16" 

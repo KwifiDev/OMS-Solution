@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OMS.BL.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Models.Hybrid
 {
-    public class RegisterModel
+    public class RegisterModel : IModelKey
     {
         [Key]
-        public int UserId { get; set; }
+        public int Id { get; set; }
 
         public int PersonId { get; set; }
 

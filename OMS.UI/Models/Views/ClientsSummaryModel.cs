@@ -5,7 +5,7 @@ namespace OMS.UI.Models.Views
     public class ClientsSummaryModel
     {
         [Key]
-        public int ClientId { get; set; }
+        public int Id { get; set; }
 
         public int? AccountId { get; set; }
 

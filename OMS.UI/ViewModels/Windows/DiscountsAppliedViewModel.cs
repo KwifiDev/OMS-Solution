@@ -27,21 +27,21 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IWindowService _windowService;
         private int _serviceId;
 
-        [ObservableProperty]
-        private PaginationInfo _paginationInfo = new();
+        //[ObservableProperty]
+        //private PaginationInfo _paginationInfo = new();
 
         public DiscountsAppliedViewModel(IDiscountService service, IDiscountsAppliedService displayService, ILoadingService loadingService,
                                          IDialogService dialogService, IMessageService messageService, IWindowService windowService, IUserSessionService userSessionService)
                                          : base(service, displayService, loadingService, dialogService, messageService, userSessionService)
         {
             _windowService = windowService;
-            PaginationInfo.PageChanged += OnPageChanged;
+            //PaginationInfo.PageChanged += OnPageChanged;
         }
 
-        private async Task OnPageChanged()
-        {
-            await LoadData();
-        }
+        //private async Task OnPageChanged()
+        //{
+        //    await LoadData();
+        //}
 
         public async Task<bool> OnOpeningDialog(int serviceId)
         {
@@ -54,11 +54,11 @@ namespace OMS.UI.ViewModels.Windows
         }
 
         protected override async Task<DiscountsAppliedModel> ConvertToModel(DiscountModel messageModel)
-            => (await _displayService.GetByIdAsync(messageModel.DiscountId))!;
+            => (await _displayService.GetByIdAsync(messageModel.Id))!;
 
         protected override async Task<bool> ExecuteDelete(int itemId) => await _service.DeleteAsync(itemId);
 
-        protected override int GetItemId(DiscountsAppliedModel item) => item.DiscountId;
+        protected override int GetItemId(DiscountsAppliedModel item) => item.Id;
 
         protected override async Task LoadData()
         {
@@ -73,6 +73,7 @@ namespace OMS.UI.ViewModels.Windows
                     PaginationInfo.PageSize = pagedResultDiscountsApplied.PageSize;
                     PaginationInfo.TotalItems = pagedResultDiscountsApplied.TotalItems;
                     PaginationInfo.TotalPages = pagedResultDiscountsApplied.TotalPages;
+                    RefreshPaginationCommandStates();
                 }
             });
         }

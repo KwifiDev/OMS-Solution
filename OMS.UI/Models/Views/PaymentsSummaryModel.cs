@@ -4,17 +4,17 @@ namespace OMS.UI.Models.Views
 {
     public class PaymentsSummaryModel : BaseModel
     {
-        private int _paymentId;
+        private int _id;
         private string? _amountPaid;
         private DateOnly _createdAt;
         private string? _notes;
         private string _employeeName = null!;
 
         [Key]
-        public int PaymentId
+        public int Id
         {
-            get => _paymentId;
-            set => SetProperty(ref _paymentId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string? AmountPaid

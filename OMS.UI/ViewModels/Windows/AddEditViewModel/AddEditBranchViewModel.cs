@@ -22,7 +22,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             => "فرع";
 
         protected override async Task<bool> SaveDataAsync(bool isAdding, BranchModel branchModel)
-            => isAdding ? await _service.AddAsync(branchModel) : await _service.UpdateAsync(branchModel.BranchId, branchModel);
+            => isAdding ? await _service.AddAsync(branchModel) : await _service.UpdateAsync(branchModel.Id, branchModel);
 
     }
 }

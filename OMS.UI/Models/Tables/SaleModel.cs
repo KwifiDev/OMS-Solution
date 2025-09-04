@@ -5,7 +5,7 @@ namespace OMS.UI.Models.Tables
 {
     public class SaleModel : BaseModel
     {
-        private int _saleId;
+        private int _id;
         private int _clientId;
         private int _serviceId;
         private decimal _cost;
@@ -21,12 +21,12 @@ namespace OMS.UI.Models.Tables
 
 
         [Key]
-        public int SaleId
+        public int Id
         {
-            get => _saleId;
+            get => _id;
             set
             {
-                SetProperty(ref _saleId, value);
+                SetProperty(ref _id, value);
                 OnPropertyChanged(nameof(SaleIdDisplay));
             }
         }
@@ -105,6 +105,6 @@ namespace OMS.UI.Models.Tables
             set => SetProperty(ref _createdByUserId, value);
         }
 
-        public string SaleIdDisplay => _saleId > 0 ? _saleId.ToString() : "لا يوجد";
+        public string SaleIdDisplay => _id > 0 ? _id.ToString() : "لا يوجد";
     }
 }

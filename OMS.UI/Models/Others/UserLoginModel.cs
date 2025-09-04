@@ -6,7 +6,7 @@ namespace OMS.UI.Models.Others
     public class UserLoginModel
     {
         [Key]
-        public int UserId { get; internal set; }
+        public int Id { get; internal set; }
 
         public int PersonId { get; set; }
 

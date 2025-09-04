@@ -5,7 +5,7 @@ namespace OMS.UI.APIs.Dtos.Tables;
 public partial class PaymentDto
 {
     [Key]
-    public int PaymentId { get; set; }
+    public int Id { get; set; }
 
     public int AccountId { get; set; }
 

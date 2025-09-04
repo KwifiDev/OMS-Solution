@@ -1,10 +1,11 @@
-﻿using OMS.Common.Enums;
+﻿using OMS.BL.Interfaces;
+using OMS.Common.Enums;
 
 namespace OMS.BL.Models.Views
 {
-    public class PersonDetailModel
+    public class PersonDetailModel : IModelKey
     {
-        public int PersonId { get; set; }
+        public int Id { get; set; }
 
         public string FullName { get; set; } = null!;
 

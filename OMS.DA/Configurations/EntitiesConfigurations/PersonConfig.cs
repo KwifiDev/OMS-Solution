@@ -9,7 +9,7 @@ namespace OMS.DA.Configurations.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Person> builder)
         {
-            builder.HasKey(e => e.PersonId).HasName("people_personid_primary");
+            builder.HasKey(e => e.Id).HasName("people_personid_primary");
 
             builder.Property(e => e.Gender).HasComment("0 = Male | 1 = Female");
 

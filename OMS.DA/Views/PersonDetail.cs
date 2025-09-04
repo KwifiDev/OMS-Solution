@@ -1,15 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.Common.Enums;
 using OMS.DA.CustomAttributes;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Views
 {
     [Keyless]
-    public class PersonDetail
+    public class PersonDetail : IEntityKey
     {
         [Id]
-        public int PersonId { get; set; }
+        [Column("PersonId")]
+        public int Id { get; set; }
 
         [StringLength(41)]
         public string FullName { get; set; } = null!;

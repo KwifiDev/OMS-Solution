@@ -45,5 +45,12 @@ namespace OMS.DA.Repositories.EntityRepos
             return ((int)newDebtId.Value);
         }
 
+        public async Task<decimal?> CalcTotalDebtsByClientIdAsync(int clientId)
+        {
+            return await _dbSet.AsNoTracking()
+                               .Where(e => e.ClientId == clientId && e.Status == EnDebtStatus.NotPaid)
+                               .Select(e => e.Total)
+                               .SumAsync();
+        }
     }
 }

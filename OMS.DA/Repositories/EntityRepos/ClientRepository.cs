@@ -37,7 +37,7 @@ namespace OMS.DA.Repositories.EntityRepos
 
         public async Task<int> GetIdByPersonIdAsync(int personId)
         {
-            return await _context.Clients.Where(c => c.PersonId == personId).Select(c => c.ClientId).FirstOrDefaultAsync();
+            return await _context.Clients.Where(c => c.PersonId == personId).Select(c => c.Id).FirstOrDefaultAsync();
         }
     }
 }

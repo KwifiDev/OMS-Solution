@@ -22,6 +22,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             => "عائد";
 
         protected override async Task<bool> SaveDataAsync(bool isAdding, RevenueModel revenueModel)
-            => isAdding ? await _service.AddAsync(revenueModel) : await _service.UpdateAsync(revenueModel.RevenueId, revenueModel);
+            => isAdding ? await _service.AddAsync(revenueModel) : await _service.UpdateAsync(revenueModel.Id, revenueModel);
     }
 }

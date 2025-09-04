@@ -2,7 +2,7 @@
 {
     public class DebtCreationModel
     {
-        public int DebtId { get; set; }
+        public int Id { get; set; }
 
         public int ClientId { get; set; }
 

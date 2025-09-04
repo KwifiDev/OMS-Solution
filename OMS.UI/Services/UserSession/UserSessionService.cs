@@ -87,14 +87,14 @@ namespace OMS.UI.Services.UserSession
 
         public async Task UpdateToken()
         {
-            var tokenInfo = await _authService.RefreshTokenAsync(CurrentUser!.UserId);
+            var tokenInfo = await _authService.RefreshTokenAsync(CurrentUser!.Id);
 
             CurrentToken = tokenInfo is null ? CurrentToken : tokenInfo;
         }
 
         public async Task UpdateClaims()
         {
-            var claims = await _authService.GetUserClaimsByUserIdAsync(CurrentUser!.UserId);
+            var claims = await _authService.GetUserClaimsByUserIdAsync(CurrentUser!.Id);
 
             Claims = claims is null ? Claims : claims;
         }

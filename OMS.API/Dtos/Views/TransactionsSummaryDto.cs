@@ -2,7 +2,7 @@
 
 public partial class TransactionsSummaryDto
 {
-    public int TransactionId { get; set; }
+    public int Id { get; set; }
 
     public string TransactionType { get; set; } = null!;
 

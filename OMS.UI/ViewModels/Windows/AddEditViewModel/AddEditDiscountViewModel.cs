@@ -36,7 +36,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         protected override string GetEntityName() => "خصم الخدمة";
 
         protected override async Task<bool> SaveDataAsync(bool isAdding, DiscountModel model)
-            => isAdding ? await _service.AddAsync(model) : await _service.UpdateAsync(model.DiscountId, model);
+            => isAdding ? await _service.AddAsync(model) : await _service.UpdateAsync(model.Id, model);
 
         private void InitializeClientTypes()
         {

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OMS.BL.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Models.Tables
 {
-    public class PermissionModel
+    public class PermissionModel : IModelKey
     {
         [Key]
         public int Id { get; set; }

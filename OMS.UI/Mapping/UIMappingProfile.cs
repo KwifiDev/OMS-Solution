@@ -52,7 +52,7 @@ namespace OMS.UI.Mapping
             CreateMap<RoleDto, RoleModel>().ReverseMap();
             CreateMap<RolesSummaryDto, RolesSummaryModel>().ReverseMap();
             CreateMap<RoleModel, UserRoleSelectionModel>()
-                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Name))
                 .ReverseMap();
             CreateMap<RoleClaimModel, RoleClaimDto>().ReverseMap();

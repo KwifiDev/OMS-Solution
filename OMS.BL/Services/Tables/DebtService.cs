@@ -59,5 +59,9 @@ namespace OMS.BL.Services.Tables
             return await UpdateAsync(debtModel);
         }
 
+        public async Task<decimal?> CalcTotalDebtsByClientIdAsync(int clientId)
+        {
+            return await _debtRepository.CalcTotalDebtsByClientIdAsync(clientId);
+        }
     }
 }

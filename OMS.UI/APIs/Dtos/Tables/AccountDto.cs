@@ -6,7 +6,7 @@ namespace OMS.UI.APIs.Dtos.Tables;
 public partial class AccountDto
 {
     [Key]
-    public int AccountId { get; set; }
+    public int Id { get; set; }
 
     public required int ClientId { get; set; }
 

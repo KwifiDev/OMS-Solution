@@ -29,7 +29,7 @@ namespace OMS.UI.APIs.Services.Tables
                 if (response.IsSuccessStatusCode)
                 {
                     var createdSaleDto = await response.Content.ReadFromJsonAsync<SaleCreationDto>();
-                    return (model.SaleId = createdSaleDto!.SaleId) > 0;
+                    return (model.Id = createdSaleDto!.SaleId) > 0;
                 }
 
                 LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));

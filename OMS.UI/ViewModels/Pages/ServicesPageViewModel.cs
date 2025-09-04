@@ -36,7 +36,7 @@ namespace OMS.UI.ViewModels.Pages
             => await _service.DeleteAsync(itemId);
 
         protected override int GetItemId(ServicesSummaryModel item)
-            => item.ServiceId;
+            => item.Id;
 
         protected override async Task ShowDetailsWindow(int itemId)
             => await _dialogService.ShowDialog<DiscountsAppliedWindow, int>(itemId);
@@ -46,7 +46,7 @@ namespace OMS.UI.ViewModels.Pages
             => await _dialogService.ShowDialog<AddEditServiceWindow, int?>(itemId);
 
         protected override async Task<ServicesSummaryModel> ConvertToModel(ServiceModel messageModel)
-            => (await _displayService.GetByIdAsync(messageModel.ServiceId))!;
+            => (await _displayService.GetByIdAsync(messageModel.Id))!;
 
 
         [RelayCommand]

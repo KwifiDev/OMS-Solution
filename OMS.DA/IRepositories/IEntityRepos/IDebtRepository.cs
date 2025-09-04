@@ -28,5 +28,12 @@ namespace OMS.DA.IRepositories.IEntityRepos
         /// <param name="createdByUserId">The ID of the user who created the sale.</param>
         /// <returns>The new sale id of the sale or -1 if an error or 0 if (clientId,serviceId,userId) not correct.</returns>
         Task<int> AddDebtAsync(int clientId, int serviceId, short quantity, string? description, string? notes, int createdByUserId);
+
+        /// <summary>
+        /// Pays a debt by its ID asynchronously.
+        /// </summary>
+        /// <param name="clientId">The ID of the client to calc total un paid debts.</param>
+        /// <returns>The un paid total debts </returns>
+        Task<decimal?> CalcTotalDebtsByClientIdAsync(int clientId);
     }
 }

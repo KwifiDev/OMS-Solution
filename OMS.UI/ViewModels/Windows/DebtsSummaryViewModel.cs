@@ -37,8 +37,6 @@ namespace OMS.UI.ViewModels.Windows
         [ObservableProperty]
         private UserAccountModel _userAccount = null!;
 
-        [ObservableProperty]
-        private PaginationInfo _paginationInfo = new();
 
         [ObservableProperty]
         private decimal? _totalDebts = 0;
@@ -55,15 +53,9 @@ namespace OMS.UI.ViewModels.Windows
             CommandConditions[nameof(EditItemCommand)] += CanOpenPayDebtDialog;
             CommandConditions[nameof(DeleteItemCommand)] += CanOpenPayDebtDialog;
 
-            PaginationInfo.PageChanged += OnPageChanged;
-
             WeakReferenceMessenger.Default.Register<PayDebtModel>(this, OnPayDebtReceived);
         }
 
-        private async Task OnPageChanged()
-        {
-            await LoadDebtsData();
-        }
 
         private void OnPayDebtReceived(object recipient, PayDebtModel payDebtModel)
         {
@@ -122,21 +114,17 @@ namespace OMS.UI.ViewModels.Windows
             PaginationInfo.PageSize = pagedResultDebtsData.PageSize;
             PaginationInfo.TotalItems = pagedResultDebtsData.TotalItems;
             PaginationInfo.TotalPages = pagedResultDebtsData.TotalPages;
-
-            CalcTotalDebts();
+            RefreshPaginationCommandStates();
+            await CalcTotalDebts();
 
             return true;
         }
 
-        private void CalcTotalDebts()
+        private async Task CalcTotalDebts()
         {
-            TotalDebts = Items
-                .Where(debt => debt.Status == "غير مدفوع")
-                .Sum(debt => debt.TotalDebts);
-
+            TotalDebts = await _service.CalcTotalDebtsByClientId(_clientId);
             PayAllClientDebtsCommand.NotifyCanExecuteChanged();
         }
-
 
 
         [RelayCommand(CanExecute = nameof(CanCancelDebt))]
@@ -147,7 +135,7 @@ namespace OMS.UI.ViewModels.Windows
             if (!_messageService.ShowQuestionMessage("تحذير", MessageTemplates.CancellationDebtConfirmation))
                 return;
 
-            var isSuccess = await _service.CancelDebtAsync(SelectedItem.DebtId);
+            var isSuccess = await _service.CancelDebtAsync(SelectedItem.Id);
 
             if (!isSuccess)
             {
@@ -157,9 +145,8 @@ namespace OMS.UI.ViewModels.Windows
 
             SelectedItem.Status = "ملغات";
             _messageService.ShowInfoMessage("عملية الإلغاء", MessageTemplates.CancelDebtSuccessMessage);
-            CalcTotalDebts();
+            await CalcTotalDebts();
         }
-
         private bool CanCancelDebt()
         {
             return SelectedItem?.Status == "غير مدفوع" && _userSessionService.Claims!.Contains(PermissionsData.Debts.Cancel);
@@ -173,15 +160,14 @@ namespace OMS.UI.ViewModels.Windows
         private async Task OpenPayDebtDialog()
         {
             bool isOpened = await _dialogService.ShowDialog<PayDebtWindow, (int Id, DebtStatus.EnMode)>(
-                (SelectedItem!.DebtId, DebtStatus.EnMode.PaySpecifiecDebt));
+                (SelectedItem!.Id, DebtStatus.EnMode.PaySpecifiecDebt));
 
             if (isOpened)
             {
-                CalcTotalDebts();
+                await CalcTotalDebts();
                 await LoadUserAccount();
             }
         }
-
         private bool CanOpenPayDebtDialog()
         {
             return SelectedItem?.Status == "غير مدفوع" && SelectedItem.TotalDebts <= UserAccount?.ClientBalance
@@ -198,7 +184,6 @@ namespace OMS.UI.ViewModels.Windows
             if (isOpened)
                 await LoadData();
         }
-
         private bool CanPayAllDebts()
         {
             return TotalDebts <= UserAccount?.ClientBalance && TotalDebts != 0 && _userSessionService.Claims!.Contains(PermissionsData.Debts.Pay);
@@ -210,7 +195,6 @@ namespace OMS.UI.ViewModels.Windows
         {
             await _dialogService.ShowDialog<AccountPaymentsWindow, int>(_accountId);
         }
-
         private bool CanOpenClientPaymentsDialog()
         {
             return _userSessionService.Claims!.Contains(PermissionsData.PaymentsSummary.View);
@@ -221,20 +205,19 @@ namespace OMS.UI.ViewModels.Windows
         {
             await _dialogService.ShowDialog<AccountTransactionsWindow, int>(accountId);
         }
-
         private bool CanShowAccountTransactions()
         {
             return _userSessionService.Claims!.Contains(PermissionsData.TransactionsSummary.View);
         }
 
         protected override async Task<DebtsSummaryModel> ConvertToModel(DebtModel messageModel)
-            => (await _displayService.GetByIdAsync(messageModel.DebtId))!;
+            => (await _displayService.GetByIdAsync(messageModel.Id))!;
 
         protected override async Task<bool> ExecuteDelete(int itemId)
             => await _service.DeleteAsync(itemId);
 
         protected override int GetItemId(DebtsSummaryModel item)
-            => item.DebtId;
+            => item.Id;
 
         protected override Task ShowDetailsWindow(int itemId)
         {
@@ -250,13 +233,13 @@ namespace OMS.UI.ViewModels.Windows
         protected override async Task AddItem()
         {
             await base.AddItem();
-            CalcTotalDebts();
+            await CalcTotalDebts();
         }
 
         protected override async Task DeleteItem()
         {
             await base.DeleteItem();
-            CalcTotalDebts();
+            await CalcTotalDebts();
         }
     }
 }

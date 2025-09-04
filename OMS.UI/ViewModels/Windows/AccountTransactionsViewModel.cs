@@ -49,7 +49,16 @@ namespace OMS.UI.ViewModels.Windows
                 PaginationInfo.PageSize = pagedResult.PageSize;
                 PaginationInfo.TotalItems = pagedResult.TotalItems;
                 PaginationInfo.TotalPages = pagedResult.TotalPages;
+                RefreshPaginationCommandStates();
             }
+        }
+
+        private void RefreshPaginationCommandStates()
+        {
+            FirstPageCommand.NotifyCanExecuteChanged();
+            PreviousPageCommand.NotifyCanExecuteChanged();
+            NextPageCommand.NotifyCanExecuteChanged();
+            LastPageCommand.NotifyCanExecuteChanged();
         }
 
         public async Task<bool> OnOpeningDialog(int accountId)

@@ -30,7 +30,7 @@ namespace OMS.UI.APIs.Services.Tables
                 if (response.IsSuccessStatusCode)
                 {
                     var createdDebtDto = await response.Content.ReadFromJsonAsync<DebtCreationDto>();
-                    return (model.DebtId = createdDebtDto!.DebtId) > 0;
+                    return (model.Id = createdDebtDto!.DebtId) > 0;
                 }
 
                 LogError(new Exception($"خطأ في عملية المناقلة على الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
@@ -91,6 +91,25 @@ namespace OMS.UI.APIs.Services.Tables
             }
         }
 
+        public async Task<decimal?> CalcTotalDebtsByClientId(int clientId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_endpoint}/calctotaldebts/{clientId}/totaldebts");
 
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في جلب البيانات من الخادم للمعرف:.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return null;
+                }
+
+                return await response.Content.ReadFromJsonAsync<decimal>();
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return null;
+            }
+        }
     }
 }

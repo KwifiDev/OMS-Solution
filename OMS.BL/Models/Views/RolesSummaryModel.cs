@@ -1,8 +1,10 @@
-﻿namespace OMS.BL.Models.Views
+﻿using OMS.BL.Interfaces;
+
+namespace OMS.BL.Models.Views
 {
-    public class RolesSummaryModel
+    public class RolesSummaryModel : IModelKey
     {
-        public int RoleId { get; set; }
+        public int Id { get; set; }
 
         public string? RoleName { get; set; }
 

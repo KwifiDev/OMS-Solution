@@ -2,7 +2,7 @@
 
 public partial class DiscountsAppliedDto
 {
-    public int DiscountId { get; set; }
+    public int Id { get; set; }
 
     public string ServiceName { get; set; } = null!;
 

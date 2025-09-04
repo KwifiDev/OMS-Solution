@@ -1,14 +1,16 @@
 ﻿using OMS.Common.Enums;
 using OMS.DA.Entities.Identity;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Entities;
 
-public partial class Debt
+public partial class Debt : IEntityKey
 {
     [Key]
-    public int DebtId { get; set; }
+    [Column("DebtId")]
+    public int Id { get; set; }
 
     public int ClientId { get; set; }
 

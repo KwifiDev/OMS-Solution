@@ -81,13 +81,13 @@ namespace OMS.UI.ViewModels.Windows
 
         private bool IsCurrentUser()
         {
-            return _userSessionService.CurrentUser!.UserId == ChangePasswordModel.UserId;
+            return _userSessionService.CurrentUser!.Id == ChangePasswordModel.UserId;
         }
 
 
         private void SaveNewPasswordConifg(string newPassword)
         {
-            if (ChangePasswordModel.UserId == _userSessionService.CurrentUser?.UserId)
+            if (ChangePasswordModel.UserId == _userSessionService.CurrentUser?.Id)
             {
                 _registryService.GetUserLoginConfig(out string? username, out string? password);
                 if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))

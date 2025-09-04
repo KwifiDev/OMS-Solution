@@ -84,7 +84,7 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private async Task EditUser()
         {
-            int? userId = _userSessionService.CurrentUser?.UserId;
+            int? userId = _userSessionService.CurrentUser?.Id;
 
             if (userId != null && userId > 0)
                 await _dialogService.ShowDialog<AddEditUserWindow, (int? UserId, bool IsOpendOnUsersPage)>((userId, false));
@@ -93,7 +93,7 @@ namespace OMS.UI.ViewModels.Windows
         [RelayCommand]
         private void ChangeUserPassword()
         {
-            int? userId = _userSessionService.CurrentUser?.UserId;
+            int? userId = _userSessionService.CurrentUser?.Id;
 
             if (userId != null && userId > 0)
                 _dialogService.ShowDialog<ChangePasswordWindow, int?>(userId);

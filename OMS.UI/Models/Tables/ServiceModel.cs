@@ -4,19 +4,19 @@ namespace OMS.UI.Models.Tables
 {
     public class ServiceModel : BaseModel
     {
-        private int _serviceId;
+        private int _id;
         private string _name = null!;
         private string _description = null!;
         private decimal _price;
 
 
         [Key]
-        public int ServiceId
+        public int Id
         {
-            get => _serviceId;
+            get => _id;
             set
             {
-                SetProperty(ref _serviceId, value);
+                SetProperty(ref _id, value);
                 OnPropertyChanged(nameof(ServiceIdDisplay));
             }
         }
@@ -46,6 +46,6 @@ namespace OMS.UI.Models.Tables
         }
 
         // DisplayProperty
-        public string ServiceIdDisplay => _serviceId > 0 ? _serviceId.ToString() : "لا يوجد";
+        public string ServiceIdDisplay => _id > 0 ? _id.ToString() : "لا يوجد";
     }
 }

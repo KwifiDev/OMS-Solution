@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OMS.BL.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Models.Tables;
 
 
-public partial class AccountModel
+public partial class AccountModel : IModelKey
 {
     [Key]
-    public int AccountId { get; internal set; }
+    public int Id { get; set; }
 
     public required int ClientId { get; set; }
 

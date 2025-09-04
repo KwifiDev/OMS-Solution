@@ -58,7 +58,7 @@ namespace OMS.UI.ViewModels.Windows
         protected override async Task<RolesSummaryModel> ConvertToModel(RoleModel messageModel)
             => (await _displayService.GetByIdAsync(messageModel.Id))!;
 
-        protected override int GetItemId(RolesSummaryModel item) => item.RoleId;
+        protected override int GetItemId(RolesSummaryModel item) => item.Id;
 
         protected override async Task ShowDetailsWindow(int itemId)
         {

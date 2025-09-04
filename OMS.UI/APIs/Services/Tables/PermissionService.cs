@@ -21,7 +21,7 @@ namespace OMS.UI.APIs.Services.Tables
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_endpoint}");
+                var response = await _httpClient.GetAsync($"{_endpoint}/all");
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -30,7 +30,7 @@ namespace OMS.UI.APIs.Services.Tables
                 }
 
                 var dto = await response.Content.ReadFromJsonAsync<IEnumerable<PermissionDto>>();
-                return dto != null ? _mapper.Map<IEnumerable<PermissionModel>>(dto) : Enumerable.Empty<PermissionModel>(); ;
+                return dto != null ? _mapper.Map<IEnumerable<PermissionModel>>(dto) : Enumerable.Empty<PermissionModel>();
             }
             catch (Exception ex)
             {

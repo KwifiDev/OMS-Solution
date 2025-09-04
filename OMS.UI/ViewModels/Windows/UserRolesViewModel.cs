@@ -73,7 +73,7 @@ namespace OMS.UI.ViewModels.Windows
 
         private async Task LoadCurrentUserRolesAsync()
         {
-            _currentUserRoles = await _authService.GetUserRolesByUserIdAsync(CurrentUser.UserId);
+            _currentUserRoles = await _authService.GetUserRolesByUserIdAsync(CurrentUser.Id);
 
             if (!_currentUserRoles.Any()) return;
 
@@ -89,7 +89,7 @@ namespace OMS.UI.ViewModels.Windows
             var (rolesToAdd, rolesToRemove) = CalculateRoleChanges();
             await ApplyRoleChangesAsync(rolesToAdd, rolesToRemove);
 
-            if (_userSessionService.CurrentUser!.UserId == CurrentUser.UserId)
+            if (_userSessionService.CurrentUser!.Id == CurrentUser.Id)
             {
                 await _userSessionService.UpdateClaims();
                 await _userSessionService.UpdateToken();
@@ -128,12 +128,12 @@ namespace OMS.UI.ViewModels.Windows
         {
             try
             {
-                bool isSuccess = await _authService.ChangeUserRolesAsync(CurrentUser.UserId, rolesToAdd, rolesToRemove);
+                bool isSuccess = await _authService.ChangeUserRolesAsync(CurrentUser.Id, rolesToAdd, rolesToRemove);
 
                 if (isSuccess)
                 {
                     _messageService.ShowInfoMessage("تعيين الادوار", MessageTemplates.AssignRolesSuccessMessage);
-                    _currentUserRoles = await _authService.GetUserRolesByUserIdAsync(CurrentUser.UserId);
+                    _currentUserRoles = await _authService.GetUserRolesByUserIdAsync(CurrentUser.Id);
                 }
                 else
                 {

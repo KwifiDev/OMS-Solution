@@ -19,12 +19,13 @@ namespace OMS.DA.IRepositories.IViewRepos
                          .Where(e => e.ServiceId == serviceId)
                          .Select(e => new DiscountsApplied
                          {
-                             DiscountId = e.DiscountId,
+                             Id = e.Id,
                              ServiceName = e.ServiceName,
                              ServicePrice = e.ServicePrice,
                              ClientType = e.ClientType,
                              Discount = e.Discount,
                          })
+                         .OrderByDescending(e => e.Id)
                          .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                          .Take(parameters.PageSize)
                          .ToListAsync();
@@ -32,7 +33,7 @@ namespace OMS.DA.IRepositories.IViewRepos
             return new PagedResult<DiscountsApplied>
             {
                 Items = items,
-                TotalItems = _dbSet.Count(),
+                TotalItems = await _dbSet.Where(e => e.ServiceId == serviceId).CountAsync(),
                 PageNumber = parameters.PageNumber,
                 PageSize = parameters.PageSize
             };

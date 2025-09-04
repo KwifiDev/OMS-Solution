@@ -124,7 +124,7 @@
                        Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
                 <Separator/>
 
-                <TextBlock Text="{Binding UserAccount.AccountId, FallbackValue='???'}" 
+                <TextBlock Text="{Binding UserAccount.Id, FallbackValue='???'}" 
                        Style="{StaticResource MaterialDesignCaptionTextBlock}"
                        Foreground="{DynamicResource MaterialDesignBody}"
                        FontSize="16"/>
@@ -173,7 +173,7 @@
                     Margin="10,0,10,0"
                     BorderBrush="Black"
                     Command="{Binding ShowAccountTransactionsCommand}"
-                    CommandParameter="{Binding UserAccount.AccountId}"
+                    CommandParameter="{Binding UserAccount.Id}"
                     Content="عرض سجل المناقلات"/>
 
         </Grid>

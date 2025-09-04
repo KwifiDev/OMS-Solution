@@ -2,7 +2,7 @@
 
 public partial class SalesSummaryDto
 {
-    public int SaleId { get; set; }
+    public int Id { get; set; }
 
     public string ServiceName { get; set; } = null!;
 

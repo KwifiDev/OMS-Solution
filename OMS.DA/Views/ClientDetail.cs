@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.CustomAttributes;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Views;
 
 [Keyless]
-public partial class ClientDetail
+public partial class ClientDetail : IEntityKey
 {
     [Id]
-    public int ClientId { get; set; }
+    [Column("ClientId")]
+    public int Id { get; set; }
 
     [StringLength(41)]
     public string ClientName { get; set; } = null!;

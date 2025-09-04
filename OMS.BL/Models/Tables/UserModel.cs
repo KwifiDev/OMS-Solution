@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OMS.BL.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Models.Tables;
 
-public partial class UserModel
+public partial class UserModel : IModelKey
 {
     [Key]
-    public int UserId { get; internal set; }
+    public int Id { get; set; }
 
     public required int PersonId { get; set; }
 

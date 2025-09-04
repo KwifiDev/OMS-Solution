@@ -96,7 +96,7 @@
 
             <StackPanel Orientation="Horizontal" Margin="0 0 0 20">
 
-                <TextBlock Text="{Binding CurrentUser.UserId, FallbackValue='???'}" 
+                <TextBlock Text="{Binding CurrentUser.Id, FallbackValue='???'}" 
                            MinWidth="180"
                            Style="{StaticResource MaterialDesignCaptionTextBlock}"
                            Foreground="{DynamicResource MaterialDesignBody}"
@@ -210,7 +210,7 @@
 
                 <!-- الأعمدة -->
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="رقم" Binding="{Binding RoleId}" IsReadOnly="True" Width="60"/>
+                    <DataGridTextColumn Header="رقم" Binding="{Binding Id}" IsReadOnly="True" Width="60"/>
                     <DataGridTextColumn Header="اسم الدور" Binding="{Binding RoleName}" IsReadOnly="True"/>
                     <DataGridCheckBoxColumn Header="تعيين" Binding="{Binding IsSelected}" Width="80"/>
                 </DataGrid.Columns>

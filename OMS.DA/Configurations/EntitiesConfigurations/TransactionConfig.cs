@@ -8,7 +8,7 @@ namespace OMS.DA.Configurations.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Transaction> builder)
         {
-            builder.HasKey(e => e.TransactionId).HasName("transactions_transactionid_primary");
+            builder.HasKey(e => e.Id).HasName("transactions_transactionid_primary");
 
             builder.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
             builder.Property(e => e.TransactionType).HasComment("0 = Deposit | 1 = Withdraw | 2 = Transfer");

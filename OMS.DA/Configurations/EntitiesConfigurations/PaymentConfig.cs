@@ -8,7 +8,7 @@ namespace OMS.DA.Configurations.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
-            builder.HasKey(e => e.PaymentId).HasName("payments_paymentid_primary");
+            builder.HasKey(e => e.Id).HasName("payments_paymentid_primary");
 
             builder.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
 

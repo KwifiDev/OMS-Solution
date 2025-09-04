@@ -11,6 +11,7 @@
         xmlns:inputBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
         xmlns:userControl="clr-namespace:OMS.UI.Views.UserControls"
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
+        xmlns:userControls="clr-namespace:OMS.UI.Views.UserControls"
         d:DataContext="{d:DesignInstance Type=windows:DebtsSummaryViewModel}"
         mc:Ignorable="d"
         Height="700" 
@@ -111,21 +112,32 @@
                     Command="{Binding CloseCommand}"/>
 
         </StackPanel>
-        
-        
-        
 
-        <Label x:Name="lblTitle"
-               Grid.Row="2"
-               Grid.ColumnSpan="2"
-               Style="{StaticResource MaterialDesignLabel}"
-               FontWeight="Bold" 
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center"
-               FontSize="24"
-               Content="قائمة الديون"
-               Background="{StaticResource PageHeaderGradient}"
-               Foreground="White"/>
+
+        <Grid Background="{StaticResource PageHeaderGradient}" Grid.Row="2"
+                                                                 Grid.ColumnSpan="2">
+
+            <DockPanel LastChildFill="False">
+
+                <userControls:PaginationControl DockPanel.Dock="Right"
+                                           FlowDirection="LeftToRight"
+                                           PaginationInfo="{Binding PaginationInfo}"/>
+
+                <Label
+                       Style="{StaticResource MaterialDesignLabel}"
+                       FontWeight="Bold" 
+                       HorizontalContentAlignment="Center"
+                       VerticalContentAlignment="Center"
+                       FontSize="24"
+                       Content="قائمة الديون"
+                       Foreground="White"
+                       Padding="20,0"/>
+
+            </DockPanel>
+
+        </Grid>
+
+        
 
         <Grid  Grid.Row="3" Grid.ColumnSpan="2">
       
@@ -179,7 +191,7 @@
 
             <!-- الأعمدة -->
             <DataGrid.Columns>
-                <DataGridTextColumn Header="رقم" Binding="{Binding DebtId}" Width="55"/>
+                <DataGridTextColumn Header="رقم" Binding="{Binding Id}" Width="55"/>
                 <DataGridTextColumn Header="اسم الخدمة" Binding="{Binding ServiceName}" Width="0.7*"/>
                 <DataGridTextColumn Header="وصف الخدمة" Binding="{Binding Description}" Width="2*"/>
                 <DataGridTextColumn Header="الكلفة" Binding="{Binding TotalDebts, StringFormat={}{0:0}}" Width="120"/>

@@ -6,7 +6,7 @@ namespace OMS.UI.APIs.Dtos.Tables;
 public partial class DebtDto
 {
     [Key]
-    public int DebtId { get; set; }
+    public int Id { get; set; }
 
     public required int ClientId { get; set; }
 

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OMS.DA.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.DA.Entities
 {
-    public class Permission
+    public class Permission : IEntityKey
     {
         [Key]
         public int Id { get; set; }

@@ -144,6 +144,43 @@ namespace OMS.API.Controllers
         }
 
 
+        /// <summary>
+        /// Retrieves a specific entity by its ID.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /api/clients/123/id
+        ///     123 is the personId
+        /// </remarks>
+        /// <param name="personId">The person ID to retrieve client ID (must be positive integer)</param>
+        /// <returns>The requested client Id</returns>
+        /// <response code="200">Returns the requested id</response>
+        /// <response code="404">If entity was not found</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpGet("calctotaldebts/{clientId:int}/totaldebts")]
+        [Authorize(Policy = PermissionsData.Clients.View)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<decimal>> CalcTotalDebtsByClientIdAsync([FromRoute] int clientId)
+        {
+            if (clientId <= 0) return NotFound();
+
+            try
+            {
+                var totalDebts = await _service.CalcTotalDebtsByClientIdAsync(clientId);
+                return totalDebts is null ? NotFound() : Ok(totalDebts);
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error retrieving clientId",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
         [NonAction] // This EndPoint Insted Of (AddDebtAsync) Method
         public override Task<ActionResult<DebtDto>> AddAsync([FromBody] DebtDto dto)
             => Task.FromResult<ActionResult<DebtDto>>(NotFound("This endpoint is disabled."));
@@ -153,10 +190,10 @@ namespace OMS.API.Controllers
         protected override async Task<bool> DeleteModelAsync(int id) => await _service.DeleteAsync(id);
         protected override async Task<PagedResult<DebtModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<DebtModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
-        protected override int GetModelId(DebtModel model) => model.DebtId;
-        protected override bool IsIdentifierIdentical(int id, DebtDto dto) => dto.DebtId == id;
+        protected override int GetModelId(DebtModel model) => model.Id;
+        protected override bool IsIdentifierIdentical(int id, DebtDto dto) => dto.Id == id;
         protected override async Task<bool> IsModelExistAsync(int id) => await _service.IsExistAsync(id);
-        protected override void SetDtoId(DebtDto dto, int id) => dto.DebtId = id;
+        protected override void SetDtoId(DebtDto dto, int id) => dto.Id = id;
         protected override async Task<bool> UpdateModelAsync(DebtModel model) => await _service.UpdateAsync(model);
         #endregion
     }

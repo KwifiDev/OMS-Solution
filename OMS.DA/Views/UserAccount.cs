@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.CustomAttributes;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Views;
 
 [Keyless]
-public partial class UserAccount
+public partial class UserAccount : IEntityKey
 {
     [Id]
-    public int AccountId { get; set; }
+    [Column("AccountId")]
+    public int Id { get; set; }
 
     [Column("UserAccount")]
     [StringLength(20)]

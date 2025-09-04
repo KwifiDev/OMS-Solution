@@ -6,7 +6,7 @@ namespace OMS.API.Dtos.Tables;
 public partial class DiscountDto
 {
     [Key]
-    public int DiscountId { get; set; }
+    public int Id { get; set; }
 
     [Required(ErrorMessage = "ServiceId is Required")]
     public required int ServiceId { get; set; }

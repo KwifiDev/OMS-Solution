@@ -94,7 +94,7 @@
                        Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
                 <Separator/>
 
-                <TextBlock Text="{Binding Person.PersonId, FallbackValue='???'}" 
+                <TextBlock Text="{Binding Person.Id, FallbackValue='???'}" 
                        Style="{StaticResource MaterialDesignCaptionTextBlock}"
                        Foreground="{DynamicResource MaterialDesignBody}"
                        FontSize="16"/>

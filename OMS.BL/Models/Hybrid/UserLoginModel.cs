@@ -1,10 +1,11 @@
-﻿using OMS.Common.Enums;
+﻿using OMS.BL.Interfaces;
+using OMS.Common.Enums;
 
 namespace OMS.BL.Models.Hybrid
 {
-    public class UserLoginModel
+    public class UserLoginModel : IModelKey
     {
-        public int UserId { get; internal set; }
+        public int Id { get; set; }
 
         public int PersonId { get; set; }
 

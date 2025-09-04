@@ -8,7 +8,7 @@ namespace OMS.DA.Configurations.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Sale> builder)
         {
-            builder.HasKey(e => e.SaleId).HasName("sales_saleid_primary");
+            builder.HasKey(e => e.Id).HasName("sales_saleid_primary");
 
             builder.ToTable(tb => tb.HasTrigger("TR_InsertNewSale"));
 

@@ -6,16 +6,16 @@ namespace OMS.UI.Models.Views
 {
     public class PersonDetailModel : ObservableObject
     {
-        private int _personId;
+        private int _id;
         private string _fullName = null!;
         private string _phone = null!;
         private EnGender _gender;
 
         [Key]
-        public int PersonId
+        public int Id
         {
-            get => _personId;
-            set => SetProperty(ref _personId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string FullName

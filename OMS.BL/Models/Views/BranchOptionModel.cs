@@ -1,8 +1,10 @@
-﻿namespace OMS.BL.Models.Views
+﻿using OMS.BL.Interfaces;
+
+namespace OMS.BL.Models.Views
 {
-    public partial class BranchOptionModel
+    public partial class BranchOptionModel : IModelKey
     {
-        public int BranchId { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; } = null!;
     }

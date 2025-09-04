@@ -4,17 +4,17 @@ namespace OMS.UI.Models.Tables
 {
     public class AccountModel : BaseModel
     {
-        private int _accountId;
+        private int _id;
         private int _clientId;
         private string _userAccount = null!;
         private decimal _balance;
 
 
         [Key]
-        public int AccountId
+        public int Id
         {
-            get => _accountId;
-            set => SetProperty(ref _accountId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public int ClientId

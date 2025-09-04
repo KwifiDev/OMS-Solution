@@ -5,16 +5,16 @@ namespace OMS.UI.Models.Views
 {
     public class BranchOperationalMetricModel : ObservableObject
     {
-        private int _branchId;
+        private int _id;
         private string _name = null!;
         private string _address = null!;
         private int? _totalEmployees;
 
         [Key]
-        public int BranchId
+        public int Id
         {
-            get => _branchId;
-            set => SetProperty(ref _branchId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string Name

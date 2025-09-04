@@ -4,7 +4,7 @@ namespace OMS.UI.Models.Views
 {
     public class SalesSummaryModel : ObservableObject
     {
-        private int _saleId;
+        private int _id;
         private string _serviceName = null!;
         private string _description = null!;
         private string _notes = null!;
@@ -12,10 +12,10 @@ namespace OMS.UI.Models.Views
         private string _status = null!;
 
 
-        public int SaleId
+        public int Id
         {
-            get => _saleId;
-            set => SetProperty(ref _saleId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string ServiceName

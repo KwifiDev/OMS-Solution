@@ -1,5 +1,4 @@
 ﻿using OMS.BL.Models.Views;
-using OMS.Common.Extensions.Pagination;
 
 namespace OMS.BL.IServices.Views
 {
@@ -12,6 +11,6 @@ namespace OMS.BL.IServices.Views
         /// Retrieves all transactions grouped by type asynchronously.
         /// </summary>
         /// <returns>A collection of transactions grouped by type.</returns>
-        Task<PagedResult<TransactionsByTypeModel>> GetPagedAsync(PaginationParams parameters);
+        Task<IEnumerable<TransactionsByTypeModel>> GetAllAsync();
     }
 }

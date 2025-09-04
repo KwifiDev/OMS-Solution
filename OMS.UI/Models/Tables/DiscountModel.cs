@@ -5,19 +5,19 @@ namespace OMS.UI.Models.Tables
 {
     public class DiscountModel : BaseModel
     {
-        private int _discountId;
+        private int _id;
         private int _serviceId;
         private EnClientType _clientType;
         private decimal _discountPercentage = 1;
 
 
         [Key]
-        public int DiscountId
+        public int Id
         {
-            get => _discountId;
+            get => _id;
             set
             {
-                SetProperty(ref _discountId, value);
+                SetProperty(ref _id, value);
                 OnPropertyChanged(nameof(DiscountIdDisplay));
             }
         }
@@ -44,6 +44,6 @@ namespace OMS.UI.Models.Tables
             set => SetProperty(ref _discountPercentage, value);
         }
 
-        public string DiscountIdDisplay => _discountId > 0 ? _discountId.ToString() : "لا يوجد";
+        public string DiscountIdDisplay => _id > 0 ? _id.ToString() : "لا يوجد";
     }
 }

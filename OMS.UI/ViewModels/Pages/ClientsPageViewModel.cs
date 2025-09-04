@@ -36,7 +36,7 @@ namespace OMS.UI.ViewModels.Pages
         }
 
         protected override int GetItemId(ClientsSummaryModel item)
-            => item.ClientId;
+            => item.Id;
 
         protected override Task ShowDetailsWindow(int itemId)
         {
@@ -49,7 +49,7 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override async Task<ClientsSummaryModel> ConvertToModel(ClientModel messageModel)
         {
-            return (await _displayService.GetByIdAsync(messageModel.ClientId))!;
+            return (await _displayService.GetByIdAsync(messageModel.Id))!;
         }
 
         private void NotifyCanExecuteChanged(object? obj, EventArgs e)
@@ -102,19 +102,19 @@ namespace OMS.UI.ViewModels.Pages
         [RelayCommand(CanExecute = nameof(CanShowSalesSummary))]
         private async Task ShowSalesSummary()
         {
-            await _dialogService.ShowDialog<SalesSummaryWindow, int?>(SelectedItem?.ClientId);
+            await _dialogService.ShowDialog<SalesSummaryWindow, int?>(SelectedItem?.Id);
         }
 
         private bool CanShowSalesSummary()
         {
-            return SelectedItem?.AccountId != null && _userSessionService.Claims!.Contains(PermissionsData.SalesSummary.View);
+            return SelectedItem != null && _userSessionService.Claims!.Contains(PermissionsData.SalesSummary.View);
         }
 
 
         [RelayCommand(CanExecute = nameof(CanShowDebtsSummary))]
         private async Task ShowDebtsSummary()
         {
-            await _dialogService.ShowDialog<DebtsSummaryWindow, (int ClientId, int AccountId)>((SelectedItem!.ClientId, (int)SelectedItem.AccountId!));
+            await _dialogService.ShowDialog<DebtsSummaryWindow, (int ClientId, int AccountId)>((SelectedItem!.Id, (int)SelectedItem.AccountId!));
         }
 
         private bool CanShowDebtsSummary()

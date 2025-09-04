@@ -86,7 +86,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             var clientSaved = await SaveClient(clientModel, isAdding);
             if (!clientSaved) return false;
 
-            await HandleAccountOperations(clientModel.ClientId);
+            await HandleAccountOperations(clientModel.Id);
             return true;
         }
 
@@ -111,7 +111,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         private async Task<bool> LoadAssociatedAccount()
         {
-            var accountModel = await _accountService.GetByClientIdAsync(Model.ClientId);
+            var accountModel = await _accountService.GetByClientIdAsync(Model.Id);
             if (accountModel == null) 
             {
                 //_messageService.ShowErrorMessage("خطا في الحساب", MessageTemplates.ClientAccountViewError);
@@ -143,16 +143,16 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         private bool ShouldConfirmAccountDeletion()
             => Status.SelectMode == AddEditStatus.EnMode.Edit &&
-               ClientAccount.AccountId > 0 &&
+               ClientAccount.Id > 0 &&
                !HasCreateUserAccount;
 
         private void SetPersonReference()
-            => Model.PersonId = FindPersonViewModel.Person!.PersonId;
+            => Model.PersonId = FindPersonViewModel.Person!.Id;
 
         private async Task<bool> SaveClient(ClientModel clientModel, bool isAdding)
             => isAdding
                 ? await _service.AddAsync(clientModel)
-                : await _service.UpdateAsync(clientModel.ClientId, clientModel);
+                : await _service.UpdateAsync(clientModel.Id, clientModel);
 
         private async Task HandleAccountOperations(int clientId)
         {
@@ -170,18 +170,18 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         {
             ClientAccount.ClientId = clientId;
 
-            var success = ClientAccount.AccountId == 0
+            var success = ClientAccount.Id == 0
                 ? await _accountService.AddAsync(ClientAccount)
-                : await _accountService.UpdateAsync(ClientAccount.AccountId, ClientAccount);
+                : await _accountService.UpdateAsync(ClientAccount.Id, ClientAccount);
 
             if (!success) ShowAccountOperationError();
         }
 
         private async Task RemoveExistingAccount()
         {
-            if (ClientAccount.AccountId <= 0) return;
+            if (ClientAccount.Id <= 0) return;
 
-            var success = await _accountService.DeleteAsync(ClientAccount.AccountId);
+            var success = await _accountService.DeleteAsync(ClientAccount.Id);
             if (!success) ShowAccountDeletionError();
         }
 

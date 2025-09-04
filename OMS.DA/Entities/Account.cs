@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,10 +7,11 @@ namespace OMS.DA.Entities;
 
 [Index("ClientId", Name = "accounts_clientid_unique", IsUnique = true)]
 [Index("UserAccount", Name = "accounts_useraccount_unique", IsUnique = true)]
-public partial class Account
+public partial class Account : IEntityKey
 {
     [Key]
-    public int AccountId { get; set; }
+    [Column("AccountId")]
+    public int Id { get; set; }
 
     public int ClientId { get; set; }
 

@@ -1,6 +1,8 @@
-﻿namespace OMS.BL.Models.Tables
+﻿using OMS.BL.Interfaces;
+
+namespace OMS.BL.Models.Tables
 {
-    public class RoleClaimModel
+    public class RoleClaimModel : IModelKey
     {
         public int Id { get; set; }
 

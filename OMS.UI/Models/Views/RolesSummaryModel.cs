@@ -2,7 +2,7 @@
 {
     public class RolesSummaryModel : BaseModel
     {
-        private int _roleId;
+        private int _id;
         private string? _roleName;
         private int? _usersCount;
         private int? _totalUsers;
@@ -12,10 +12,10 @@
         private string? _claimValues;
 
 
-        public int RoleId
+        public int Id
         {
-            get => _roleId;
-            set => SetProperty(ref _roleId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string? RoleName

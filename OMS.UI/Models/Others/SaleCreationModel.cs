@@ -4,7 +4,7 @@ namespace OMS.UI.Models.Others
 {
     public class SaleCreationModel
     {
-        public int SaleId { get; set; }
+        public int Id { get; set; }
 
         public int ClientId { get; set; }
 

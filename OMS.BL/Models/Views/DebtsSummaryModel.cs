@@ -1,8 +1,10 @@
-﻿namespace OMS.BL.Models.Views;
+﻿using OMS.BL.Interfaces;
 
-public partial class DebtsSummaryModel
+namespace OMS.BL.Models.Views;
+
+public partial class DebtsSummaryModel : IModelKey
 {
-    public int DebtId { get; set; }
+    public int Id { get; set; }
 
     public int? ClientId { get; set; }
 

@@ -1,10 +1,10 @@
-﻿using OMS.BL.Models.Tables;
-using OMS.BL.IServices.Tables;
+﻿using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
+using OMS.BL.Models.StoredProcedureParams;
+using OMS.BL.Models.Tables;
+using OMS.Common.Enums;
 using OMS.DA.Entities;
 using OMS.DA.IRepositories.IEntityRepos;
-using OMS.BL.Models.StoredProcedureParams;
-using OMS.Common.Enums;
 
 namespace OMS.BL.Services.Tables
 {

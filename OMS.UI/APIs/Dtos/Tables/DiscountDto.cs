@@ -6,7 +6,7 @@ namespace OMS.UI.APIs.Dtos.Tables;
 public partial class DiscountDto
 {
     [Key]
-    public int DiscountId { get; set; }
+    public int Id { get; set; }
 
     public required int ServiceId { get; set; }
 

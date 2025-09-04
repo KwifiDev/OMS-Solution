@@ -5,7 +5,7 @@ namespace OMS.API.Dtos.Tables;
 public partial class UserDto
 {
     [Key]
-    public int UserId { get; set; }
+    public int Id { get; set; }
 
     public int PersonId { get; set; }
 

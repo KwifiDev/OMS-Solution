@@ -28,7 +28,7 @@ namespace OMS.UI.ViewModels.Pages
             => await _service.DeleteAsync(itemId);
 
         protected override int GetItemId(PersonDetailModel item)
-            => item.PersonId;
+            => item.Id;
 
         protected override async Task ShowDetailsWindow(int itemId)
             => await _dialogService.ShowDialog<PersonDetailsWindow, int?>(itemId);
@@ -38,7 +38,7 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override async Task<PersonDetailModel> ConvertToModel(PersonModel messageModel)
         {
-            return (await _displayService.GetByIdAsync(messageModel.PersonId))!;
+            return (await _displayService.GetByIdAsync(messageModel.Id))!;
         }
     }
 }

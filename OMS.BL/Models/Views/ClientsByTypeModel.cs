@@ -1,4 +1,6 @@
-﻿namespace OMS.BL.Models.Views;
+﻿using OMS.BL.Interfaces;
+
+namespace OMS.BL.Models.Views;
 
 public partial class ClientsByTypeModel
 {

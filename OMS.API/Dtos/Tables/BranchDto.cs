@@ -5,7 +5,7 @@ namespace OMS.API.Dtos.Tables;
 public partial class BranchDto
 {
     [Key]
-    public int BranchId { get; set; }
+    public int Id { get; set; }
 
     [Required(ErrorMessage = "Branch Name is required")]
     [StringLength(20, MinimumLength = 5, ErrorMessage = "Branch Name must be between 5 and 20 characters")]

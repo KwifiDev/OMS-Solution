@@ -2,7 +2,7 @@
 
 public partial class BranchOperationalMetricDto
 {
-    public int BranchId { get; set; }
+    public int Id { get; set; }
 
     public string Name { get; set; } = null!;
 

@@ -8,7 +8,7 @@ namespace OMS.DA.Configurations.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Service> builder)
         {
-            builder.HasKey(e => e.ServiceId).HasName("services_serviceid_primary");
+            builder.HasKey(e => e.Id).HasName("services_serviceid_primary");
         }
     }
 }

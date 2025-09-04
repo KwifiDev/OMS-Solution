@@ -6,15 +6,15 @@ namespace OMS.UI.Models.Tables
     public class ClientModel : BaseModel
     {
 
-        private int _clientId;
+        private int _id;
         private int _personId;
         private EnClientType _clientType;
 
         [Key]
-        public int ClientId
+        public int Id
         {
-            get => _clientId;
-            set => SetProperty(ref _clientId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public int PersonId

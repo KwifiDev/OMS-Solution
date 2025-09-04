@@ -1,8 +1,10 @@
-﻿namespace OMS.BL.Models.Views;
+﻿using OMS.BL.Interfaces;
 
-public partial class PaymentsSummaryModel
+namespace OMS.BL.Models.Views;
+
+public partial class PaymentsSummaryModel : IModelKey
 {
-    public int PaymentId { get; set; }
+    public int Id { get; set; }
 
     public int AccountId { get; set; }
 

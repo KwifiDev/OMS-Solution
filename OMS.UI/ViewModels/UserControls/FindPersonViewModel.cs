@@ -86,7 +86,7 @@ namespace OMS.UI.ViewModels.UserControls
 
         private void OnPersonFound()
         {
-            PersonFound?.Invoke(this, new PersonFoundEventArgs(Person!.PersonId));
+            PersonFound?.Invoke(this, new PersonFoundEventArgs(Person!.Id));
         }
 
     }

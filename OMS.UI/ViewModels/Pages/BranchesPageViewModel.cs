@@ -30,7 +30,7 @@ namespace OMS.UI.ViewModels.Pages
             => await _service.DeleteAsync(itemId);
 
         protected override int GetItemId(BranchOperationalMetricModel item)
-            => item.BranchId;
+            => item.Id;
 
         protected override Task ShowDetailsWindow(int itemId)
         {
@@ -43,7 +43,7 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override async Task<BranchOperationalMetricModel> ConvertToModel(BranchModel messageModel)
         {
-            return (await _displayService.GetByIdAsync(messageModel.BranchId))!;
+            return (await _displayService.GetByIdAsync(messageModel.Id))!;
         }
     }
 }

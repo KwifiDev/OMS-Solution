@@ -1,8 +1,10 @@
-﻿namespace OMS.BL.Models.Views
+﻿using OMS.BL.Interfaces;
+
+namespace OMS.BL.Models.Views
 {
-    public class ClientsSummaryModel
+    public class ClientsSummaryModel : IModelKey
     {
-        public int ClientId { get; set; }
+        public int Id { get; set; }
 
         public int? AccountId { get; set; }
 

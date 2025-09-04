@@ -6,7 +6,7 @@ namespace OMS.UI.Models.Views
     public class TransactionsSummaryModel : ObservableObject
     {
 
-        private int _transactionId;
+        private int _id;
         private string _transactionType = null!;
         private string? _amount = null!;
         private DateOnly _createdAt;
@@ -14,10 +14,10 @@ namespace OMS.UI.Models.Views
 
 
         [Key]
-        public int TransactionId
+        public int Id
         {
-            get => _transactionId;
-            set => SetProperty(ref _transactionId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string TransactionType

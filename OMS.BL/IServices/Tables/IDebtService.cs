@@ -70,5 +70,12 @@ namespace OMS.BL.IServices.Tables
         /// <param name="debtId">The debt Id representing the debt to cancel.</param>
         /// <returns>True if the debt was canceled successfully, otherwise false.</returns>
         Task<bool?> CancelDebtAsync(int debtId);
+
+        /// <summary>
+        /// Calc Total Debts By Client Id
+        /// </summary>
+        /// <param name="clientId">The client Id representing all unpaid debts for client to calc.</param>
+        /// <returns>total debts of client type of int, otherwise null if bad request.</returns>
+        Task<decimal?> CalcTotalDebtsByClientIdAsync(int clientId);
     }
 }

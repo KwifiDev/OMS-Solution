@@ -19,12 +19,13 @@ namespace OMS.DA.Repositories.ViewRepos
                          .Where(e => e.AccountId == accountId)
                          .Select(e => new TransactionsSummary
                          {
-                             TransactionId = e.TransactionId,
+                             Id = e.Id,
                              TransactionType = e.TransactionType,
                              Amount = e.Amount,
                              CreatedAt = e.CreatedAt,
                              Notes = e.Notes
-                         }).OrderByDescending(e => e.CreatedAt)
+                         })
+                         .OrderByDescending(e => e.Id)
                          .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                          .Take(parameters.PageSize)
                          .ToListAsync();
@@ -32,7 +33,7 @@ namespace OMS.DA.Repositories.ViewRepos
             return new PagedResult<TransactionsSummary>
             {
                 Items = items,
-                TotalItems = _dbSet.Count(),
+                TotalItems = await _dbSet.Where(e => e.AccountId == accountId).CountAsync(),
                 PageNumber = parameters.PageNumber,
                 PageSize = parameters.PageSize
             };

@@ -68,7 +68,7 @@ namespace OMS.UI.ViewModels.Windows
                         AccountTransaction = new AccountTransactionModel
                         {
                             AccountId = (int)transaction.AccountId,
-                            CreatedByUserId = _userSessionService.CurrentUser!.UserId,
+                            CreatedByUserId = _userSessionService.CurrentUser!.Id,
                             TransactionType = (EnTransactionType)transaction.Mode
                         };
                     }

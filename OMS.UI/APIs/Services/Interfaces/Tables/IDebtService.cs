@@ -74,5 +74,15 @@ namespace OMS.UI.APIs.Services.Interfaces.Tables
         /// <param name="debtId">The Debt Id representing the Debt to cancel.</param>
         /// <returns>True if the Debt was canceled successfully, otherwise false.</returns>
         Task<bool> CancelDebtAsync(int debtId);
+
+
+        /// <summary>
+        /// Updates a Debt to became canceled asynchronously.
+        /// </summary>
+        /// <param name="clientId">The client Id representing the total Debts of client.</param>
+        /// <returns>total debts, otherwise null.</returns>
+        Task<decimal?> CalcTotalDebtsByClientId(int clientId);
+
+
     }
 }

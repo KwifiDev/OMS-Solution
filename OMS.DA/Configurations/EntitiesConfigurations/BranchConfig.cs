@@ -8,7 +8,7 @@ namespace OMS.DA.Configurations.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Branch> builder)
         {
-            builder.HasKey(e => e.BranchId).HasName("branches_branchid_primary");
+            builder.HasKey(e => e.Id).HasName("branches_branchid_primary");
         }
     }
 }

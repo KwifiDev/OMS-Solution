@@ -147,14 +147,14 @@ namespace OMS.API.Controllers
         }
 
         #region override abstract Methods
-        protected override int GetModelId(ClientModel model) => model.ClientId;
-        protected override void SetDtoId(ClientDto dto, int id) => dto.ClientId = id;
+        protected override int GetModelId(ClientModel model) => model.Id;
+        protected override void SetDtoId(ClientDto dto, int id) => dto.Id = id;
         protected override async Task<PagedResult<ClientModel>> GetListOfModelsAsync(PaginationParams parameters) => await _service.GetPagedAsync(parameters);
         protected override async Task<ClientModel?> GetModelByIdAsync(int id) => await _service.GetByIdAsync(id);
         protected override async Task<bool> AddModelAsync(ClientModel model) => await _service.AddAsync(model);
         protected override async Task<bool> UpdateModelAsync(ClientModel model) => await _service.UpdateAsync(model);
         protected override async Task<bool> DeleteModelAsync(int id) => await _service.DeleteAsync(id);
-        protected override bool IsIdentifierIdentical(int id, ClientDto dto) => id == dto.ClientId;
+        protected override bool IsIdentifierIdentical(int id, ClientDto dto) => id == dto.Id;
         protected override async Task<bool> IsModelExistAsync(int id) => await _service.IsExistAsync(id);
         #endregion
     }

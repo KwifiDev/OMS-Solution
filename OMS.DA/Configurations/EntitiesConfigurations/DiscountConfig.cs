@@ -8,7 +8,7 @@ namespace OMS.DA.Configurations.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Discount> builder)
         {
-            builder.HasKey(e => e.DiscountId).HasName("discounts_discountid_primary");
+            builder.HasKey(e => e.Id).HasName("discounts_discountid_primary");
 
             builder.Property(e => e.ClientType).HasComment("0 = Normal | 1 = Lawyer | 2 = Other");
 

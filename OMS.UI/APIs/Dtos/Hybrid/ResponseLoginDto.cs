@@ -4,7 +4,7 @@ namespace OMS.UI.APIs.Dtos.Hybrid
 {
     public class ResponseLoginDto
     {
-        public int UserId { get; set; }
+        public int Id { get; set; }
 
         public int PersonId { get; set; }
 

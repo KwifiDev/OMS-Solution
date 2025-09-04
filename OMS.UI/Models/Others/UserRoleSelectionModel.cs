@@ -3,14 +3,14 @@
     public class UserRoleSelectionModel : BaseModel
     {
 
-        private int _roleId;
+        private int _id;
         private string _roleName = null!;
         private bool _isSelected;
 
-        public int RoleId
+        public int Id
         {
-            get => _roleId;
-            set => SetProperty(ref _roleId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string RoleName

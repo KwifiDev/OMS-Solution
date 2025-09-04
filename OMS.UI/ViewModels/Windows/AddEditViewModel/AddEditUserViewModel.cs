@@ -97,6 +97,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         protected override async Task Save(object? parameter)
         {
             if (!ValidatePersonSelection()) return;
+            if (!ValidateModel()) return;
             if (!await ValidateUsername()) return;
 
             SetPersonReference();
@@ -114,7 +115,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             }
             else
             {
-                bool isUpdated = IsCurrentUser() ? await _service.UpdateMyUserAsync(userModel.UserId, userModel) : await _service.UpdateAsync(userModel.UserId, userModel);
+                bool isUpdated = IsCurrentUser() ? await _service.UpdateMyUserAsync(userModel.Id, userModel) : await _service.UpdateAsync(userModel.Id, userModel);
                 if (isUpdated) UpdateUsernameConfig(userModel.Username);
                 return isUpdated;
             }
@@ -122,12 +123,12 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         private bool IsCurrentUser()
         {
-            return _userSessionService.CurrentUser!.UserId == Model.UserId;
+            return _userSessionService.CurrentUser!.Id == Model.Id;
         }
 
         private void UpdateUsernameConfig(string newUsername)
         {
-            if (Model.UserId == _userSessionService.CurrentUser?.UserId)
+            if (Model.Id == _userSessionService.CurrentUser?.Id)
             {
                 _registryService.GetUserLoginConfig(out string? username, out string? password);
                 if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
@@ -151,7 +152,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private async Task<bool> ValidateUsername()
         {
             var usernameValidator = new UserValidation(_service);
-            var result = await usernameValidator.ValidateFullUsernameAsync(Model.UserId, Model.Username);
+            var result = await usernameValidator.ValidateFullUsernameAsync(Model.Id, Model.Username);
 
             if (result != ValidationResult.Success)
             {
@@ -201,7 +202,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         }
 
         private void SetPersonReference()
-            => Model.PersonId = FindPersonViewModel.Person!.PersonId;
+            => Model.PersonId = FindPersonViewModel.Person!.Id;
 
         private void RefreshUserSession()
         {

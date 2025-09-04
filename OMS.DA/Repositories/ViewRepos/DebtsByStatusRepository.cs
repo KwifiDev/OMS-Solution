@@ -1,14 +1,22 @@
-﻿using OMS.DA.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using OMS.DA.Context;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.DA.Repositories.ViewRepos
 {
-    public class DebtsByStatusRepository : GenericViewRepository<DebtsByStatus>, IDebtsByStatusRepository
+    public class DebtsByStatusRepository : IDebtsByStatusRepository
     {
-        public DebtsByStatusRepository(AppDbContext context) : base(context)
-        {
+        private readonly DbSet<DebtsByStatus> _dbSet;
 
+        public DebtsByStatusRepository(AppDbContext context)
+        {
+            _dbSet = context.Set<DebtsByStatus>();
+        }
+
+        public async Task<IEnumerable<DebtsByStatus>> GetAllAsync()
+        {
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
     }
 }

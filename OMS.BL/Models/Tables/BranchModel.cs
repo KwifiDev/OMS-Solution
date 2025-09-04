@@ -1,11 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OMS.BL.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Models.Tables;
 
-public partial class BranchModel
+public partial class BranchModel : IModelKey
 {
     [Key]
-    public int BranchId { get; internal set; }
+    public int Id { get; set; }
 
     public required string Name { get; set; }
 

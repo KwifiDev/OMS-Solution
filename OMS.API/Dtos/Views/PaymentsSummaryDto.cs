@@ -2,7 +2,7 @@
 
 public partial class PaymentsSummaryDto
 {
-    public int PaymentId { get; set; }
+    public int Id { get; set; }
 
     public string? AmountPaid { get; set; }
 

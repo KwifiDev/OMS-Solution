@@ -1,8 +1,10 @@
-﻿namespace OMS.BL.Models.Views;
+﻿using OMS.BL.Interfaces;
 
-public partial class AccountBalancesTransactionModel
+namespace OMS.BL.Models.Views;
+
+public partial class AccountBalancesTransactionModel : IModelKey
 {
-    public int AccountId { get; set; }
+    public int Id { get; set; }
 
     public string ClientName { get; set; } = null!;
 

@@ -76,13 +76,13 @@ namespace OMS.BL.Services.Tables
 
         public async Task<bool?> IsUsernameValid(UserModel model)
         {
-            string? oldUsername = await GetUsernameById(model.UserId);
+            string? oldUsername = await GetUsernameById(model.Id);
 
             if (oldUsername == null) return null;
 
             if (oldUsername == model.UserName) return true;
 
-            return !(await _userRepository.IsUsernameUsedAsync(model.UserId, model.UserName));
+            return !(await _userRepository.IsUsernameUsedAsync(model.Id, model.UserName));
         }
 
         private async Task<bool> UpdateUserBranchAsync(User user)

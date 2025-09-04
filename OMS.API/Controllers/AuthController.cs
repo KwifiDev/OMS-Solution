@@ -109,7 +109,7 @@ namespace OMS.API.Controllers
                     });
                 }
 
-                return Ok(model.UserId);
+                return Ok(model.Id);
             }
             catch (Exception ex)
             {

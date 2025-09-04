@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.CustomAttributes;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Views
 {
     [Keyless]
-    public class ServicesSummary
+    public class ServicesSummary : IEntityKey
     {
         [Id]
-        public int ServiceId { get; set; }
+        [Column("ServiceId")]
+        public int Id { get; set; }
 
         [StringLength(25)]
         public string Name { get; set; } = null!;

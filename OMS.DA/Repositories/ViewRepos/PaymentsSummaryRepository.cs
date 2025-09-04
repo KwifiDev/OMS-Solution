@@ -19,13 +19,14 @@ namespace OMS.DA.Repositories.ViewRepos
                          .Where(e => e.AccountId == accountId)
                          .Select(e => new PaymentsSummary
                          {
-                             PaymentId = e.PaymentId,
+                             Id = e.Id,
                              AmountPaid = e.AmountPaid,
                              CreatedAt = e.CreatedAt,
                              Notes = e.Notes,
                              EmployeeName = e.EmployeeName
 
-                         }).OrderByDescending(e => e.CreatedAt)
+                         })
+                         .OrderByDescending(e => e.Id)
                          .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                          .Take(parameters.PageSize)
                          .ToListAsync();
@@ -33,7 +34,7 @@ namespace OMS.DA.Repositories.ViewRepos
             return new PagedResult<PaymentsSummary>
             {
                 Items = items,
-                TotalItems = _dbSet.Count(),
+                TotalItems = await _dbSet.Where(e => e.AccountId == accountId).CountAsync(),
                 PageNumber = parameters.PageNumber,
                 PageSize = parameters.PageSize
             };

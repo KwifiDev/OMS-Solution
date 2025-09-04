@@ -5,7 +5,7 @@ namespace OMS.UI.APIs.Dtos.Tables;
 public partial class ServiceDto
 {
     [Key]
-    public int ServiceId { get; set; }
+    public int Id { get; set; }
 
     public required string Name { get; set; }
 

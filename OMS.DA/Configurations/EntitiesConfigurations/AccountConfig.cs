@@ -9,7 +9,7 @@ namespace OMS.DA.Configurations.EntitiesConfigurations
         public void Configure(EntityTypeBuilder<Account> builder)
         {
 
-            builder.HasKey(e => e.AccountId).HasName("accounts_accountid_primary");
+            builder.HasKey(e => e.Id).HasName("accounts_accountid_primary");
 
             builder.HasOne(d => d.Client).WithOne(p => p.Account)
                     .OnDelete(DeleteBehavior.ClientSetNull)

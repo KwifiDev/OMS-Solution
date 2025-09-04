@@ -38,7 +38,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         {
             var isSuccess = await base.OnOpeningDialog(parameters.SaleId);
             Model.ClientId = parameters.ClientId;
-            Model.CreatedByUserId = _userSessionService.CurrentUser!.UserId;
+            Model.CreatedByUserId = _userSessionService.CurrentUser!.Id;
             return isSuccess;
         }
 
@@ -82,11 +82,11 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
                 if (!isSuccess) return false;
 
-                return (model.SaleId = createSaleModel.SaleId) > 0;
+                return (model.Id = createSaleModel.Id) > 0;
             }
             else
             {
-                return await _service.UpdateAsync(model.SaleId, model);
+                return await _service.UpdateAsync(model.Id, model);
             }
 
         }

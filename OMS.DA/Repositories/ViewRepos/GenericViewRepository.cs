@@ -1,30 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.Common.Extensions.Pagination;
 using OMS.DA.Context;
-using OMS.DA.CustomAttributes;
+using OMS.DA.Interfaces;
 using OMS.DA.IRepositories.IViewRepos;
-using System.Reflection;
 
 namespace OMS.DA.Repositories.ViewRepos
 {
-    public class GenericViewRepository<T> : IGenericViewRepository<T> where T : class
+    public class GenericViewRepository<TView> : IGenericViewRepository<TView> where TView : class, IEntityKey
     {
 
-        protected readonly DbSet<T> _dbSet;
+        protected readonly DbSet<TView> _dbSet;
 
         public GenericViewRepository(AppDbContext context)
         {
-            _dbSet = context.Set<T>();
+            _dbSet = context.Set<TView>();
         }
 
-        public virtual async Task<PagedResult<T>> GetPagedAsync(PaginationParams parameters)
+        public virtual async Task<PagedResult<TView>> GetPagedAsync(PaginationParams parameters)
         {
             var items = await _dbSet.AsNoTracking()
+                                    .OrderByDescending(e => e.Id)
                                     .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                                     .Take(parameters.PageSize)
                                     .ToListAsync();
 
-            return new PagedResult<T>
+            return new PagedResult<TView>
             {
                 Items = items,
                 TotalItems = await _dbSet.CountAsync(),
@@ -33,18 +33,11 @@ namespace OMS.DA.Repositories.ViewRepos
             };
         }
 
-        public virtual async Task<T?> GetByIdAsync(int id)
+        public virtual async Task<TView?> GetByIdAsync(int id)
         {
-            PropertyInfo? idProperty = typeof(T).GetProperties()
-                                      .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(IdAttribute)));
-
-            if (idProperty == null)
-                throw new InvalidOperationException("No property with the Id attribute found.");
-
-
             return await _dbSet
                          .AsNoTracking()
-                         .Where(e => EF.Property<int>(e, idProperty.Name) == id)
+                         .Where(e => e.Id == id)
                          .SingleOrDefaultAsync();
         }
     }

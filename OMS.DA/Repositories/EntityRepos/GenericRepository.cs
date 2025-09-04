@@ -1,29 +1,31 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.Common.Extensions.Pagination;
 using OMS.DA.Context;
+using OMS.DA.Interfaces;
 using OMS.DA.IRepositories.IEntityRepos;
 
 namespace OMS.DA.Repositories.EntityRepos
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class, IEntityKey
     {
         protected readonly AppDbContext _context;
-        protected readonly DbSet<T> _dbSet;
+        protected readonly DbSet<TEntity> _dbSet;
 
         public GenericRepository(AppDbContext context)
         {
             _context = context;
-            _dbSet = context.Set<T>();
+            _dbSet = context.Set<TEntity>();
         }
 
-        public virtual async Task<PagedResult<T>> GetPagedAsync(PaginationParams parameters)
+        public virtual async Task<PagedResult<TEntity>> GetPagedAsync(PaginationParams parameters)
         {
             var items = await _dbSet.AsNoTracking()
+                                    .OrderByDescending(e => e.Id)
                                     .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                                     .Take(parameters.PageSize)
                                     .ToListAsync();
 
-            return new PagedResult<T>
+            return new PagedResult<TEntity>
             {
                 Items = items,
                 TotalItems = await _dbSet.CountAsync(),
@@ -32,31 +34,24 @@ namespace OMS.DA.Repositories.EntityRepos
             };
         }
 
-        public virtual async Task<T?> GetByIdAsync(int id)
+        public virtual async Task<TEntity?> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
 
         public virtual async Task<bool> IsExistAsync(int id)
         {
-            var entityType = _context.Model.FindEntityType(typeof(T));
-            var primaryKey = entityType?.FindPrimaryKey();
-
-            if (primaryKey == null || !primaryKey.Properties.Any())
-                return false;
-
-            var primaryKeyName = primaryKey.Properties[0].Name;
-            return await _dbSet.AsNoTracking().AnyAsync(e => EF.Property<int>(e, primaryKeyName) == id);
+            return await _dbSet.AsNoTracking().AnyAsync(e => e.Id == id);
         }
 
-        public virtual async Task<bool> AddAsync(T entity)
+        public virtual async Task<bool> AddAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
             int result = await _context.SaveChangesAsync();
             return result > 0;
         }
 
-        public virtual async Task<bool> UpdateAsync(T entity)
+        public virtual async Task<bool> UpdateAsync(TEntity entity)
         {
             _dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
@@ -66,7 +61,7 @@ namespace OMS.DA.Repositories.EntityRepos
 
         public virtual async Task<bool> DeleteAsync(int id)
         {
-            T? entity = await _dbSet.FindAsync(id);
+            TEntity? entity = await _dbSet.FindAsync(id);
 
             if (entity == null) return false;
 

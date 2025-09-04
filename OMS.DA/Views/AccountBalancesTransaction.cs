@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.CustomAttributes;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Views;
 
 [Keyless]
-public partial class AccountBalancesTransaction
+public partial class AccountBalancesTransaction : IEntityKey
 {
     [Id]
-    public int AccountId { get; set; }
+    [Column("AccountId")]
+    public int Id { get; set; }
 
     [StringLength(41)]
     public string ClientName { get; set; } = null!;

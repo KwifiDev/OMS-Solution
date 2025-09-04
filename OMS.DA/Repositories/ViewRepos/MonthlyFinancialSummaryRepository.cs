@@ -1,14 +1,22 @@
-﻿using OMS.DA.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using OMS.DA.Context;
 using OMS.DA.IRepositories.IViewRepos;
 using OMS.DA.Views;
 
 namespace OMS.DA.Repositories.ViewRepos
 {
-    public class MonthlyFinancialSummaryRepository : GenericViewRepository<MonthlyFinancialSummary>, IMonthlyFinancialSummaryRepository
+    public class MonthlyFinancialSummaryRepository : IMonthlyFinancialSummaryRepository
     {
-        public MonthlyFinancialSummaryRepository(AppDbContext context) : base(context)
-        {
+        private readonly DbSet<MonthlyFinancialSummary> _dbSet;
 
+        public MonthlyFinancialSummaryRepository(AppDbContext context)
+        {
+            _dbSet = context.Set<MonthlyFinancialSummary>();
+        }
+
+        public async Task<IEnumerable<MonthlyFinancialSummary>> GetAllAsync()
+        {
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
     }
 }

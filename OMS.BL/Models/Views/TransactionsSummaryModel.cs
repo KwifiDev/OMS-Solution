@@ -1,8 +1,10 @@
-﻿namespace OMS.BL.Models.Views;
+﻿using OMS.BL.Interfaces;
 
-public partial class TransactionsSummaryModel
+namespace OMS.BL.Models.Views;
+
+public partial class TransactionsSummaryModel : IModelKey
 {
-    public int TransactionId { get; set; }
+    public int Id { get; set; }
 
     public int AccountId { get; set; }
 

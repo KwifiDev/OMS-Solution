@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,7 +8,7 @@ namespace OMS.DA.Entities.Identity;
 
 [Index("PersonId", Name = "users_personid_unique", IsUnique = true)]
 [Index("UserName", Name = "users_username_unique", IsUnique = true)]
-public partial class User : IdentityUser<int>
+public partial class User : IdentityUser<int>, IEntityKey
 {
 
     [Key]

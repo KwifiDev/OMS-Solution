@@ -1,14 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.CustomAttributes;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Views;
 
 [Keyless]
-public partial class BranchOperationalMetric
+public partial class BranchOperationalMetric : IEntityKey
 {
     [Id]
-    public int BranchId { get; set; }
+    [Column("BranchId")]
+    public int Id { get; set; }
 
     [StringLength(20)]
     public string Name { get; set; } = null!;

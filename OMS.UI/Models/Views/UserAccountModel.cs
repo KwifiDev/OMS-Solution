@@ -5,17 +5,17 @@ namespace OMS.UI.Models.Views
     public class UserAccountModel : BaseModel
     {
 
-        private int _accountId;
+        private int _id;
         private string _userAccount1 = null!;
         private string _clientName = null!;
         private string _clientType = null!;
         private decimal _clientBalance;
 
         [Key]
-        public int AccountId
+        public int Id
         {
-            get => _accountId;
-            set => SetProperty(ref _accountId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string UserAccount1

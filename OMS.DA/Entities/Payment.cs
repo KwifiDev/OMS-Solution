@@ -1,13 +1,15 @@
 ﻿using OMS.DA.Entities.Identity;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Entities;
 
-public partial class Payment
+public partial class Payment : IEntityKey
 {
     [Key]
-    public int PaymentId { get; set; }
+    [Column("PaymentId")]
+    public int Id { get; set; }
 
     public int AccountId { get; set; }
 

@@ -9,9 +9,10 @@
         xmlns:converters="clr-namespace:OMS.UI.Converters"
         xmlns:windows="clr-namespace:OMS.UI.ViewModels.Windows" 
         xmlns:windowBehaviors="clr-namespace:OMS.UI.Behaviors.Windows"
+        xmlns:userControls="clr-namespace:OMS.UI.Views.UserControls"
         d:DataContext="{d:DesignInstance Type=windows:AccountTransactionsViewModel}"
         mc:Ignorable="d"
-        Height="400" 
+        Height="330" 
         Width="800"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource MaterialDesignWindow}"
@@ -50,18 +51,28 @@
             <materialDesign:PackIcon Kind="WindowClose" Width="15" Height="15"/>
         </Button>
 
+        <Grid Background="{StaticResource PageHeaderGradient}" Grid.Row="1">
 
-        <Label x:Name="lblTitle"
-               Grid.Row="1"
-               Style="{StaticResource MaterialDesignLabel}"
-               FontWeight="Bold" 
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center"
-               FontSize="24"
-               Content="جميع الحركات"
-               Background="{StaticResource PageHeaderGradient}"
-               Grid.ColumnSpan="5"
-               Foreground="White"/>
+            <DockPanel LastChildFill="False">
+
+                <userControls:PaginationControl DockPanel.Dock="Right"
+                                                FlowDirection="LeftToRight"
+                                                PaginationInfo="{Binding PaginationInfo}"/>
+
+                <Label  Style="{StaticResource MaterialDesignLabel}"
+                        FontWeight="Bold" 
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        FontSize="24"
+                        Content="جميع الحركات"
+                        Foreground="White"
+                        Padding="20,0"/>
+
+            </DockPanel>
+            
+            </Grid>
+
+               
 
         <DataGrid Name="dataGrid"
           Grid.Row="2"
@@ -164,7 +175,7 @@
             </DataGrid.RowStyle>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="رقم المناقلة" Binding="{Binding TransactionId}" />
+                <DataGridTextColumn Header="رقم المناقلة" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="نوع المناقلة" Binding="{Binding TransactionType}" />
                 <DataGridTextColumn Header="الرصيد" Binding="{Binding Amount, StringFormat={}{0:0}}" />
                 <DataGridTextColumn Header="بتاريخ" Binding="{Binding CreatedAt}" />

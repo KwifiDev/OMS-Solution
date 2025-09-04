@@ -28,8 +28,8 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IWindowService _windowService;
         private int _clientId;
 
-        [ObservableProperty]
-        private PaginationInfo _paginationInfo = new();
+        //[ObservableProperty]
+        //private PaginationInfo _paginationInfo = new();
 
         public SalesSummaryViewModel(ISaleService service, ISalesSummaryService displayService, ILoadingService loadingService,
                                      IDialogService dialogService, IMessageService messageService, IWindowService windowService, IUserSessionService userSessionService)
@@ -39,13 +39,13 @@ namespace OMS.UI.ViewModels.Windows
             CommandConditions[nameof(EditItemCommand)] += CanChangeSale;
             CommandConditions[nameof(DeleteItemCommand)] += CanChangeSale;
             _windowService = windowService;
-            PaginationInfo.PageChanged += OnPageChanged;
+            //PaginationInfo.PageChanged += OnPageChanged;
         }
 
-        private async Task OnPageChanged()
-        {
-            await LoadData();
-        }
+        //private async Task OnPageChanged()
+        //{
+        //    await LoadData();
+        //}
 
         private void NotifyCanExecuteChanged(object? obj, EventArgs e)
         {
@@ -63,11 +63,11 @@ namespace OMS.UI.ViewModels.Windows
         }
 
         protected override async Task<SalesSummaryModel> ConvertToModel(SaleModel messageModel)
-            => (await _displayService.GetByIdAsync(messageModel.SaleId))!;
+            => (await _displayService.GetByIdAsync(messageModel.Id))!;
 
         protected override async Task<bool> ExecuteDelete(int itemId) => await _service.DeleteAsync(itemId);
 
-        protected override int GetItemId(SalesSummaryModel item) => item.SaleId;
+        protected override int GetItemId(SalesSummaryModel item) => item.Id;
 
         protected override async Task LoadData()
         {
@@ -82,6 +82,7 @@ namespace OMS.UI.ViewModels.Windows
                     PaginationInfo.PageSize = pagedResultSalesData.PageSize;
                     PaginationInfo.TotalItems = pagedResultSalesData.TotalItems;
                     PaginationInfo.TotalPages = pagedResultSalesData.TotalPages;
+                    RefreshPaginationCommandStates();
                 }
 
             });
@@ -104,7 +105,7 @@ namespace OMS.UI.ViewModels.Windows
             if (!_messageService.ShowQuestionMessage("تحذير", MessageTemplates.CancellationSaleConfirmation))
                 return;
 
-            var isSuccess = await _service.CancelSaleAsync(SelectedItem.SaleId);
+            var isSuccess = await _service.CancelSaleAsync(SelectedItem.Id);
 
             if (!isSuccess)
             {

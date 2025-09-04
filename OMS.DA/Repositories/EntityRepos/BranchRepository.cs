@@ -13,7 +13,7 @@ namespace OMS.DA.Repositories.EntityRepos
 
         public async Task<List<Branch>> GetAllBranchesOption()
         {
-            return await _dbSet.Select(b => new Branch { BranchId = b.BranchId, Name = b.Name }).ToListAsync();
+            return await _dbSet.Select(b => new Branch { Id = b.Id, Name = b.Name }).ToListAsync();
         }
 
     }

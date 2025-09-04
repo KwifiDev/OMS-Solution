@@ -1,12 +1,13 @@
-﻿using OMS.Common.Enums;
+﻿using OMS.BL.Interfaces;
+using OMS.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Models.Tables;
 
-public partial class ClientModel
+public partial class ClientModel : IModelKey
 {
     [Key]
-    public int ClientId { get; internal set; }
+    public int Id { get; set; }
 
     public required int PersonId { get; set; }
 

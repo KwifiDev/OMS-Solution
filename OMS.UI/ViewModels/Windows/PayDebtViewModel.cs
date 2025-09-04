@@ -62,7 +62,7 @@ namespace OMS.UI.ViewModels.Windows
             PayDebtModel = new PayDebtModel
             {
                 DebtId = debtId,
-                CreatedByUserId = _userSessionService.CurrentUser!.UserId
+                CreatedByUserId = _userSessionService.CurrentUser!.Id
             };
 
             return true;
@@ -76,7 +76,7 @@ namespace OMS.UI.ViewModels.Windows
             PayDebtsModel = new PayDebtsModel
             {
                 ClientId = clientId,
-                CreatedByUserId = _userSessionService.CurrentUser!.UserId
+                CreatedByUserId = _userSessionService.CurrentUser!.Id
             };
 
             return true;

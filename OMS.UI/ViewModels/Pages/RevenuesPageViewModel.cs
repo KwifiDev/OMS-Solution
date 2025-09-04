@@ -27,7 +27,7 @@ namespace OMS.UI.ViewModels.Pages
             => await _service.DeleteAsync(itemId);
 
         protected override int GetItemId(RevenueModel item)
-            => item.RevenueId;
+            => item.Id;
 
         protected override Task ShowDetailsWindow(int itemId)
         {
@@ -52,7 +52,7 @@ namespace OMS.UI.ViewModels.Pages
 
         protected override async Task<RevenueModel> ConvertToModel(RevenueModel messageModel)
         {
-            return (await _displayService.GetByIdAsync(messageModel.RevenueId))!;
+            return (await _displayService.GetByIdAsync(messageModel.Id))!;
         }
     }
 }

@@ -4,18 +4,18 @@ namespace OMS.UI.Models.Tables;
 
 public class RevenueModel : BaseModel
 {
-    private int _revenueId;
+    private int _id;
     private decimal _amount;
     private string? _notes;
     private DateOnly _createdAt;
 
     [Key]
-    public int RevenueId
+    public int Id
     {
-        get => _revenueId;
+        get => _id;
         set
         {
-            SetProperty(ref _revenueId, value);
+            SetProperty(ref _id, value);
             OnPropertyChanged(nameof(RevenueIdDisplay));
         }
     }
@@ -45,6 +45,6 @@ public class RevenueModel : BaseModel
         set => SetProperty(ref _createdAt, value);
     }
 
-    public string RevenueIdDisplay => _revenueId > 0 ? _revenueId.ToString() : "لا يوجد";
+    public string RevenueIdDisplay => _id > 0 ? _id.ToString() : "لا يوجد";
     public string NotesDisplay => string.IsNullOrWhiteSpace(_notes) ? "لا يوجد ملاحظات" : _notes;
 }

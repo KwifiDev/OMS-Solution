@@ -76,6 +76,7 @@ namespace OMS.UI.ViewModels.Pages
                     PaginationInfo.PageSize = pagedResult.PageSize;
                     PaginationInfo.TotalItems = pagedResult.TotalItems;
                     PaginationInfo.TotalPages = pagedResult.TotalPages;
+                    RefreshPaginationCommandStates();
                 }
             });
 
@@ -125,13 +126,39 @@ namespace OMS.UI.ViewModels.Pages
 
         protected virtual async Task HandleAddItem(TMessageModel model)
         {
-            Items.Add(await ConvertToModel(model));
+            if (PaginationInfo.CurrentPage == 1)
+            {
+                Items.Insert(0, await ConvertToModel(model));
+                if (Items.Count > PaginationInfo.PageSize) Items.RemoveAt(Items.Count - 1);
+            }
+            else
+            {
+                await LoadData();
+            }
         }
 
         protected virtual async Task HandleEditItem(TMessageModel model)
         {
             int index = Items.IndexOf(SelectedItem!);
             if (index >= 0) Items[index] = await ConvertToModel(model);
+        }
+
+        protected virtual async Task HandleDeleteItem()
+        {
+            if (PaginationInfo.CurrentPage == PaginationInfo.TotalPages)
+            {
+                var result = SelectedItem != null && Items.Remove(SelectedItem);
+
+                if (result && Items.Count == 0)
+                {
+                    PaginationInfo.CurrentPage = PaginationInfo.CurrentPage - 1;
+                    await LoadData();
+                }
+            }
+            else
+            {
+                await LoadData();
+            }
         }
 
         [RelayCommand(CanExecute = nameof(CanShowDetails))]
@@ -167,7 +194,7 @@ namespace OMS.UI.ViewModels.Pages
 
             var success = await ExecuteDelete(GetItemId(SelectedItem));
 
-            if (success) Items.Remove(SelectedItem);
+            if (success) await HandleDeleteItem();
 
             _messageService.ShowInfoMessage(success ? "تم الحذف" : "خطأ",
                 success ? MessageTemplates.DeletionSuccessMessage : MessageTemplates.DeletionErrorMessage);
@@ -212,6 +239,13 @@ namespace OMS.UI.ViewModels.Pages
         private void LastPage() => PaginationInfo.LastPage();
         private bool CanLastPage() => PaginationInfo.CanLastPage;
 
+        protected void RefreshPaginationCommandStates()
+        {
+            FirstPageCommand.NotifyCanExecuteChanged();
+            PreviousPageCommand.NotifyCanExecuteChanged();
+            NextPageCommand.NotifyCanExecuteChanged();
+            LastPageCommand.NotifyCanExecuteChanged();
+        }
 
         #region Common Abstract Methods
         protected abstract Task<TModel> ConvertToModel(TMessageModel messageModel);

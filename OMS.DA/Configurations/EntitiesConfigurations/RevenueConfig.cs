@@ -8,7 +8,7 @@ namespace OMS.DA.Configurations.EntitiesConfigurations
     {
         public void Configure(EntityTypeBuilder<Revenue> builder)
         {
-            builder.HasKey(e => e.RevenueId).HasName("revenues_revenueid_primary");
+            builder.HasKey(e => e.Id).HasName("revenues_revenueid_primary");
 
             builder.Property(e => e.CreatedAt).HasDefaultValueSql("(getdate())");
         }

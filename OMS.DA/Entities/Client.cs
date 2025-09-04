@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.Common.Enums;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Entities;
 
 [Index("PersonId", Name = "clients_personid_unique", IsUnique = true)]
-public partial class Client
+public partial class Client : IEntityKey
 {
     [Key]
-    public int ClientId { get; set; }
+    [Column("ClientId")]
+    public int Id { get; set; }
 
     public int PersonId { get; set; }
 

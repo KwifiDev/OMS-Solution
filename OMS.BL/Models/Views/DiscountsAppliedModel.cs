@@ -1,8 +1,10 @@
-﻿namespace OMS.BL.Models.Views;
+﻿using OMS.BL.Interfaces;
 
-public partial class DiscountsAppliedModel
+namespace OMS.BL.Models.Views;
+
+public partial class DiscountsAppliedModel : IModelKey
 {
-    public int DiscountId { get; set; }
+    public int Id { get; set; }
 
     public int? ServiceId { get; set; }
 

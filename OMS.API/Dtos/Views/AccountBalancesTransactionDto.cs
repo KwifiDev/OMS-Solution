@@ -2,7 +2,7 @@
 
 public partial class AccountBalancesTransactionDto
 {
-    public int AccountId { get; set; }
+    public int Id { get; set; }
 
     public string ClientName { get; set; } = null!;
 

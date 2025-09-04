@@ -29,8 +29,8 @@ namespace OMS.DA.Seeders.Data
 
             var adminUser = new User
             {
-                PersonId = await context.People.Where(p => p.FirstName == "FirstNameHere").Select(p => p.PersonId).FirstOrDefaultAsync(),
-                BranchId = await context.Branches.Where(b => b.Name == "BranchNameHere").Select(b => b.BranchId).FirstOrDefaultAsync(),
+                PersonId = await context.People.Where(p => p.FirstName == "FirstNameHere").Select(p => p.Id).FirstOrDefaultAsync(),
+                BranchId = await context.Branches.Where(b => b.Name == "BranchNameHere").Select(b => b.Id).FirstOrDefaultAsync(),
                 UserName = "Admin",
                 IsActive = true
             };

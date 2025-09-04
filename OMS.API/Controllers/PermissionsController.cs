@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
+using OMS.Common.Data;
 using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
@@ -24,6 +25,39 @@ namespace OMS.API.Controllers
         public PermissionsController(IPermissionService permissionService, IMapper mapper)
             : base(permissionService, mapper)
         {
+        }
+
+        /// <summary>
+        /// Retrieves all roles.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     GET /api/roles
+        ///     
+        /// Returns all available roles in the system. Consider using filtering for large datasets.
+        /// </remarks>
+        /// <returns>List of all roles</returns>
+        /// <response code="200">Returns the complete list of roles</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpGet("all")]
+        [Authorize(Policy = PermissionsData.Permissions.View)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<IEnumerable<RoleDto>>> GetAllAsync()
+        {
+            try
+            {
+                var items = await _service.GetAllAsync();
+                return Ok(_mapper.Map<IEnumerable<PermissionModel>, IEnumerable<PermissionDto>>(items));
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error retrieving entities",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
+            }
         }
 
         #region override abstract Methods

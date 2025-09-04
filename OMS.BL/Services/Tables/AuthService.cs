@@ -52,7 +52,7 @@ namespace OMS.BL.Services.Tables
 
             if (!result.Succeeded) return false;
 
-            model.UserId = Convert.ToInt32(await _userManager.GetUserIdAsync(user));
+            model.Id = Convert.ToInt32(await _userManager.GetUserIdAsync(user));
             return true;
         }
 
@@ -120,7 +120,7 @@ namespace OMS.BL.Services.Tables
                 var isPersonAdded = await _personService.AddAsync(personModel);
                 if (!isPersonAdded) return false;
 
-                model.PersonId = personModel.PersonId;
+                model.PersonId = personModel.Id;
 
                 var registerModel = _mapperService.Map<FullRegisterModel, RegisterModel>(model);
 

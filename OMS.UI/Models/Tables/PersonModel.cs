@@ -5,19 +5,19 @@ namespace OMS.UI.Models.Tables
 {
     public partial class PersonModel : BaseModel
     {
-        private int _personId;
+        private int _id;
         private string _firstName = null!;
         private string _lastName = null!;
         private EnGender _gender;
         private string? _phone;
 
         [Key]
-        public int PersonId
+        public int Id
         {
-            get => _personId;
+            get => _id;
             set
             {
-                SetProperty(ref _personId, value);
+                SetProperty(ref _id, value);
                 OnPropertyChanged(nameof(PersonIdDisplay));
             }
         }
@@ -58,7 +58,7 @@ namespace OMS.UI.Models.Tables
         // DisplayProperty
         public string GenderDisplay => _gender == EnGender.Male ? "ذكر" : "انثى";
         public string PhoneDisplay => _phone ?? "لا يوجد";
-        public string PersonIdDisplay => _personId > 0 ? _personId.ToString() : "لا يوجد";
+        public string PersonIdDisplay => _id > 0 ? _id.ToString() : "لا يوجد";
         public string FullName => $"{FirstName} {LastName}";
     }
 }

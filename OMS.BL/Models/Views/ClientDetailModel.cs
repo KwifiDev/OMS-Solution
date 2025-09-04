@@ -1,8 +1,10 @@
-﻿namespace OMS.BL.Models.Views;
+﻿using OMS.BL.Interfaces;
 
-public partial class ClientDetailModel
+namespace OMS.BL.Models.Views;
+
+public partial class ClientDetailModel : IModelKey
 {
-    public int ClientId { get; set; }
+    public int Id { get; set; }
 
     public string ClientName { get; set; } = null!;
 

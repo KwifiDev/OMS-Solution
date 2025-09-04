@@ -19,6 +19,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         protected override string GetEntityName() => "خدمة";
 
         protected override async Task<bool> SaveDataAsync(bool isAdding, ServiceModel serviceModel)
-            => isAdding ? await _service.AddAsync(serviceModel) : await _service.UpdateAsync(serviceModel.ServiceId, serviceModel);
+            => isAdding ? await _service.AddAsync(serviceModel) : await _service.UpdateAsync(serviceModel.Id, serviceModel);
     }
 }

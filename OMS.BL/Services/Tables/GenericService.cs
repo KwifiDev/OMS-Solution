@@ -1,13 +1,15 @@
-﻿using OMS.BL.IServices.Tables;
+﻿using OMS.BL.Interfaces;
+using OMS.BL.IServices.Tables;
 using OMS.BL.Mapping;
 using OMS.Common.Extensions.Pagination;
+using OMS.DA.Interfaces;
 using OMS.DA.IRepositories.IEntityRepos;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 
 namespace OMS.BL.Services.Tables
 {
-    public class GenericService<TEntity, TModel> : IGenericService<TModel> where TEntity : class
+    public class GenericService<TEntity, TModel> : IGenericService<TModel>
+        where TEntity : class, IEntityKey
+        where TModel : class, IModelKey
     {
         protected readonly IGenericRepository<TEntity> _repository;
         protected readonly IMapperService _mapperService;
@@ -23,7 +25,7 @@ namespace OMS.BL.Services.Tables
             var pagedResult = await _repository.GetPagedAsync(parameters);
 
             if (pagedResult.TotalItems == 0) return new PagedResult<TModel>();
-            
+
             return new PagedResult<TModel>
             {
                 Items = _mapperService.Map<List<TEntity>, List<TModel>>(pagedResult.Items),
@@ -35,11 +37,11 @@ namespace OMS.BL.Services.Tables
 
         public virtual async Task<TModel?> GetByIdAsync(int id)
         {
-            if (id <= 0) return default(TModel);
+            if (id <= 0) return default;
 
             TEntity? entity = await _repository.GetByIdAsync(id);
 
-            return entity == null ? default(TModel) : _mapperService.Map<TEntity, TModel>(entity);
+            return entity == null ? default : _mapperService.Map<TEntity, TModel>(entity);
         }
 
         public virtual async Task<bool> IsExistAsync(int id)
@@ -55,7 +57,7 @@ namespace OMS.BL.Services.Tables
 
             bool success = await _repository.AddAsync(entity);
 
-            if (success) SetNewPrimaryKey(model, entity);
+            if (success) model.Id = entity.Id;
 
             return success;
         }
@@ -64,9 +66,7 @@ namespace OMS.BL.Services.Tables
         {
             if (model == null) return false;
 
-            int primaryKey = GetPrimaryKey(model);
-
-            TEntity? existingEntity = await _repository.GetByIdAsync(primaryKey);
+            TEntity? existingEntity = await _repository.GetByIdAsync(model.Id);
 
             if (existingEntity == null) return false;
 
@@ -83,34 +83,34 @@ namespace OMS.BL.Services.Tables
         }
 
 
-        // Code encapsulation
-        protected int GetPrimaryKey(TModel model)
-        {
-            PropertyInfo? keyProperty = typeof(TModel).GetProperties()
-                .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
+        //// Code encapsulation
+        //protected int GetPrimaryKey(TModel model)
+        //{
+        //    PropertyInfo? keyProperty = typeof(TModel).GetProperties()
+        //        .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
 
-            if (keyProperty == null) throw new ArgumentException("No primary key property found");
+        //    if (keyProperty == null) throw new ArgumentException("No primary key property found");
 
-            object? primaryKey = keyProperty.GetValue(model);
+        //    object? primaryKey = keyProperty.GetValue(model);
 
-            return primaryKey == null ? -1 : Convert.ToInt32(primaryKey);
-        }
+        //    return primaryKey == null ? -1 : Convert.ToInt32(primaryKey);
+        //}
 
-        protected void SetNewPrimaryKey(TModel model, TEntity entity)
-        {
-            PropertyInfo? modelKeyProperty = typeof(TModel).GetProperties()
-                .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
+        //protected void SetNewPrimaryKey(TModel model, TEntity entity)
+        //{
+        //    PropertyInfo? modelKeyProperty = typeof(TModel).GetProperties()
+        //        .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
 
-            if (modelKeyProperty == null) return;
+        //    if (modelKeyProperty == null) return;
 
-            PropertyInfo? entityKeyProperty = typeof(TEntity).GetProperties()
-                .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
+        //    PropertyInfo? entityKeyProperty = typeof(TEntity).GetProperties()
+        //        .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
 
-            if (entityKeyProperty == null) return;
+        //    if (entityKeyProperty == null) return;
 
-            object? newId = entityKeyProperty.GetValue(entity);
-            modelKeyProperty.SetValue(model, newId);
-        }
+        //    object? newId = entityKeyProperty.GetValue(entity);
+        //    modelKeyProperty.SetValue(model, newId);
+        //}
 
 
     }

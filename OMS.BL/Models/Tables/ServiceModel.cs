@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OMS.BL.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Models.Tables;
 
 
-public partial class ServiceModel
+public partial class ServiceModel : IModelKey
 {
     [Key]
-    public int ServiceId { get; internal set; }
+    public int Id { get; set; }
 
     public required string Name { get; set; }
 

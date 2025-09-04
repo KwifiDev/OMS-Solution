@@ -6,7 +6,7 @@ namespace OMS.UI.APIs.Dtos.Hybrid
     {
         public class RegisterDto
         {
-            public int UserId { get; set; }
+            public int Id { get; set; }
 
             public string FirstName { get; set; } = null!;
 

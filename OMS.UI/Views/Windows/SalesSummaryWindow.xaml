@@ -10,9 +10,10 @@
         xmlns:windowBehaviors="clr-namespace:OMS.UI.Behaviors.Windows"
         xmlns:inputBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
+        xmlns:userControls="clr-namespace:OMS.UI.Views.UserControls"
         d:DataContext="{d:DesignInstance Type=windows:SalesSummaryViewModel}"
         mc:Ignorable="d"
-        Height="500" 
+        Height="350" 
         Width="1100"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource MaterialDesignWindow}"
@@ -55,16 +56,27 @@
 
 
 
-        <Label x:Name="lblTitle"
-               Grid.Row="1"
-               Style="{StaticResource MaterialDesignLabel}"
-               FontWeight="Bold" 
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center"
-               FontSize="24"
-               Content="قائمة المبيعات"
-               Background="{StaticResource PageHeaderGradient}"
-               Foreground="White"/>
+        <Grid Background="{StaticResource PageHeaderGradient}" Grid.Row="1">
+
+            <DockPanel LastChildFill="False">
+
+                <userControls:PaginationControl DockPanel.Dock="Right"
+                                 FlowDirection="LeftToRight"
+                                 PaginationInfo="{Binding PaginationInfo}"/>
+
+                <Label
+                    Style="{StaticResource MaterialDesignLabel}"
+                    FontWeight="Bold" 
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    FontSize="24"
+                    Content="قائمة المبيعات"
+                    Foreground="White"
+                    Padding="20,0"/>
+
+            </DockPanel>
+
+        </Grid>
 
         <Grid Grid.Row="2">
        
@@ -118,7 +130,7 @@
 
             <!-- الأعمدة -->
             <DataGrid.Columns>
-                <DataGridTextColumn Header="رقم" Binding="{Binding SaleId}" Width="55"/>
+                <DataGridTextColumn Header="رقم" Binding="{Binding Id}" Width="55"/>
                 <DataGridTextColumn Header="اسم الخدمة" Binding="{Binding ServiceName}" Width="0.7*"/>
                 <DataGridTextColumn Header="وصف الخدمة" Binding="{Binding Description}" Width="2*"/>
                 <DataGridTextColumn Header="الكلفة" Binding="{Binding TotalSales, StringFormat={}{0:0}}" Width="120"/>

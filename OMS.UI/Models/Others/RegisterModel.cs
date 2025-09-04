@@ -4,7 +4,7 @@ namespace OMS.UI.Models.Others
 {
     public class RegisterModel : BaseModel
     {
-        private int _userId;
+        private int _id;
         private string _firstName = null!;
         private string _lastName = null!;
         private EnGender _gender;
@@ -14,10 +14,10 @@ namespace OMS.UI.Models.Others
         private string _password = null!;
         private bool _isActive;
 
-        public int UserId
+        public int Id
         {
-            get => _userId;
-            set => SetProperty(ref _userId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string FirstName

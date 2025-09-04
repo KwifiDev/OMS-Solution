@@ -6,7 +6,7 @@ namespace OMS.API.Dtos.Tables;
 public partial class PersonDto
 {
     [Key]
-    public int PersonId { get; set; }
+    public int Id { get; set; }
 
     [Required(ErrorMessage = "First name is required.")]
     [MinLength(3, ErrorMessage = "First name must be at least 3 characters long.")]

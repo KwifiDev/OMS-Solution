@@ -105,7 +105,7 @@ namespace OMS.API.Mapping
             CreateMap<LoginModel, LoginDto>().ReverseMap();
 
             CreateMap<CheckDiscountAppliedModel, DiscountDto>()
-                .ForMember(dest => dest.DiscountId, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.DiscountPercentage, opt => opt.Ignore())
                 .ReverseMap();
 
@@ -116,7 +116,7 @@ namespace OMS.API.Mapping
 
 
             CreateMap<RegisterDto, PersonModel>()
-                .ForMember(dest => dest.PersonId, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))

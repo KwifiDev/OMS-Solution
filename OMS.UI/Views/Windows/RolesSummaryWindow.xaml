@@ -10,6 +10,7 @@
         xmlns:windowBehaviors="clr-namespace:OMS.UI.Behaviors.Windows"
         xmlns:inputBehaviors="clr-namespace:OMS.UI.Behaviors.Inputs"
         xmlns:local="clr-namespace:OMS.UI.Views.Windows" 
+        xmlns:userControls="clr-namespace:OMS.UI.Views.UserControls"
         d:DataContext="{d:DesignInstance Type=windows:RolesSummaryViewModel}"
         mc:Ignorable="d"
         Height="500" 
@@ -55,16 +56,27 @@
 
 
 
-        <Label x:Name="lblTitle"
-               Grid.Row="1"
-               Style="{StaticResource MaterialDesignLabel}"
-               FontWeight="Bold" 
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center"
-               FontSize="24"
-               Content="قائمة الادوار"
-               Background="{StaticResource PageHeaderGradient}"
-               Foreground="White"/>
+        <Grid Background="{StaticResource PageHeaderGradient}" Grid.Row="1">
+
+            <DockPanel LastChildFill="False">
+
+                <userControls:PaginationControl DockPanel.Dock="Right"
+                              FlowDirection="LeftToRight"
+                              PaginationInfo="{Binding PaginationInfo}"/>
+
+                <Label
+                     Style="{StaticResource MaterialDesignLabel}"
+                     FontWeight="Bold" 
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     FontSize="24"
+                     Content="قائمة الادوار"
+                     Foreground="White"
+                     Padding="20,0"/>
+
+            </DockPanel>
+
+        </Grid>
 
         <Grid Grid.Row="2">
        
@@ -122,7 +134,7 @@
                     <DataGridTemplateColumn Header="الرقم" Width="65">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding RoleId}" 
+                                <TextBlock Text="{Binding Id}" 
                                            TextWrapping="Wrap"
                                            VerticalAlignment="Center"
                                            TextTrimming="CharacterEllipsis"/>

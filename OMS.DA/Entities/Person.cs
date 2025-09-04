@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.Common.Enums;
 using OMS.DA.Entities.Identity;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Entities;
 
-public partial class Person
+public partial class Person : IEntityKey
 {
     [Key]
-    public int PersonId { get; set; }
+    [Column("PersonId")]
+    public int Id { get; set; }
 
     [StringLength(20)]
     public string FirstName { get; set; } = null!;

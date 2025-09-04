@@ -1,5 +1,4 @@
-﻿using OMS.Common.Extensions.Pagination;
-using OMS.DA.Views;
+﻿using OMS.DA.Views;
 
 namespace OMS.DA.IRepositories.IViewRepos
 {
@@ -9,6 +8,6 @@ namespace OMS.DA.IRepositories.IViewRepos
         /// Retrieves all MonthlyFinancialSummary.
         /// </summary>
         /// <returns>The task result contains the collection of MonthlyFinancialSummary.</returns>
-        Task<PagedResult<MonthlyFinancialSummary>> GetPagedAsync(PaginationParams parameters);
+        Task<IEnumerable<MonthlyFinancialSummary>> GetAllAsync();
     }
 }

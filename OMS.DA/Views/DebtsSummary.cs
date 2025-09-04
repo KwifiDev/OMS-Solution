@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OMS.DA.CustomAttributes;
+using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Views;
 
 [Keyless]
-public partial class DebtsSummary
+public partial class DebtsSummary : IEntityKey
 {
     [Id]
-    public int DebtId { get; set; }
+    [Column("DebtId")]
+    public int Id { get; set; }
 
     public int? ClientId { get; set; }
 

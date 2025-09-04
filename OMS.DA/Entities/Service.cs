@@ -1,12 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OMS.DA.Interfaces;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OMS.DA.Entities;
 
-public partial class Service
+public partial class Service : IEntityKey
 {
     [Key]
-    public int ServiceId { get; set; }
+    [Column("ServiceId")]
+    public int Id { get; set; }
 
     [StringLength(25)]
     public string Name { get; set; } = null!;

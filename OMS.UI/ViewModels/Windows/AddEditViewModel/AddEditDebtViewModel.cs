@@ -35,7 +35,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         {
             var isSuccess = await base.OnOpeningDialog(parameters.DebtId);
             Model.ClientId = parameters.ClientId;
-            Model.CreatedByUserId = _userSessionService.CurrentUser!.UserId;
+            Model.CreatedByUserId = _userSessionService.CurrentUser!.Id;
             var isServicesLoaded = await InitializeServices();
             return isSuccess && isServicesLoaded;
         }
@@ -70,11 +70,11 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
                 if (!isSuccess) return false;
 
-                return (model.DebtId = createDebtModel.DebtId) > 0;
+                return (model.Id = createDebtModel.Id) > 0;
             }
             else
             {
-                return await _service.UpdateAsync(model.DebtId, model);
+                return await _service.UpdateAsync(model.Id, model);
             }
 
         }

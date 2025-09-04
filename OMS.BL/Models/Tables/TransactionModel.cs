@@ -1,12 +1,13 @@
-﻿using OMS.Common.Enums;
+﻿using OMS.BL.Interfaces;
+using OMS.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace OMS.BL.Models.Tables;
 
-public partial class TransactionModel
+public partial class TransactionModel : IModelKey
 {
     [Key]
-    public int TransactionId { get; internal set; }
+    public int Id { get; set; }
 
     public int AccountId { get; internal set; }
 

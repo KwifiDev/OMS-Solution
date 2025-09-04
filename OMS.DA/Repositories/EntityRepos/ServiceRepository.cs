@@ -13,7 +13,7 @@ namespace OMS.DA.Repositories.EntityRepos
 
         public async Task<List<Service>> GetAllServicesOption()
         {
-            return await _dbSet.Select(s => new Service { ServiceId = s.ServiceId, Name = s.Name }).ToListAsync();
+            return await _dbSet.Select(s => new Service { Id = s.Id, Name = s.Name }).ToListAsync();
         }
     }
 }

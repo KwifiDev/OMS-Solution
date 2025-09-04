@@ -4,16 +4,16 @@ namespace OMS.UI.Models.Views
 {
     public class ServicesSummaryModel : BaseModel
     {
-        private int _serviceId;
+        private int _id;
         private string _name = null!;
         private decimal _price;
         private int? _totalconsumed;
 
         [Key]
-        public int ServiceId
+        public int Id
         {
-            get => _serviceId;
-            set => SetProperty(ref _serviceId, value);
+            get => _id;
+            set => SetProperty(ref _id, value);
         }
 
         public string Name

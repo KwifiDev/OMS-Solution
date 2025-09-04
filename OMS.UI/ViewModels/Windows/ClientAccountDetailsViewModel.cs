@@ -18,7 +18,7 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IUserSessionService _userSessionService;
 
         [ObservableProperty]
-        private UserAccountModel _userAccount;
+        private UserAccountModel _userAccount = new();
 
         public ClientAccountDetailsViewModel(IUserAccountService userAccountService, IWindowService windowService, IDialogService dialogService, IUserSessionService userSessionService)
         {
@@ -26,7 +26,6 @@ namespace OMS.UI.ViewModels.Windows
             _windowService = windowService;
             _dialogService = dialogService;
             _userSessionService = userSessionService;
-            _userAccount = new UserAccountModel();
         }
 
 

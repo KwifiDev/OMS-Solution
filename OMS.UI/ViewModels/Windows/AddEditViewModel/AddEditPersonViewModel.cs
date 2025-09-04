@@ -33,12 +33,12 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             => "شخص";
 
         protected override async Task<bool> SaveDataAsync(bool isAdding, PersonModel personModel)
-            => isAdding ? await _service.AddAsync(personModel) : await _service.UpdateAsync(personModel.PersonId, personModel);
+            => isAdding ? await _service.AddAsync(personModel) : await _service.UpdateAsync(personModel.Id, personModel);
 
         protected override void SendMessage()
         {
             base.SendMessage();
-            if (_userSessionService.CurrentUser?.PersonId == Model.PersonId)
+            if (_userSessionService.CurrentUser?.PersonId == Model.Id)
                 _userSessionService.UpdateModel();
         }
     }
