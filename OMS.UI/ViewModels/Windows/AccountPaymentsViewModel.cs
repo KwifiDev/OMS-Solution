@@ -5,6 +5,7 @@ using OMS.UI.APIs.Services.Interfaces.Views;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Views;
 using OMS.UI.Services.Dialog;
+using OMS.UI.Services.Loading;
 using OMS.UI.Services.Windows;
 using System.Collections.ObjectModel;
 
@@ -14,13 +15,17 @@ namespace OMS.UI.ViewModels.Windows
     {
         private readonly IPaymentsSummaryService _paymentsSummaryService;
         private readonly IWindowService _windowService;
-
+        private readonly ILoadingService _loadingService;
         private int _accountId;
 
-        public AccountPaymentsViewModel(IPaymentsSummaryService paymentsSummaryService, IWindowService windowService)
+
+        public ILoadingService LoadingService => _loadingService;
+
+        public AccountPaymentsViewModel(IPaymentsSummaryService paymentsSummaryService, IWindowService windowService, ILoadingService loadingService)
         {
             _paymentsSummaryService = paymentsSummaryService;
             _windowService = windowService;
+            _loadingService = loadingService;
             PaginationInfo.PageChanged += OnPageChanged;
         }
 
@@ -37,17 +42,20 @@ namespace OMS.UI.ViewModels.Windows
 
         private async Task LoadData()
         {
-            var pagedResult = await _paymentsSummaryService.GetPaymentsByAccountIdPagedAsync(_accountId, new PaginationParams(PaginationInfo.CurrentPage, PaginationInfo.PageSize));
-
-            if (pagedResult != null)
+            await LoadingService.ExecuteWithLoadingIndicator(async () =>
             {
-                PaymentsSummaryItems = new(pagedResult.Items);
-                PaginationInfo.CurrentPage = pagedResult.PageNumber;
-                PaginationInfo.PageSize = pagedResult.PageSize;
-                PaginationInfo.TotalItems = pagedResult.TotalItems;
-                PaginationInfo.TotalPages = pagedResult.TotalPages;
-                RefreshPaginationCommandStates();
-            }
+                var pagedResult = await _paymentsSummaryService.GetPaymentsByAccountIdPagedAsync(_accountId, new PaginationParams(PaginationInfo.CurrentPage, PaginationInfo.PageSize));
+
+                if (pagedResult != null)
+                {
+                    PaymentsSummaryItems = new(pagedResult.Items);
+                    PaginationInfo.CurrentPage = pagedResult.PageNumber;
+                    PaginationInfo.PageSize = pagedResult.PageSize;
+                    PaginationInfo.TotalItems = pagedResult.TotalItems;
+                    PaginationInfo.TotalPages = pagedResult.TotalPages;
+                    RefreshPaginationCommandStates();
+                }
+            });
         }
 
         private void RefreshPaginationCommandStates()

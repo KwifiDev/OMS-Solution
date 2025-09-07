@@ -28,8 +28,6 @@ namespace OMS.UI.ViewModels.Windows
         private readonly IWindowService _windowService;
         private int _clientId;
 
-        //[ObservableProperty]
-        //private PaginationInfo _paginationInfo = new();
 
         public SalesSummaryViewModel(ISaleService service, ISalesSummaryService displayService, ILoadingService loadingService,
                                      IDialogService dialogService, IMessageService messageService, IWindowService windowService, IUserSessionService userSessionService)
@@ -39,13 +37,8 @@ namespace OMS.UI.ViewModels.Windows
             CommandConditions[nameof(EditItemCommand)] += CanChangeSale;
             CommandConditions[nameof(DeleteItemCommand)] += CanChangeSale;
             _windowService = windowService;
-            //PaginationInfo.PageChanged += OnPageChanged;
         }
 
-        //private async Task OnPageChanged()
-        //{
-        //    await LoadData();
-        //}
 
         private void NotifyCanExecuteChanged(object? obj, EventArgs e)
         {

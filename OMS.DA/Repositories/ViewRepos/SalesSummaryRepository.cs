@@ -26,7 +26,8 @@ namespace OMS.DA.Repositories.ViewRepos
                              TotalSales = e.TotalSales,
                              Status = e.Status
                          })
-                         .OrderByDescending(e => e.Id)
+                         .OrderByDescending(e => e.Status == "غير مكتملة")
+                         .ThenByDescending(e => e.Id)
                          .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                          .Take(parameters.PageSize)
                          .ToListAsync();

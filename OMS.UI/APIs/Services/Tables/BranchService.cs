@@ -6,6 +6,7 @@ using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
+using OMS.UI.Services.WinLogger;
 using System.Net.Http;
 using System.Net.Http.Json;
 
@@ -13,8 +14,8 @@ namespace OMS.UI.APIs.Services.Tables
 {
     public class BranchService : GenericApiService<BranchDto, BranchModel>, IBranchService
     {
-        public BranchService(IHttpClientFactory httpClientFactory, IMapper mapper)
-            : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Branches)
+        public BranchService(IHttpClientFactory httpClientFactory, IMapper mapper, ILogService logService)
+            : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Branches, logService)
         {
         }
         public async Task<IEnumerable<BranchOptionModel>> GetAllBranchesOption()

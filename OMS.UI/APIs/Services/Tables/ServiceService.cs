@@ -8,13 +8,14 @@ using OMS.UI.APIs.Dtos.Views;
 using System.Net.Http.Json;
 using OMS.UI.Models.Tables;
 using OMS.UI.Models.Others;
+using OMS.UI.Services.WinLogger;
 
 namespace OMS.UI.APIs.Services.Tables
 {
     public class ServiceService : GenericApiService<ServiceDto, ServiceModel>, IServiceService
     {
-        public ServiceService(IHttpClientFactory httpClientFactory, IMapper mapper)
-                              : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Services)
+        public ServiceService(IHttpClientFactory httpClientFactory, IMapper mapper, ILogService logService)
+                              : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Services, logService)
         {
         }
 

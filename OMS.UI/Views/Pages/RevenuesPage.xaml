@@ -51,7 +51,8 @@
 
                 <userControls:PaginationControl DockPanel.Dock="Right"
                                 FlowDirection="LeftToRight"
-                                PaginationInfo="{Binding PaginationInfo}"/>
+                                PaginationInfo="{Binding PaginationInfo}"
+                                IsEnabled="{Binding LoadingService.IsWaiting}"/>
                 
                 <materialDesign:PackIcon Kind="Money" 
                              Foreground="White"

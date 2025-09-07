@@ -120,8 +120,9 @@
             <DockPanel LastChildFill="False">
 
                 <userControls:PaginationControl DockPanel.Dock="Right"
-                                           FlowDirection="LeftToRight"
-                                           PaginationInfo="{Binding PaginationInfo}"/>
+                                                FlowDirection="LeftToRight"
+                                                PaginationInfo="{Binding PaginationInfo}"
+                                                IsEnabled="{Binding LoadingService.IsWaiting}"/>
 
                 <Label
                        Style="{StaticResource MaterialDesignLabel}"

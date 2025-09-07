@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OMS.UI.APIs.Services.Interfaces.Tables;
+using OMS.UI.Services.WinLogger;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -12,7 +13,7 @@ namespace OMS.UI.APIs.Services.Generices
         where TModel : class
     {
 
-        public GenericApiService(HttpClient httpClient, IMapper mapper, string endpoint) : base(httpClient, mapper, endpoint)
+        public GenericApiService(HttpClient httpClient, IMapper mapper, string endpoint, ILogService logService) : base(httpClient, mapper, endpoint, logService)
         {
         }
 

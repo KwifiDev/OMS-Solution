@@ -7,8 +7,13 @@ namespace OMS.UI.Services.Loading
         [ObservableProperty]
         private bool _isLoading;
 
+        [ObservableProperty]
+        private bool _isWaiting;
+
         public async Task ExecuteWithLoadingIndicator(Func<Task> action, int delayThreshold = 500)
         {
+            IsWaiting = false;
+
             var loadingDelayTask = Task.Delay(delayThreshold);
             var actionTask = action();
 
@@ -21,6 +26,8 @@ namespace OMS.UI.Services.Loading
 
             await actionTask;
             IsLoading = false;
+
+            IsWaiting = true;
         }
         
     }

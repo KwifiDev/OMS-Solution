@@ -6,6 +6,8 @@ using OMS.UI.APIs.EndPoints;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
+using OMS.UI.Services.WinLogger;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -17,12 +19,14 @@ namespace OMS.UI.APIs.Services.Tables
     {
         private readonly IMapper _mapper;
         private readonly HttpClient _httpClient;
+        private readonly ILogService _logService;
         private readonly string _endpoint;
 
-        public AuthService(IHttpClientFactory httpClientFactory, IMapper mapper)
+        public AuthService(IHttpClientFactory httpClientFactory, IMapper mapper, ILogService logService)
         {
             _mapper = mapper;
             _httpClient = httpClientFactory.CreateClient("ApiClient");
+            _logService = logService;
             _endpoint = ApiEndpoints.Authentication;
         }
 
@@ -324,7 +328,7 @@ namespace OMS.UI.APIs.Services.Tables
 
         private void LogError(Exception ex)
         {
-            MessageBox.Show($"Error: {ex.Message}\nStackTrace: {ex.StackTrace}", "Response Server", MessageBoxButton.OK, MessageBoxImage.Error);
+            _logService.Log($"Error: {ex.Message}\nStackTrace: {ex.StackTrace}", EventLogEntryType.Error);
         }
     }
 }

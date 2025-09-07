@@ -7,6 +7,7 @@ using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Tables;
 using OMS.UI.Models.Views;
+using OMS.UI.Services.WinLogger;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -16,8 +17,8 @@ namespace OMS.UI.APIs.Services.Tables
 {
     public class AccountService : GenericApiService<AccountDto, AccountModel>, IAccountService
     {
-        public AccountService(IHttpClientFactory httpClientFactory, IMapper mapper)
-            : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Accounts)
+        public AccountService(IHttpClientFactory httpClientFactory, IMapper mapper, ILogService logService)
+            : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Accounts, logService)
         {
         }
 

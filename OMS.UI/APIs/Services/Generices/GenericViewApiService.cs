@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using OMS.Common.Extensions.Pagination;
 using OMS.UI.APIs.Services.Interfaces.Views;
+using OMS.UI.Services.WinLogger;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Windows;
@@ -14,13 +16,14 @@ namespace OMS.UI.APIs.Services.Generices
         protected readonly HttpClient _httpClient;
         protected readonly string _endpoint;
         protected readonly IMapper _mapper;
+        private readonly ILogService _logService;
 
-
-        public GenericViewApiService(HttpClient httpClient, IMapper mapper, string endpoint)
+        public GenericViewApiService(HttpClient httpClient, IMapper mapper, string endpoint, ILogService logService)
         {
             _httpClient = httpClient;
             _endpoint = endpoint;
             _mapper = mapper;
+            _logService = logService;
         }
 
         public virtual async Task<PagedResult<TModel>?> GetPagedAsync(PaginationParams parameters)
@@ -88,7 +91,7 @@ namespace OMS.UI.APIs.Services.Generices
 
         protected void LogError(Exception ex)
         {
-            MessageBox.Show($"Error: {ex.Message}\nStackTrace: {ex.StackTrace}", "Response Server", MessageBoxButton.OK, MessageBoxImage.Error);
+            _logService.Log($"Error: {ex.Message}\nStackTrace: {ex.StackTrace}", EventLogEntryType.Error);
         }
     }
 }

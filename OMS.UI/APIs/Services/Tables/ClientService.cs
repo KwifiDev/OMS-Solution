@@ -7,6 +7,7 @@ using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
+using OMS.UI.Services.WinLogger;
 using System.Net.Http;
 using System.Net.Http.Json;
 
@@ -15,8 +16,8 @@ namespace OMS.UI.APIs.Services.Tables
     public class ClientService : GenericApiService<ClientDto, ClientModel>, IClientService
     {
 
-        public ClientService(IHttpClientFactory httpClientFactory, IMapper mapper)
-            : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Clients)
+        public ClientService(IHttpClientFactory httpClientFactory, IMapper mapper, ILogService logService)
+            : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Clients, logService)
         {
         }
 
