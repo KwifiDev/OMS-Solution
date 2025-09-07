@@ -154,7 +154,7 @@
           ItemsSource="{Binding Services}"
           DisplayMemberPath="Name"
           SelectedValuePath="Id"
-          SelectedValue="{Binding Model.ServiceId}"
+          SelectedValue="{Binding Model.ServiceId, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
           Height="60"
           FontSize="16" 
           Margin="10,0,10,0"

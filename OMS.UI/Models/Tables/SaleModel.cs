@@ -37,6 +37,8 @@ namespace OMS.UI.Models.Tables
             set => SetProperty(ref _clientId, value);
         }
 
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "الرجاء تحديد نوع الخدمة")]
         public int ServiceId
         {
             get => _serviceId;

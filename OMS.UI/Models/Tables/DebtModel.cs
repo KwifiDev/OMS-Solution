@@ -1,5 +1,6 @@
 ﻿using OMS.Common.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 
 namespace OMS.UI.Models.Tables
 {
@@ -38,6 +39,8 @@ namespace OMS.UI.Models.Tables
             set => SetProperty(ref _clientId, value);
         }
 
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "الرجاء تحديد نوع الخدمة")]
         public int ServiceId
         {
             get => _serviceId;

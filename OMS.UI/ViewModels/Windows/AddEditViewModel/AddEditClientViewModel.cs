@@ -86,8 +86,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             var clientSaved = await SaveClient(clientModel, isAdding);
             if (!clientSaved) return false;
 
-            await HandleAccountOperations(clientModel.Id);
-            return true;
+            return await HandleAccountOperations(clientModel.Id);
         }
 
         protected override bool ValidateModel()
@@ -112,7 +111,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         private async Task<bool> LoadAssociatedAccount()
         {
             var accountModel = await _accountService.GetByClientIdAsync(Model.Id);
-            if (accountModel == null) 
+            if (accountModel == null)
             {
                 //_messageService.ShowErrorMessage("خطا في الحساب", MessageTemplates.ClientAccountViewError);
                 return false;
@@ -154,35 +153,39 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
                 ? await _service.AddAsync(clientModel)
                 : await _service.UpdateAsync(clientModel.Id, clientModel);
 
-        private async Task HandleAccountOperations(int clientId)
+        private async Task<bool> HandleAccountOperations(int clientId)
         {
             if (HasCreateUserAccount)
             {
-                await SaveOrUpdateAccount(clientId);
+                return await SaveOrUpdateAccount(clientId);
             }
             else
             {
-                await RemoveExistingAccount();
+                return await RemoveExistingAccount();
             }
         }
 
-        private async Task SaveOrUpdateAccount(int clientId)
+        private async Task<bool> SaveOrUpdateAccount(int clientId)
         {
             ClientAccount.ClientId = clientId;
 
-            var success = ClientAccount.Id == 0
+            var isSuccess = ClientAccount.Id == 0
                 ? await _accountService.AddAsync(ClientAccount)
                 : await _accountService.UpdateAsync(ClientAccount.Id, ClientAccount);
 
-            if (!success) ShowAccountOperationError();
+            if (!isSuccess) ShowAccountOperationError();
+
+            return isSuccess;
         }
 
-        private async Task RemoveExistingAccount()
+        private async Task<bool> RemoveExistingAccount()
         {
-            if (ClientAccount.Id <= 0) return;
+            if (ClientAccount.Id <= 0) return true;
 
-            var success = await _accountService.DeleteAsync(ClientAccount.Id);
-            if (!success) ShowAccountDeletionError();
+            var isRemoved = await _accountService.DeleteAsync(ClientAccount.Id);
+            if (!isRemoved) ShowAccountDeletionError();
+
+            return isRemoved;
         }
 
         private void ShowAccountOperationError()
