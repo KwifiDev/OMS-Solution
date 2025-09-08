@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using OMS.Common.Enums;
 using OMS.UI.APIs.Services.Interfaces.Tables;
+using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
 using OMS.UI.Resources.Strings;
 using OMS.UI.Services.ShowMassage;
@@ -149,38 +150,48 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             => Model.PersonId = FindPersonViewModel.Person!.Id;
 
         private async Task<bool> SaveClient(ClientModel clientModel, bool isAdding)
-            => isAdding
-                ? await _service.AddAsync(clientModel)
-                : await _service.UpdateAsync(clientModel.Id, clientModel);
-
-        private async Task<bool> HandleAccountOperations(int clientId)
         {
-            if (HasCreateUserAccount)
+            if (isAdding)
             {
-                return await SaveOrUpdateAccount(clientId);
+                return HasCreateUserAccount
+                    ? await _service.AddWithAccountAsync(new ClientAccountModel(clientModel, ClientAccount))
+                    : await _service.AddAsync(clientModel);
             }
             else
             {
-                return await RemoveExistingAccount();
+                return HasCreateUserAccount
+                    ? await _service.UpdateWithAccountAsync(new ClientAccountModel(clientModel, ClientAccount))
+                    : await _service.UpdateAsync(clientModel.Id, clientModel);
             }
         }
 
-        private async Task<bool> SaveOrUpdateAccount(int clientId)
+
+        private async Task<bool> HandleAccountOperations(int clientId)
         {
-            ClientAccount.ClientId = clientId;
+            if (!HasCreateUserAccount)
+            {
+                return await RemoveExistingAccount();
+            }
 
-            var isSuccess = ClientAccount.Id == 0
-                ? await _accountService.AddAsync(ClientAccount)
-                : await _accountService.UpdateAsync(ClientAccount.Id, ClientAccount);
-
-            if (!isSuccess) ShowAccountOperationError();
-
-            return isSuccess;
+            return true;
         }
+
+        //private async Task<bool> SaveOrUpdateAccount(int clientId)
+        //{
+        //    ClientAccount.ClientId = clientId;
+
+        //    var isSuccess = ClientAccount.Id == 0
+        //        ? await _accountService.AddAsync(ClientAccount)
+        //        : await _accountService.UpdateAsync(ClientAccount.Id, ClientAccount);
+
+        //    if (!isSuccess) ShowAccountOperationError();
+
+        //    return isSuccess;
+        //}
 
         private async Task<bool> RemoveExistingAccount()
         {
-            if (ClientAccount.Id <= 0) return true;
+            if (!IsClientHasAccount()) return true;
 
             var isRemoved = await _accountService.DeleteAsync(ClientAccount.Id);
             if (!isRemoved) ShowAccountDeletionError();
@@ -188,8 +199,10 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             return isRemoved;
         }
 
-        private void ShowAccountOperationError()
-            => _messageService.ShowInfoMessage("خطأ", MessageTemplates.ClientAccountAdditionError);
+        private bool IsClientHasAccount() => ClientAccount.Id > 0;
+
+        //private void ShowAccountOperationError()
+        //    => _messageService.ShowInfoMessage("خطأ", MessageTemplates.ClientAccountAdditionError);
 
         private void ShowAccountDeletionError()
             => _messageService.ShowInfoMessage("خطأ", MessageTemplates.ClientAccountDeletionError);

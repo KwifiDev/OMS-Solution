@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OMS.Common.Enums;
+using OMS.UI.APIs.Dtos.Hybrid;
 using OMS.UI.APIs.Dtos.StoredProcedureParams;
 using OMS.UI.APIs.Dtos.Tables;
 using OMS.UI.APIs.EndPoints;
@@ -20,6 +21,56 @@ namespace OMS.UI.APIs.Services.Tables
             : base(httpClientFactory.CreateClient("ApiClient"), mapper, ApiEndpoints.Clients, logService)
         {
         }
+
+        public virtual async Task<bool> AddWithAccountAsync(ClientAccountModel model)
+        {
+            try
+            {
+                var dto = _mapper.Map<ClientAccountDto>(model);
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/addwithaccount", dto);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في اضافة البيانات الى الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return false;
+                }
+
+                var createdDto = await response.Content.ReadFromJsonAsync<ClientAccountDto>();
+                if (createdDto is null) return false;
+
+                model.Client.Id = createdDto.Client.Id;
+                model.Account.Id = createdDto.Account.Id;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
+
+        public virtual async Task<bool> UpdateWithAccountAsync(ClientAccountModel model)
+        {
+            try
+            {
+                var dto = _mapper.Map<ClientAccountDto>(model);
+                var response = await _httpClient.PutAsJsonAsync($"{_endpoint}/updatewithaccount", dto);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    LogError(new Exception($"خطأ في اضافة البيانات الى الخادم.\nStatus Code: {response.StatusCode}\nContent:\n{await response.Content.ReadAsStringAsync()}"));
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return false;
+            }
+        }
+
 
         public async Task<EnPayDebtStatus> PayAllDebtsById(PayDebtsModel model)
         {

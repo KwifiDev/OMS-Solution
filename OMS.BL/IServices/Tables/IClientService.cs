@@ -1,4 +1,5 @@
-﻿using OMS.BL.Models.StoredProcedureParams;
+﻿using OMS.BL.Models.Hybrid;
+using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
 using OMS.Common.Extensions.Pagination;
 
@@ -70,5 +71,19 @@ namespace OMS.BL.IServices.Tables
         /// <param name="model">The payment model containing the client ID.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the debts were paid successfully.</returns>
         Task<bool> PayAllDebtsById(PayDebtsModel model);
+
+        /// <summary>
+        /// Adds a new client with account asynchronously.
+        /// </summary>
+        /// <param name="model">The client model to add with client account.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the client was added successfully.</returns>
+        Task<bool> AddWithAccountAsync(ClientAccountModel model);
+
+        /// <summary>
+        /// updates a new client with account asynchronously.
+        /// </summary>
+        /// <param name="model">The client model to add with client account.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains a boolean value indicating whether the client was added successfully.</returns>
+        Task<bool> UpdateWithAccountAsync(ClientAccountModel model);
     }
 }

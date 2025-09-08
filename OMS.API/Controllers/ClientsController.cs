@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OMS.API.Dtos.Hybrid;
 using OMS.API.Dtos.StoredProcedureParams;
 using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
+using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
@@ -29,7 +31,107 @@ namespace OMS.API.Controllers
         {
         }
 
+        /// <summary>
+        /// Creates a new entity.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     POST /api/entities
+        ///     {
+        ///         "name": "New Entity",
+        ///         "description": "Entity description"
+        ///     }
+        /// </remarks>
+        /// <param name="dto">The DTO containing data for the new entity</param>
+        /// <returns>The created entity with generated ID</returns>
+        /// <response code="201">Returns the newly created entity</response>
+        /// <response code="400">If the request is invalid or validation fails</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpPost("addwithaccount")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public virtual async Task<ActionResult<ClientAccountDto>> AddWithAccountAsync([FromBody] ClientAccountDto dto)
+        {
+            try
+            {
+                var model = _mapper.Map<ClientAccountModel>(dto);
+                var isSuccess = await _service.AddWithAccountAsync(model);
 
+                if (!isSuccess)
+                {
+                    return ValidationProblem(new ValidationProblemDetails
+                    {
+                        Title = "Validation Error",
+                        Detail = "Failed to save entity in the database",
+                        Errors = { { "General", new[] { "Failed to save entity in the database" } } }
+                    });
+                }
+
+                dto.Client.Id = model.Client.Id;
+                dto.Account.Id = model.Account.Id;
+
+                return Ok(dto);
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error creating entity",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
+            }
+        }
+
+
+        /// <summary>
+        /// Creates a new entity.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     POST /api/entities
+        ///     {
+        ///         "name": "New Entity",
+        ///         "description": "Entity description"
+        ///     }
+        /// </remarks>
+        /// <param name="dto">The DTO containing data for the new entity</param>
+        /// <returns>The created entity with generated ID</returns>
+        /// <response code="201">Returns the newly created entity</response>
+        /// <response code="400">If the request is invalid or validation fails</response>
+        /// <response code="500">If there was an internal server error</response>
+        [HttpPut("updatewithaccount")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public virtual async Task<IActionResult> UpdateWithAccountAsync([FromBody] ClientAccountDto dto)
+        {
+            try
+            {
+                var model = _mapper.Map<ClientAccountModel>(dto);
+                var isSuccess = await _service.UpdateWithAccountAsync(model);
+
+                if (!isSuccess)
+                {
+                    return ValidationProblem(new ValidationProblemDetails
+                    {
+                        Title = "Validation Error",
+                        Detail = "Failed to save entity in the database",
+                        Errors = { { "General", new[] { "Failed to save entity in the database" } } }
+                    });
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Problem(
+                    title: "Error creating entity",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
+            }
+        }
 
         /// <summary>
         /// Retrieves a specific entity by its ID.

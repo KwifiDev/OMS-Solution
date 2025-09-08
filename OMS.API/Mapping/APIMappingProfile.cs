@@ -133,6 +133,8 @@ namespace OMS.API.Mapping
             CreateMap<RoleClaimDto, RoleClaimModel>().ReverseMap();
 
             CreateMap<PermissionDto, PermissionModel>().ReverseMap();
+
+            CreateMap<ClientAccountDto, ClientAccountModel>().ReverseMap();
         }
     }
 }

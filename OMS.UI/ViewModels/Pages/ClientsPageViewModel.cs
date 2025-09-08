@@ -30,6 +30,17 @@ namespace OMS.UI.ViewModels.Pages
             SelectedItemChanged += NotifyCanExecuteChanged;
         }
 
+        protected override Task DeleteItem()
+        {
+            if (SelectedItem!.AccountId > 0)
+            {
+                _messageService.ShowInfoMessage("منع حذف", MessageTemplates.ClientAccountDeletionForbidden);
+                return Task.FromResult(false);
+            }
+
+            return base.DeleteItem();
+        }
+
         protected override async Task<bool> ExecuteDelete(int itemId)
         {
             return await _service.DeleteAsync(itemId);

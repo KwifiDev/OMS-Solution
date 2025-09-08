@@ -57,6 +57,7 @@ namespace OMS.UI.Mapping
                 .ReverseMap();
             CreateMap<RoleClaimModel, RoleClaimDto>().ReverseMap();
             CreateMap<PermissionModel, PermissionDto>().ReverseMap();
+            CreateMap<ClientAccountModel, ClientAccountDto>().ReverseMap();
         }
     }
 }

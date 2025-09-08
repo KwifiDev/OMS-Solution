@@ -80,6 +80,7 @@
         public static string ClientAccountAdditionError => "حدث خطأ اثناء عملية انشاء حساب الكتروني للعميل";
         public static string ClientAccountDeletionError => "حدث خطأ اثناء عملية حذف الحساب الكتروني الخاص في العميل";
         public static string ClientAccountViewError => "حدث خطأ اثناء جلب بيانات العميل من السرفر";
+        public static string ClientAccountDeletionForbidden => "لا يمكن حذف البيانات العميل لانه يحتوي على حساب الاكتروني";
 
 
         // Transaction Success Messages
