@@ -24,7 +24,8 @@ namespace OMS.DA.Repositories.ViewRepos
                              Description = e.Description,
                              Notes = e.Notes,
                              TotalDebts = e.TotalDebts,
-                             Status = e.Status
+                             Status = e.Status,
+                             CreatedAt = e.CreatedAt
                          })
                          .OrderByDescending(e => e.Status == "غير مدفوع")
                          .ThenByDescending(e => e.Id)

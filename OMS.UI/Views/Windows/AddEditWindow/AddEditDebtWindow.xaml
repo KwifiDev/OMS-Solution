@@ -129,6 +129,7 @@
                  Margin="10,5,10,5"
                  materialDesign:HintAssist.Hint="الوصف"
                  Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3"
+                 MaxLength="100"
                  IsEnabled="{Binding Status.IsModifiable}">
 
             <i:Interaction.Behaviors>
@@ -142,6 +143,7 @@
                  Margin="10,5,10,5"
                  materialDesign:HintAssist.Hint="ملاحظات"
                  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3"
+                 MaxLength="100"
                  IsEnabled="{Binding Status.IsModifiable}">
 
             <i:Interaction.Behaviors>

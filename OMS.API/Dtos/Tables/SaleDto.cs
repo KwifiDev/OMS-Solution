@@ -10,10 +10,12 @@ public partial class SaleDto
 
     public int ClientId { get; set; }
 
+    [Range(1, int.MaxValue, ErrorMessage = "Invalied Service Id")]
     public int ServiceId { get; set; }
 
     public decimal Cost { get; set; }
 
+    [Range(1, short.MaxValue, ErrorMessage = "Invalied Quantity of Service")]
     public short Quantity { get; set; }
 
     public decimal? DiscountPercentage { get; set; }
@@ -22,8 +24,10 @@ public partial class SaleDto
 
     public decimal? Total { get; set; }
 
+    [Length(3, 100, ErrorMessage = "Description Length Must be Between (3 - 100)")]
     public string? Description { get; set; }
 
+    [Length(3, 100, ErrorMessage = "Notes Length Must be Between (3 - 100)")]
     public string? Notes { get; set; }
 
     public DateOnly CreatedAt { get; set; }
@@ -33,5 +37,6 @@ public partial class SaleDto
     /// </summary>
     public EnSaleStatus Status { get; set; }
 
+    [Range(1, int.MaxValue, ErrorMessage = "Invalied CreatedByUserId")]
     public int CreatedByUserId { get; set; }
 }

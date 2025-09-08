@@ -15,4 +15,6 @@ public partial class DebtsSummaryDto
     public decimal? TotalDebts { get; set; }
 
     public string Status { get; set; } = null!;
+
+    public DateOnly CreatedAt { get; set; }
 }

@@ -17,4 +17,6 @@ public partial class SalesSummaryModel : IModelKey
     public decimal? TotalSales { get; set; }
 
     public string Status { get; set; } = null!;
+
+    public DateOnly CreatedAt { get; set; }
 }

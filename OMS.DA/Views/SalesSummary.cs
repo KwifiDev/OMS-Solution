@@ -30,4 +30,6 @@ public partial class SalesSummary : IEntityKey
     [StringLength(9)]
     [Unicode(false)]
     public string Status { get; set; } = null!;
+
+    public DateOnly CreatedAt { get; set; }
 }

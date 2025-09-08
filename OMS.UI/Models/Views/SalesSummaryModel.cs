@@ -10,7 +10,7 @@ namespace OMS.UI.Models.Views
         private string _notes = null!;
         private decimal? _totalSales;
         private string _status = null!;
-
+        private DateOnly _createdAt;
 
         public int Id
         {
@@ -46,6 +46,12 @@ namespace OMS.UI.Models.Views
         {
             get => _status;
             set => SetProperty(ref _status, value);
+        }
+
+        public DateOnly CreatedAt 
+        {
+            get => _createdAt;
+            set => SetProperty(ref _createdAt, value);
         }
     }
 }

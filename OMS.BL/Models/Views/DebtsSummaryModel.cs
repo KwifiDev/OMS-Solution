@@ -17,4 +17,6 @@ public partial class DebtsSummaryModel : IModelKey
     public decimal? TotalDebts { get; set; }
 
     public string Status { get; set; } = null!;
+
+    public DateOnly CreatedAt { get; set; }
 }
