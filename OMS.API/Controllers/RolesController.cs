@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
+using OMS.Common.Dtos.Tables;
 using OMS.Common.Enums;
 using OMS.Common.Extensions.Pagination;
 

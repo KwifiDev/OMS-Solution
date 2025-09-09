@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using OMS.UI.APIs.Dtos.Hybrid;
-using OMS.UI.APIs.Dtos.Tables;
+using OMS.Common.Dtos.Hybrid;
+using OMS.Common.Dtos.Tables;
 using OMS.UI.APIs.EndPoints;
 using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;
@@ -145,7 +145,7 @@ namespace OMS.UI.APIs.Services.Tables
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/checkusernameavailable", new { UserId = userId, Username = username});
+                var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/checkusernameavailable", new { UserId = userId, Username = username });
 
                 if (!response.IsSuccessStatusCode)
                 {

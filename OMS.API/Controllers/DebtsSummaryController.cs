@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Views;
 using OMS.BL.Models.Views;
 using OMS.Common.Data;
+using OMS.Common.Dtos.Views;
 using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
@@ -39,7 +39,7 @@ namespace OMS.API.Controllers
             try
             {
                 var pagedResult = await _service.GetByClientIdPagedAsync(clientId, parameters);
-                return Ok(new PagedResult<DebtsSummaryDto> 
+                return Ok(new PagedResult<DebtsSummaryDto>
                 {
                     Items = _mapper.Map<List<DebtsSummaryDto>>(pagedResult.Items),
                     TotalItems = pagedResult.TotalItems,

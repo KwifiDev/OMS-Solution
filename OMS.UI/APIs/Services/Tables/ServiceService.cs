@@ -1,14 +1,14 @@
-﻿using OMS.UI.APIs.Services.Interfaces.Tables;
-using OMS.UI.APIs.Services.Generices;
-using OMS.UI.APIs.Dtos.Tables;
-using AutoMapper;
+﻿using AutoMapper;
+using OMS.Common.Dtos.Tables;
+using OMS.Common.Dtos.Views;
 using OMS.UI.APIs.EndPoints;
-using System.Net.Http;
-using OMS.UI.APIs.Dtos.Views;
-using System.Net.Http.Json;
-using OMS.UI.Models.Tables;
+using OMS.UI.APIs.Services.Generices;
+using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
+using OMS.UI.Models.Tables;
 using OMS.UI.Services.WinLogger;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace OMS.UI.APIs.Services.Tables
 {

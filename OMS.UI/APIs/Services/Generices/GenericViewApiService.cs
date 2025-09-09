@@ -5,7 +5,6 @@ using OMS.UI.Services.WinLogger;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Windows;
 
 namespace OMS.UI.APIs.Services.Generices
 {

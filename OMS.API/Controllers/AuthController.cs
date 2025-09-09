@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OMS.API.Dtos.Hybrid;
-using OMS.API.Dtos.Tables;
 using OMS.API.Extensions;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Hybrid;
 using OMS.Common.Data;
+using OMS.Common.Dtos.Hybrid;
+using OMS.Common.Dtos.Tables;
 using OMS.Common.Enums;
 using System.Security.Claims;
 
@@ -151,7 +151,7 @@ namespace OMS.API.Controllers
 
                 return UserLogin is null
                     ? NotFound()
-                    : Ok(new LoginInfoDto { TokenInfo = TokenInfo, UserLogin = _mapper.Map<ResponseLoginDto>(UserLogin), Claims = userClaims });
+                    : Ok(new LoginInfoDto { TokenInfo = _mapper.Map<TokenDto>(TokenInfo), UserLogin = _mapper.Map<ResponseLoginDto>(UserLogin), Claims = userClaims });
             }
             catch (Exception ex)
             {

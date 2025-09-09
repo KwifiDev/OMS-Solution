@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using OMS.UI.APIs.Dtos.Views;
+using OMS.Common.Dtos.Views;
 using OMS.UI.APIs.EndPoints;
 using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Views;

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using OMS.Common.Dtos.Hybrid;
+using OMS.Common.Dtos.StoredProcedureParams;
+using OMS.Common.Dtos.Tables;
 using OMS.Common.Enums;
-using OMS.UI.APIs.Dtos.Hybrid;
-using OMS.UI.APIs.Dtos.StoredProcedureParams;
-using OMS.UI.APIs.Dtos.Tables;
 using OMS.UI.APIs.EndPoints;
 using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using OMS.UI.APIs.Dtos.Hybrid;
-using OMS.UI.APIs.Dtos.Hybrid.OMS.API.Dtos.Hybrid;
-using OMS.UI.APIs.Dtos.Tables;
+using OMS.Common.Dtos.Hybrid;
+using OMS.Common.Dtos.Tables;
 using OMS.UI.APIs.EndPoints;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
@@ -11,7 +10,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Windows;
 
 namespace OMS.UI.APIs.Services.Tables
 {
@@ -147,8 +145,9 @@ namespace OMS.UI.APIs.Services.Tables
                 var loginInfo = await response.Content.ReadFromJsonAsync<LoginInfoDto>();
 
                 var userLogin = _mapper.Map<UserLoginModel>(loginInfo!.UserLogin);
+                var tokenDto = _mapper.Map<TokenModel>(loginInfo.TokenInfo);
 
-                return new LoginInfoModel { TokenInfo = loginInfo.TokenInfo, UserLogin = userLogin, Claims = loginInfo.Claims };
+                return new LoginInfoModel { TokenInfo = tokenDto, UserLogin = userLogin, Claims = loginInfo.Claims };
 
             }
             catch (Exception ex)

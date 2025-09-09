@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OMS.API.Dtos.Hybrid;
-using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
+using OMS.Common.Dtos.Hybrid;
+using OMS.Common.Dtos.Tables;
 using OMS.Common.Enums;
 using OMS.Common.Extensions.Pagination;
 using System.Security.Claims;

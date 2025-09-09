@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OMS.API.Dtos.Views;
 using OMS.BL.IServices.Views;
 using OMS.Common.Data;
+using OMS.Common.Dtos.Views;
 
 namespace OMS.API.Controllers
 {

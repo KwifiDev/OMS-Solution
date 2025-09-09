@@ -1,7 +1,6 @@
 ﻿
 
 using OMS.Common.Extensions.Pagination;
-using OMS.UI.APIs.Dtos.Views;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
 

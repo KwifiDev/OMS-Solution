@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OMS.API.Dtos.StoredProcedureParams;
-using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
 using OMS.Common.Data;
+using OMS.Common.Dtos.StoredProcedureParams;
+using OMS.Common.Dtos.Tables;
 using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
@@ -90,7 +90,7 @@ namespace OMS.API.Controllers
                 if (isSuccess is null) return NotFound();
 
                 if (isSuccess == false) return Conflict("Sale Status may be already completed or canceled");
-                
+
                 return Ok();
             }
             catch (Exception ex)
@@ -106,7 +106,7 @@ namespace OMS.API.Controllers
 
 
         [NonAction] // This EndPoint Insted Of (AddSaleAsync) Method
-        public override Task<ActionResult<SaleDto>> AddAsync([FromBody] SaleDto dto) 
+        public override Task<ActionResult<SaleDto>> AddAsync([FromBody] SaleDto dto)
             => Task.FromResult<ActionResult<SaleDto>>(NotFound("This endpoint is disabled."));
 
         #region override abstract Methods

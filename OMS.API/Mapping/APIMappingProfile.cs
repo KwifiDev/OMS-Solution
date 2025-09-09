@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using OMS.API.Dtos.Hybrid;
-using OMS.API.Dtos.StoredProcedureParams;
-using OMS.API.Dtos.Tables;
-using OMS.API.Dtos.Views;
+using OMS.Common.Dtos.Hybrid;
+using OMS.Common.Dtos.StoredProcedureParams;
+using OMS.Common.Dtos.Tables;
+using OMS.Common.Dtos.Views;
 using OMS.BL.Models.Hybrid;
 using OMS.BL.Models.StoredProcedureParams;
 using OMS.BL.Models.Tables;
@@ -135,6 +135,8 @@ namespace OMS.API.Mapping
             CreateMap<PermissionDto, PermissionModel>().ReverseMap();
 
             CreateMap<ClientAccountDto, ClientAccountModel>().ReverseMap();
+
+            CreateMap<TokenDto, TokenModel>().ReverseMap();
         }
     }
 }

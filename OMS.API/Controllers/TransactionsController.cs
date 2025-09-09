@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OMS.API.Dtos.Tables;
 using OMS.BL.IServices.Tables;
 using OMS.BL.Models.Tables;
+using OMS.Common.Dtos.Tables;
 using OMS.Common.Extensions.Pagination;
 
 namespace OMS.API.Controllers
