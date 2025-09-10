@@ -5,7 +5,7 @@ namespace OMS.Common.Dtos.Hybrid
     public class ChangePasswordDto
     {
 
-        [Range(1, int.MaxValue, ErrorMessage = "Invalid user Id")]
+        [Range(1, int.MaxValue, ErrorMessage = "User Id Must Be Positive")]
         public int UserId { get; set; }
 
         [Required(ErrorMessage = "Old Password is required")]

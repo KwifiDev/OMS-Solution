@@ -8,17 +8,12 @@ public partial class DiscountDto
     [Key]
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "ServiceId is Required")]
-    public required int ServiceId { get; set; }
+    [Range(1, int.MaxValue, ErrorMessage = "Service Id must be positive number")]
+    public int ServiceId { get; set; }
 
-    /// <summary>
-    /// 0 = Normal | 1 = Lawyer | 2 = Other
-    /// </summary>
-    [Required(ErrorMessage = "ClientType is Required")]
-    [Range(0, 2, ErrorMessage = "ClientType Must Be Between [0 - 2]")]
-    public required EnClientType ClientType { get; set; }
+    [Range(0, 2, ErrorMessage = "ClientType must Be between [0:Normal, 1:Lawyer, 2:Other]")]
+    public EnClientType ClientType { get; set; }
 
-    [Required(ErrorMessage = "ClientType is Required")]
-    [Range(1, 99, ErrorMessage = "DiscountPercentage must be Between [1 - 99]")]
-    public required decimal DiscountPercentage { get; set; }
+    [Range(1, 99, ErrorMessage = "DiscountPercentage must be between [1 - 99]")]
+    public decimal DiscountPercentage { get; set; }
 }

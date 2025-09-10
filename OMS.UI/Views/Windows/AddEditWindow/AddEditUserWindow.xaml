@@ -83,6 +83,7 @@
                      Margin="10,5,10,5"
                      Grid.Row="0" Grid.Column="0"
                      materialDesign:HintAssist.Hint="الاسم المستخدم"
+                     MaxLength="20"
                      IsEnabled="{Binding Status.IsModifiable}">
                 
                 <i:Interaction.Behaviors>
@@ -97,6 +98,7 @@
                          Margin="10,5,10,5"
                          Grid.Row="1" Grid.Column="0"
                          materialDesign:HintAssist.Hint="كلمة السر"
+                         MaxLength="30"
                          IsEnabled="{Binding Status.IsModifiable}"
                          Visibility="{Binding Status.SelectMode, Converter={StaticResource VisiblilityUIMode}}"/>
 

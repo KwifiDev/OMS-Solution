@@ -34,7 +34,7 @@ namespace OMS.UI.ViewModels.Windows
 
         [ObservableProperty]
         [Required(ErrorMessage = "نسيت كتابة كلمة السر")]
-        [MinLength(5, ErrorMessage = "كلمة السر قصيرة")]
+        [MinLength(6, ErrorMessage = "كلمة السر قصيرة")]
         [NotifyDataErrorInfo]
         private string _password = string.Empty;
 

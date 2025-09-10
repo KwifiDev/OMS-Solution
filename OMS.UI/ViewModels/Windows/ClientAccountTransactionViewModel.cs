@@ -4,6 +4,7 @@ using OMS.Common.Data;
 using OMS.Common.Enums;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
+using OMS.UI.Models.Others;
 using OMS.UI.Models.Records;
 using OMS.UI.Models.Views;
 using OMS.UI.Resources.Strings;

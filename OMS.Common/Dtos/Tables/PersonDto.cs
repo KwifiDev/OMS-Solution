@@ -16,7 +16,6 @@ public partial class PersonDto
     [MinLength(3, ErrorMessage = "Last name must be at least 3 characters long.")]
     public string LastName { get; set; } = null!;
 
-    [Required(ErrorMessage = "Gender is required.")]
     [Range(0, 1, ErrorMessage = "Gender must be either 0 (Male) or 1 (Female).")]
     public EnGender Gender { get; set; }
 

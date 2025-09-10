@@ -102,6 +102,8 @@ namespace OMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<AccountTransactionDto>> StartTransactionAsync([FromBody] AccountTransactionDto dto)
         {
+            if (dto.AccountId <= 0) return NotFound();
+
             try
             {
                 var model = _mapper.Map<AccountTransactionModel>(dto);

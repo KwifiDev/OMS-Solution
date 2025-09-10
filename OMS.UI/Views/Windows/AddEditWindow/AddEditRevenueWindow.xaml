@@ -104,6 +104,7 @@
                  Grid.ColumnSpan="2"
                  Margin="10,5,10,5"
                  materialDesign:HintAssist.Hint="المبلغ"
+                 MaxLength="8"
                  IsEnabled="{Binding Status.IsModifiable}">
 
             <i:Interaction.Behaviors>
@@ -121,6 +122,7 @@
                  AcceptsReturn="True"
                  TextWrapping="Wrap"
                  materialDesign:HintAssist.Hint="ملاحظات"
+                 MaxLength="100"
                  IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
                 <inputBehaviors:ArabicAndNumbersInputBehavior/>

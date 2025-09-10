@@ -104,6 +104,7 @@
               Margin="10,5,10,5"
               Grid.Row="3" Grid.Column="0"
               materialDesign:HintAssist.Hint="الاسم الأول"
+              MaxLength="20"
               IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
                 <inputBehaviors:ArabicOnlyInputBehavior/>
@@ -117,6 +118,7 @@
               Margin="10,5,10,5"
               Grid.Row="4" Grid.Column="0"
               materialDesign:HintAssist.Hint="النسب"
+              MaxLength="20"
               IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
                 <inputBehaviors:ArabicOnlyInputBehavior/>

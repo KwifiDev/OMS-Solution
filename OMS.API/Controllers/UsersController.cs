@@ -184,7 +184,7 @@ namespace OMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ResponseLoginDto>> GetUserLoginByPersonIdAsync([FromRoute] int personId)
+        public async Task<ActionResult<ResultLoginDto>> GetUserLoginByPersonIdAsync([FromRoute] int personId)
         {
             if (personId <= 0) return NotFound();
 
@@ -193,7 +193,7 @@ namespace OMS.API.Controllers
                 var model = await _service.GetUserLoginByPersonIdAsync(personId);
                 return model is null
                     ? NotFound()
-                    : Ok(_mapper.Map<ResponseLoginDto>(model));
+                    : Ok(_mapper.Map<ResultLoginDto>(model));
             }
             catch (Exception ex)
             {

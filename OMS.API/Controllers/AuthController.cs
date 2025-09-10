@@ -151,7 +151,7 @@ namespace OMS.API.Controllers
 
                 return UserLogin is null
                     ? NotFound()
-                    : Ok(new LoginInfoDto { TokenInfo = _mapper.Map<TokenDto>(TokenInfo), UserLogin = _mapper.Map<ResponseLoginDto>(UserLogin), Claims = userClaims });
+                    : Ok(new LoginInfoDto { TokenInfo = _mapper.Map<TokenDto>(TokenInfo), UserLogin = _mapper.Map<ResultLoginDto>(UserLogin), Claims = userClaims });
             }
             catch (Exception ex)
             {
@@ -400,6 +400,8 @@ namespace OMS.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddUserToRoleAsync([FromBody] UserRoleDto dto)
         {
+            if (dto.UserId <= 0) return NotFound();
+
             try
             {
                 var model = _mapper.Map<UserRoleModel>(dto);
@@ -449,6 +451,8 @@ namespace OMS.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> RemoveUserFromRoleAsync([FromBody] UserRoleDto dto)
         {
+            if (dto.UserId <= 0) return NotFound();
+
             try
             {
                 var model = _mapper.Map<UserRoleModel>(dto);
@@ -498,6 +502,8 @@ namespace OMS.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ChangeUserRolesAsync([FromBody] InputUserRolesDto dto)
         {
+            if (dto.UserId <= 0) return NotFound();
+
             try
             {
                 var model = _mapper.Map<InputUserRolesModel>(dto);
@@ -537,6 +543,8 @@ namespace OMS.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> IsUserInRoleAsync([FromBody] UserRoleDto dto)
         {
+            if (dto.UserId <= 0) return NotFound();
+
             try
             {
                 var model = _mapper.Map<UserRoleModel>(dto);

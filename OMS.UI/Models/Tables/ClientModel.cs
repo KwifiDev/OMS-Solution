@@ -23,6 +23,8 @@ namespace OMS.UI.Models.Tables
             set => SetProperty(ref _personId, value);
         }
 
+        [Required]
+        [Range(0, 2, ErrorMessage = "الرجاء تحديد نوع العميل")]
         public EnClientType ClientType
         {
             get => _clientType;

@@ -5,7 +5,7 @@ namespace OMS.UI.Models.Tables;
 public class RevenueModel : BaseModel
 {
     private int _id;
-    private decimal _amount;
+    private decimal _amount = 10000;
     private string? _notes;
     private DateOnly _createdAt;
 

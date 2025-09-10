@@ -110,7 +110,7 @@ namespace OMS.API.Controllers
         /// Example request:
         /// Patch /api/debts/pay
         /// </remarks>
-        /// <param name="PayDebtDto">The data transfare object.</param>
+        /// <param name="payDebtDto">The data transfare object.</param>
         /// <returns>Returns operation result.</returns>
         /// <response code="200">Debt paid successfully.</response>
         /// <response code="400">Invalid request.</response>
@@ -121,14 +121,16 @@ namespace OMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<int>> PayDebtAsync([FromBody] PayDebtDto PayDebtDto)
+        public async Task<ActionResult<int>> PayDebtAsync([FromBody] PayDebtDto payDebtDto)
         {
+            if (payDebtDto.DebtId <= 0) return NotFound();
+
             try
             {
-                var isExist = await _service.IsExistAsync(PayDebtDto.DebtId);
+                var isExist = await _service.IsExistAsync(payDebtDto.DebtId);
                 if (!isExist) return NotFound();
 
-                var payDebtModel = _mapper.Map<PayDebtModel>(PayDebtDto);
+                var payDebtModel = _mapper.Map<PayDebtModel>(payDebtDto);
 
                 await _service.PayDebtByIdAsync(payDebtModel);
 

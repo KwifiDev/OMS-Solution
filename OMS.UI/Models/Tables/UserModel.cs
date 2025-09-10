@@ -32,6 +32,8 @@ namespace OMS.UI.Models.Tables
                 OnPropertyChanged(nameof(PersonIdDisplay));
             }
         }
+
+        [Required, Range(1, int.MaxValue, ErrorMessage = "يجب تحديد الفرع")]
         public int BranchId
         {
             get => _branchId;
@@ -51,8 +53,11 @@ namespace OMS.UI.Models.Tables
             set => SetProperty(ref _userName, value, validate: true);
         }
 
-        [Required(ErrorMessage = "نسيت تعيين كلمة السر")]
-        [MinLength(5, ErrorMessage = "كلمة السر على الاقل مكون من 5 محارف")]
+        [Required(ErrorMessage = "كلمة المرور مطلوبة")]
+        [DataType(DataType.Password)]
+        [StringLength(30, ErrorMessage = "يجب أن تكون كلمة المرور بين {2} و {1} حرفاً على الأقل.", MinimumLength = 6)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{6,}$",
+        ErrorMessage = "يجب أن تحتوي كلمة المرور على حرف كبير على الأقل، وحرف صغير على الأقل، ورقم على الأقل، وحرف خاص واحد على الأقل.")]
         public string Password
         {
             get => _password;

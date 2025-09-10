@@ -8,14 +8,15 @@ public partial class DebtDto
     [Key]
     public int Id { get; set; }
 
+    [Range(1, int.MaxValue, ErrorMessage = "Client Id must be positive number")]
     public int ClientId { get; set; }
 
-    [Range(1, int.MaxValue, ErrorMessage = "Invalied Service Id")]
+    [Range(1, int.MaxValue, ErrorMessage = "Service Id must be positive number")]
     public int ServiceId { get; set; }
 
     public decimal Cost { get; set; }
 
-    [Range(1, short.MaxValue, ErrorMessage = "Invalied Quantity of Service")]
+    [Range(1, 100, ErrorMessage = "Quantity must be between (1 - 100)")]
     public short Quantity { get; set; }
 
     public decimal? DiscountPercentage { get; set; }
@@ -24,21 +25,19 @@ public partial class DebtDto
 
     public decimal? Total { get; set; }
 
-    [Length(3, 100, ErrorMessage = "Description Length Must be Between (3 - 100)")]
+    [StringLength(100, MinimumLength = 5, ErrorMessage = "Description Length Must be Between (5 - 100)")]
     public string? Description { get; set; }
 
-    [Length(3, 100, ErrorMessage = "Notes Length Must be Between (3 - 100)")]
+    [StringLength(100, MinimumLength = 5, ErrorMessage = "Notes Length Must be Between (5 - 100)")]
     public string? Notes { get; set; }
 
     public DateOnly CreatedAt { get; set; }
 
-    /// <summary>
-    /// 0 = NotPaid | 1 = Paid | 2 = Canceled
-    /// </summary>
+    [Range(0, 2, ErrorMessage = "Debt Status must be between [0: NotPaid, 1:Paid, 2:Canceled]")]
     public EnDebtStatus Status { get; set; } = EnDebtStatus.NotPaid;
 
     public int? PaymentId { get; set; }
 
-    [Range(1, int.MaxValue, ErrorMessage = "Invalied CreatedByUserId")]
+    [Range(1, int.MaxValue, ErrorMessage = "CreatedByUserId must be positive number")]
     public required int CreatedByUserId { get; set; }
 }

@@ -2,7 +2,7 @@
 
 namespace OMS.Common.Dtos.Hybrid
 {
-    public class ResponseLoginDto
+    public class ResultLoginDto
     {
         public int Id { get; set; }
 

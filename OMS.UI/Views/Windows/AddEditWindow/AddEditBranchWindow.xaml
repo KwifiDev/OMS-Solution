@@ -101,7 +101,8 @@
               Margin="10,5,10,5"
               Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
               materialDesign:HintAssist.Hint="اسم الفرع"
-              IsEnabled="{Binding Status.IsModifiable}">
+              IsEnabled="{Binding Status.IsModifiable}"
+              MaxLength="20">
             <i:Interaction.Behaviors>
                 <inputBehaviors:ArabicOnlyInputBehavior/>
             </i:Interaction.Behaviors>
@@ -117,6 +118,7 @@
                  AcceptsReturn="True"
                  TextWrapping="Wrap"
                  materialDesign:HintAssist.Hint="عنوان الفرع"
+                 MaxLength="100"
                  IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
                 <inputBehaviors:ArabicAndNumbersInputBehavior/>

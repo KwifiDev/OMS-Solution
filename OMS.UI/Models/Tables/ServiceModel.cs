@@ -7,7 +7,7 @@ namespace OMS.UI.Models.Tables
         private int _id;
         private string _name = null!;
         private string _description = null!;
-        private decimal _price;
+        private decimal _price = 500;
 
 
         [Key]

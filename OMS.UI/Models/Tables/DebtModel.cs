@@ -53,6 +53,7 @@ namespace OMS.UI.Models.Tables
             set => SetProperty(ref _cost, value);
         }
 
+        [Range(1, 100, ErrorMessage = "الرجاء تحديد الكمية 1 - 100")]
         public short Quantity
         {
             get => _quantity;

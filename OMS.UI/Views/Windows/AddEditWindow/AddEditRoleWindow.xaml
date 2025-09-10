@@ -100,6 +100,7 @@
               Margin="10,5,10,5"
               Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
               materialDesign:HintAssist.Hint="اسم الدور"
+              MaxLength="20"
               IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
                 <inputBehaviors:EnglishOnlyInputBehavior/>

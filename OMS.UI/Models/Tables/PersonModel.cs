@@ -38,13 +38,15 @@ namespace OMS.UI.Models.Tables
             set => SetProperty(ref _lastName, value, validate: true);
         }
 
+        [Required]
+        [Range(0, 1, ErrorMessage = "الرجاء تحديد الجنس")]
         public EnGender Gender
         {
             get => _gender;
             set => SetProperty(ref _gender, value);
         }
 
-        [Length(10, 10, ErrorMessage = "الهاتف يجب يتكون من 10 ارقام")]
+        [StringLength(10, MinimumLength = 10, ErrorMessage = "الهاتف يجب يتكون من 10 ارقام")]
         public string? Phone
         {
             get => string.IsNullOrWhiteSpace(_phone) ? null : _phone;

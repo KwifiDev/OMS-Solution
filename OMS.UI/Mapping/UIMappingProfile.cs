@@ -26,7 +26,7 @@ namespace OMS.UI.Mapping
             CreateMap<AccountDto, AccountModel>().ReverseMap();
             CreateMap<UserAccountDto, UserAccountModel>().ReverseMap();
             CreateMap<AccountTransactionDto, AccountTransactionModel>().ReverseMap();
-            CreateMap<ResponseLoginDto, UserLoginModel>()
+            CreateMap<ResultLoginDto, UserLoginModel>()
                 .ForMember(dest => dest.FullName, opt => opt.Ignore())
                 .ReverseMap();
             CreateMap<TransactionsSummaryDto, TransactionsSummaryModel>().ReverseMap();

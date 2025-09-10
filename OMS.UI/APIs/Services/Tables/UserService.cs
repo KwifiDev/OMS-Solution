@@ -56,7 +56,7 @@ namespace OMS.UI.APIs.Services.Tables
                     return null;
                 }
 
-                var responseLoginDto = await response.Content.ReadFromJsonAsync<ResponseLoginDto>();
+                var responseLoginDto = await response.Content.ReadFromJsonAsync<ResultLoginDto>();
 
                 return _mapper.Map<UserLoginModel>(responseLoginDto);
 
@@ -152,7 +152,7 @@ namespace OMS.UI.APIs.Services.Tables
                     if (response.StatusCode == HttpStatusCode.Conflict)
                         LogError(new Exception($"اسم المستخدم محجوز من قبل مستخدم اخر.\nStatus Code: {response.StatusCode}\nInfo: {userId}, {username}"));
                     else
-                        LogError(new Exception($"حدث خطأ اثناء التحقق من وجود اسم المستخدم.\nStatus Code: {response.StatusCode}"));
+                        LogError(new Exception($"حدث خطأ اثناء التحقق من وجود اسم المستخدم.\nStatus Code: {response.StatusCode}, {await response.Content.ReadAsStringAsync()}"));
                     return false;
                 }
 

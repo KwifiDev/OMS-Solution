@@ -104,6 +104,7 @@
             Margin="10,5,10,5"
             Grid.Row="3" Grid.ColumnSpan="2"
             materialDesign:HintAssist.Hint="اسم الخدمة"
+            MaxLength="25"
             IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
                 <inputBehaviors:ArabicOnlyInputBehavior/>
@@ -116,6 +117,7 @@
                  Margin="10,5,10,5"
                  Grid.Column="2" Grid.Row="3"
                  materialDesign:HintAssist.Hint="سعر الخدمة"
+                 MaxLength="7"
                  IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
                 <inputBehaviors:NumericInputBehavior/>
@@ -129,6 +131,7 @@
                Margin="10,5,10,5"
                Grid.Row="4" Grid.ColumnSpan="3"
                materialDesign:HintAssist.Hint="وصف الخدمة"
+               MaxLength="100"
                IsEnabled="{Binding Status.IsModifiable}">
             <i:Interaction.Behaviors>
                 <inputBehaviors:ArabicOnlyInputBehavior/>

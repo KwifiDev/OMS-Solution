@@ -98,6 +98,7 @@
                      AcceptsReturn="True"
                      TextWrapping="Wrap"
                      materialDesign:HintAssist.Hint="ملاحظات"
+                     MaxLength="100"
                      IsEnabled="{Binding DebtStatus.IsModifiable}">
                     <i:Interaction.Behaviors>
                         <inputBehaviors:ArabicOnlyInputBehavior/>

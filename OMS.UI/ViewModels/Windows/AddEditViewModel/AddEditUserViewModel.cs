@@ -61,16 +61,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             await EnterEditModeAsync(userId);
         }
 
-        //public override async Task<bool> OnOpeningDialog(int? id = -1)
-        //{
-        //    var isSuccess = await base.OnOpeningDialog(id);
-
-        //    bool isBranchesLoaded = false;
-        //    if (isSuccess) isBranchesLoaded = await InitializeBranches();
-
-        //    return isSuccess && isBranchesLoaded;
-        //}
-
         public async Task<bool> OnOpeningDialog((int? UserId, bool IsOpendOnUsersPage) parameters)
         {
             _isOpendByUsersPage = parameters.IsOpendOnUsersPage;
