@@ -23,7 +23,7 @@ namespace OMS.DA.IRepositories.IViewRepos
                              ServiceName = e.ServiceName,
                              ServicePrice = e.ServicePrice,
                              ClientType = e.ClientType,
-                             Discount = e.Discount,
+                             DiscountPercentage = e.DiscountPercentage,
                          })
                          .OrderByDescending(e => e.Id)
                          .Skip((parameters.PageNumber - 1) * parameters.PageSize)

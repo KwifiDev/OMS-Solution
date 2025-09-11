@@ -19,7 +19,7 @@ namespace OMS.DA.Views
 
         [StringLength(15)]
         [Unicode(false)]
-        public string Phone { get; set; } = null!;
+        public string? Phone { get; set; }
 
         /// <summary>
         /// 0 = Male | 1 = Female

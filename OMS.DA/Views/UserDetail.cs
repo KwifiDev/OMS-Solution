@@ -20,9 +20,7 @@ public partial class UserDetail : IEntityKey
     [Unicode(false)]
     public string Username { get; set; } = null!;
 
-    [StringLength(9)]
-    [Unicode(false)]
-    public string? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     [StringLength(20)]
     public string WorkingBranch { get; set; } = null!;

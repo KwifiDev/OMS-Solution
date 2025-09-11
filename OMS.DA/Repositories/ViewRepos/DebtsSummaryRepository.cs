@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OMS.Common.Enums;
 using OMS.Common.Extensions.Pagination;
 using OMS.DA.Context;
 using OMS.DA.IRepositories.IViewRepos;
@@ -27,7 +28,7 @@ namespace OMS.DA.Repositories.ViewRepos
                              Status = e.Status,
                              CreatedAt = e.CreatedAt
                          })
-                         .OrderByDescending(e => e.Status == "غير مدفوع")
+                         .OrderByDescending(e => e.Status == EnDebtStatus.NotPaid)
                          .ThenByDescending(e => e.Id)
                          .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                          .Take(parameters.PageSize)

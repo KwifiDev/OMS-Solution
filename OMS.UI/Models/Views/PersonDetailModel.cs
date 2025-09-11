@@ -8,7 +8,7 @@ namespace OMS.UI.Models.Views
     {
         private int _id;
         private string _fullName = null!;
-        private string _phone = null!;
+        private string? _phone;
         private EnGender _gender;
 
         [Key]
@@ -24,10 +24,14 @@ namespace OMS.UI.Models.Views
             set => SetProperty(ref _fullName, value);
         }
 
-        public string Phone
+        public string? Phone
         {
             get => _phone;
-            set => SetProperty(ref _phone, value);
+            set
+            {
+                SetProperty(ref _phone, value);
+                OnPropertyChanged(nameof(PhoneDisplay));
+            }
         }
 
         public EnGender Gender
@@ -35,5 +39,8 @@ namespace OMS.UI.Models.Views
             get => _gender;
             set => SetProperty(ref _gender, value);
         }
+
+        // Display Props
+        public string PhoneDisplay => Phone ?? "لا يوجد رقم هاتف";
     }
 }

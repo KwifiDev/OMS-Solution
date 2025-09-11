@@ -1,4 +1,6 @@
-﻿namespace OMS.Common.Dtos.Views
+﻿using OMS.Common.Enums;
+
+namespace OMS.Common.Dtos.Views
 {
     public class ClientsSummaryDto
     {
@@ -8,8 +10,8 @@
 
         public string FullName { get; set; } = null!;
 
-        public string Phone { get; set; } = null!;
+        public string? Phone { get; set; }
 
-        public string ClientType { get; set; } = null!;
+        public EnClientType ClientType { get; set; }
     }
 }

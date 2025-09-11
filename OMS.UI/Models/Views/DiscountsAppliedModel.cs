@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using OMS.Common.Enums;
 
 namespace OMS.UI.Models.Views
 {
@@ -7,8 +8,8 @@ namespace OMS.UI.Models.Views
         private int _id;
         private string _serviceName = null!;
         private decimal _servicePrice;
-        private string _clientType = null!;
-        private string? _discount;
+        private EnClientType _clientType;
+        private decimal _discountPercentage;
 
 
         public int Id
@@ -29,16 +30,26 @@ namespace OMS.UI.Models.Views
             set => SetProperty(ref _servicePrice, value);
         }
 
-        public string ClientType
+        public EnClientType ClientType
         {
             get => _clientType;
-            set => SetProperty(ref _clientType, value);
+            set 
+            {
+                SetProperty(ref _clientType, value); 
+                OnPropertyChanged(nameof(ClientTypeDisplay));
+            }
         }
 
-        public string? Discount
+        public decimal DiscountPercentage
         {
-            get => _discount;
-            set => SetProperty(ref _discount, value);
+            get => _discountPercentage;
+            set => SetProperty(ref _discountPercentage, value);
         }
+
+        // Display Props
+        public string ClientTypeDisplay => ClientType == EnClientType.Normal ? "عادي" :
+                                           ClientType == EnClientType.Lawyer ? "محامي" : "أخرى";
+
+        public string DiscountPercentageDisplay => $"{DiscountPercentage} %";
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using OMS.Common.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models.Views
@@ -7,10 +8,10 @@ namespace OMS.UI.Models.Views
     {
 
         private int _id;
-        private string _transactionType = null!;
-        private string? _amount = null!;
+        private EnTransactionType _transactionType;
+        private decimal _amount;
         private DateOnly _createdAt;
-        private string _notes = null!;
+        private string? _notes;
 
 
         [Key]
@@ -20,13 +21,17 @@ namespace OMS.UI.Models.Views
             set => SetProperty(ref _id, value);
         }
 
-        public string TransactionType
+        public EnTransactionType TransactionType
         {
             get => _transactionType;
-            set => SetProperty(ref _transactionType, value);
+            set 
+            {
+                SetProperty(ref _transactionType, value);
+                OnPropertyChanged(nameof(TransactionTypeDisplay));
+            }
         }
 
-        public string? Amount
+        public decimal Amount
         {
             get => _amount;
             set => SetProperty(ref _amount, value);
@@ -38,11 +43,21 @@ namespace OMS.UI.Models.Views
             set => SetProperty(ref _createdAt, value);
         }
 
-        public string Notes
+        public string? Notes
         {
             get => _notes;
-            set => SetProperty(ref _notes, value);
+            set
+            {
+                SetProperty(ref _notes, value);
+                OnPropertyChanged(nameof(NotesDisplay));
+            }
         }
+
+        // Display Props
+        public string NotesDisplay => Notes ?? "لا توجد ملاحظات";
+        public string TransactionTypeDisplay => TransactionType == EnTransactionType.Deposit ? "إيداع" :
+                                                TransactionType == EnTransactionType.Withdraw ? "سحب" :
+                                                TransactionType == EnTransactionType.Transfer ? "تحويل" : "أخرى";
 
     }
 }

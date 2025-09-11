@@ -199,7 +199,7 @@
                     <DataGridTemplateColumn Header="وصف الخدمة" Width="1.5*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Description}" 
+                                <TextBlock Text="{Binding DescriptionDisplay}" 
                                            TextWrapping="Wrap"
                                            TextTrimming="CharacterEllipsis"/>
                             </DataTemplate>
@@ -212,14 +212,14 @@
                     <DataGridTemplateColumn Header="ملاحظات">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Notes}" 
+                                <TextBlock Text="{Binding NotesDisplay}" 
                                            TextWrapping="Wrap"
                                            TextTrimming="CharacterEllipsis"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTextColumn Header="الحالة" Binding="{Binding Status}" Width="0.5*"/>
+                    <DataGridTextColumn Header="الحالة" Binding="{Binding StatusDisplay}" Width="0.5*"/>
                 
                 <DataGridTextColumn Header="التاريخ" Binding="{Binding CreatedAt}" Width="0.5*"/>
                 

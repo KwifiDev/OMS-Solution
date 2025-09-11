@@ -102,7 +102,7 @@
 
                     <TextBlock 
                         Style="{StaticResource MaterialDesignBody1TextBlock}"
-                        Text="{Binding IsActive}"
+                        Text="{Binding IsActiveDisplay}"
                         Foreground="Black"/>
                 </StackPanel>
 

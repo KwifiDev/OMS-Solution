@@ -134,8 +134,8 @@
                 <DataGridTextColumn Header="رقم الخصم" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="اسم الخدمة" Binding="{Binding ServiceName}" />
                 <DataGridTextColumn Header="سعر الخدمة" Binding="{Binding ServicePrice, StringFormat={}{0:0}}" />
-                <DataGridTextColumn Header="نوع العميل" Binding="{Binding ClientType}" />
-                <DataGridTextColumn Header="الخصم" Binding="{Binding Discount}" />
+                <DataGridTextColumn Header="نوع العميل" Binding="{Binding ClientTypeDisplay}" />
+                <DataGridTextColumn Header="الخصم" Binding="{Binding DiscountPercentageDisplay}" />
             </DataGrid.Columns>
 
             <!-- القائمة السياقية -->

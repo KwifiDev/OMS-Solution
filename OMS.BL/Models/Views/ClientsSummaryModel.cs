@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Interfaces;
+using OMS.Common.Enums;
 
 namespace OMS.BL.Models.Views
 {
@@ -10,8 +11,8 @@ namespace OMS.BL.Models.Views
 
         public string FullName { get; set; } = null!;
 
-        public string Phone { get; set; } = null!;
+        public string? Phone { get; set; }
 
-        public string ClientType { get; set; } = null!;
+        public EnClientType ClientType { get; set; }
     }
 }

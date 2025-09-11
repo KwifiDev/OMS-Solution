@@ -183,7 +183,7 @@
                 <DataGridTextColumn Header="رقم الدفعة" Binding="{Binding Id}" />
                 <DataGridTextColumn Header="مدفوع" Binding="{Binding AmountPaid, StringFormat={}{0:0}}" />
                 <DataGridTextColumn Header="بتاريخ" Binding="{Binding CreatedAt}" />
-                <DataGridTextColumn Width="2*" Header="ملاحظات" Binding="{Binding Notes}" />
+                <DataGridTextColumn Width="2*" Header="ملاحظات" Binding="{Binding NotesDisplay}" />
                 <DataGridTextColumn Header="مدفوعة من قبل" Binding="{Binding EmployeeName}" />
             </DataGrid.Columns>
         </DataGrid>

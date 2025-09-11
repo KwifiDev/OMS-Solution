@@ -8,7 +8,7 @@ public partial class AccountBalancesTransactionDto
 
     public string UserAccount { get; set; } = null!;
 
-    public string? AccountBalance { get; set; }
+    public decimal AccountBalance { get; set; }
 
     public int? TotalTransactions { get; set; }
 

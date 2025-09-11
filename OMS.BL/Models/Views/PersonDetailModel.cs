@@ -9,7 +9,7 @@ namespace OMS.BL.Models.Views
 
         public string FullName { get; set; } = null!;
 
-        public string Phone { get; set; } = null!;
+        public string? Phone { get; set; }
 
         /// <summary>
         /// 0 = Male | 1 = Female

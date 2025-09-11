@@ -1,4 +1,6 @@
-﻿namespace OMS.Common.Dtos.Views;
+﻿using OMS.Common.Enums;
+
+namespace OMS.Common.Dtos.Views;
 
 public partial class DiscountsAppliedDto
 {
@@ -8,7 +10,7 @@ public partial class DiscountsAppliedDto
 
     public decimal ServicePrice { get; set; }
 
-    public string ClientType { get; set; } = null!;
+    public EnClientType ClientType { get; set; }
 
-    public string? Discount { get; set; }
+    public decimal DiscountPercentage { get; set; }
 }

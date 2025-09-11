@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using OMS.Common.Data;
+using OMS.Common.Enums;
 using OMS.Common.Extensions.Pagination;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.APIs.Services.Interfaces.Views;
@@ -106,7 +107,7 @@ namespace OMS.UI.ViewModels.Windows
                 return;
             }
 
-            SelectedItem.Status = "ملغات";
+            SelectedItem.Status = EnSaleStatus.Canceled;
             _messageService.ShowInfoMessage("عملية الالغاء", MessageTemplates.CancelSaleSuccessMessage);
         }
 
@@ -115,7 +116,7 @@ namespace OMS.UI.ViewModels.Windows
 
         private bool CanChangeSale()
         {
-            return SelectedItem?.Status == "غير مكتملة";
+            return SelectedItem?.Status == EnSaleStatus.Uncompleted;
         }
     }
 }

@@ -79,7 +79,7 @@
                         Foreground="{DynamicResource MaterialDesignBody}"/>
                     <TextBlock 
                         Style="{StaticResource MaterialDesignBody1TextBlock}"
-                        Text="{Binding ClientType}"
+                        Text="{Binding ClientTypeDisplay}"
                         Foreground="{DynamicResource MaterialDesignBody}"/>
                 </StackPanel>
 
@@ -92,7 +92,7 @@
                         Foreground="{DynamicResource MaterialDesignBody}"/>
                     <TextBlock 
                         Style="{StaticResource MaterialDesignBody1TextBlock}"
-                        Text="{Binding Phone}"
+                        Text="{Binding PhoneDisplay}"
                         Foreground="{DynamicResource MaterialDesignBody}"/>
                 </StackPanel>
                 

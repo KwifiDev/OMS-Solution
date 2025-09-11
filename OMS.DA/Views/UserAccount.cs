@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OMS.Common.Enums;
 using OMS.DA.CustomAttributes;
 using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
@@ -20,9 +21,7 @@ public partial class UserAccount : IEntityKey
     [StringLength(41)]
     public string ClientName { get; set; } = null!;
 
-    [StringLength(8)]
-    [Unicode(false)]
-    public string ClientType { get; set; } = null!;
+    public EnClientType ClientType { get; set; }
 
     [Column(TypeName = "decimal(8, 2)")]
     public decimal ClientBalance { get; set; }

@@ -1,14 +1,16 @@
-﻿namespace OMS.Common.Dtos.Views;
+﻿using OMS.Common.Enums;
+
+namespace OMS.Common.Dtos.Views;
 
 public partial class TransactionsSummaryDto
 {
     public int Id { get; set; }
 
-    public string TransactionType { get; set; } = null!;
+    public EnTransactionType TransactionType { get; set; }
 
-    public string? Amount { get; set; }
+    public decimal Amount { get; set; }
 
     public DateOnly CreatedAt { get; set; }
 
-    public string Notes { get; set; } = null!;
+    public string? Notes { get; set; }
 }

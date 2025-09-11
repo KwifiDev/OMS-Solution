@@ -61,7 +61,7 @@ namespace OMS.UI.ViewModels.Windows
         {
             if (payDebtModel.PayDebtStatus != EnPayDebtStatus.Success || SelectedItem is null) return;
 
-            SelectedItem.Status = "مدفوع";
+            SelectedItem.Status = EnDebtStatus.Paid;
             SelectedItem.Notes = string.IsNullOrWhiteSpace(payDebtModel.Notes) ? "لا يوجد ملاحظات" : payDebtModel.Notes;
         }
 
@@ -143,13 +143,13 @@ namespace OMS.UI.ViewModels.Windows
                 return;
             }
 
-            SelectedItem.Status = "ملغات";
+            SelectedItem.Status = EnDebtStatus.Canceled;
             _messageService.ShowInfoMessage("عملية الإلغاء", MessageTemplates.CancelDebtSuccessMessage);
             await CalcTotalDebts();
         }
         private bool CanCancelDebt()
         {
-            return SelectedItem?.Status == "غير مدفوع" && _userSessionService.Claims!.Contains(PermissionsData.Debts.Cancel);
+            return SelectedItem?.Status == EnDebtStatus.NotPaid && _userSessionService.Claims!.Contains(PermissionsData.Debts.Cancel);
         }
 
 
@@ -170,7 +170,7 @@ namespace OMS.UI.ViewModels.Windows
         }
         private bool CanOpenPayDebtDialog()
         {
-            return SelectedItem?.Status == "غير مدفوع" && SelectedItem.TotalDebts <= UserAccount?.ClientBalance
+            return SelectedItem?.Status == EnDebtStatus.NotPaid && SelectedItem.TotalDebts <= UserAccount?.ClientBalance
                  && _userSessionService.Claims!.Contains(PermissionsData.Debts.Pay);
         }
 

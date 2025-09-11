@@ -8,7 +8,7 @@ public partial class UserDetailDto
 
     public string Username { get; set; } = null!;
 
-    public string? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public string WorkingBranch { get; set; } = null!;
 }

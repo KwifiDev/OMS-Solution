@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OMS.Common.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace OMS.UI.Models.Views
 {
@@ -8,7 +9,7 @@ namespace OMS.UI.Models.Views
         private int _id;
         private string _userAccount1 = null!;
         private string _clientName = null!;
-        private string _clientType = null!;
+        private EnClientType _clientType;
         private decimal _clientBalance;
 
         [Key]
@@ -30,10 +31,14 @@ namespace OMS.UI.Models.Views
             set => SetProperty(ref _clientName, value);
         }
 
-        public string ClientType
+        public EnClientType ClientType
         {
             get => _clientType;
-            set => SetProperty(ref _clientType, value);
+            set 
+            {
+                SetProperty(ref _clientType, value);
+                OnPropertyChanged(nameof(ClientTypeDisplay));
+            }
         }
 
         public decimal ClientBalance
@@ -41,5 +46,9 @@ namespace OMS.UI.Models.Views
             get => _clientBalance;
             set => SetProperty(ref _clientBalance, value);
         }
+
+        // Display Props
+        public string ClientTypeDisplay => ClientType == EnClientType.Normal ? "عادي" :
+                                           ClientType == EnClientType.Lawyer ? "محامي" : "أخرى";
     }
 }

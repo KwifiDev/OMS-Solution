@@ -1,4 +1,6 @@
-﻿namespace OMS.Common.Dtos.Views;
+﻿using OMS.Common.Enums;
+
+namespace OMS.Common.Dtos.Views;
 
 public partial class UserAccountDto
 {
@@ -8,7 +10,7 @@ public partial class UserAccountDto
 
     public string ClientName { get; set; } = null!;
 
-    public string ClientType { get; set; } = null!;
+    public EnClientType ClientType { get; set; }
 
     public decimal ClientBalance { get; set; }
 }

@@ -1,4 +1,6 @@
-﻿namespace OMS.Common.Dtos.Views;
+﻿using OMS.Common.Enums;
+
+namespace OMS.Common.Dtos.Views;
 
 public partial class SalesSummaryDto
 {
@@ -6,13 +8,13 @@ public partial class SalesSummaryDto
 
     public string ServiceName { get; set; } = null!;
 
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; } = null!;
 
-    public string Notes { get; set; } = null!;
+    public string? Notes { get; set; } = null!;
 
     public decimal? TotalSales { get; set; }
 
-    public string Status { get; set; } = null!;
+    public EnSaleStatus Status { get; set; }
 
     public DateOnly CreatedAt { get; set; }
 }

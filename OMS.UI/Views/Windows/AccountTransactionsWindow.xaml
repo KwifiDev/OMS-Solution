@@ -178,10 +178,10 @@
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="رقم المناقلة" Binding="{Binding Id}" />
-                <DataGridTextColumn Header="نوع المناقلة" Binding="{Binding TransactionType}" />
+                <DataGridTextColumn Header="نوع المناقلة" Binding="{Binding TransactionTypeDisplay}" />
                 <DataGridTextColumn Header="الرصيد" Binding="{Binding Amount, StringFormat={}{0:0}}" />
                 <DataGridTextColumn Header="بتاريخ" Binding="{Binding CreatedAt}" />
-                <DataGridTextColumn Width="2*" Header="ملاحظات" Binding="{Binding Notes}" />
+                <DataGridTextColumn Width="2*" Header="ملاحظات" Binding="{Binding NotesDisplay}" />
             </DataGrid.Columns>
         </DataGrid>
 

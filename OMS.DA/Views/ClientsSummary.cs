@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OMS.Common.Enums;
 using OMS.DA.CustomAttributes;
 using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
@@ -20,10 +21,8 @@ namespace OMS.DA.Views
 
         [StringLength(15)]
         [Unicode(false)]
-        public string Phone { get; set; } = null!;
+        public string? Phone { get; set; }
 
-        [StringLength(8)]
-        [Unicode(false)]
-        public string ClientType { get; set; } = null!;
+        public EnClientType ClientType { get; set; }
     }
 }

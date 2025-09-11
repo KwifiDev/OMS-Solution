@@ -61,7 +61,7 @@
                         <StackPanel>
                             <TextBlock Text="نوع العميل" FontWeight="Bold"/>
                             <Separator/>
-                            <TextBlock Text="{Binding UserAccount.ClientType, FallbackValue='نوع العميل'}"
+                            <TextBlock Text="{Binding UserAccount.ClientTypeDisplay, FallbackValue='نوع العميل'}"
                                        HorizontalAlignment="Center"
                                        FontSize="16"
                                        VerticalAlignment="Center"

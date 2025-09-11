@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OMS.Common.Enums;
 using OMS.DA.CustomAttributes;
 using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,7 @@ public partial class DiscountsApplied : IEntityKey
     [Column("DiscountId")]
     public int Id { get; set; }
 
-    public int? ServiceId { get; set; }
+    public int ServiceId { get; set; }
 
     [StringLength(25)]
     public string ServiceName { get; set; } = null!;
@@ -21,11 +22,8 @@ public partial class DiscountsApplied : IEntityKey
     [Column(TypeName = "decimal(8, 2)")]
     public decimal ServicePrice { get; set; }
 
-    [StringLength(8)]
-    [Unicode(false)]
-    public string ClientType { get; set; } = null!;
+    public EnClientType ClientType { get; set; }
 
-    [StringLength(11)]
-    [Unicode(false)]
-    public string? Discount { get; set; }
+    [Column(TypeName = "decimal(5, 2)")]
+    public decimal DiscountPercentage { get; set; }
 }

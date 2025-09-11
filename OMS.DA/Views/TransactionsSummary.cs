@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OMS.Common.Enums;
 using OMS.DA.CustomAttributes;
 using OMS.DA.Interfaces;
 using System.ComponentModel.DataAnnotations;
@@ -15,16 +16,13 @@ public partial class TransactionsSummary : IEntityKey
 
     public int AccountId { get; set; }
 
-    [StringLength(8)]
-    [Unicode(false)]
-    public string TransactionType { get; set; } = null!;
+    public EnTransactionType TransactionType { get; set; }
 
-    [StringLength(19)]
-    [Unicode(false)]
-    public string? Amount { get; set; }
+    [Column(TypeName = "decimal(8, 2)")]
+    public decimal Amount { get; set; }
 
     public DateOnly CreatedAt { get; set; }
 
     [StringLength(100)]
-    public string Notes { get; set; } = null!;
+    public string? Notes { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using OMS.BL.Interfaces;
+using OMS.Common.Enums;
 
 namespace OMS.BL.Models.Views;
 
@@ -10,7 +11,7 @@ public partial class UserAccountModel : IModelKey
 
     public string ClientName { get; set; } = null!;
 
-    public string ClientType { get; set; } = null!;
+    public EnClientType ClientType { get; set; }
 
     public decimal ClientBalance { get; set; }
 }

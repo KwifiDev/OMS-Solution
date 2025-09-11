@@ -9,7 +9,7 @@ namespace OMS.UI.Models.Views
         private int _id;
         private string _employeeName = null!;
         private string _username = null!;
-        private string? _isActive;
+        private bool _isActive;
         private string _workingBranch = null!;
 
         [Key]
@@ -31,10 +31,14 @@ namespace OMS.UI.Models.Views
             set => SetProperty(ref _username, value);
         }
 
-        public string? IsActive
+        public bool IsActive
         {
             get => _isActive;
-            set => SetProperty(ref _isActive, value);
+            set 
+            {
+                SetProperty(ref _isActive, value);
+                OnPropertyChanged(nameof(IsActiveDisplay));
+            }
         }
 
         public string WorkingBranch
@@ -42,6 +46,9 @@ namespace OMS.UI.Models.Views
             get => _workingBranch;
             set => SetProperty(ref _workingBranch, value);
         }
+
+        // Display Props
+        public string IsActiveDisplay => IsActive ? "نشط" : "غير نشط";
 
     }
 }

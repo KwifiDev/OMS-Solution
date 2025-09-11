@@ -71,13 +71,13 @@ namespace OMS.UI.ViewModels.Pages
         [RelayCommand(CanExecute = nameof(CanActiveUser))]
         private async Task ActiveUser()
         {
-            await UpdateUserActivation(MessageTemplates.ActivateUserConfirmation, true, "فعّال", "تم التفعيل");
+            await UpdateUserActivation(MessageTemplates.ActivateUserConfirmation, true, "تم التفعيل");
             ActiveUserCommand.NotifyCanExecuteChanged();
         }
 
         private bool CanActiveUser()
         {
-            return SelectedItem?.IsActive == "غير فعّال" && _userSessionService.Claims!.Contains(PermissionsData.Users.Activation);
+            return SelectedItem?.IsActive == false && _userSessionService.Claims!.Contains(PermissionsData.Users.Activation);
         }
 
         [RelayCommand(CanExecute = nameof(CanInActiveUser))]
@@ -89,13 +89,13 @@ namespace OMS.UI.ViewModels.Pages
                 return;
             }
 
-            await UpdateUserActivation(MessageTemplates.InActivateUserConfirmation, false, "غير فعّال", "تم الغاء التفعيل");
+            await UpdateUserActivation(MessageTemplates.InActivateUserConfirmation, false, "تم الغاء التفعيل");
             InActiveUserCommand.NotifyCanExecuteChanged();
         }
 
         private bool CanInActiveUser()
         {
-            return SelectedItem?.IsActive == "فعّال" && _userSessionService.Claims!.Contains(PermissionsData.Users.Activation);
+            return SelectedItem?.IsActive == true && _userSessionService.Claims!.Contains(PermissionsData.Users.Activation);
         }
 
         [RelayCommand(CanExecute = nameof(CanOpenRolesManager))]
@@ -121,7 +121,7 @@ namespace OMS.UI.ViewModels.Pages
             return SelectedItem != null && _userSessionService.Claims!.Contains(PermissionsData.Users.ChangePassword);
         }
 
-        private async Task UpdateUserActivation(string userConfirmationMessage, bool isActiveUser, string isActiveTitle, string successTitle)
+        private async Task UpdateUserActivation(string userConfirmationMessage, bool isActiveUser, string successTitle)
         {
             if (!_messageService.ShowQuestionMessage("تنويه", userConfirmationMessage))
                 return;
@@ -130,7 +130,7 @@ namespace OMS.UI.ViewModels.Pages
 
             if (isSuccess)
             {
-                SelectedItem!.IsActive = isActiveTitle;
+                SelectedItem!.IsActive = isActiveUser;
                 _messageService.ShowInfoMessage(successTitle, MessageTemplates.SuccessMessage);
 
                 ActiveUserCommand.NotifyCanExecuteChanged();

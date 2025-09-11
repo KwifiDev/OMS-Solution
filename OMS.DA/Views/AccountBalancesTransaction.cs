@@ -19,9 +19,8 @@ public partial class AccountBalancesTransaction : IEntityKey
     [StringLength(20)]
     public string UserAccount { get; set; } = null!;
 
-    [StringLength(19)]
-    [Unicode(false)]
-    public string? AccountBalance { get; set; }
+    [Column(TypeName = "decimal(8, 2)")]
+    public decimal AccountBalance { get; set; }
 
     public int? TotalTransactions { get; set; }
 

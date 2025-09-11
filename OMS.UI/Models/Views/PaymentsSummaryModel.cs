@@ -32,7 +32,11 @@ namespace OMS.UI.Models.Views
         public string? Notes
         {
             get => _notes;
-            set => SetProperty(ref _notes, value);
+            set 
+            {
+                SetProperty(ref _notes, value);
+                OnPropertyChanged(nameof(NotesDisplay));
+            }
         }
 
         public string EmployeeName
@@ -40,6 +44,9 @@ namespace OMS.UI.Models.Views
             get => _employeeName;
             set => SetProperty(ref _employeeName, value);
         }
+
+        // Display Props
+        public string NotesDisplay => Notes ?? "لا توجد ملاحظات";
 
     }
 }
