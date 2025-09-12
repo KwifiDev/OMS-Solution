@@ -30,14 +30,13 @@ namespace OMS.API.Controllers
         /// Retrieves all roles.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/roles
-        ///     
-        /// Returns all available roles in the system. Consider using filtering for large datasets.
+        /// Example request:
+        ///     GET /api/roles/all
+        /// Returns all available roles in the system.
         /// </remarks>
-        /// <returns>List of all roles</returns>
-        /// <response code="200">Returns the complete list of roles</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <returns>List of all roles.</returns>
+        /// <response code="200">Returns the complete list of roles.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpGet("all")]
         [Authorize(Policy = PermissionsData.Roles.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -59,18 +58,19 @@ namespace OMS.API.Controllers
             }
         }
 
+
         /// <summary>
-        /// Retrieves all roles.
+        /// Retrieves a paged list of roles.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/roles
-        ///     
-        /// Returns all available roles in the system. Consider using filtering for large datasets.
+        /// Example request:
+        ///     GET /api/roles?pageNumber=1&amp;pageSize=10
+        /// Returns a paged list of roles.
         /// </remarks>
-        /// <returns>List of all roles</returns>
-        /// <response code="200">Returns the complete list of roles</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="parameters">Pagination parameters (page number and page size).</param>
+        /// <returns>Paged list of roles.</returns>
+        /// <response code="200">Returns the paged list of roles.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpGet]
         [Authorize(Policy = PermissionsData.Roles.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -98,18 +98,19 @@ namespace OMS.API.Controllers
             }
         }
 
+
         /// <summary>
         /// Retrieves a specific role by its ID.
         /// </summary>
         /// <remarks>
-        /// Sample request:
+        /// Example request:
         ///     GET /api/roles/1
         /// </remarks>
-        /// <param name="id">The ID of the role to retrieve (must be positive integer)</param>
-        /// <returns>The requested role</returns>
-        /// <response code="200">Returns the requested role</response>
-        /// <response code="404">If role was not found</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="id">The ID of the role to retrieve (must be a positive integer).</param>
+        /// <returns>The requested role.</returns>
+        /// <response code="200">Returns the requested role.</response>
+        /// <response code="404">If the role was not found.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpGet("{id:int}")]
         [Authorize(Policy = PermissionsData.Roles.View)]
         [ActionName("GetById")]
@@ -136,18 +137,19 @@ namespace OMS.API.Controllers
             }
         }
 
+
         /// <summary>
         /// Retrieves a specific role by its name.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/roles/roleName
+        /// Example request:
+        ///     GET /api/roles/Admin
         /// </remarks>
-        /// <param name="roleName">The Name of the role to retrieve</param>
-        /// <returns>The requested role</returns>
-        /// <response code="200">Returns the requested role</response>
-        /// <response code="404">If role was not found</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="roleName">The name of the role to retrieve.</param>
+        /// <returns>The requested role.</returns>
+        /// <response code="200">Returns the requested role.</response>
+        /// <response code="404">If the role was not found.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpGet("{roleName}")]
         [Authorize(Policy = PermissionsData.Roles.View)]
         [ActionName("GetByName")]
@@ -173,18 +175,22 @@ namespace OMS.API.Controllers
         }
 
 
+
         /// <summary>
         /// Creates a new role.
         /// </summary>
         /// <remarks>
-        /// Sample request:
+        /// Example request:
         ///     POST /api/roles
+        ///     {
+        ///         "name": "Admin"
+        ///     }
         /// </remarks>
-        /// <param name="roleDto">The DTO containing data for the new role</param>
-        /// <returns>The created role with generated ID</returns>
-        /// <response code="201">Returns the newly created role</response>
-        /// <response code="400">If the request is invalid or validation fails</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="roleDto">The DTO containing data for the new role.</param>
+        /// <returns>The created role with generated ID.</returns>
+        /// <response code="201">Returns the newly created role.</response>
+        /// <response code="400">If the request is invalid or validation fails.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpPost]
         [Authorize(Policy = PermissionsData.Roles.Add)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -226,28 +232,26 @@ namespace OMS.API.Controllers
             }
         }
 
+
         /// <summary>
         /// Updates an existing role.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///
+        /// Example request:
         ///     PUT /api/roles/1
-        ///
-        /// Note: The ID in route must match the ID in request body.
+        ///     {
+        ///         "id": 1,
+        ///         "name": "UpdatedRole"
+        ///     }
+        /// Note: The ID in the route must match the ID in the request body.
         /// </remarks>
-        /// <param name="id">The ID of the role to update (must be positive integer and match ID in request body).</param>
+        /// <param name="id">The ID of the role to update (must be a positive integer and match the ID in the request body).</param>
         /// <param name="dto">The DTO containing updated data.</param>
-        /// <returns>
-        /// - 200 OK with updated role if successful
-        /// - 400 Bad Request if validation fails
-        /// - 404 Not Found if role doesn't exist
-        /// - 500 Internal Server Error if unexpected error occurs
-        /// </returns>
-        /// <response code="204">Returns no content when role updated</response>
-        /// <response code="400">If ID is invalid, doesn't match DTO ID, or validation fails</response>
-        /// <response code="404">If role with specified ID doesn't exist</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <returns>No content if the update was successful.</returns>
+        /// <response code="204">Returns no content when the role is updated.</response>
+        /// <response code="400">If the ID is invalid, doesn't match the DTO ID, or validation fails.</response>
+        /// <response code="404">If the role with the specified ID doesn't exist.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpPut("{id:int}")]
         [Authorize(Policy = PermissionsData.Roles.Edit)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -292,24 +296,20 @@ namespace OMS.API.Controllers
         }
 
 
+
         /// <summary>
-        /// Deletes an role by its ID.
+        /// Deletes a role by its ID.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///
+        /// Example request:
         ///     DELETE /api/roles/1
-        ///
         /// </remarks>
-        /// <param name="id">The ID of the role to delete (must be positive integer).</param>
-        /// <returns>
-        /// - 200 OK with boolean result (true if deleted successfully)
-        /// - Appropriate error response for invalid requests
-        /// </returns>
-        /// <response code="200">Returns true if deletion was successful</response>
-        /// <response code="404">If role with specified ID doesn't exist</response>
-        /// <response code="409">If conflict occurs (e.g. foreign key constraint)</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="id">The ID of the role to delete (must be a positive integer).</param>
+        /// <returns>No content if the deletion was successful.</returns>
+        /// <response code="204">Returns no content if deletion was successful.</response>
+        /// <response code="404">If the role with the specified ID doesn't exist.</response>
+        /// <response code="409">If a conflict occurs (e.g. foreign key constraint).</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpDelete("{id:int}")]
         [Authorize(Policy = PermissionsData.Roles.Delete)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -345,24 +345,20 @@ namespace OMS.API.Controllers
         }
 
 
+
         /// <summary>
-        /// Checks if an role exists by its ID without retrieving its content.
+        /// Checks if a role exists by its ID without retrieving its content.
         /// </summary>
         /// <remarks>
         /// This operation is more efficient than GET for existence checks as it doesn't return the role body.
-        /// 
-        /// Example:
-        /// HEAD /api/entities/123
+        /// Example request:
+        ///     HEAD /api/roles/123
         /// </remarks>
-        /// <param name="id">The ID of the role to check (must be positive integer).</param>
-        /// <returns>
-        /// - 200 OK with empty body if role exists
-        /// - 404 Not Found if role doesn't exist
-        /// - Appropriate error response for invalid requests
-        /// </returns>
-        /// <response code="200">Role exists (returns empty response with headers)</response>
-        /// <response code="404">If no role exists with the specified ID</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="id">The ID of the role to check (must be a positive integer).</param>
+        /// <returns>200 OK with empty body if the role exists, 404 Not Found if it does not.</returns>
+        /// <response code="200">Role exists (returns empty response with headers).</response>
+        /// <response code="404">If no role exists with the specified ID.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpHead("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -384,6 +380,7 @@ namespace OMS.API.Controllers
                 );
             }
         }
+
 
         private static bool IsForeignKeyViolation(DbUpdateException ex)
         {

@@ -4,6 +4,7 @@ namespace OMS.Common.Dtos.Tables
 {
     public class RoleDto
     {
+        [Key]
         public int Id { get; set; }
 
         [Required, MinLength(3, ErrorMessage = "Role Name Must be at least 3 char")]

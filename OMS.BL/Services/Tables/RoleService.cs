@@ -70,7 +70,7 @@ namespace OMS.BL.Services.Tables
 
             if (!result.Succeeded) return EnRoleResult.Failed;
 
-            model.Id = Convert.ToInt32(await _roleManager.GetRoleIdAsync(role));
+            model.Id = role.Id;
 
             return EnRoleResult.Success;
         }

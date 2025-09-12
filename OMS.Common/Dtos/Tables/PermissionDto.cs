@@ -4,6 +4,7 @@ namespace OMS.Common.Dtos.Tables
 {
     public class PermissionDto
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]

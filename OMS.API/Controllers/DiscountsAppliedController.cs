@@ -21,16 +21,18 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Retrieves all DiscountsApplied by service Id.
+        /// Retrieves a paged list of DiscountsApplied for a specific service.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/discountsapplied/by-service/123
-        /// Returns all available DiscountsApplied by Service Id in the system.
+        /// Example request:
+        ///     GET /api/discountsapplied/by-service/123?pageNumber=1&amp;pageSize=10
+        /// Returns all DiscountsApplied records for the specified service.
         /// </remarks>
-        /// <returns>List of all DiscountsApplied by Service id</returns>
-        /// <response code="200">Returns the complete list of Discounts Applied</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="serviceId">The ID of the service to retrieve DiscountsApplied for (must be a positive integer).</param>
+        /// <param name="parameters">Pagination parameters (page number and page size).</param>
+        /// <returns>Paged list of DiscountsApplied for the specified service.</returns>
+        /// <response code="200">Returns the paged list of DiscountsApplied.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpGet("by-service/{serviceId:int}")]
         [Authorize(Policy = PermissionsData.DiscountsApplied.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]

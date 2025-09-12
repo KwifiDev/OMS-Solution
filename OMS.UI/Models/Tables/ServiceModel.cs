@@ -22,7 +22,7 @@ namespace OMS.UI.Models.Tables
         }
 
         [Required(ErrorMessage = "اسم الخدمة مطلوب")]
-        [MinLength(3, ErrorMessage = "اسم الخدمة على الاقل مكون من 3 احرف")]
+        [MinLength(5, ErrorMessage = "اسم الخدمة على الاقل مكون من 5 احرف")]
         public string Name
         {
             get => _name;

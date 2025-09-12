@@ -40,20 +40,28 @@ namespace OMS.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all entities.
+        /// Retrieves a paginated list of entities.
         /// </summary>
         /// <remarks>
         /// Sample request:
-        ///     GET /api/entities
+        /// 
+        ///     GET /api/entities?pageNumber=1&amp;pageSize=10
         ///     
-        /// Returns all available entities in the system. Consider using filtering for large datasets.
+        /// Returns a paginated list of entities. Use query parameters to control pagination.
         /// </remarks>
-        /// <returns>List of all entities</returns>
-        /// <response code="200">Returns the complete list of entities</response>
+        /// <param name="parameters">Pagination parameters including page number and page size.</param>
+        /// <returns>Paginated list of entities</returns>
+        /// <response code="200">Returns the paginated list of entities</response>
+        /// <response code="400">If pagination parameters are invalid</response>
+        /// <response code="401">If user is not authenticated</response>
+        /// <response code="403">If user doesn't have permission to view</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet]
         [AuthorizeCrud(EnCrudAction.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public virtual async Task<ActionResult<PagedResult<TDto>>> GetPagedAsync([FromQuery] PaginationParams parameters)
         {
@@ -84,17 +92,26 @@ namespace OMS.API.Controllers
         /// </summary>
         /// <remarks>
         /// Sample request:
+        /// 
         ///     GET /api/entities/1
+        ///     
+        /// Returns the entity with the specified ID if it exists.
         /// </remarks>
         /// <param name="id">The ID of the entity to retrieve (must be positive integer)</param>
         /// <returns>The requested entity</returns>
         /// <response code="200">Returns the requested entity</response>
+        /// <response code="400">If the ID is invalid (non-positive)</response>
+        /// <response code="401">If user is not authenticated</response>
+        /// <response code="403">If user doesn't have permission to view</response>
         /// <response code="404">If entity was not found</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpGet("{id:int}")]
         [AuthorizeCrud(EnCrudAction.View)]
         [ActionName("GetById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public virtual async Task<ActionResult<TDto>> GetByIdAsync([FromRoute] int id)

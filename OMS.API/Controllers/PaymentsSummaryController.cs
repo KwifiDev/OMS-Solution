@@ -19,17 +19,18 @@ namespace OMS.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all PaymentsSummary by Account Id.
+        /// Retrieves a paged list of PaymentsSummary for a specific account.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/paymentssummary/accounts/123/payments
-        ///     
-        /// Returns all available payments summary by Account Id in the system.
+        /// Example request:
+        ///     GET /api/paymentssummary/accounts/123/payments?pageNumber=1&amp;pageSize=10
+        /// Returns all available payments summary records for the specified account.
         /// </remarks>
-        /// <returns>List of all payments by account</returns>
-        /// <response code="200">Returns the complete list of payments</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="accountId">The ID of the account to retrieve payments summary for (must be a positive integer).</param>
+        /// <param name="parameters">Pagination parameters (page number and page size).</param>
+        /// <returns>Paged list of payments summary for the specified account.</returns>
+        /// <response code="200">Returns the paged list of payments summary.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpGet("accounts/{accountId:int}/payments")]
         [Authorize(Policy = PermissionsData.PaymentsSummary.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]

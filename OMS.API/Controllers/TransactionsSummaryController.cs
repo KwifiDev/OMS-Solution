@@ -19,17 +19,18 @@ namespace OMS.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all TransactionsSummary by Account Id.
+        /// Retrieves a paged list of transactions summary for a specific account.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/transactionssummary/accounts/123/transactions
-        ///     
-        /// Returns all available transactionssummary by Account Id in the system.
+        /// Example request:
+        ///     GET /api/transactionssummary/accounts/123/transactions?pageNumber=1&amp;pageSize=10
+        /// Returns all available transactions summary records for the specified account.
         /// </remarks>
-        /// <returns>List of all transactions by account</returns>
-        /// <response code="200">Returns the complete list of transactions</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="accountId">The ID of the account to retrieve transactions for (must be a positive integer).</param>
+        /// <param name="parameters">Pagination parameters (page number and page size).</param>
+        /// <returns>Paged list of transactions summary for the specified account.</returns>
+        /// <response code="200">Returns the paged list of transactions summary.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpGet("accounts/{accountId:int}/transactions")]
         [Authorize(Policy = PermissionsData.TransactionsSummary.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]

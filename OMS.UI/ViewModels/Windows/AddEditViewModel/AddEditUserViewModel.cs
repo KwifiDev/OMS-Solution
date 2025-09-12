@@ -130,7 +130,7 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
 
         protected override bool ValidateModel()
         {
-            if (Status.SelectMode == AddEditStatus.EnMode.Edit) Model.Password = "ChangePasswordDisabled";
+            if (Status.SelectMode == AddEditStatus.EnMode.Edit) Model.Password = "ChangePasswordDisabled.123";
 
             if (!base.ValidateModel()) return false;
             if (!ValidatePersonSelection()) return false;

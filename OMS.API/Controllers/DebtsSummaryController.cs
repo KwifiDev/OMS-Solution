@@ -20,16 +20,18 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Retrieves all DebtsSummary by client Id.
+        /// Retrieves a paged list of DebtsSummary for a specific client.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/debtsSummary/by-client/123
-        /// Returns all available DebtsSummary by Client Id in the system.
+        /// Example request:
+        ///     GET /api/debtssummary/by-client/123?pageNumber=1&amp;pageSize=10
+        /// Returns all available DebtsSummary records for the specified client.
         /// </remarks>
-        /// <returns>List of all DebtsSummary by Client id</returns>
-        /// <response code="200">Returns the complete list of DebtsSummary</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="clientId">The ID of the client to retrieve DebtsSummary for (must be a positive integer).</param>
+        /// <param name="parameters">Pagination parameters (page number and page size).</param>
+        /// <returns>Paged list of DebtsSummary for the specified client.</returns>
+        /// <response code="200">Returns the paged list of DebtsSummary.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpGet("by-client/{clientId:int}")]
         [Authorize(Policy = PermissionsData.DebtsSummary.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]

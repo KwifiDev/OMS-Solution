@@ -21,17 +21,16 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Retrieves all Services option.
+        /// Retrieves all Services options.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/services/option
-        ///     
-        /// Returns all available Services option in the system.
+        /// Example request:
+        ///     GET /api/services/options
+        /// Returns all available Services options in the system.
         /// </remarks>
-        /// <returns>List of all Services option</returns>
-        /// <response code="200">Returns the complete list of Services option</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <returns>List of all Services options.</returns>
+        /// <response code="200">Returns the complete list of Services options.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpGet("options")]
         [Authorize(Policy = PermissionsData.Services.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]

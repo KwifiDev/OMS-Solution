@@ -30,17 +30,16 @@ namespace OMS.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all branches option.
+        /// Retrieves all branch options (ID and Name only).
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/branches/option
-        ///     
-        /// Returns all available branches option in the system.
+        /// <code>
+        /// GET /api/branches/options
+        /// </code>
         /// </remarks>
-        /// <returns>List of all branches option</returns>
-        /// <response code="200">Returns the complete list of branches option</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <returns>List of all branch options.</returns>
+        /// <response code="200">Returns the complete list of branch options.</response>
+        /// <response code="500">Internal server error occurred.</response>
         [Authorize(Policy = PermissionsData.Branches.View)]
         [HttpGet("options")]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -12,22 +12,21 @@ namespace OMS.UI.Services.Dialog
 
             if (window.DataContext is IDialogInitializer<TParam> viewModel)
             {
-                bool isSuccess = false;
                 try
                 {
-                    isSuccess = await viewModel.OnOpeningDialog(parameters);
+                    bool isSuccess = await viewModel.OnOpeningDialog(parameters);
+                    if (isSuccess)
+                    {
+                        window.ShowDialog();
+                        return true;
+                    }
                 }
                 catch (Exception ex)
                 {
                     HandleInitializationError(ex);
                 }
-
-                if (isSuccess)
-                {
-                    window.ShowDialog();
-                    return true;
-                }
             }
+
             return false;
         }
 

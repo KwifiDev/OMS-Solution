@@ -19,7 +19,7 @@ namespace OMS.API.Controllers
         /// <summary>
         /// Initializes a new instance of the clients summary Controller class.
         /// </summary>
-        /// <param name="personDetailService">The clients summary service for business logic operations.</param>
+        /// <param name="clientsSummaryService">The clients summary service for business logic operations.</param>
         /// <param name="mapper">The AutoMapper instance for object mapping.</param>
         public ClientsSummaryController(IClientsSummaryService clientsSummaryService, IMapper mapper)
             : base(clientsSummaryService, mapper)

@@ -22,16 +22,17 @@ namespace OMS.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves dashboard Data in one record.
+        /// Retrieves the dashboard summary data as a single record.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET api/dashboardsummary
-        /// Returns data in the system. Consider using filtering for large datasets.
+        /// <code>
+        /// GET /api/dashboardsummary
+        /// </code>
         /// </remarks>
-        /// <returns>dashboard data</returns>
-        /// <response code="200">Returns the complete data of dashboard</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <returns>The dashboard summary data, or no content if not available.</returns>
+        /// <response code="200">Returns the dashboard summary data.</response>
+        /// <response code="204">No dashboard data available.</response>
+        /// <response code="500">Internal server error occurred.</response>
         [HttpGet]
         [Authorize(Policy = PermissionsData.Dashboard.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]

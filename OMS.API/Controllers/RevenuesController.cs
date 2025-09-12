@@ -27,27 +27,27 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Checks if an revenues can added.
+        /// Checks if a new revenue can be added for the current day.
         /// </summary>
         /// <remarks>
         /// This operation is more efficient than GET for existence checks as it doesn't return the entity body.
-        /// 
-        /// Example:
-        /// HEAD /api/revenues/
+        ///
+        /// Example request:
+        ///     HEAD /api/revenues/canaddrevenue
         /// </remarks>
         /// <returns>
-        /// - 200 OK with empty body if can add a new revenue
-        /// - 404 Not Found if revenue cant add to db
-        /// - Appropriate error response for invalid requests
+        /// - 200 OK with empty body if a new revenue can be added.
+        /// - 404 Not Found if a revenue already exists for today.
+        /// - 500 Internal Server Error if an unexpected error occurs.
         /// </returns>
-        /// <response code="200">accepte to add new revenue (returns empty response with headers)</response>
-        /// <response code="404">If already there revene on this date</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <response code="200">A new revenue can be added (returns empty response with headers).</response>
+        /// <response code="404">A revenue already exists for today and cannot add another.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpHead("canaddrevenue")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public virtual async Task<IActionResult> HeadAsync()
+        public async Task<IActionResult> HeadAsync()
         {
             try
             {

@@ -20,16 +20,18 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Retrieves all SalesSummary by client Id.
+        /// Retrieves a paged list of sales summary records for a specific client.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/salessummary/by-client/123
-        /// Returns all available SalesSummary by Client Id in the system.
+        /// Example request:
+        ///     GET /api/salessummary/by-client/123?pageNumber=1&amp;pageSize=10
+        /// Returns all available sales summary records for the specified client.
         /// </remarks>
-        /// <returns>List of all SalesSummary by Client id</returns>
-        /// <response code="200">Returns the complete list of SalesSummary</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="clientId">The ID of the client to retrieve sales summary for (must be a positive integer).</param>
+        /// <param name="parameters">Pagination parameters (page number and page size).</param>
+        /// <returns>Paged list of sales summary records for the specified client.</returns>
+        /// <response code="200">Returns the paged list of sales summary records.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpGet("by-client/{clientId:int}")]
         [Authorize(Policy = PermissionsData.SalesSummary.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -55,7 +57,7 @@ namespace OMS.API.Controllers
                     statusCode: StatusCodes.Status500InternalServerError,
                     type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
             }
-        }
+        }
 
 
 

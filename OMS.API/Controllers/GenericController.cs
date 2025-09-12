@@ -35,21 +35,27 @@ namespace OMS.API.Controllers
         /// </summary>
         /// <remarks>
         /// Sample request:
+        /// 
         ///     POST /api/entities
         ///     {
         ///         "name": "New Entity",
         ///         "description": "Entity description"
         ///     }
+        ///     
         /// </remarks>
         /// <param name="dto">The DTO containing data for the new entity</param>
         /// <returns>The created entity with generated ID</returns>
         /// <response code="201">Returns the newly created entity</response>
         /// <response code="400">If the request is invalid or validation fails</response>
+        /// <response code="401">If user is not authenticated</response>
+        /// <response code="403">If user doesn't have permission to create</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPost]
         [AuthorizeCrud(EnCrudAction.Add)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public virtual async Task<ActionResult<TDto>> AddAsync([FromBody] TDto dto)
         {
@@ -86,6 +92,7 @@ namespace OMS.API.Controllers
             }
         }
 
+
         /// <summary>
         /// Updates an existing entity.
         /// </summary>
@@ -104,19 +111,23 @@ namespace OMS.API.Controllers
         /// <param name="id">The ID of the entity to update (must be positive integer and match ID in request body).</param>
         /// <param name="dto">The DTO containing updated data.</param>
         /// <returns>
-        /// - 200 OK with updated entity if successful
+        /// - 204 No Content if successful
         /// - 400 Bad Request if validation fails
         /// - 404 Not Found if entity doesn't exist
         /// - 500 Internal Server Error if unexpected error occurs
         /// </returns>
-        /// <response code="204">Returns no content when entity updated</response>
+        /// <response code="204">Returns no content when entity updated successfully</response>
         /// <response code="400">If ID is invalid, doesn't match DTO ID, or validation fails</response>
+        /// <response code="401">If user is not authenticated</response>
+        /// <response code="403">If user doesn't have permission to update</response>
         /// <response code="404">If entity with specified ID doesn't exist</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpPut("{id:int}")]
         [AuthorizeCrud(EnCrudAction.Edit)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public virtual async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] TDto dto)
@@ -167,17 +178,24 @@ namespace OMS.API.Controllers
         /// </remarks>
         /// <param name="id">The ID of the entity to delete (must be positive integer).</param>
         /// <returns>
-        /// - 200 OK with boolean result (true if deleted successfully)
-        /// - Appropriate error response for invalid requests
+        /// - 204 No Content if deletion was successful
+        /// - 404 Not Found if entity doesn't exist
+        /// - 409 Conflict if foreign key constraint violation occurs
+        /// - 500 Internal Server Error for other errors
         /// </returns>
-        /// <response code="200">Returns true if deletion was successful</response>
+        /// <response code="204">Returns no content if deletion was successful</response>
+        /// <response code="401">If user is not authenticated</response>
+        /// <response code="403">If user doesn't have permission to delete</response>
         /// <response code="404">If entity with specified ID doesn't exist</response>
         /// <response code="409">If conflict occurs (e.g. foreign key constraint)</response>
         /// <response code="500">If there was an internal server error</response>
         [HttpDelete("{id:int}")]
         [AuthorizeCrud(EnCrudAction.Delete)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public virtual async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
@@ -215,13 +233,15 @@ namespace OMS.API.Controllers
         /// This operation is more efficient than GET for existence checks as it doesn't return the entity body.
         /// 
         /// Example:
-        /// HEAD /api/entities/123
+        /// 
+        ///     HEAD /api/entities/123
+        /// 
         /// </remarks>
         /// <param name="id">The ID of the entity to check (must be positive integer).</param>
         /// <returns>
         /// - 200 OK with empty body if entity exists
         /// - 404 Not Found if entity doesn't exist
-        /// - Appropriate error response for invalid requests
+        /// - 500 Internal Server Error for unexpected errors
         /// </returns>
         /// <response code="200">Entity exists (returns empty response with headers)</response>
         /// <response code="404">If no entity exists with the specified ID</response>

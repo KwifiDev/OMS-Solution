@@ -32,23 +32,24 @@ namespace OMS.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new entity.
+        /// Adds a new client with an associated account.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     POST /api/entities
-        ///     {
-        ///         "name": "New Entity",
-        ///         "description": "Entity description"
-        ///     }
+        /// <code>
+        /// POST /api/clients/addwithaccount
+        /// {
+        ///   "client": { ... },
+        ///   "account": { ... }
+        /// }
+        /// </code>
         /// </remarks>
-        /// <param name="dto">The DTO containing data for the new entity</param>
-        /// <returns>The created entity with generated ID</returns>
-        /// <response code="201">Returns the newly created entity</response>
-        /// <response code="400">If the request is invalid or validation fails</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="dto">The client and account data transfer object.</param>
+        /// <returns>The created client and account with generated IDs.</returns>
+        /// <response code="200">Client and account created successfully.</response>
+        /// <response code="400">Validation error in the request data.</response>
+        /// <response code="500">Internal server error.</response>
         [HttpPost("addwithaccount")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public virtual async Task<ActionResult<ClientAccountDto>> AddWithAccountAsync([FromBody] ClientAccountDto dto)
@@ -85,26 +86,27 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Creates a new entity.
+        /// Updates an existing client and its associated account.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     POST /api/entities
-        ///     {
-        ///         "name": "New Entity",
-        ///         "description": "Entity description"
-        ///     }
+        /// <code>
+        /// PUT /api/clients/updatewithaccount
+        /// {
+        ///   "client": { ... },
+        ///   "account": { ... }
+        /// }
+        /// </code>
         /// </remarks>
-        /// <param name="dto">The DTO containing data for the new entity</param>
-        /// <returns>The created entity with generated ID</returns>
-        /// <response code="201">Returns the newly created entity</response>
-        /// <response code="400">If the request is invalid or validation fails</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="dto">The client and account data transfer object.</param>
+        /// <returns>Returns 200 OK if update succeeded.</returns>
+        /// <response code="200">Client and account updated successfully.</response>
+        /// <response code="400">Validation error in the request data.</response>
+        /// <response code="500">Internal server error.</response>
         [HttpPut("updatewithaccount")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public virtual async Task<IActionResult> UpdateWithAccountAsync([FromBody] ClientAccountDto dto)
+        public async Task<IActionResult> UpdateWithAccountAsync([FromBody] ClientAccountDto dto)
         {
             try
             {
@@ -134,17 +136,18 @@ namespace OMS.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves a specific entity by its ID.
+        /// Retrieves a client by its person ID.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/clients/by-person/123
+        /// <code>
+        /// GET /api/clients/by-person/123
+        /// </code>
         /// </remarks>
-        /// <param name="personId">The person ID of the entity to retrieve (must be positive integer)</param>
-        /// <returns>The requested client Dto</returns>
-        /// <response code="200">Returns the requested entity</response>
-        /// <response code="404">If entity was not found</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="personId">The person ID of the client to retrieve (must be positive integer).</param>
+        /// <returns>The requested client data.</returns>
+        /// <response code="200">Client found and returned.</response>
+        /// <response code="404">Client not found.</response>
+        /// <response code="500">Internal server error.</response>
         [HttpGet("by-person/{personId:int}")]
         [Authorize(Policy = PermissionsData.Clients.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -172,18 +175,18 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Retrieves a specific entity by its ID.
+        /// Retrieves a client ID by its person ID.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/clients/123/id
-        ///     123 is the personId
+        /// <code>
+        /// GET /api/clients/{personId}/id
+        /// </code>
         /// </remarks>
-        /// <param name="personId">The person ID to retrieve client ID (must be positive integer)</param>
-        /// <returns>The requested client Id</returns>
-        /// <response code="200">Returns the requested id</response>
-        /// <response code="404">If entity was not found</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="personId">The person ID to retrieve the client ID for (must be positive integer).</param>
+        /// <returns>The client ID.</returns>
+        /// <response code="200">Client ID found and returned.</response>
+        /// <response code="404">Client not found.</response>
+        /// <response code="500">Internal server error.</response>
         [HttpGet("{personId:int}/id")]
         [Authorize(Policy = PermissionsData.Clients.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -209,16 +212,21 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Pay all Debts by Client Id.
+        /// Pays all debts for a client by client ID.
         /// </summary>
         /// <remarks>
-        /// Example request:
-        /// Patch /api/clients/pay
+        /// <code>
+        /// POST /api/clients/pay
+        /// {
+        ///   "clientId": 123,
+        ///   "notes": "Payment for all debts",
+        ///   "createdByUserId": 1
+        /// }
+        /// </code>
         /// </remarks>
-        /// <param name="payDebtsDto">The data transfare object.</param>
-        /// <returns>Returns operation result.</returns>
-        /// <response code="200">Debt paid successfully.</response>
-        /// <response code="400">Invalid request.</response>
+        /// <param name="payDebtsDto">The pay debts data transfer object.</param>
+        /// <returns>Status code representing the result of the operation.</returns>
+        /// <response code="200">Debts paid successfully (returns status code as integer).</response>
         /// <response code="404">Client not found.</response>
         /// <response code="500">Internal server error.</response>
         [HttpPost("pay")]

@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +22,8 @@ using OMS.DA.Repositories.EntityRepos;
 using OMS.DA.Repositories.ViewRepos;
 using OMS.DA.Seeders;
 using OMS.DA.UOW;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 
@@ -61,6 +63,48 @@ builder.Services.AddSwaggerGen(options =>
             Array.Empty<string>()
         }
     });
+
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "OMS.API",
+        Version = "v1",
+        Description = "Office Management System API Documentation",
+        Contact = new OpenApiContact
+        {
+            Name = "KwifiDev",
+            Email = "Alkwifi.win@outlook.com"
+        }
+    });
+
+    // Include documentation comments from XML
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+    if (File.Exists(xmlPath))
+    {
+        options.IncludeXmlComments(xmlPath);
+    }
+
+    // Enable displaying enums as text values
+    options.SchemaFilter<EnumSchemaFilter>();
+
+    // Sort endpoints alphabetically
+    options.OrderActionsBy(api =>
+    {
+        // If the controller is named Auth, we put it first
+        if (api.ActionDescriptor.RouteValues["controller"] == "Auth")
+        {
+            return "000_" + api.HttpMethod + api.RelativePath;
+        }
+
+        // The remainder in natural order
+        return api.HttpMethod + api.RelativePath;
+    });
+});
+
+builder.Services.Configure<SwaggerGeneratorOptions>(options =>
+{
+    options.InferSecuritySchemes = true;
 });
 
 builder.Services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
@@ -249,8 +293,30 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger(options =>
+    {
+        options.PreSerializeFilters.Add((swagger, httpReq) =>
+        {
+            swagger.Servers = new List<OpenApiServer>
+            {
+                new OpenApiServer { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" }
+            };
+        });
+    });
+
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "OMS API v1");
+        options.RoutePrefix = "api-docs";
+        options.DocumentTitle = "OMS API Documentation";
+        options.DefaultModelsExpandDepth(2);
+        options.DefaultModelExpandDepth(2);
+        options.DisplayOperationId();
+        options.DisplayRequestDuration();
+        options.EnableDeepLinking();
+        options.EnableFilter();
+        options.ShowExtensions();
+    });
 }
 
 app.UseHttpsRedirection();

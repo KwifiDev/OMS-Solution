@@ -28,22 +28,21 @@ namespace OMS.API.Controllers
         }
 
         /// <summary>
-        /// Retrieves all roles.
+        /// Retrieves all permissions.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/roles
-        ///     
-        /// Returns all available roles in the system. Consider using filtering for large datasets.
+        /// Example request:
+        ///     GET /api/permissions/all
+        /// Returns all available permissions in the system.
         /// </remarks>
-        /// <returns>List of all roles</returns>
-        /// <response code="200">Returns the complete list of roles</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <returns>List of all permissions.</returns>
+        /// <response code="200">Returns the complete list of permissions.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpGet("all")]
         [Authorize(Policy = PermissionsData.Permissions.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<RoleDto>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<PermissionDto>>> GetAllAsync()
         {
             try
             {

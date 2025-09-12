@@ -22,15 +22,16 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// create a new Debt.
+        /// Creates a new Debt.
         /// </summary>
         /// <remarks>
-        /// POST /api/Debts/
+        /// Example request:
+        /// POST /api/debts
         /// </remarks>
-        /// <param name="dto">The data transfer object containing Debt args for creating new Debt.</param>
-        /// <returns>Returns the new debtId inside dto object of the Debt.</returns>
+        /// <param name="dto">The data transfer object containing arguments for creating a new Debt.</param>
+        /// <returns>Returns the new DebtId inside the dto object.</returns>
         /// <response code="200">Returns the dto result if successful.</response>
-        /// <response code="400">If the request is invalid (invalid clientID, serviceID, UserID, invalid amount, etc.).</response>
+        /// <response code="400">If the request is invalid (invalid ClientId, ServiceId, UserId, invalid amount, etc.).</response>
         /// <response code="500">If an internal server error occurs.</response>
         [HttpPost]
         [Authorize(Policy = PermissionsData.Debts.Add)]
@@ -54,19 +55,19 @@ namespace OMS.API.Controllers
                     detail: ex.Message,
                     statusCode: StatusCodes.Status500InternalServerError);
             }
-        }
+        }
 
 
 
         /// <summary>
-        /// Cancel an Not Paid Debt.
+        /// Cancels a not paid Debt.
         /// </summary>
         /// <remarks>
         /// Example request:
-        /// Patch /api/Debts/123/cancel
+        /// PATCH /api/debts/123/cancel
         /// </remarks>
         /// <param name="debtId">The ID of the Debt to be canceled.</param>
-        /// <returns>Returns operation result.</returns>
+        /// <returns>Returns the operation result.</returns>
         /// <response code="200">Debt canceled successfully.</response>
         /// <response code="400">Invalid request.</response>
         /// <response code="404">Debt not found.</response>
@@ -100,18 +101,18 @@ namespace OMS.API.Controllers
                     detail: ex.Message,
                     statusCode: StatusCodes.Status500InternalServerError);
             }
-        }
+        }
 
 
         /// <summary>
-        /// Pay a Debt.
+        /// Pays a Debt.
         /// </summary>
         /// <remarks>
         /// Example request:
-        /// Patch /api/debts/pay
+        /// POST /api/debts/pay
         /// </remarks>
-        /// <param name="payDebtDto">The data transfare object.</param>
-        /// <returns>Returns operation result.</returns>
+        /// <param name="payDebtDto">The data transfer object containing payment details.</param>
+        /// <returns>Returns the operation result.</returns>
         /// <response code="200">Debt paid successfully.</response>
         /// <response code="400">Invalid request.</response>
         /// <response code="404">Debt not found.</response>
@@ -143,22 +144,22 @@ namespace OMS.API.Controllers
                     detail: ex.Message,
                     statusCode: StatusCodes.Status500InternalServerError);
             }
-        }
+        }
 
 
         /// <summary>
-        /// Retrieves a specific entity by its ID.
+        /// Calculates the total debts for a specific client.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/clients/123/id
-        ///     123 is the personId
+        /// Example request:
+        /// GET /api/debts/calctotaldebts/123/totaldebts
+        /// 123 is the clientId.
         /// </remarks>
-        /// <param name="personId">The person ID to retrieve client ID (must be positive integer)</param>
-        /// <returns>The requested client Id</returns>
-        /// <response code="200">Returns the requested id</response>
-        /// <response code="404">If entity was not found</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="clientId">The client ID to calculate total debts for (must be a positive integer).</param>
+        /// <returns>The total debts for the specified client.</returns>
+        /// <response code="200">Returns the total debts.</response>
+        /// <response code="404">If the client or debts were not found.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpGet("calctotaldebts/{clientId:int}/totaldebts")]
         [Authorize(Policy = PermissionsData.Clients.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -180,7 +181,7 @@ namespace OMS.API.Controllers
                     detail: ex.Message,
                     statusCode: StatusCodes.Status500InternalServerError);
             }
-        }
+        }
 
 
         [NonAction] // This EndPoint Insted Of (AddDebtAsync) Method

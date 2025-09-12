@@ -23,17 +23,17 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// Retrieves all role Claims by Role Id.
+        /// Retrieves all role claims for a specific role.
         /// </summary>
         /// <remarks>
-        /// Sample request:
+        /// Example request:
         ///     GET /api/roleclaims/by-role/123
-        ///     
-        /// Returns all available role claims in the system.
+        /// Returns all available role claims for the specified role.
         /// </remarks>
-        /// <returns>List of all role claims by role</returns>
-        /// <response code="200">Returns the complete list of role claims</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="roleId">The ID of the role to retrieve claims for (must be a positive integer).</param>
+        /// <returns>List of all role claims for the specified role.</returns>
+        /// <response code="200">Returns the complete list of role claims.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpGet("by-role/{roleId:int}")]
         [Authorize(Policy = PermissionsData.RoleClaims.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -53,22 +53,26 @@ namespace OMS.API.Controllers
                     statusCode: StatusCodes.Status500InternalServerError,
                     type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
             }
-        }
+        }
 
 
         /// <summary>
-        /// add a role claim
+        /// Adds a claim to a specific role.
         /// </summary>
         /// <remarks>
-        /// Sample request:
+        /// Example request:
         ///     POST /api/roleclaims/add/123
+        ///     {
+        ///         "claimType": "Users",
+        ///         "claimValue": "Users.View"
+        ///     }
         /// </remarks>
-        /// <param name="roleId">The id of role</param>
-        /// <param name="dto">The claim dto to add</param>
-        /// <returns>The ok role claim added</returns>
-        /// <response code="201">Returns ok</response>
-        /// <response code="400">If the request is invalid or validation fails</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="roleId">The ID of the role to add the claim to (must be a positive integer).</param>
+        /// <param name="dto">The claim DTO to add.</param>
+        /// <returns>201 Created if the claim was added successfully.</returns>
+        /// <response code="201">The role claim was added successfully.</response>
+        /// <response code="400">If the request is invalid or validation fails.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpPost("add/{roleId:int}")]
         [Authorize(Policy = PermissionsData.RoleClaims.Add)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -100,22 +104,26 @@ namespace OMS.API.Controllers
                     statusCode: StatusCodes.Status500InternalServerError,
                     type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
             }
-        }
+        }
 
 
         /// <summary>
-        /// remove a role claim
+        /// Removes a claim from a specific role.
         /// </summary>
         /// <remarks>
-        /// Sample request:
+        /// Example request:
         ///     POST /api/roleclaims/remove/123
+        ///     {
+        ///         "claimType": "Users",
+        ///         "claimValue": "Users.View"
+        ///     }
         /// </remarks>
-        /// <param name="roleId">The id of role</param>
-        /// <param name="dto">The claim dto to remove</param>
-        /// <returns>The ok role claim removed</returns>
-        /// <response code="201">Returns ok</response>
-        /// <response code="400">If the request is invalid or validation fails</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="roleId">The ID of the role to remove the claim from (must be a positive integer).</param>
+        /// <param name="dto">The claim DTO to remove.</param>
+        /// <returns>201 Created if the claim was removed successfully.</returns>
+        /// <response code="201">The role claim was removed successfully.</response>
+        /// <response code="400">If the request is invalid or validation fails.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpPost("remove/{roleId:int}")]
         [Authorize(Policy = PermissionsData.RoleClaims.Delete)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -148,6 +156,7 @@ namespace OMS.API.Controllers
                     type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
             }
         }
+
 
 
         #region Common Abstract Methods

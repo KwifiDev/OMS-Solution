@@ -20,22 +20,23 @@ namespace OMS.API.Controllers
         }
 
         /// <summary>
-        /// Creates a new Discount Dto.
+        /// Creates a new Discount.
         /// </summary>
         /// <remarks>
-        /// Sample request:
+        /// Example request:
         ///     POST /api/discounts
         ///     {
-        ///         "name": "New discounts",
-        ///         "description": "discounts description"
+        ///         "serviceId": 1,
+        ///         "clientType": 0,
+        ///         "discountPercentage": 10
         ///     }
         /// </remarks>
-        /// <param name="dto">The DTO containing data for the new discounts</param>
-        /// <returns>The created discounts with generated ID</returns>
-        /// <response code="201">Returns the newly created discounts</response>
-        /// <response code="409">If the discount is already apply</response>
-        /// <response code="400">If the request is invalid or validation fails</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="dto">The DTO containing data for the new discount.</param>
+        /// <returns>The created discount with generated ID.</returns>
+        /// <response code="201">Returns the newly created discount.</response>
+        /// <response code="409">If the discount is already applied for the given service and client type.</response>
+        /// <response code="400">If the request is invalid or validation fails.</response>
+        /// <response code="500">If there was an internal server error.</response>
         [HttpPost]
         [Authorize(Policy = PermissionsData.Discounts.Add)]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -80,6 +81,7 @@ namespace OMS.API.Controllers
                     type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
             }
         }
+
 
         #region override abstract Methods
         protected override async Task<bool> AddModelAsync(DiscountModel model) => await _service.AddAsync(model);

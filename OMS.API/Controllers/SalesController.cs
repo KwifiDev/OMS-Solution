@@ -22,15 +22,25 @@ namespace OMS.API.Controllers
 
 
         /// <summary>
-        /// create a new sale.
+        /// Creates a new sale.
         /// </summary>
         /// <remarks>
-        /// POST /api/sales/
+        /// Example request:
+        ///     POST /api/sales
+        ///     {
+        ///         "clientId": 1,
+        ///         "serviceId": 2,
+        ///         "quantity": 1,
+        ///         "description": "Sale description",
+        ///         "notes": "Some notes",
+        ///         "status": 0,
+        ///         "createdByUserId": 5
+        ///     }
         /// </remarks>
-        /// <param name="dto">The data transfer object containing sale args for creating new sale.</param>
-        /// <returns>Returns the new saleId inside dto object of the sale.</returns>
+        /// <param name="dto">The data transfer object containing arguments for creating a new sale.</param>
+        /// <returns>Returns the new SaleId inside the dto object.</returns>
         /// <response code="200">Returns the dto result if successful.</response>
-        /// <response code="400">If the request is invalid (invalid clientID, serviceID, UserID, invalid amount, etc.).</response>
+        /// <response code="400">If the request is invalid (invalid ClientId, ServiceId, UserId, invalid amount, etc.).</response>
         /// <response code="500">If an internal server error occurs.</response>
         [HttpPost]
         [Authorize(Policy = PermissionsData.Sales.Add)]
@@ -54,19 +64,19 @@ namespace OMS.API.Controllers
                     detail: ex.Message,
                     statusCode: StatusCodes.Status500InternalServerError);
             }
-        }
+        }
 
 
 
         /// <summary>
-        /// Cancel an uncompleted sale.
+        /// Cancels an uncompleted sale.
         /// </summary>
         /// <remarks>
         /// Example request:
-        /// Patch /api/sales/123/cancel
+        ///     PATCH /api/sales/123/cancel
         /// </remarks>
         /// <param name="saleId">The ID of the sale to be canceled.</param>
-        /// <returns>Returns operation result.</returns>
+        /// <returns>Returns the operation result.</returns>
         /// <response code="200">Sale canceled successfully.</response>
         /// <response code="400">Invalid request.</response>
         /// <response code="404">Sale not found.</response>
@@ -100,7 +110,7 @@ namespace OMS.API.Controllers
                     detail: ex.Message,
                     statusCode: StatusCodes.Status500InternalServerError);
             }
-        }
+        }
 
 
 

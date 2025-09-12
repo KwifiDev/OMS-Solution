@@ -32,26 +32,19 @@ namespace OMS.API.Controllers
         /// Updates an existing user.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///
+        /// Example request:
         ///     PUT /api/users/1
         ///     
         /// Note: The ID in route must match the ID in request body.
         /// </remarks>
-        /// <param name="id">The ID of the user to update (must be positive integer and match ID in request body).</param>
-        /// <param name="dto">The DTO containing updated data.</param>
-        /// <returns>
-        /// - 200 OK with updated user if successful
-        /// - 400 Bad Request if validation fails
-        /// - 404 Not Found if user doesn't exist
-        /// - 409 already used oldUsername
-        /// - 500 Internal Server Error if unexpected error occurs
-        /// </returns>
-        /// <response code="204">Returns no content when user updated</response>
-        /// <response code="400">If ID is invalid, doesn't match DTO ID, or validation fails</response>
-        /// <response code="404">If user with specified ID doesn't exist</response>
-        /// <response code="409">If user with specified oldUsername exist</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="id">The ID of the user to update (must be a positive integer and match ID in request body).</param>
+        /// <param name="dto">The DTO containing updated user data.</param>
+        /// <returns>No content if update is successful.</returns>
+        /// <response code="204">Returns no content when user is successfully updated.</response>
+        /// <response code="400">If ID is invalid, doesn't match DTO ID, or validation fails.</response>
+        /// <response code="404">If user with specified ID doesn't exist.</response>
+        /// <response code="409">If username is already used.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpPut("{id:int}")]
         [Authorize(Policy = PermissionsData.Users.Edit)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -79,9 +72,9 @@ namespace OMS.API.Controllers
                     EnUserResult.UserNameConflict => Conflict(),
                     EnUserResult.Success => NoContent(),
                     _ => Problem(
-                                 title: "Update failed",
-                                 detail: "Entity could not be updated",
-                                 statusCode: StatusCodes.Status400BadRequest),
+                                title: "Update failed",
+                                detail: "Entity could not be updated",
+                                statusCode: StatusCodes.Status400BadRequest),
                 };
             }
             catch (Exception ex)
@@ -95,34 +88,28 @@ namespace OMS.API.Controllers
             }
         }
 
-
         /// <summary>
-        /// Updates an existing user.
+        /// Updates the current authenticated user's information.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///
-        ///     PUT /api/users/1
+        /// Example request:
+        ///     PUT /api/users/updatemyuser/1
         ///     
-        /// Note: The ID in route must match the ID in request body.
+        /// Note: The ID in route must match the ID in request body and the authenticated user's ID.
         /// </remarks>
-        /// <param name="id">The ID of the user to update (must be positive integer and match ID in request body).</param>
-        /// <param name="dto">The DTO containing updated data.</param>
-        /// <returns>
-        /// - 200 OK with updated user if successful
-        /// - 400 Bad Request if validation fails
-        /// - 404 Not Found if user doesn't exist
-        /// - 409 already used oldUsername
-        /// - 500 Internal Server Error if unexpected error occurs
-        /// </returns>
-        /// <response code="204">Returns no content when user updated</response>
-        /// <response code="400">If ID is invalid, doesn't match DTO ID, or validation fails</response>
-        /// <response code="404">If user with specified ID doesn't exist</response>
-        /// <response code="409">If user with specified oldUsername exist</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="id">The ID of the user to update (must be a positive integer and match authenticated user's ID).</param>
+        /// <param name="dto">The DTO containing updated user data.</param>
+        /// <returns>No content if update is successful.</returns>
+        /// <response code="204">Returns no content when user is successfully updated.</response>
+        /// <response code="400">If ID is invalid, doesn't match DTO ID, or validation fails.</response>
+        /// <response code="403">If user is not authorized to update this account.</response>
+        /// <response code="404">If user with specified ID doesn't exist.</response>
+        /// <response code="409">If username is already used.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpPut("updatemyuser/{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
@@ -149,9 +136,9 @@ namespace OMS.API.Controllers
                     EnUserResult.UserNameConflict => Conflict(),
                     EnUserResult.Success => NoContent(),
                     _ => Problem(
-                                 title: "Update failed",
-                                 detail: "Entity could not be updated",
-                                 statusCode: StatusCodes.Status400BadRequest),
+                                title: "Update failed",
+                                detail: "Entity could not be updated",
+                                statusCode: StatusCodes.Status400BadRequest),
                 };
             }
             catch (Exception ex)
@@ -165,20 +152,18 @@ namespace OMS.API.Controllers
             }
         }
 
-
         /// <summary>
-        /// Retrieves a specific login entity by person ID.
+        /// Retrieves login information for a specific user by person ID.
         /// </summary>
         /// <remarks>
-        /// Sample request:
+        /// Example request:
         ///     GET /api/users/123/login
-        ///     123 is the person ID
         /// </remarks>
-        /// <param name="personId">The person ID of the entity to retrieve login info (must be positive integer)</param>
-        /// <returns>The requested LoginDto</returns>
-        /// <response code="200">Returns the requested login info</response>
-        /// <response code="404">If entity was not found</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="personId">The person ID of the user to retrieve login information for (must be a positive integer).</param>
+        /// <returns>Login information for the specified user.</returns>
+        /// <response code="200">Returns the requested login information.</response>
+        /// <response code="404">If user with specified person ID doesn't exist.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpGet("{personId:int}/login")]
         [Authorize(Policy = PermissionsData.Users.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -204,19 +189,18 @@ namespace OMS.API.Controllers
             }
         }
 
-
         /// <summary>
-        /// Retrieves a specific User by person ID.
+        /// Retrieves a user by their person ID.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///     GET /api/users/123
+        /// Example request:
+        ///     GET /api/users/123/personid
         /// </remarks>
-        /// <param name="personId">The person ID of the entity to retrieve user dto (must be positive integer)</param>
-        /// <returns>The requested userDto</returns>
-        /// <response code="200">Returns the requested user</response>
-        /// <response code="404">If entity was not found</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="personId">The person ID of the user to retrieve (must be a positive integer).</param>
+        /// <returns>The requested user information.</returns>
+        /// <response code="200">Returns the requested user information.</response>
+        /// <response code="404">If user with specified person ID doesn't exist.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpGet("{personId:int}/personid")]
         [Authorize(Policy = PermissionsData.Users.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -242,20 +226,18 @@ namespace OMS.API.Controllers
             }
         }
 
-
-
         /// <summary>
-        /// Retrieves a specific user ID by person ID.
+        /// Retrieves a user ID by person ID.
         /// </summary>
         /// <remarks>
-        /// Sample request:
+        /// Example request:
         ///     GET /api/users/123/id
         /// </remarks>
-        /// <param name="personId">The person ID of the entity to retrieve user ID (must be positive integer)</param>
-        /// <returns>The requested userId</returns>
-        /// <response code="200">Returns the requested user id</response>
-        /// <response code="404">If entity was not found</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="personId">The person ID to retrieve the user ID for (must be a positive integer).</param>
+        /// <returns>The user ID associated with the specified person ID.</returns>
+        /// <response code="200">Returns the requested user ID.</response>
+        /// <response code="404">If no user exists with the specified person ID.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpGet("{personId:int}/id")]
         [Authorize(Policy = PermissionsData.Users.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -279,25 +261,20 @@ namespace OMS.API.Controllers
             }
         }
 
-
         /// <summary>
-        /// Checks if an user exists and active by its ID without retrieving its content.
+        /// Checks if a user exists and is active by user ID.
         /// </summary>
         /// <remarks>
-        /// This operation is more efficient than GET for existence checks as it doesn't return the user body.
-        /// 
-        /// Example:
-        /// HEAD /api/users/123/isactive
+        /// Example request:
+        ///     HEAD /api/users/123/isactive
+        ///     
+        /// This operation is efficient for existence checks as it doesn't return the user body.
         /// </remarks>
-        /// <param name="userId">The user ID of the user to check if is active (must be positive integer).</param>
-        /// <returns>
-        /// - 200 OK with empty body if user is active
-        /// - 404 Not Found if user doesn't exist or not Active
-        /// - Appropriate error response for invalid requests
-        /// </returns>
-        /// <response code="200">user exists and active (returns empty response with headers)</response>
-        /// <response code="404">If no user exists or not active user with the specified ID</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="userId">The user ID to check for active status (must be a positive integer).</param>
+        /// <returns>Empty response indicating active status.</returns>
+        /// <response code="200">User exists and is active.</response>
+        /// <response code="404">If user doesn't exist or is not active.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpHead("{userId:int}/isactive")]
         [Authorize(Policy = PermissionsData.Users.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -310,7 +287,6 @@ namespace OMS.API.Controllers
             try
             {
                 var isExistAndActive = await _service.IsUserActive(userId);
-
                 return (isExistAndActive) ? Ok() : NotFound();
             }
             catch (Exception ex)
@@ -322,25 +298,20 @@ namespace OMS.API.Controllers
             }
         }
 
-
         /// <summary>
-        /// Updates an existing users.
+        /// Updates the activation status of a user.
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        ///
-        ///     PUT /api/users/1
-        ///
+        /// Example request:
+        ///     PUT /api/users/updateactivation
+        ///     
+        /// Request body should contain UserActivationDto with userId and isActive properties.
         /// </remarks>
-        /// <param name="dto">The dto of the user Activation to update user activate (must be positive integer of user Id).</param>
-        /// <returns>
-        /// - 200 OK with updated user activation if successful
-        /// - 404 Not Found if user doesn't exist
-        /// - 500 Internal Server Error if unexpected error occurs
-        /// </returns>
-        /// <response code="204">Returns no content when user updated</response>
-        /// <response code="404">If user with specified ID doesn't exist</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="userActivationDto">The DTO containing user ID and activation status to update.</param>
+        /// <returns>No content if update is successful.</returns>
+        /// <response code="204">Returns no content when activation status is successfully updated.</response>
+        /// <response code="404">If user with specified ID doesn't exist.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpPut("updateactivation")]
         [Authorize(Policy = PermissionsData.Users.Activation)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -353,8 +324,7 @@ namespace OMS.API.Controllers
             try
             {
                 bool isSuccess = await _service.UpdateUserActivationStatus(userActivationDto.UserId, userActivationDto.IsActive);
-
-                return (isSuccess) ? Ok() : NotFound();
+                return (isSuccess) ? NoContent() : NotFound();
             }
             catch (Exception ex)
             {
@@ -367,25 +337,21 @@ namespace OMS.API.Controllers
             }
         }
 
-
         /// <summary>
-        /// Checks if an username available.
+        /// Checks if a username is available for use.
         /// </summary>
         /// <remarks>
-        /// This operation is more efficient than GET for existence checks as it doesn't return the user body.
-        /// 
-        /// Example:
-        /// HEAD /api/users/username/checkusernameavailable
+        /// Example request:
+        ///     POST /api/users/checkusernameavailable
+        ///     
+        /// Request body should contain UsernameAvailableDto with userId and username properties.
         /// </remarks>
-        /// <param name="username">The username of the user to check if is used.</param>
-        /// <returns>
-        /// - 200 OK with empty body if username available
-        /// - Appropriate error response for invalid requests
-        /// </returns>
-        /// <response code="200">username available (returns empty response with headers)</response>
-        /// <response code="404">If username not valied</response>
-        /// <response code="409">If username used</response>
-        /// <response code="500">If there was an internal server error</response>
+        /// <param name="dto">The DTO containing user ID and username to check for availability.</param>
+        /// <returns>Empty response if username is available.</returns>
+        /// <response code="200">Username is available.</response>
+        /// <response code="400">If username is not valid.</response>
+        /// <response code="409">If username is already used.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpPost("checkusernameavailable")]
         [Authorize(Policy = PermissionsData.Users.View)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -397,7 +363,6 @@ namespace OMS.API.Controllers
             try
             {
                 var isUsernameUsed = await _service.IsUsernameUsedAsync(dto.UserId, dto.Username);
-
                 return (!isUsernameUsed) ? Ok() : Conflict();
             }
             catch (Exception ex)
@@ -408,7 +373,6 @@ namespace OMS.API.Controllers
                 );
             }
         }
-
 
         #region override abstract Methods
         protected override int GetModelId(UserModel model) => model.Id;

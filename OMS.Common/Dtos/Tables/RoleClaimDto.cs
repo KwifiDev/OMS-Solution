@@ -1,7 +1,10 @@
-﻿namespace OMS.Common.Dtos.Tables
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OMS.Common.Dtos.Tables
 {
     public class RoleClaimDto
     {
+        [Key]
         public int Id { get; set; }
 
         public int RoleId { get; set; }
