@@ -27,7 +27,11 @@ namespace OMS.UI.Models.Views
         public decimal ServicePrice
         {
             get => _servicePrice;
-            set => SetProperty(ref _servicePrice, value);
+            set 
+            {
+                SetProperty(ref _servicePrice, value);
+                OnPropertyChanged(nameof(DiscountPercentageDisplay));
+            }
         }
 
         public EnClientType ClientType
@@ -43,7 +47,11 @@ namespace OMS.UI.Models.Views
         public decimal DiscountPercentage
         {
             get => _discountPercentage;
-            set => SetProperty(ref _discountPercentage, value);
+            set 
+            {
+                SetProperty(ref _discountPercentage, value);
+                OnPropertyChanged(nameof(DiscountPercentageDisplay));
+            }
         }
 
         // Display Props
@@ -51,5 +59,15 @@ namespace OMS.UI.Models.Views
                                            ClientType == EnClientType.Lawyer ? "محامي" : "أخرى";
 
         public string DiscountPercentageDisplay => $"{DiscountPercentage} %";
+
+        public decimal DiscountedServicePrice
+        {
+            get
+            {
+                var discounted = ServicePrice * (1 - DiscountPercentage / 100);
+                return Math.Round(discounted / 100, 0, MidpointRounding.AwayFromZero) * 100;
+            }
+        }
+
     }
 }
