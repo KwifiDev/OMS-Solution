@@ -143,6 +143,7 @@ namespace OMS.API.Controllers
         /// <response code="404">Invalid username or password.</response>
         /// <response code="500">Internal server error.</response>
         [HttpPost("login")]
+        [TenantHeader]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

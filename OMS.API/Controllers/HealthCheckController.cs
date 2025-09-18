@@ -37,6 +37,7 @@ namespace OMS.API.Controllers
         /// </summary>
         /// <returns>Returns health status information including timestamp.</returns>
         [HttpGet("status")]
+        [TenantHeader]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(object), StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<object>> GetHealthStatus()

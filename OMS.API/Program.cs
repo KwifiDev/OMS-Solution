@@ -102,6 +102,8 @@ builder.Services.AddSwaggerGen(options =>
         // The remainder in natural order
         return api.HttpMethod + api.RelativePath;
     });
+
+    options.OperationFilter<TenantHeaderOperationFilter>();
 });
 
 builder.Services.Configure<SwaggerGeneratorOptions>(options =>
