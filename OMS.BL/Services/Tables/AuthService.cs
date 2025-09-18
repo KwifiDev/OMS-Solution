@@ -56,7 +56,7 @@ namespace OMS.BL.Services.Tables
             return true;
         }
 
-        public async Task<(TokenModel TokenInfo, UserLoginModel UserLogin, IEnumerable<string> claims)> LoginAsync(LoginModel model)
+        public async Task<(TokenModel TokenInfo, UserLoginModel UserLogin, IEnumerable<string> claims)> LoginAsync(LoginModel model, string tenantId)
         {
             var user = await _userManager.Users
                              .Include(u => u.Person)
@@ -70,7 +70,7 @@ namespace OMS.BL.Services.Tables
 
             var userLoginModel = _mapperService.Map<User, UserLoginModel>(user!);
 
-            var jwtSecurityToken = await _tokenService.GenerateToken(user);
+            var jwtSecurityToken = await _tokenService.GenerateToken(user, tenantId);
             if (jwtSecurityToken is null) return default;
 
             var tokenInfo = new TokenModel
@@ -91,12 +91,12 @@ namespace OMS.BL.Services.Tables
             return (tokenInfo, userLoginModel, userClaims);
         }
 
-        public async Task<TokenModel?> UpdateToken(int userId)
+        public async Task<TokenModel?> UpdateToken(int userId, string tenantId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user is null) return null;
 
-            var jwtSecurityToken = await _tokenService.GenerateToken(user);
+            var jwtSecurityToken = await _tokenService.GenerateToken(user, tenantId);
             if (jwtSecurityToken is null) return null;
 
             var tokenInfo = new TokenModel

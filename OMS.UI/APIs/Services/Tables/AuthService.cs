@@ -5,6 +5,7 @@ using OMS.UI.APIs.EndPoints;
 using OMS.UI.APIs.Services.Interfaces.Tables;
 using OMS.UI.Models.Others;
 using OMS.UI.Models.Tables;
+using OMS.UI.Services.HttpHeaderManager;
 using OMS.UI.Services.WinLogger;
 using System.Diagnostics;
 using System.Net;
@@ -18,13 +19,15 @@ namespace OMS.UI.APIs.Services.Tables
         private readonly IMapper _mapper;
         private readonly HttpClient _httpClient;
         private readonly ILogService _logService;
+        private readonly IHttpHeaderManagerService _headerManagerService;
         private readonly string _endpoint;
 
-        public AuthService(IHttpClientFactory httpClientFactory, IMapper mapper, ILogService logService)
+        public AuthService(IHttpClientFactory httpClientFactory, IMapper mapper, IHttpHeaderManagerService headerManagerService, ILogService logService)
         {
             _mapper = mapper;
             _httpClient = httpClientFactory.CreateClient("ApiClient");
             _logService = logService;
+            _headerManagerService = headerManagerService;
             _endpoint = ApiEndpoints.Authentication;
         }
 
@@ -110,6 +113,7 @@ namespace OMS.UI.APIs.Services.Tables
 
             try
             {
+                _headerManagerService.SetTenantIdInHeader(_httpClient);
                 var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/register", dto);
 
                 if (!response.IsSuccessStatusCode)
@@ -134,6 +138,7 @@ namespace OMS.UI.APIs.Services.Tables
 
             try
             {
+                _headerManagerService.SetTenantIdInHeader(_httpClient);
                 var response = await _httpClient.PostAsJsonAsync($"{_endpoint}/login", requestUserDto);
 
                 if (!response.IsSuccessStatusCode)

@@ -16,6 +16,6 @@ public partial class ServiceDto
     [StringLength(100, MinimumLength = 5, ErrorMessage = "Branch Name must be between 5 and 100 characters")]
     public string Description { get; set; } = null!;
 
-    [Range(1000, double.MaxValue, ErrorMessage = "Price must be at least 1000 l.s")]
+    [Range(500, double.MaxValue, ErrorMessage = "Price must be at least 500 l.s")]
     public decimal Price { get; set; }
 }

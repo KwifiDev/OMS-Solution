@@ -13,15 +13,15 @@ namespace OMS.UI.APIs.Services.Generices
         where TModel : class
     {
         protected readonly HttpClient _httpClient;
-        protected readonly string _endpoint;
         protected readonly IMapper _mapper;
+        protected readonly string _endpoint;
         private readonly ILogService _logService;
 
         public GenericViewApiService(HttpClient httpClient, IMapper mapper, string endpoint, ILogService logService)
         {
             _httpClient = httpClient;
-            _endpoint = endpoint;
             _mapper = mapper;
+            _endpoint = endpoint;
             _logService = logService;
         }
 

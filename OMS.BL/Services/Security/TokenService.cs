@@ -20,7 +20,7 @@ namespace OMS.BL.Services.Security
             _jwtSettings = jwtSettings.Value;
         }
 
-        public async Task<JwtSecurityToken?> GenerateToken(User user)
+        public async Task<JwtSecurityToken?> GenerateToken(User user, string tenantId)
         {
             if (user is null) return null;
 
@@ -32,7 +32,8 @@ namespace OMS.BL.Services.Security
             {
                 new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
+                new(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
+                new("tenant_id", tenantId)
             }
             .Union(roles)
             .Union(userClaims);

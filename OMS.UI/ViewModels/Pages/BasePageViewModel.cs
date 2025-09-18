@@ -152,7 +152,6 @@ namespace OMS.UI.ViewModels.Pages
                 if (result && Items.Count == 0)
                 {
                     PaginationInfo.CurrentPage = PaginationInfo.CurrentPage - 1;
-                    await LoadData();
                 }
             }
             else

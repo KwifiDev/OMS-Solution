@@ -35,6 +35,7 @@ using OMS.UI.Views.Pages;
 using OMS.UI.Views.Windows;
 using OMS.UI.Views.Windows.AddEditWindow;
 using System.Windows;
+using OMS.UI.Services.HttpHeaderManager;
 
 namespace OMS.UI
 {
@@ -59,7 +60,7 @@ namespace OMS.UI
                 .ConfigureServices((context, services) =>
                 {
                     RegisterApiServices(services);
-                    RegisterDatabaseConnection(services, context.Configuration);
+                    SelectUserTenantId(services, context.Configuration);
                     RegisterServices(services);
                     RegisterMapper(services);
                     RegisterViewModels(services);
@@ -84,10 +85,18 @@ namespace OMS.UI
             services.AddTransient(typeof(IGenericApiService<,>), typeof(GenericApiService<,>));
         }
 
-        private static void RegisterDatabaseConnection(IServiceCollection services, IConfiguration configuration)
+        private static void SelectUserTenantId(IServiceCollection services, IConfiguration configuration)
         {
-            string? connectionString = configuration.GetConnectionString("DbConnection");
-            // Here we will Send Database Con to ServerSide and Using (Multi-Tenant Database Design) and (Dynamic Connection Strings)
+            var tenantId = configuration.GetSection("TenantSettings:DefaultTenant").Value ?? throw new Exception("Default Tenant is not configured in appsettings.json");
+
+            services.AddSingleton<ISettingsService, SettingsService>(provider =>
+            {
+                var settingsService = new SettingsService
+                {
+                    TenantId = tenantId
+                };
+                return settingsService;
+            });
         }
 
         private static void RegisterServices(IServiceCollection services)
@@ -362,7 +371,7 @@ namespace OMS.UI
 
             services.AddTransient<IAuthenticationService, AuthenticationService>();
 
-            services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<IHttpHeaderManagerService, HttpHeaderManagerService>();
 
             services.AddTransient<IRegistryService, RegistryService>();
 

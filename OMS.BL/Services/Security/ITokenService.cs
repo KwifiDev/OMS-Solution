@@ -5,6 +5,6 @@ namespace OMS.BL.Services.Security
 {
     public interface ITokenService
     {
-        Task<JwtSecurityToken?> GenerateToken(User user);
+        Task<JwtSecurityToken?> GenerateToken(User user, string tenantId);
     }
 }

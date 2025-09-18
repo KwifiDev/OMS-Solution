@@ -17,11 +17,13 @@ namespace OMS.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly ITenantProvider _tenantProvider;
         private readonly IMapper _mapper;
 
-        public AuthController(IAuthService authService, IMapper mapper)
+        public AuthController(IAuthService authService, ITenantProvider tenantProvider, IMapper mapper)
         {
             _authService = authService;
+            _tenantProvider = tenantProvider;
             _mapper = mapper;
         }
 
@@ -149,7 +151,7 @@ namespace OMS.API.Controllers
         {
             try
             {
-                var (TokenInfo, UserLogin, userClaims) = await _authService.LoginAsync(_mapper.Map<LoginModel>(loginDto));
+                var (TokenInfo, UserLogin, userClaims) = await _authService.LoginAsync(_mapper.Map<LoginModel>(loginDto), _tenantProvider.CurrentTenant.Id);
 
                 return UserLogin is null
                     ? NotFound()
@@ -190,7 +192,7 @@ namespace OMS.API.Controllers
         {
             try
             {
-                var TokenInfo = await _authService.UpdateToken(userId);
+                var TokenInfo = await _authService.UpdateToken(userId, _tenantProvider.CurrentTenant.Id);
 
                 return TokenInfo is null ? NotFound() : Ok(TokenInfo);
             }

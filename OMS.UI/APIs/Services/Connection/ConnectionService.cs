@@ -1,4 +1,5 @@
 ﻿using OMS.UI.APIs.EndPoints;
+using OMS.UI.Services.HttpHeaderManager;
 using OMS.UI.Services.ShowMassage;
 using System.Net.Http;
 
@@ -8,12 +9,14 @@ namespace OMS.UI.APIs.Services.Connection
     {
         private readonly HttpClient _httpClient;
         private readonly IMessageService _messageService;
+        private readonly IHttpHeaderManagerService _headerManagerService;
         private readonly string _endpoint;
 
-        public ConnectionService(IHttpClientFactory httpClientFactory, IMessageService messageService)
+        public ConnectionService(IHttpClientFactory httpClientFactory, IMessageService messageService, IHttpHeaderManagerService headerManagerService)
         {
             _httpClient = httpClientFactory.CreateClient("ApiClient");
             _messageService = messageService;
+            _headerManagerService = headerManagerService;
             _endpoint = ApiEndpoints.HealthCheck;
         }
 
@@ -21,6 +24,7 @@ namespace OMS.UI.APIs.Services.Connection
         {
             try
             {
+                _headerManagerService.SetTenantIdInHeader(_httpClient);
                 var response = await _httpClient.GetAsync($"{_endpoint}/status");
 
                 if (!response.IsSuccessStatusCode)

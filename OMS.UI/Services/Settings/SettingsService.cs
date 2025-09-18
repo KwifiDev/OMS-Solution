@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OMS.UI.Services.Settings
+﻿namespace OMS.UI.Services.Settings
 {
     public class SettingsService : ISettingsService
     {
-
+        public string TenantId { get; set; } = null!;
     }
 }

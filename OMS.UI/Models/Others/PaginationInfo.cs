@@ -5,18 +5,39 @@ namespace OMS.UI.Models.Others
     public partial class PaginationInfo : ObservableObject
     {
         public event Func<Task>? PageChanged;
-        partial void OnCurrentPageChanged(int value) => PageChanged?.Invoke();
-        partial void OnPageSizeChanged(int value) => PageChanged?.Invoke();
 
 
-        [ObservableProperty]
         private int _currentPage = 1;
 
-        [ObservableProperty]
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                if (SetProperty(ref _currentPage, Math.Max(1, Math.Min(value, TotalPages))))
+                    PageChanged?.Invoke();
+            }
+        }
+
+        private int _totalPages = 1;
+
+        public int TotalPages
+        {
+            get => _totalPages;
+            set => SetProperty(ref _totalPages, Math.Max(1, value));
+        }
+
         private int _pageSize = 5;
 
-        [ObservableProperty]
-        private int _totalPages = 1;
+        public int PageSize
+        {
+            get => _pageSize;
+            set
+            {
+                if (SetProperty(ref _pageSize, Math.Max(5, value)))
+                    PageChanged?.Invoke();
+            }
+        }
 
         [ObservableProperty]
         private int _totalItems = 0;

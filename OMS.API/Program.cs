@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -14,6 +15,7 @@ using OMS.BL.Models.Settings;
 using OMS.BL.Services.Security;
 using OMS.BL.Services.Tables;
 using OMS.BL.Services.Views;
+using OMS.Common.Data;
 using OMS.DA.Context;
 using OMS.DA.Entities.Identity;
 using OMS.DA.IRepositories.IEntityRepos;
@@ -107,7 +109,15 @@ builder.Services.Configure<SwaggerGeneratorOptions>(options =>
     options.InferSecuritySchemes = true;
 });
 
-builder.Services.AddDbContext<AppDbContext>(ServiceLifetime.Scoped);
+builder.Services.AddHttpContextAccessor();
+builder.Services.Configure<TenantSettings>(builder.Configuration.GetSection(nameof(TenantSettings)));
+builder.Services.AddScoped<ITenantProvider, TenantProvider>();
+
+builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
+{
+    var tenantProvider = serviceProvider.GetRequiredService<ITenantProvider>();
+    options.UseSqlServer(tenantProvider.CurrentTenant.ConnectionString);
+});
 
 builder.Services.AddIdentity<User, Role>(options =>
 {
@@ -270,24 +280,41 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    await DataSeeder.SeedDataAsync
-        (
-            context: scope.ServiceProvider.GetRequiredService<AppDbContext>(),
-            roleManager: scope.ServiceProvider.GetRequiredService<RoleManager<Role>>(),
-            userManager: scope.ServiceProvider.GetRequiredService<UserManager<User>>()
-        );
+    var serviceProvider = scope.ServiceProvider;
 
-    var permissionService = scope.ServiceProvider.GetRequiredService<IPermissionService>();
-    var permissions = (await permissionService.GetAllAsync()).Select(p => p.Name);
+    var permissions = PermissionsData.GetAll();
+    var authorizationOptions = serviceProvider.GetRequiredService<IOptions<AuthorizationOptions>>();
 
-    var authorizationOptions = scope.ServiceProvider.GetRequiredService<IOptions<AuthorizationOptions>>();
     foreach (var permission in permissions)
     {
         authorizationOptions.Value.AddPolicy(permission, policy =>
-        {
-            policy.Requirements.Add(new PermissionRequirement(permission));
-        });
+            policy.Requirements.Add(new PermissionRequirement(permission)));
     }
+
+
+    var tenants = serviceProvider.GetRequiredService<IOptions<TenantSettings>>().Value.Tenants;
+
+    var tasks = tenants.Select(async tenant =>
+    {
+        await using var seedScope = serviceProvider.CreateAsyncScope();
+        try
+        {
+            var tenantProvider = seedScope.ServiceProvider.GetRequiredService<ITenantProvider>();
+            tenantProvider.SetTenant(tenant);
+
+            await DataSeeder.SeedDataAsync(
+                seedScope.ServiceProvider.GetRequiredService<AppDbContext>(),
+                seedScope.ServiceProvider.GetRequiredService<RoleManager<Role>>(),
+                seedScope.ServiceProvider.GetRequiredService<UserManager<User>>()
+            );
+        }
+        catch
+        {
+            // Logger Here
+        }
+    });
+
+    await Task.WhenAll(tasks);
 }
 
 // Configure the HTTP request pipeline.
@@ -322,6 +349,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+app.UseMiddleware<TenantMiddleware>(); // This Middleware must be here
 app.UseAuthorization();
 
 app.MapControllers();
