@@ -3,6 +3,7 @@
     public class TenantMiddleware
     {
         private readonly RequestDelegate _next;
+        private const string ErrorResponse = "{\"error\": \"Tenant information is missing or invalid.\"}";
 
         public TenantMiddleware(RequestDelegate next)
         {
@@ -11,23 +12,26 @@
 
         public async Task InvokeAsync(HttpContext context, ITenantProvider tenantProvider)
         {
-            var tenant = tenantProvider.GetFromJwtClaim() ?? tenantProvider.GetFromHeader();
+            var tenant = tenantProvider.GetFromJwtClaim() ?? tenantProvider.GetFromHeader() ?? tenantProvider.GetLocal();
 
             if (tenant is null)
             {
-                context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync("{\"error\": \"Tenant information is missing or invalid.\"}");
+                await WriteErrorResponseAsync(context, StatusCodes.Status400BadRequest, ErrorResponse);
                 return;
             }
 
-
-            // You can store the tenant information in the TenantProvider (Service LifeTime is scoped) for later use
+            // Store the tenant information for later use in the request pipeline
             tenantProvider.SetTenant(tenant);
 
             // Call the next middleware in the pipeline
             await _next(context);
+        }
 
+        private static async Task WriteErrorResponseAsync(HttpContext context, int statusCode, string message)
+        {
+            context.Response.StatusCode = statusCode;
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(message);
         }
     }
 }

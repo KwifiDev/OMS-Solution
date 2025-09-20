@@ -12,12 +12,13 @@ using OMS.UI.APIs.Services.Security;
 using OMS.UI.APIs.Services.Tables;
 using OMS.UI.APIs.Services.Views;
 using OMS.UI.Mapping;
+using OMS.UI.Models.Others;
 using OMS.UI.Services.Authentication;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Hash;
+using OMS.UI.Services.HttpHeaderManager;
 using OMS.UI.Services.JWT;
 using OMS.UI.Services.Loading;
-using OMS.UI.Services.WinLogger;
 using OMS.UI.Services.Navigation;
 using OMS.UI.Services.Registry;
 using OMS.UI.Services.Settings;
@@ -25,6 +26,7 @@ using OMS.UI.Services.ShowMassage;
 using OMS.UI.Services.StatusManagement.Service;
 using OMS.UI.Services.UserSession;
 using OMS.UI.Services.Windows;
+using OMS.UI.Services.WinLogger;
 using OMS.UI.ViewModels.Pages;
 using OMS.UI.ViewModels.UserControls;
 using OMS.UI.ViewModels.UserControls.Interfaces;
@@ -35,7 +37,6 @@ using OMS.UI.Views.Pages;
 using OMS.UI.Views.Windows;
 using OMS.UI.Views.Windows.AddEditWindow;
 using System.Windows;
-using OMS.UI.Services.HttpHeaderManager;
 
 namespace OMS.UI
 {
@@ -59,8 +60,7 @@ namespace OMS.UI
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    RegisterApiServices(services);
-                    SelectUserTenantId(services, context.Configuration);
+                    RegisterApiServices(services, context.Configuration);
                     RegisterServices(services);
                     RegisterMapper(services);
                     RegisterViewModels(services);
@@ -71,13 +71,24 @@ namespace OMS.UI
                     Ioc.Default.ConfigureServices(services.BuildServiceProvider());
                 });
 
-        private static void RegisterApiServices(IServiceCollection services)
-        {
-            services.AddTransient<AuthHeaderHandler>();
 
+        private static void RegisterApiServices(IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<TenantSettings>(configuration.GetSection(nameof(TenantSettings)));
+
+            var tenantSettings = configuration.GetSection(nameof(TenantSettings)).Get<TenantSettings>() ?? throw new Exception("Default Tenant is not configured in appsettings.json");
+            var tenant = tenantSettings.IsRemote ? tenantSettings.RemoteTenant : tenantSettings.LocalTenant;
+
+            services.AddSingleton<ISettingsService, SettingsService>(provider =>
+            {
+                var settingsService = new SettingsService { TenantId = tenant.TenantId };
+                return settingsService;
+            });
+
+            services.AddTransient<AuthHeaderHandler>();
             services.AddHttpClient("ApiClient", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:7012/");
+                client.BaseAddress = new Uri(tenant.BaseAddress);
             })
             .AddHttpMessageHandler<AuthHeaderHandler>();
 
@@ -85,19 +96,6 @@ namespace OMS.UI
             services.AddTransient(typeof(IGenericApiService<,>), typeof(GenericApiService<,>));
         }
 
-        private static void SelectUserTenantId(IServiceCollection services, IConfiguration configuration)
-        {
-            var tenantId = configuration.GetSection("TenantSettings:DefaultTenant").Value ?? throw new Exception("Default Tenant is not configured in appsettings.json");
-
-            services.AddSingleton<ISettingsService, SettingsService>(provider =>
-            {
-                var settingsService = new SettingsService
-                {
-                    TenantId = tenantId
-                };
-                return settingsService;
-            });
-        }
 
         private static void RegisterServices(IServiceCollection services)
         {
@@ -154,8 +152,6 @@ namespace OMS.UI
             services.AddTransient<IRoleClaimService, RoleClaimService>();
 
             services.AddTransient<IPermissionService, PermissionService>();
-
-            //services.AddTransient<ITokenService, TokenService>();
         }
 
         private static void RegisterMapper(IServiceCollection services)

@@ -30,19 +30,48 @@ namespace OMS.API.Extensions
         {
             if (!IsHttpContextValid) return null;
 
-            var tenantId = _httpContext?.User.FindFirst("tenant_id")?.Value;
+            var tenantId = GetTenantIdFromJwtClaim();
             return GetTenantById(tenantId);
         }
 
         public TenantModel? GetFromHeader()
         {
-            if (_httpContext?.Request.Headers.TryGetValue("X-Tenant-ID", out var headerValues) != true) return null;
+            var tenantId = GetTenantIdFromHeader();
+            if (tenantId is null) return null;
 
-            var tenantId = headerValues.FirstOrDefault();
             return GetTenantById(tenantId);
         }
 
         public void SetTenant(TenantModel tenant) => CurrentTenant = tenant;
-        
+
+        public TenantModel? GetLocal()
+        {
+            if (!IsLocalHost()) return null;
+
+            var jwtTenantId = GetTenantIdFromJwtClaim();
+            var headerTenantId = GetTenantIdFromHeader();
+
+            if (_tenantSettings.LocalTenant != null &&
+                (_tenantSettings.LocalTenant.Id == jwtTenantId ||
+                 _tenantSettings.LocalTenant.Id == headerTenantId))
+            {
+                return _tenantSettings.LocalTenant;
+            }
+
+            return null;
+        }
+
+        private bool IsLocalHost() => _httpContext?.Request.Host.Host == "localhost" || (_httpContext?.Request.Host.Host == "127.0.0.1");
+
+        private string? GetTenantIdFromJwtClaim() => _httpContext?.User.FindFirst("tenant_id")?.Value;
+
+        private string? GetTenantIdFromHeader()
+        {
+            if (_httpContext?.Request.Headers.TryGetValue("X-Tenant-ID", out var headerValues) == true)
+            {
+                return headerValues.FirstOrDefault();
+            }
+            return null;
+        }
     }
 }
