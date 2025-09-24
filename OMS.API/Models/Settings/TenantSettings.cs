@@ -1,6 +1,4 @@
-﻿using OMS.BL.Models.Hybrid;
-
-namespace OMS.BL.Models.Settings
+﻿namespace OMS.API.Models.Settings
 {
     public class TenantSettings
     {

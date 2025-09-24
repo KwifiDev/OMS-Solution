@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using OMS.BL.Models.Hybrid;
-using OMS.BL.Models.Settings;
+using OMS.API.Models;
+using OMS.API.Models.Settings;
 
 namespace OMS.API.Extensions
 {

@@ -1,4 +1,4 @@
-﻿using OMS.BL.Models.Hybrid;
+﻿using OMS.API.Models;
 
 namespace OMS.API.Extensions
 {

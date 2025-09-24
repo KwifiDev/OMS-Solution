@@ -1,4 +1,4 @@
-﻿namespace OMS.BL.Models.Hybrid
+﻿namespace OMS.API.Models
 {
     public class TenantModel
     {

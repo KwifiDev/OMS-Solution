@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using OMS.UI.APIs.Services.Connection;
 using OMS.UI.APIs.Services.Generices;
 using OMS.UI.APIs.Services.Interfaces.Tables;
@@ -36,6 +37,8 @@ using OMS.UI.Views;
 using OMS.UI.Views.Pages;
 using OMS.UI.Views.Windows;
 using OMS.UI.Views.Windows.AddEditWindow;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 
 namespace OMS.UI
@@ -46,6 +49,7 @@ namespace OMS.UI
     public partial class App : Application
     {
         private readonly IHost _host = null!;
+        private Process? _apiProcess;
 
         public App()
         {
@@ -382,8 +386,44 @@ namespace OMS.UI
             services.AddTransient<ILogService, LogService>();
         }
 
+
+        private void RunWebApiLocalServer()
+        {
+            try
+            {
+                string currentDir = AppDomain.CurrentDomain.BaseDirectory;
+
+                string apiExe = Path.GetFullPath(Path.Combine(currentDir, "..", "LS", "OMS.API.exe"));
+                string apiDirectory = Path.GetDirectoryName(apiExe)!;
+
+                if (File.Exists(apiExe))
+                {
+                    var psi = new ProcessStartInfo(apiExe)
+                    {
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        WorkingDirectory = apiDirectory
+                    };
+                    _apiProcess = Process.Start(psi);
+                }
+                else
+                {
+                    MessageBox.Show("Can not run local api web server\nOMS.API.exe file is missing", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Current.Shutdown();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Current.Shutdown();
+            }
+        }
+
         protected override async void OnStartup(StartupEventArgs e)
         {
+            var isServerRunRemote = Ioc.Default.GetRequiredService<IOptions<TenantSettings>>().Value.IsRemote;
+            if (!isServerRunRemote) RunWebApiLocalServer();
+
             await _host.StartAsync();
 
             var startupWindow = Ioc.Default.GetRequiredService<StartupWindow>();
@@ -395,10 +435,20 @@ namespace OMS.UI
 
         protected override async void OnExit(ExitEventArgs e)
         {
-            await _host.StopAsync(TimeSpan.FromSeconds(5));
-            _host.Dispose();
+            try
+            {
+                if (_apiProcess != null && !_apiProcess.HasExited)
+                {
+                    _apiProcess.Kill(true);
+                    _apiProcess.Dispose();
+                }
 
-            base.OnExit(e);
+                await _host.StopAsync(TimeSpan.FromSeconds(5));
+                _host.Dispose();
+
+                base.OnExit(e);
+            }
+            catch { }
         }
     }
 

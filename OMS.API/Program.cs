@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OMS.API.Extensions;
 using OMS.API.Mapping;
+using OMS.API.Models.Settings;
 using OMS.BL.IServices.Tables;
 using OMS.BL.IServices.Views;
 using OMS.BL.Mapping;
@@ -30,6 +31,9 @@ using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (builder.Environment.IsProduction())
+    builder.WebHost.UseUrls("https://localhost:5001", "http://localhost:5000");
 
 // Add services to the container.
 builder.Services.AddControllers(options =>
@@ -235,6 +239,8 @@ builder.Services.AddSingleton<IPermissionCacheService, PermissionCacheService>()
 builder.Services.AddScoped<IAuthorizationHandler, PermissionHandler>();
 builder.Services.AddScoped<ClearPermissionCacheFilter>();
 
+builder.Services.Configure<SwaggerSettings>(builder.Configuration.GetSection(nameof(SwaggerSettings)));
+
 // Mapping jwt configs to JwtSettings Object
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("Jwt"));
 
@@ -319,8 +325,10 @@ using (var scope = app.Services.CreateScope())
     await Task.WhenAll(tasks);
 }
 
+var swaggerSettings = app.Services.GetRequiredService<IOptions<SwaggerSettings>>().Value;
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || swaggerSettings.EnableInProduction)
 {
     app.UseSwagger(options =>
     {
@@ -336,7 +344,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "OMS API v1");
-        options.RoutePrefix = "api-docs";
+        options.RoutePrefix = swaggerSettings.CustomPath ?? "swagger";
         options.DocumentTitle = "OMS API Documentation";
         options.DefaultModelsExpandDepth(2);
         options.DefaultModelExpandDepth(2);
