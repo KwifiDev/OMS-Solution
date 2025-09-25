@@ -12,7 +12,7 @@
 
         public async Task InvokeAsync(HttpContext context, ITenantProvider tenantProvider)
         {
-            var tenant = tenantProvider.GetFromJwtClaim() ?? tenantProvider.GetFromHeader() ?? tenantProvider.GetLocal();
+            var tenant = tenantProvider.GetFromJwtClaim() ?? tenantProvider.GetFromHeader();
 
             if (tenant is null)
             {

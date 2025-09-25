@@ -8,8 +8,6 @@ public partial class AccountDto
     [Key]
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "Client Id is required")]
-    [Range(1, int.MaxValue, ErrorMessage = "Client Id must be positive number")]
     public int ClientId { get; set; }
 
     [Required(ErrorMessage = "UserAccount is required")]

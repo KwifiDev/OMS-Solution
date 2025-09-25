@@ -9,6 +9,5 @@ namespace OMS.API.Extensions
 
         TenantModel? GetFromJwtClaim();
         TenantModel? GetFromHeader();
-        TenantModel? GetLocal();
     }
 }

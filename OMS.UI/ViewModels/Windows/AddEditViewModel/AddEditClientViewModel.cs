@@ -114,7 +114,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             var accountModel = await _accountService.GetByClientIdAsync(Model.Id);
             if (accountModel == null)
             {
-                //_messageService.ShowErrorMessage("خطا في الحساب", MessageTemplates.ClientAccountViewError);
                 return false;
             }
 
@@ -176,19 +175,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
             return true;
         }
 
-        //private async Task<bool> SaveOrUpdateAccount(int clientId)
-        //{
-        //    ClientAccount.ClientId = clientId;
-
-        //    var isSuccess = ClientAccount.Id == 0
-        //        ? await _accountService.AddAsync(ClientAccount)
-        //        : await _accountService.UpdateAsync(ClientAccount.Id, ClientAccount);
-
-        //    if (!isSuccess) ShowAccountOperationError();
-
-        //    return isSuccess;
-        //}
-
         private async Task<bool> RemoveExistingAccount()
         {
             if (!IsClientHasAccount()) return true;
@@ -200,9 +186,6 @@ namespace OMS.UI.ViewModels.Windows.AddEditViewModel
         }
 
         private bool IsClientHasAccount() => ClientAccount.Id > 0;
-
-        //private void ShowAccountOperationError()
-        //    => _messageService.ShowInfoMessage("خطأ", MessageTemplates.ClientAccountAdditionError);
 
         private void ShowAccountDeletionError()
             => _messageService.ShowInfoMessage("خطأ", MessageTemplates.ClientAccountDeletionError);

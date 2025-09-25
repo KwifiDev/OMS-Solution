@@ -24,5 +24,8 @@ namespace OMS.DA.Views
         public string? Phone { get; set; }
 
         public EnClientType ClientType { get; set; }
+
+        [Column(TypeName = "decimal(38, 2)")]
+        public decimal? TotalDebts { get; set; }
     }
 }

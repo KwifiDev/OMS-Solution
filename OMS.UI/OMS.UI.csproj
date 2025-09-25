@@ -15,6 +15,7 @@
     <None Remove="Resources\Images\Login.jpg" />
     <None Remove="Resources\Images\Logo.ico" />
     <None Remove="Resources\Images\Logo.png" />
+    <None Remove="Resources\Images\Welcome.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,9 +30,11 @@
     <Resource Include="Resources\Images\Login.jpg" />
     <Resource Include="Resources\Images\Logo.ico" />
     <Resource Include="Resources\Images\Logo.png" />
+    <Resource Include="Resources\Images\Welcome.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Resources\GIFs\" />
     <Folder Include="Resources\Icons\" />
   </ItemGroup>
 

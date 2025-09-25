@@ -44,23 +44,6 @@ namespace OMS.API.Extensions
 
         public void SetTenant(TenantModel tenant) => CurrentTenant = tenant;
 
-        public TenantModel? GetLocal()
-        {
-            if (!IsLocalHost()) return null;
-
-            var jwtTenantId = GetTenantIdFromJwtClaim();
-            var headerTenantId = GetTenantIdFromHeader();
-
-            if (_tenantSettings.LocalTenant != null &&
-                (_tenantSettings.LocalTenant.Id == jwtTenantId ||
-                 _tenantSettings.LocalTenant.Id == headerTenantId))
-            {
-                return _tenantSettings.LocalTenant;
-            }
-
-            return null;
-        }
-
         private bool IsLocalHost() => _httpContext?.Request.Host.Host == "localhost" || (_httpContext?.Request.Host.Host == "127.0.0.1");
 
         private string? GetTenantIdFromJwtClaim() => _httpContext?.User.FindFirst("tenant_id")?.Value;

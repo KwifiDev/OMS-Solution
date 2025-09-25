@@ -14,6 +14,7 @@ using OMS.UI.APIs.Services.Tables;
 using OMS.UI.APIs.Services.Views;
 using OMS.UI.Mapping;
 using OMS.UI.Models.Others;
+using OMS.UI.Services.ApplicationInstance;
 using OMS.UI.Services.Authentication;
 using OMS.UI.Services.Dialog;
 using OMS.UI.Services.Hash;
@@ -254,6 +255,8 @@ namespace OMS.UI
             services.AddTransient(provider =>
                 new MainWindow { DataContext = provider.GetRequiredService<MainWindowViewModel>() });
 
+            services.AddSingleton<WelcomePage>();
+
             services.AddSingleton(provider =>
                 new DashboardPage { DataContext = provider.GetRequiredService<DashboardPageViewModel>() });
 
@@ -384,6 +387,8 @@ namespace OMS.UI
             services.AddTransient<IJwtPayloadService, JwtPayloadService>();
 
             services.AddTransient<ILogService, LogService>();
+
+            services.AddSingleton<IApplicationInstanceService, ApplicationInstanceService>();
         }
 
 
@@ -421,15 +426,31 @@ namespace OMS.UI
 
         protected override async void OnStartup(StartupEventArgs e)
         {
-            var isServerRunRemote = Ioc.Default.GetRequiredService<IOptions<TenantSettings>>().Value.IsRemote;
-            if (!isServerRunRemote) RunWebApiLocalServer();
+            try
+            {
+                var appService = Ioc.Default.GetRequiredService<IApplicationInstanceService>();
+                if (!appService.IsFirstInstance())
+                {
+                    MessageBox.Show("this application is already opend", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Current.Shutdown();
+                    return;
+                }
 
-            await _host.StartAsync();
+                var isServerRunRemote = Ioc.Default.GetRequiredService<IOptions<TenantSettings>>().Value.IsRemote;
+                if (!isServerRunRemote) RunWebApiLocalServer();
 
-            var startupWindow = Ioc.Default.GetRequiredService<StartupWindow>();
-            startupWindow.Show();
+                await _host.StartAsync();
 
-            base.OnStartup(e);
+                var startupWindow = Ioc.Default.GetRequiredService<StartupWindow>();
+                startupWindow.Show();
+
+                base.OnStartup(e);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error starting application: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Current.Shutdown();
+            }
         }
 
 
@@ -437,18 +458,28 @@ namespace OMS.UI
         {
             try
             {
+                var appService = Ioc.Default.GetRequiredService<IApplicationInstanceService>();
+                (appService as ApplicationInstanceService)?.ReleaseMutex();
+
                 if (_apiProcess != null && !_apiProcess.HasExited)
                 {
                     _apiProcess.Kill(true);
                     _apiProcess.Dispose();
+                    _apiProcess = null;
                 }
 
-                await _host.StopAsync(TimeSpan.FromSeconds(5));
-                _host.Dispose();
+                if (_host != null)
+                {
+                    await _host.StopAsync(TimeSpan.FromSeconds(5));
+                    _host.Dispose();
+                }
 
                 base.OnExit(e);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 

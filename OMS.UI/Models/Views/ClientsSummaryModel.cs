@@ -10,6 +10,7 @@ namespace OMS.UI.Models.Views
         private string _fullName = null!;
         private string? _phone;
         private EnClientType _clientType;
+        private decimal _totalDebts;
 
 
         public int Id
@@ -50,11 +51,23 @@ namespace OMS.UI.Models.Views
             }
         }
 
+        public decimal TotalDebts
+        {
+            get => _totalDebts;
+            set 
+            {
+                SetProperty(ref _totalDebts, value);
+                OnPropertyChanged(nameof(TotalDebtsDisplay));
+            }
+        }
+
         // Display Props
 
         public string PhoneDisplay => Phone ?? "لا يوجد رقم هاتف";
 
         public string ClientTypeDisplay => ClientType == EnClientType.Normal ? "عادي" :
                                            ClientType == EnClientType.Lawyer ? "محامي" : "أخرى";
+
+        public string TotalDebtsDisplay => TotalDebts == 0 ? "لا يوجد ديون" : TotalDebts.ToString("N0");
     }
 }

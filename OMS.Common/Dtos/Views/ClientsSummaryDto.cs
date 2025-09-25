@@ -13,5 +13,7 @@ namespace OMS.Common.Dtos.Views
         public string? Phone { get; set; }
 
         public EnClientType ClientType { get; set; }
+
+        public decimal TotalDebts { get; set; }
     }
 }

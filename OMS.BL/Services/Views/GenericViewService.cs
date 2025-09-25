@@ -20,7 +20,7 @@ namespace OMS.BL.Services.Views
             _mapper = mapper;
         }
 
-        public async Task<PagedResult<TModel>> GetPagedAsync(PaginationParams parameters)
+        public virtual async Task<PagedResult<TModel>> GetPagedAsync(PaginationParams parameters)
         {
             var pagedResult = await _repository.GetPagedAsync(parameters);
 
@@ -35,7 +35,7 @@ namespace OMS.BL.Services.Views
             };
         }
 
-        public async Task<TModel?> GetByIdAsync(int id)
+        public virtual async Task<TModel?> GetByIdAsync(int id)
         {
             TEntity? entity = await _repository.GetByIdAsync(id);
 

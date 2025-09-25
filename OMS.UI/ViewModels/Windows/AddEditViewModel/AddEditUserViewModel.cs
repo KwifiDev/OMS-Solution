@@ -14,7 +14,6 @@ using OMS.UI.Services.Windows;
 using OMS.UI.ViewModels.UserControls.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using static OMS.Common.Data.PermissionsData;
 using static OMS.UI.ViewModels.UserControls.FindPersonViewModel;
 
 namespace OMS.UI.ViewModels.Windows.AddEditViewModel

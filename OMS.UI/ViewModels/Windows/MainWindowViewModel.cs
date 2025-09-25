@@ -53,9 +53,10 @@ namespace OMS.UI.ViewModels.Windows
         }
 
         [RelayCommand]
-        private void LoadData()
+        private async Task LoadData()
         {
             if (!_userSessionService.IsLoggedIn) _windowService.CloseMainWindow();
+            await _navigationService.NavigateToPageAsync<WelcomePage>();
 
             NotifyCommandsCanExecuteChanged();
             LoadButtonVisibility();
@@ -223,7 +224,11 @@ namespace OMS.UI.ViewModels.Windows
 
 
         [RelayCommand]
-        private void Exit() => _windowService.Exit();
+        private void Exit() 
+        {
+            if (!_messageService.ShowQuestionMessage("الخروج من التطبيق", "هل انت متاكد من انك تريد الخروج من التطبيق")) return;
+            _windowService.Exit();
+        } 
 
         private bool CanOpenPage<TViewModel>(string claim) where TViewModel : class
         {

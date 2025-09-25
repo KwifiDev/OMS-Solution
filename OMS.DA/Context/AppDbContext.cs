@@ -82,13 +82,13 @@ public partial class AppDbContext : IdentityDbContext<User, Role, int, UserClaim
 
     public virtual DbSet<Permission> Permissions { get; set; }
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    if (!optionsBuilder.IsConfigured)
-    //    {
-    //        optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=OMS;Trusted_Connection=True;");
-    //    }
-    //}
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=OMS;Trusted_Connection=True;");
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
