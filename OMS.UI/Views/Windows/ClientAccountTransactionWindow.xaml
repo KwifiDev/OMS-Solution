@@ -76,7 +76,7 @@
                          FontSize="16"
                          Margin="10,5,10,5"
                          materialDesign:HintAssist.Hint="ادخل الرصيد هنا"
-                         MaxLength="7"
+                         MaxLength="6"
                          IsEnabled="{Binding TransactionStatus.IsModifiable}">
 
                     <i:Interaction.Behaviors>

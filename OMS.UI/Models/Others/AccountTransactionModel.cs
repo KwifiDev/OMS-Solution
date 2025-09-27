@@ -20,7 +20,7 @@ namespace OMS.UI.Models.Others
         }
 
         [Required(ErrorMessage = "حقل الرصيد مطلوب")]
-        [Range(typeof(decimal), "1000", "1000000", ErrorMessage = "الرصيد يجب ان يكون موجب")]
+        [Range(typeof(decimal), "1000", "999000", ErrorMessage = "الرصيد يجب ان يكون 1000 - 999000")]
         public decimal Amount
         {
             get => _amount;
