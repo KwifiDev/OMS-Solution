@@ -33,7 +33,15 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsProduction())
-    builder.WebHost.UseUrls("https://localhost:5001", "http://localhost:5000");
+{
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenAnyIP(5000); // HTTP
+        options.ListenAnyIP(5001, listen =>
+            listen.UseHttps(Path.Combine(AppContext.BaseDirectory, "LocalApi.pfx"), "123456")); // HTTPS
+    });
+}
+
 
 // Add services to the container.
 builder.Services.AddControllers(options =>
