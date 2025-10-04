@@ -50,8 +50,8 @@ namespace OMS.UI.ViewModels.Windows
 
             SelectedItemChanged += OnSelectedItemChanged;
 
-            CommandConditions[nameof(EditItemCommand)] += CanOpenPayDebtDialog;
-            CommandConditions[nameof(DeleteItemCommand)] += CanOpenPayDebtDialog;
+            CommandConditions[nameof(EditItemCommand)] += CanEditOrDeleteDebt;
+            CommandConditions[nameof(DeleteItemCommand)] += CanEditOrDeleteDebt;
 
             WeakReferenceMessenger.Default.Register<PayDebtModel>(this, OnPayDebtReceived);
         }
@@ -126,6 +126,8 @@ namespace OMS.UI.ViewModels.Windows
             PayAllClientDebtsCommand.NotifyCanExecuteChanged();
         }
 
+
+        private bool CanEditOrDeleteDebt() => SelectedItem != null && SelectedItem.Status == EnDebtStatus.NotPaid;
 
         [RelayCommand(CanExecute = nameof(CanCancelDebt))]
         private async Task CancelDebt()
